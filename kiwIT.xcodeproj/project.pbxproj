@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB32B9DE5C300B5461B /* kiwITApp.swift */; };
-		217BCCB62B9DE5C300B5461B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB52B9DE5C300B5461B /* ContentView.swift */; };
+		217BCCB62B9DE5C300B5461B /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB52B9DE5C300B5461B /* TabBarView.swift */; };
 		217BCCB82B9DE5C400B5461B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCB72B9DE5C400B5461B /* Assets.xcassets */; };
 		217BCCBB2B9DE5C400B5461B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCBA2B9DE5C400B5461B /* Preview Assets.xcassets */; };
 		217BCCC52B9DE5C400B5461B /* kiwITTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCC42B9DE5C400B5461B /* kiwITTests.swift */; };
@@ -16,6 +16,13 @@
 		217BCCD12B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCD02B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift */; };
 		217BCCDE2B9DE6CD00B5461B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCDD2B9DE6CD00B5461B /* .gitignore */; };
 		217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCDF2B9DE84100B5461B /* APIKey.swift */; };
+		219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBA2B9F068200FBEBE0 /* HomeView.swift */; };
+		219EFBBD2B9F068E00FBEBE0 /* LectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureView.swift */; };
+		219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizView.swift */; };
+		219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */; };
+		219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */; };
+		219EFBC52B9F0A4C00FBEBE0 /* Setup+UIStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC42B9F0A4C00FBEBE0 /* Setup+UIStrings.swift */; };
+		219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +45,7 @@
 /* Begin PBXFileReference section */
 		217BCCB02B9DE5C300B5461B /* kiwIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kiwIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		217BCCB32B9DE5C300B5461B /* kiwITApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITApp.swift; sourceTree = "<group>"; };
-		217BCCB52B9DE5C300B5461B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		217BCCB52B9DE5C300B5461B /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		217BCCB72B9DE5C400B5461B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		217BCCBA2B9DE5C400B5461B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		217BCCC02B9DE5C400B5461B /* kiwITTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kiwITTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -48,6 +55,13 @@
 		217BCCD02B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		217BCCDD2B9DE6CD00B5461B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		217BCCDF2B9DE84100B5461B /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		219EFBBA2B9F068200FBEBE0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		219EFBBC2B9F068E00FBEBE0 /* LectureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureView.swift; sourceTree = "<group>"; };
+		219EFBBE2B9F069600FBEBE0 /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
+		219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInterviewView.swift; sourceTree = "<group>"; };
+		219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		219EFBC42B9F0A4C00FBEBE0 /* Setup+UIStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+UIStrings.swift"; sourceTree = "<group>"; };
+		219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+Frame.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,7 +115,13 @@
 				217BCCDF2B9DE84100B5461B /* APIKey.swift */,
 				217BCCDD2B9DE6CD00B5461B /* .gitignore */,
 				217BCCB32B9DE5C300B5461B /* kiwITApp.swift */,
-				217BCCB52B9DE5C300B5461B /* ContentView.swift */,
+				219EFBC62B9F0A5200FBEBE0 /* Setup */,
+				217BCCB52B9DE5C300B5461B /* TabBarView.swift */,
+				219EFBCA2B9F127400FBEBE0 /* Home */,
+				219EFBCB2B9F127B00FBEBE0 /* Lecture */,
+				219EFBCC2B9F128000FBEBE0 /* Quiz */,
+				219EFBCD2B9F128500FBEBE0 /* AIInterview */,
+				219EFBCE2B9F128B00FBEBE0 /* Profile */,
 				217BCCB72B9DE5C400B5461B /* Assets.xcassets */,
 				217BCCB92B9DE5C400B5461B /* Preview Content */,
 			);
@@ -131,6 +151,71 @@
 				217BCCD02B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift */,
 			);
 			path = kiwITUITests;
+			sourceTree = "<group>";
+		};
+		219EFBC62B9F0A5200FBEBE0 /* Setup */ = {
+			isa = PBXGroup;
+			children = (
+				219EFBD12B9F146B00FBEBE0 /* Utility */,
+				219EFBC72B9F0AA300FBEBE0 /* Strings */,
+			);
+			path = Setup;
+			sourceTree = "<group>";
+		};
+		219EFBC72B9F0AA300FBEBE0 /* Strings */ = {
+			isa = PBXGroup;
+			children = (
+				219EFBC42B9F0A4C00FBEBE0 /* Setup+UIStrings.swift */,
+			);
+			path = Strings;
+			sourceTree = "<group>";
+		};
+		219EFBCA2B9F127400FBEBE0 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				219EFBBA2B9F068200FBEBE0 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		219EFBCB2B9F127B00FBEBE0 /* Lecture */ = {
+			isa = PBXGroup;
+			children = (
+				219EFBBC2B9F068E00FBEBE0 /* LectureView.swift */,
+			);
+			path = Lecture;
+			sourceTree = "<group>";
+		};
+		219EFBCC2B9F128000FBEBE0 /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+				219EFBBE2B9F069600FBEBE0 /* QuizView.swift */,
+			);
+			path = Quiz;
+			sourceTree = "<group>";
+		};
+		219EFBCD2B9F128500FBEBE0 /* AIInterview */ = {
+			isa = PBXGroup;
+			children = (
+				219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */,
+			);
+			path = AIInterview;
+			sourceTree = "<group>";
+		};
+		219EFBCE2B9F128B00FBEBE0 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		219EFBD12B9F146B00FBEBE0 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -264,9 +349,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				217BCCB62B9DE5C300B5461B /* ContentView.swift in Sources */,
+				219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */,
+				217BCCB62B9DE5C300B5461B /* TabBarView.swift in Sources */,
+				219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */,
 				217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */,
+				219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */,
+				219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */,
+				219EFBBD2B9F068E00FBEBE0 /* LectureView.swift in Sources */,
+				219EFBC52B9F0A4C00FBEBE0 /* Setup+UIStrings.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
+				219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
