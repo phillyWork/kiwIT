@@ -37,8 +37,11 @@ struct HomeView: View {
                             .background(Color.blue)
                     }
                     
+                    //가로 스크롤로 카테고리 별 컨텐츠 보여주기 가능하도록?
+                    
                     
                 }
+                //Navigation title 외에 다른 표시 방법 찾기 필요
                 .frame(maxHeight: .infinity)
                 .navigationTitle("kiwIT")
                 .navigationBarTitleDisplayMode(.large)

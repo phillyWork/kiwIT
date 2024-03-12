@@ -7,11 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2173C04A2BA0901600FDD3D9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0492BA0901600FDD3D9 /* SocialLoginView.swift */; };
+		2173C04C2BA0902000FDD3D9 /* SignUpInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C04B2BA0902000FDD3D9 /* SignUpInfoView.swift */; };
+		2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0542BA090F200FDD3D9 /* SocialLoginViewModel.swift */; };
+		2173C0562BA090F700FDD3D9 /* SocialLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0542BA090F200FDD3D9 /* SocialLoginViewModel.swift */; };
+		2173C0582BA0917100FDD3D9 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0572BA0917100FDD3D9 /* UserDefaultsManager.swift */; };
+		2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0572BA0917100FDD3D9 /* UserDefaultsManager.swift */; };
+		2173C05E2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C05D2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift */; };
+		2173C0602BA0927200FDD3D9 /* UserDefaultsTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C05F2BA0927200FDD3D9 /* UserDefaultsTest.swift */; };
+		2173C0622BA093A100FDD3D9 /* Error+UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0612BA093A100FDD3D9 /* Error+UserDefaultsManager.swift */; };
+		2173C0632BA0953B00FDD3D9 /* Error+UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0612BA093A100FDD3D9 /* Error+UserDefaultsManager.swift */; };
+		2173C0652BA0971B00FDD3D9 /* Setup+UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsKey.swift */; };
+		2173C0662BA0977700FDD3D9 /* Setup+UserDefaultsKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsKey.swift */; };
+		2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */; };
+		2173C06B2BA0A1BA00FDD3D9 /* LectureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureViewModel.swift */; };
 		217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB32B9DE5C300B5461B /* kiwITApp.swift */; };
 		217BCCB62B9DE5C300B5461B /* TabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB52B9DE5C300B5461B /* TabBarView.swift */; };
 		217BCCB82B9DE5C400B5461B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCB72B9DE5C400B5461B /* Assets.xcassets */; };
 		217BCCBB2B9DE5C400B5461B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCBA2B9DE5C400B5461B /* Preview Assets.xcassets */; };
-		217BCCC52B9DE5C400B5461B /* kiwITTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCC42B9DE5C400B5461B /* kiwITTests.swift */; };
+		217BCCC52B9DE5C400B5461B /* LectureViewModelUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCC42B9DE5C400B5461B /* LectureViewModelUnitTest.swift */; };
 		217BCCCF2B9DE5C400B5461B /* kiwITUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCCE2B9DE5C400B5461B /* kiwITUITests.swift */; };
 		217BCCD12B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCD02B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift */; };
 		217BCCDE2B9DE6CD00B5461B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCDD2B9DE6CD00B5461B /* .gitignore */; };
@@ -21,8 +35,9 @@
 		219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizView.swift */; };
 		219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */; };
 		219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */; };
-		219EFBC52B9F0A4C00FBEBE0 /* Setup+UIStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC42B9F0A4C00FBEBE0 /* Setup+UIStrings.swift */; };
+		219EFBC52B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC42B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift */; };
 		219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */; };
+		219EFBD32B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBD22B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,13 +58,23 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2173C0492BA0901600FDD3D9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
+		2173C04B2BA0902000FDD3D9 /* SignUpInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInfoView.swift; sourceTree = "<group>"; };
+		2173C0542BA090F200FDD3D9 /* SocialLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginViewModel.swift; sourceTree = "<group>"; };
+		2173C0572BA0917100FDD3D9 /* UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsManager.swift; sourceTree = "<group>"; };
+		2173C05D2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginViewModelUnitTest.swift; sourceTree = "<group>"; };
+		2173C05F2BA0927200FDD3D9 /* UserDefaultsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTest.swift; sourceTree = "<group>"; };
+		2173C0612BA093A100FDD3D9 /* Error+UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+UserDefaultsManager.swift"; sourceTree = "<group>"; };
+		2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+UserDefaultsKey.swift"; sourceTree = "<group>"; };
+		2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
+		2173C06A2BA0A1BA00FDD3D9 /* LectureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewModel.swift; sourceTree = "<group>"; };
 		217BCCB02B9DE5C300B5461B /* kiwIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kiwIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		217BCCB32B9DE5C300B5461B /* kiwITApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITApp.swift; sourceTree = "<group>"; };
 		217BCCB52B9DE5C300B5461B /* TabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarView.swift; sourceTree = "<group>"; };
 		217BCCB72B9DE5C400B5461B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		217BCCBA2B9DE5C400B5461B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		217BCCC02B9DE5C400B5461B /* kiwITTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kiwITTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		217BCCC42B9DE5C400B5461B /* kiwITTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITTests.swift; sourceTree = "<group>"; };
+		217BCCC42B9DE5C400B5461B /* LectureViewModelUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewModelUnitTest.swift; sourceTree = "<group>"; };
 		217BCCCA2B9DE5C400B5461B /* kiwITUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = kiwITUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		217BCCCE2B9DE5C400B5461B /* kiwITUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITUITests.swift; sourceTree = "<group>"; };
 		217BCCD02B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -60,8 +85,9 @@
 		219EFBBE2B9F069600FBEBE0 /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
 		219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInterviewView.swift; sourceTree = "<group>"; };
 		219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
-		219EFBC42B9F0A4C00FBEBE0 /* Setup+UIStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+UIStrings.swift"; sourceTree = "<group>"; };
+		219EFBC42B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ImageStrings.swift"; sourceTree = "<group>"; };
 		219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+Frame.swift"; sourceTree = "<group>"; };
+		219EFBD22B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelUnitTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +115,55 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2173C04D2BA0904900FDD3D9 /* Login+SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				2173C0522BA090C400FDD3D9 /* Login */,
+				2173C0532BA090CC00FDD3D9 /* SignUp */,
+			);
+			path = "Login+SignUp";
+			sourceTree = "<group>";
+		};
+		2173C0522BA090C400FDD3D9 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				2173C0542BA090F200FDD3D9 /* SocialLoginViewModel.swift */,
+				2173C0492BA0901600FDD3D9 /* SocialLoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		2173C0532BA090CC00FDD3D9 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				2173C04B2BA0902000FDD3D9 /* SignUpInfoView.swift */,
+			);
+			name = SignUp;
+			sourceTree = "<group>";
+		};
+		2173C0592BA0917500FDD3D9 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				2173C0612BA093A100FDD3D9 /* Error+UserDefaultsManager.swift */,
+				2173C0572BA0917100FDD3D9 /* UserDefaultsManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		2173C05A2BA0918800FDD3D9 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				2173C04D2BA0904900FDD3D9 /* Login+SignUp */,
+				217BCCB52B9DE5C300B5461B /* TabBarView.swift */,
+				219EFBCA2B9F127400FBEBE0 /* Home */,
+				219EFBCB2B9F127B00FBEBE0 /* Lecture */,
+				219EFBCC2B9F128000FBEBE0 /* Quiz */,
+				219EFBCD2B9F128500FBEBE0 /* AIInterview */,
+				219EFBCE2B9F128B00FBEBE0 /* Profile */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
 		217BCCA72B9DE5C300B5461B = {
 			isa = PBXGroup;
 			children = (
@@ -116,12 +191,8 @@
 				217BCCDD2B9DE6CD00B5461B /* .gitignore */,
 				217BCCB32B9DE5C300B5461B /* kiwITApp.swift */,
 				219EFBC62B9F0A5200FBEBE0 /* Setup */,
-				217BCCB52B9DE5C300B5461B /* TabBarView.swift */,
-				219EFBCA2B9F127400FBEBE0 /* Home */,
-				219EFBCB2B9F127B00FBEBE0 /* Lecture */,
-				219EFBCC2B9F128000FBEBE0 /* Quiz */,
-				219EFBCD2B9F128500FBEBE0 /* AIInterview */,
-				219EFBCE2B9F128B00FBEBE0 /* Profile */,
+				2173C0592BA0917500FDD3D9 /* Manager */,
+				2173C05A2BA0918800FDD3D9 /* Scene */,
 				217BCCB72B9DE5C400B5461B /* Assets.xcassets */,
 				217BCCB92B9DE5C400B5461B /* Preview Content */,
 			);
@@ -139,7 +210,10 @@
 		217BCCC32B9DE5C400B5461B /* kiwITTests */ = {
 			isa = PBXGroup;
 			children = (
-				217BCCC42B9DE5C400B5461B /* kiwITTests.swift */,
+				2173C05F2BA0927200FDD3D9 /* UserDefaultsTest.swift */,
+				2173C05D2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift */,
+				219EFBD22B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift */,
+				217BCCC42B9DE5C400B5461B /* LectureViewModelUnitTest.swift */,
 			);
 			path = kiwITTests;
 			sourceTree = "<group>";
@@ -165,7 +239,8 @@
 		219EFBC72B9F0AA300FBEBE0 /* Strings */ = {
 			isa = PBXGroup;
 			children = (
-				219EFBC42B9F0A4C00FBEBE0 /* Setup+UIStrings.swift */,
+				2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsKey.swift */,
+				219EFBC42B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift */,
 			);
 			path = Strings;
 			sourceTree = "<group>";
@@ -173,6 +248,7 @@
 		219EFBCA2B9F127400FBEBE0 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */,
 				219EFBBA2B9F068200FBEBE0 /* HomeView.swift */,
 			);
 			path = Home;
@@ -181,6 +257,7 @@
 		219EFBCB2B9F127B00FBEBE0 /* Lecture */ = {
 			isa = PBXGroup;
 			children = (
+				2173C06A2BA0A1BA00FDD3D9 /* LectureViewModel.swift */,
 				219EFBBC2B9F068E00FBEBE0 /* LectureView.swift */,
 			);
 			path = Lecture;
@@ -349,14 +426,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */,
 				219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */,
 				217BCCB62B9DE5C300B5461B /* TabBarView.swift in Sources */,
+				2173C0652BA0971B00FDD3D9 /* Setup+UserDefaultsKey.swift in Sources */,
+				2173C0622BA093A100FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
 				219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */,
 				217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */,
+				2173C04C2BA0902000FDD3D9 /* SignUpInfoView.swift in Sources */,
 				219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */,
 				219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */,
 				219EFBBD2B9F068E00FBEBE0 /* LectureView.swift in Sources */,
-				219EFBC52B9F0A4C00FBEBE0 /* Setup+UIStrings.swift in Sources */,
+				219EFBC52B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift in Sources */,
+				2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */,
+				2173C0582BA0917100FDD3D9 /* UserDefaultsManager.swift in Sources */,
+				2173C04A2BA0901600FDD3D9 /* SocialLoginView.swift in Sources */,
+				2173C06B2BA0A1BA00FDD3D9 /* LectureViewModel.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
 				219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */,
 			);
@@ -366,7 +451,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				217BCCC52B9DE5C400B5461B /* kiwITTests.swift in Sources */,
+				2173C0632BA0953B00FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
+				2173C05E2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift in Sources */,
+				2173C0662BA0977700FDD3D9 /* Setup+UserDefaultsKey.swift in Sources */,
+				2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */,
+				2173C0562BA090F700FDD3D9 /* SocialLoginViewModel.swift in Sources */,
+				217BCCC52B9DE5C400B5461B /* LectureViewModelUnitTest.swift in Sources */,
+				219EFBD32B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift in Sources */,
+				2173C0602BA0927200FDD3D9 /* UserDefaultsTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,7 +539,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -504,7 +596,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -530,6 +622,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -537,6 +630,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.phillyh.kiwIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -559,6 +656,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -566,6 +664,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.phillyh.kiwIT;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -581,10 +683,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PSU86J5852;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.phillyh.kiwITTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -601,10 +707,14 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PSU86J5852;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.phillyh.kiwITTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

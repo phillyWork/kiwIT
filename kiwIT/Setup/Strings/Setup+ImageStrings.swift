@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Setup {
+extension Setup {
     
     enum ImageStrings {
         
