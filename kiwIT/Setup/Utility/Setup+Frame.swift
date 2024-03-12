@@ -5,7 +5,6 @@
 //  Created by Heedon on 3/11/24.
 //
 
-import Foundation
 import SwiftUI
 
 extension Setup {
