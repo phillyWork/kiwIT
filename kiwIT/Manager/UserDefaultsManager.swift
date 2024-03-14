@@ -5,6 +5,9 @@
 //  Created by Heedon on 3/12/24.
 //
 
+
+//차후 KeyChain으로 변경 필요 (token 암호화)
+
 import Foundation
 
 final class UserDefaultsManager {

@@ -9,16 +9,27 @@ import XCTest
 
 final class SocialLoginViewModelUnitTest: XCTestCase {
 
-    
+    var socialLoginViewModel: SocialLoginViewModel!
     
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        socialLoginViewModel = SocialLoginViewModel()
     }
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
+    func testrequestAppleUserLogin(_ credential: ASAuthorizationCredential) {
+        //Arrange
+        
+        //Act
+        
+        //Assert
+        
+    }
+    
     
     func testCheckTokenAvailability() {
         //Arrange
