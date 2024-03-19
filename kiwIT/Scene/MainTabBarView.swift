@@ -11,7 +11,7 @@ struct MainTabBarView: View {
     var body: some View {
         TabView {
             HomeView()
-            LectureView()
+            LectureCategoryListView()
             QuizView()
             AIInterviewView()
             ProfileView()

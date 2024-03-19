@@ -20,9 +20,9 @@
 		2173C0652BA0971B00FDD3D9 /* Setup+UserDefaultsStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsStrings.swift */; };
 		2173C0662BA0977700FDD3D9 /* Setup+UserDefaultsStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsStrings.swift */; };
 		2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */; };
-		2173C06B2BA0A1BA00FDD3D9 /* LectureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureViewModel.swift */; };
+		2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
 		2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */; };
-		2173C08C2BA0A56500FDD3D9 /* LectureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureViewModel.swift */; };
+		2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
 		217B53132BA2EBA90081D418 /* Setup+ContentStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */; };
 		217B53152BA2EDE70081D418 /* SocialLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53142BA2EDE70081D418 /* SocialLoginButton.swift */; };
 		217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB32B9DE5C300B5461B /* kiwITApp.swift */; };
@@ -34,8 +34,12 @@
 		217BCCD12B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCD02B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift */; };
 		217BCCDE2B9DE6CD00B5461B /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCDD2B9DE6CD00B5461B /* .gitignore */; };
 		217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCDF2B9DE84100B5461B /* APIKey.swift */; };
+		217D593F2BA9C208005AE418 /* LectureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D593E2BA9C208005AE418 /* LectureViewModel.swift */; };
+		217D59432BA9C22C005AE418 /* LectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59422BA9C22C005AE418 /* LectureView.swift */; };
+		217D59452BA9C700005AE418 /* LectureCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59442BA9C700005AE418 /* LectureCategoryListView.swift */; };
+		217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59462BA9C712005AE418 /* LectureCategoryListViewModel.swift */; };
 		219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBA2B9F068200FBEBE0 /* HomeView.swift */; };
-		219EFBBD2B9F068E00FBEBE0 /* LectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureView.swift */; };
+		219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */; };
 		219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizView.swift */; };
 		219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */; };
 		219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */; };
@@ -71,7 +75,7 @@
 		2173C0612BA093A100FDD3D9 /* Error+UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+UserDefaultsManager.swift"; sourceTree = "<group>"; };
 		2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+UserDefaultsStrings.swift"; sourceTree = "<group>"; };
 		2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		2173C06A2BA0A1BA00FDD3D9 /* LectureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewModel.swift; sourceTree = "<group>"; };
+		2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListViewModel.swift; sourceTree = "<group>"; };
 		217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ContentStrings.swift"; sourceTree = "<group>"; };
 		217B53142BA2EDE70081D418 /* SocialLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButton.swift; sourceTree = "<group>"; };
 		217BCCB02B9DE5C300B5461B /* kiwIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kiwIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,8 +90,12 @@
 		217BCCD02B9DE5C400B5461B /* kiwITUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		217BCCDD2B9DE6CD00B5461B /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		217BCCDF2B9DE84100B5461B /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
+		217D593E2BA9C208005AE418 /* LectureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewModel.swift; sourceTree = "<group>"; };
+		217D59422BA9C22C005AE418 /* LectureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureView.swift; sourceTree = "<group>"; };
+		217D59442BA9C700005AE418 /* LectureCategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCategoryListView.swift; sourceTree = "<group>"; };
+		217D59462BA9C712005AE418 /* LectureCategoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCategoryListViewModel.swift; sourceTree = "<group>"; };
 		219EFBBA2B9F068200FBEBE0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		219EFBBC2B9F068E00FBEBE0 /* LectureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureView.swift; sourceTree = "<group>"; };
+		219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListView.swift; sourceTree = "<group>"; };
 		219EFBBE2B9F069600FBEBE0 /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
 		219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInterviewView.swift; sourceTree = "<group>"; };
 		219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -242,6 +250,33 @@
 			path = kiwITUITests;
 			sourceTree = "<group>";
 		};
+		217D59402BA9C20D005AE418 /* LectureList */ = {
+			isa = PBXGroup;
+			children = (
+				2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */,
+				219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */,
+			);
+			path = LectureList;
+			sourceTree = "<group>";
+		};
+		217D59412BA9C216005AE418 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				217D593E2BA9C208005AE418 /* LectureViewModel.swift */,
+				217D59422BA9C22C005AE418 /* LectureView.swift */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		217D59482BA9C716005AE418 /* CategoryList */ = {
+			isa = PBXGroup;
+			children = (
+				217D59462BA9C712005AE418 /* LectureCategoryListViewModel.swift */,
+				217D59442BA9C700005AE418 /* LectureCategoryListView.swift */,
+			);
+			path = CategoryList;
+			sourceTree = "<group>";
+		};
 		219EFBC62B9F0A5200FBEBE0 /* Setup */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,8 +308,9 @@
 		219EFBCB2B9F127B00FBEBE0 /* Lecture */ = {
 			isa = PBXGroup;
 			children = (
-				2173C06A2BA0A1BA00FDD3D9 /* LectureViewModel.swift */,
-				219EFBBC2B9F068E00FBEBE0 /* LectureView.swift */,
+				217D59482BA9C716005AE418 /* CategoryList */,
+				217D59402BA9C20D005AE418 /* LectureList */,
+				217D59412BA9C216005AE418 /* Content */,
 			);
 			path = Lecture;
 			sourceTree = "<group>";
@@ -445,21 +481,25 @@
 				2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */,
 				219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */,
 				217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */,
+				217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */,
+				217D593F2BA9C208005AE418 /* LectureViewModel.swift in Sources */,
 				2173C0652BA0971B00FDD3D9 /* Setup+UserDefaultsStrings.swift in Sources */,
 				2173C0622BA093A100FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
 				219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */,
+				217D59452BA9C700005AE418 /* LectureCategoryListView.swift in Sources */,
 				217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */,
 				217B53132BA2EBA90081D418 /* Setup+ContentStrings.swift in Sources */,
 				2173C04C2BA0902000FDD3D9 /* SignUpInfoView.swift in Sources */,
 				219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */,
 				219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */,
-				219EFBBD2B9F068E00FBEBE0 /* LectureView.swift in Sources */,
+				219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */,
 				219EFBC52B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift in Sources */,
 				2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				2173C0582BA0917100FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				2173C04A2BA0901600FDD3D9 /* SocialLoginView.swift in Sources */,
+				217D59432BA9C22C005AE418 /* LectureView.swift in Sources */,
 				217B53152BA2EDE70081D418 /* SocialLoginButton.swift in Sources */,
-				2173C06B2BA0A1BA00FDD3D9 /* LectureViewModel.swift in Sources */,
+				2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
 				219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */,
 			);
@@ -474,7 +514,7 @@
 				2173C05E2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift in Sources */,
 				2173C0662BA0977700FDD3D9 /* Setup+UserDefaultsStrings.swift in Sources */,
 				2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */,
-				2173C08C2BA0A56500FDD3D9 /* LectureViewModel.swift in Sources */,
+				2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */,
 				2173C0562BA090F700FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				217BCCC52B9DE5C400B5461B /* LectureViewModelUnitTest.swift in Sources */,
 				219EFBD32B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift in Sources */,
