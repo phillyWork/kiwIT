@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class LectureViewModel: ObservableObject {
+final class LectureListViewModel: ObservableObject {
     
     
 }
