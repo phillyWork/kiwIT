@@ -8,18 +8,12 @@
 import SwiftUI
 import AuthenticationServices
 
-enum SocialLoginCase {
-    case apple
-    case google
-    case kakao
-}
-
 //버튼 누른 뒤, 이미 가입되어 있다면 로그인 화면 제거, HomeView로 이동
 //가입되어 있지 않다면 회원가입 view로
 
 struct SocialLoginButton: View {
     
-    var service: SocialLoginCase
+    var service: SocialLoginProvider
     
     private let socialLoginVM = SocialLoginViewModel()
     

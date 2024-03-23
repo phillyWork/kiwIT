@@ -19,6 +19,10 @@ extension Setup {
         static let socialLoginButtonWidth = deviceWidth * 0.8
         static let socialLoginButtonStackHeight = socialLoginButtonWidth * 0.3
         
+        //컨텐츠 Image 비율 4:3 고정
+        static let contentImageWidth = deviceWidth * 0.9
+        static let contentImageHeight = contentImageWidth * 0.75
+        
     }
     
 }

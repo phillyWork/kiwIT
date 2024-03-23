@@ -19,9 +19,21 @@ struct LectureView: View {
                 ScrollView {
                     ForEach(0..<100) { row in
                         //Viewmodel에서 서버에서 받은 Payload의 내부 컨텐츠 타입이 text인지 image인지 받아서 해당 타입에 따른 object 구성하기
-                        Text("Hi There, \(row)")
-                            .padding()
-                            .frame(maxWidth: .infinity)
+                        
+                        //Image tap: 사진 full cover, 확대 가능하도록
+//                        ContentImageView(url: urlString)
+                        
+                        ContentTextView(context: "Hi there, \(row)")
+                        
+                        
+                        //폰트 및 글씨 크기 변경 가능하도록
+                        //slider, option button 등등
+                        
+                        //폰트, 글씨 설정 변경: 로컬에서 저장
+                        //없다면 default 폰트와 크기로 설정 (UserDefaults?)
+                        
+                        
+                        
                     }
                 }
                 .frame(maxWidth: .infinity)
