@@ -13,22 +13,40 @@ enum Router: URLRequestConvertible {
     //MARK: - User
     case signUp(request: SignUpRequest)
     case signIn(request: SignInRequest)
-    case signOut(access: String)
+    case signOut(request: AuthorizationRequest)
     case refreshToken(request: RefreshAccessTokenRequest)
-    case withdraw(access: String)
-    
-    //추가 작업 필요 (프로필 확인 추가 필요)
-    case acquiredTrophyList
-    case mostRecentAcquiredTrophy
+    case withdraw(request: AuthorizationRequest)
+    case profileCheck(request: AuthorizationRequest)
+    case profileEdit(request: ProfileEditRequest)
+    case acquiredTrophyList(request: TrophyRequest)
+    case mostRecentAcquiredTrophy(request: TrophyRequest)
+
     case summaryStat
     
     //MARK: - Lecture Contents
     
-    
+    case lectureLevelListCheck
+    case lectureLevelListContentCheck
+    case startOfLecture
+    case completionOfLecture
+    case exerciseForLecture
+    case lectureCategoryListCheck
+    case lectureCategoryListContentCheck
+    case lectureNextStudyProgress
+    case completedLectureListCheck
+    case bookmarkedLectureCheck
+    case bookmarkLecture
     
     //MARK: - Quiz
     
-    
+    case quizListCheck
+    case startTakingQuiz
+    case submitQuizAnswers
+    case submitQuizAnswersNTimes
+    case mostRecentTakenQuiz
+    case takenQuizListCheck
+    case bookmarkedQuizCheck
+    case bookmarkQuiz
     
     //MARK: - RequestSetup
     
@@ -36,28 +54,57 @@ enum Router: URLRequestConvertible {
         return URL(string: APIKey.baseURL)!
     }
     
+    //id 받아올 필요 있음
     private var path: String {
         switch self {
         case .signUp:
-            return Setup.NetworkEndpointStrings.userSignUp
+            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userSignUp
         case .signIn:
-            return Setup.NetworkEndpointStrings.userSignIn
+            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userSignIn
         case .signOut:
-            return Setup.NetworkEndpointStrings.userSignOut
+            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userSignOut
         case .refreshToken:
-            return Setup.NetworkEndpointStrings.userRefreshAccessToken
-        case .withdraw:
+            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userRefreshAccessToken
+        case .withdraw, .profileCheck, .profileEdit:
             return Setup.NetworkEndpointStrings.user
-            
         case .acquiredTrophyList:
-            return ""
+            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userAcquiredTrophyList
         case .mostRecentAcquiredTrophy:
-            return ""
+            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userAcquiredTrophyList + Setup.NetworkEndpointStrings.userRecentAcquiredTrophy
         case .summaryStat:
-            return ""
-            
-            
-            
+            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userSummaryStat
+        case .lectureLevelListCheck:
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureLevel
+        case .lectureLevelListContentCheck:
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureLevel + "/:id"
+        case .startOfLecture, .completionOfLecture:
+            return Setup.NetworkEndpointStrings.lectureContent + "/:id"
+        case .exerciseForLecture:
+            return Setup.NetworkEndpointStrings.lectureContent + "/:id" + Setup.NetworkEndpointStrings.exerciseForLecture
+        case .lectureCategoryListCheck:
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureCategory
+        case .lectureCategoryListContentCheck:
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureCategory + "/:id"
+        case .lectureNextStudyProgress:
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureNextStudyProgress
+        case .completedLectureListCheck:
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.completedLecture
+        case .bookmarkedLectureCheck:
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.bookmark
+        case .bookmarkLecture:
+            return Setup.NetworkEndpointStrings.lectureContent + "/:id" + Setup.NetworkEndpointStrings.bookmark
+        case .quizListCheck:
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList
+        case .startTakingQuiz, .submitQuizAnswers, .submitQuizAnswersNTimes:
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/:id"
+        case .mostRecentTakenQuiz:
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + Setup.NetworkEndpointStrings.quizMostRecentTaken
+        case .takenQuizListCheck:
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + Setup.NetworkEndpointStrings.quizTakenList
+        case .bookmarkedQuizCheck:
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.bookmark
+        case .bookmarkQuiz:
+            return Setup.NetworkEndpointStrings.quiz + "/:id" + Setup.NetworkEndpointStrings.bookmark
         }
     }
     
@@ -65,15 +112,13 @@ enum Router: URLRequestConvertible {
         switch self {
         case .signUp, .signIn, .refreshToken:
             return []
-        case .signOut(let access):
-            return [Setup.NetworkStrings.accessTokenToCheckTitle: access]
-        case .withdraw(let access):
-            return [Setup.NetworkStrings.accessTokenToCheckTitle: access]
+        case .signOut(let request), .withdraw(let request), .profileCheck(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: request.access]
+        case .acquiredTrophyList(let request), .mostRecentAcquiredTrophy(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: request.access]
+        case .profileEdit(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: request.access]
         
-        case .acquiredTrophyList:
-            return []
-        case .mostRecentAcquiredTrophy:
-            return []
         case .summaryStat:
             return []
         }
@@ -83,12 +128,11 @@ enum Router: URLRequestConvertible {
         switch self {
         case .signUp, .signIn:
             return .post
-        case .signOut, .refreshToken:
+        case .signOut, .refreshToken, .profileEdit:
             return .patch
         case .withdraw:
             return .delete
-            
-        case .acquiredTrophyList, .mostRecentAcquiredTrophy, .summaryStat:
+        case .profileCheck, .acquiredTrophyList, .mostRecentAcquiredTrophy, .summaryStat:
             return .get
         }
     }
@@ -99,26 +143,23 @@ enum Router: URLRequestConvertible {
             return [
                 Setup.NetworkStrings.emailTitle: request.email,
                 Setup.NetworkStrings.nicknameTitle: request.nickname,
-                Setup.NetworkStrings.providerTitle: request.provider
+                Setup.NetworkStrings.providerTitle: request.provider.rawValue
             ]
         case .signIn(let request):
             return [
                 Setup.NetworkStrings.accessTokenTitle: request.token,
-                Setup.NetworkStrings.providerTitle: request.provider
+                Setup.NetworkStrings.providerTitle: request.provider.rawValue
             ]
-        case .signOut:
-            return ["": ""]
         case .refreshToken(let request):
             return [Setup.NetworkStrings.refreshTokenTitle: request.refreshToken]
-        case .withdraw(let access):
+        case .profileEdit(let request):
+            return [Setup.NetworkStrings.nicknameTitle: request.nickname]
+        case .signOut, .withdraw, .profileCheck, .acquiredTrophyList, .mostRecentAcquiredTrophy:
             return ["": ""]
+
             
-        case .acquiredTrophyList:
-            return []
-        case .mostRecentAcquiredTrophy:
-            return []
         case .summaryStat:
-            return []
+            return ["": ""]
         }
     }
     
@@ -135,6 +176,7 @@ enum Router: URLRequestConvertible {
         //json인 경우
         request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
         
+        return request
     }
     
 }

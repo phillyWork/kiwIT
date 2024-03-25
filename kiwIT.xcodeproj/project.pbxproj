@@ -33,9 +33,7 @@
 		217A513F2BAECD350052A07E /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513E2BAECD350052A07E /* SignUp.swift */; };
 		217A51432BAECD5D0052A07E /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A51422BAECD5D0052A07E /* SignIn.swift */; };
 		217A51462BAECDE50052A07E /* SocialLoginProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A51452BAECDE50052A07E /* SocialLoginProvider.swift */; };
-		217A51482BAED0720052A07E /* SignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A51472BAED0720052A07E /* SignOut.swift */; };
 		217A514A2BAED0800052A07E /* RefreshAccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A51492BAED0800052A07E /* RefreshAccessToken.swift */; };
-		217A514C2BAED0910052A07E /* Withdraw.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A514B2BAED0910052A07E /* Withdraw.swift */; };
 		217A514E2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A514D2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift */; };
 		217B53132BA2EBA90081D418 /* Setup+ContentStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */; };
 		217B53152BA2EDE70081D418 /* SocialLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53142BA2EDE70081D418 /* SocialLoginButton.swift */; };
@@ -52,6 +50,9 @@
 		217D59432BA9C22C005AE418 /* LectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59422BA9C22C005AE418 /* LectureView.swift */; };
 		217D59452BA9C700005AE418 /* LectureCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59442BA9C700005AE418 /* LectureCategoryListView.swift */; };
 		217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59462BA9C712005AE418 /* LectureCategoryListViewModel.swift */; };
+		217E55A02BB162000014B46E /* Trophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E559F2BB162000014B46E /* Trophy.swift */; };
+		217E55A42BB16CB00014B46E /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E55A32BB16CB00014B46E /* Profile.swift */; };
+		217E55A62BB1BA2D0014B46E /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E55A52BB1BA2D0014B46E /* Authorization.swift */; };
 		219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBA2B9F068200FBEBE0 /* HomeView.swift */; };
 		219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */; };
 		219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizView.swift */; };
@@ -99,9 +100,7 @@
 		217A513E2BAECD350052A07E /* SignUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUp.swift; sourceTree = "<group>"; };
 		217A51422BAECD5D0052A07E /* SignIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignIn.swift; sourceTree = "<group>"; };
 		217A51452BAECDE50052A07E /* SocialLoginProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginProvider.swift; sourceTree = "<group>"; };
-		217A51472BAED0720052A07E /* SignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignOut.swift; sourceTree = "<group>"; };
 		217A51492BAED0800052A07E /* RefreshAccessToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshAccessToken.swift; sourceTree = "<group>"; };
-		217A514B2BAED0910052A07E /* Withdraw.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Withdraw.swift; sourceTree = "<group>"; };
 		217A514D2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkEndPointStrings.swift"; sourceTree = "<group>"; };
 		217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ContentStrings.swift"; sourceTree = "<group>"; };
 		217B53142BA2EDE70081D418 /* SocialLoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButton.swift; sourceTree = "<group>"; };
@@ -121,6 +120,9 @@
 		217D59422BA9C22C005AE418 /* LectureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureView.swift; sourceTree = "<group>"; };
 		217D59442BA9C700005AE418 /* LectureCategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCategoryListView.swift; sourceTree = "<group>"; };
 		217D59462BA9C712005AE418 /* LectureCategoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCategoryListViewModel.swift; sourceTree = "<group>"; };
+		217E559F2BB162000014B46E /* Trophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trophy.swift; sourceTree = "<group>"; };
+		217E55A32BB16CB00014B46E /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		217E55A52BB1BA2D0014B46E /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 		219EFBBA2B9F068200FBEBE0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListView.swift; sourceTree = "<group>"; };
 		219EFBBE2B9F069600FBEBE0 /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
@@ -230,6 +232,8 @@
 			isa = PBXGroup;
 			children = (
 				217A51412BAECD450052A07E /* UserAccount */,
+				217E55A72BB1C3900014B46E /* LectureContent */,
+				217E55A82BB1C39C0014B46E /* Quiz */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -239,9 +243,10 @@
 			children = (
 				217A513E2BAECD350052A07E /* SignUp.swift */,
 				217A51422BAECD5D0052A07E /* SignIn.swift */,
-				217A51472BAED0720052A07E /* SignOut.swift */,
+				217E55A52BB1BA2D0014B46E /* Authorization.swift */,
 				217A51492BAED0800052A07E /* RefreshAccessToken.swift */,
-				217A514B2BAED0910052A07E /* Withdraw.swift */,
+				217E559F2BB162000014B46E /* Trophy.swift */,
+				217E55A32BB16CB00014B46E /* Profile.swift */,
 			);
 			path = UserAccount;
 			sourceTree = "<group>";
@@ -345,6 +350,20 @@
 				217D59442BA9C700005AE418 /* LectureCategoryListView.swift */,
 			);
 			path = CategoryList;
+			sourceTree = "<group>";
+		};
+		217E55A72BB1C3900014B46E /* LectureContent */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = LectureContent;
+			sourceTree = "<group>";
+		};
+		217E55A82BB1C39C0014B46E /* Quiz */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Quiz;
 			sourceTree = "<group>";
 		};
 		219EFBC62B9F0A5200FBEBE0 /* Setup */ = {
@@ -560,7 +579,6 @@
 				216F5F8F2BAB302C008817B0 /* NetworkManager.swift in Sources */,
 				2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */,
 				219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */,
-				217A51482BAED0720052A07E /* SignOut.swift in Sources */,
 				217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */,
 				217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */,
 				217A514E2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift in Sources */,
@@ -573,11 +591,12 @@
 				217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */,
 				217B53132BA2EBA90081D418 /* Setup+ContentStrings.swift in Sources */,
 				2173C04C2BA0902000FDD3D9 /* SignUpInfoView.swift in Sources */,
+				217E55A42BB16CB00014B46E /* Profile.swift in Sources */,
 				219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */,
-				217A514C2BAED0910052A07E /* Withdraw.swift in Sources */,
 				219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */,
 				219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */,
 				219EFBC52B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift in Sources */,
+				217E55A02BB162000014B46E /* Trophy.swift in Sources */,
 				2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				217A513F2BAECD350052A07E /* SignUp.swift in Sources */,
 				216F5F892BAB2DD8008817B0 /* ContentImageView.swift in Sources */,
@@ -594,6 +613,7 @@
 				217A514A2BAED0800052A07E /* RefreshAccessToken.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
 				219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */,
+				217E55A62BB1BA2D0014B46E /* Authorization.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
