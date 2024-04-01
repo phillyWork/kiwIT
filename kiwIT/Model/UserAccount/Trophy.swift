@@ -11,7 +11,6 @@ import Foundation
 
 struct TrophyRequest: Encodable {
     let access: String
-    //선택사항
     var next: Int?
     var limit: Int?
 }

@@ -54,6 +54,7 @@ enum Router: URLRequestConvertible {
         return URL(string: APIKey.baseURL)!
     }
     
+    //request id: db 바로 접근 못하게 처리, path 처리 동일 (jwt 토큰으로 verify하고 파악하기 때문)
     //id 받아올 필요 있음
     private var path: String {
         switch self {
@@ -113,12 +114,11 @@ enum Router: URLRequestConvertible {
         case .signUp, .signIn, .refreshToken:
             return []
         case .signOut(let request), .withdraw(let request), .profileCheck(let request):
-            return [Setup.NetworkStrings.accessTokenToCheckTitle: request.access]
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .acquiredTrophyList(let request), .mostRecentAcquiredTrophy(let request):
-            return [Setup.NetworkStrings.accessTokenToCheckTitle: request.access]
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .profileEdit(let request):
-            return [Setup.NetworkStrings.accessTokenToCheckTitle: request.access]
-        
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .summaryStat:
             return []
         }
@@ -163,6 +163,16 @@ enum Router: URLRequestConvertible {
         }
     }
     
+    private var parameters: Parameters? {
+        switch self {
+        case .acquiredTrophyList(let request), .mostRecentAcquiredTrophy(let request):
+            return [
+                Setup.NetworkStrings.trophyNextPageQueryTitle: request.next,
+                Setup.NetworkStrings.trophyLimitPageQueryTitle: request.limit
+            ]
+        default: return nil
+        }
+    }
     
     func asURLRequest() throws -> URLRequest {
         let url = baseURL.appending(path: path)
@@ -170,13 +180,16 @@ enum Router: URLRequestConvertible {
         request.headers = header
         request.method = method
         
-        //그 외 header에 json 없거나 multipart/data-form과 같은 경우
-//        request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(body, into: request)
+        if let parameters = parameters {
+            //그 외 header에 json 없거나 multipart/data-form과 같은 경우
+            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(parameters, into: request)
+            return request
+        } else {
+            //json인 경우
+            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
+            return request
+        }
 
-        //json인 경우
-        request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
-        
-        return request
     }
     
 }
