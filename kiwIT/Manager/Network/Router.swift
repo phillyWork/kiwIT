@@ -121,6 +121,14 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .summaryStat:
             return []
+
+
+
+
+
+
+        default:
+            return []
         }
     }
     
@@ -133,6 +141,11 @@ enum Router: URLRequestConvertible {
         case .withdraw:
             return .delete
         case .profileCheck, .acquiredTrophyList, .mostRecentAcquiredTrophy, .summaryStat:
+            return .get
+
+
+
+        default:
             return .get
         }
     }
@@ -160,6 +173,10 @@ enum Router: URLRequestConvertible {
             
         case .summaryStat:
             return ["": ""]
+            
+            
+        default:
+            return ["": ""]
         }
     }
     
@@ -170,7 +187,8 @@ enum Router: URLRequestConvertible {
                 Setup.NetworkStrings.trophyNextPageQueryTitle: request.next,
                 Setup.NetworkStrings.trophyLimitPageQueryTitle: request.limit
             ]
-        default: return nil
+        default: 
+            return nil
         }
     }
     
@@ -180,15 +198,19 @@ enum Router: URLRequestConvertible {
         request.headers = header
         request.method = method
         
-        if let parameters = parameters {
-            //그 외 header에 json 없거나 multipart/data-form과 같은 경우
-            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(parameters, into: request)
-            return request
-        } else {
-            //json인 경우
-            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
-            return request
-        }
+        //Build 목적
+        request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
+        return request
+        
+//        if let parameter = parameters {
+//            //그 외 header에 json 없거나 multipart/data-form과 같은 경우
+//            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(parameter, into: request)
+//            return request
+//        } else {
+//            //json인 경우
+//            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
+//            return request
+//        }
 
     }
     

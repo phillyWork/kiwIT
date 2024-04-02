@@ -35,9 +35,16 @@ struct LectureView: View {
                         
                         
                     }
+                    ActiveButton {
+                        print("Code")
+                    }
                 }
                 .frame(maxWidth: .infinity)
             }
+            
+          
+            
+            
         }
         .navigationBarBackButtonHidden()
         .toolbar {

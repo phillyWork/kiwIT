@@ -17,6 +17,8 @@
 		2170E74F2BBAF043002A1DA6 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2170E74E2BBAF043002A1DA6 /* KakaoSDK */; };
 		2170E7512BBAF046002A1DA6 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2170E7502BBAF046002A1DA6 /* KakaoSDKAuth */; };
 		2170E7532BBAF04B002A1DA6 /* KakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = 2170E7522BBAF04B002A1DA6 /* KakaoSDKUser */; };
+		2170E7552BBC6873002A1DA6 /* Setup+Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170E7542BBC6873002A1DA6 /* Setup+Color.swift */; };
+		2170E7572BBC6DD7002A1DA6 /* ActiveButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2170E7562BBC6DD7002A1DA6 /* ActiveButton.swift */; };
 		2173C04A2BA0901600FDD3D9 /* SocialLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0492BA0901600FDD3D9 /* SocialLoginView.swift */; };
 		2173C04C2BA0902000FDD3D9 /* SignUpInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C04B2BA0902000FDD3D9 /* SignUpInfoView.swift */; };
 		2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0542BA090F200FDD3D9 /* SocialLoginViewModel.swift */; };
@@ -91,6 +93,8 @@
 		216F5F882BAB2DD8008817B0 /* ContentImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentImageView.swift; sourceTree = "<group>"; };
 		216F5F8A2BAB2F15008817B0 /* ContentTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTextView.swift; sourceTree = "<group>"; };
 		216F5F8E2BAB302C008817B0 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		2170E7542BBC6873002A1DA6 /* Setup+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+Color.swift"; sourceTree = "<group>"; };
+		2170E7562BBC6DD7002A1DA6 /* ActiveButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveButton.swift; sourceTree = "<group>"; };
 		2173C0492BA0901600FDD3D9 /* SocialLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginView.swift; sourceTree = "<group>"; };
 		2173C04B2BA0902000FDD3D9 /* SignUpInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInfoView.swift; sourceTree = "<group>"; };
 		2173C0542BA090F200FDD3D9 /* SocialLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginViewModel.swift; sourceTree = "<group>"; };
@@ -275,6 +279,7 @@
 		217B53162BA2EDEB0081D418 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				2170E7562BBC6DD7002A1DA6 /* ActiveButton.swift */,
 				217B53142BA2EDE70081D418 /* SocialLoginButton.swift */,
 				216F5F8C2BAB2F19008817B0 /* ContentPayload */,
 			);
@@ -457,6 +462,7 @@
 			isa = PBXGroup;
 			children = (
 				219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */,
+				2170E7542BBC6873002A1DA6 /* Setup+Color.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -621,6 +627,7 @@
 				219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */,
 				217D59452BA9C700005AE418 /* LectureCategoryListView.swift in Sources */,
 				217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */,
+				2170E7572BBC6DD7002A1DA6 /* ActiveButton.swift in Sources */,
 				217B53132BA2EBA90081D418 /* Setup+ContentStrings.swift in Sources */,
 				2173C04C2BA0902000FDD3D9 /* SignUpInfoView.swift in Sources */,
 				217E55A42BB16CB00014B46E /* Profile.swift in Sources */,
@@ -636,6 +643,7 @@
 				2173C0582BA0917100FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				217A51432BAECD5D0052A07E /* SignIn.swift in Sources */,
 				2173C04A2BA0901600FDD3D9 /* SocialLoginView.swift in Sources */,
+				2170E7552BBC6873002A1DA6 /* Setup+Color.swift in Sources */,
 				217D59432BA9C22C005AE418 /* LectureView.swift in Sources */,
 				216F5F8B2BAB2F15008817B0 /* ContentTextView.swift in Sources */,
 				217B53152BA2EDE70081D418 /* SocialLoginButton.swift in Sources */,
