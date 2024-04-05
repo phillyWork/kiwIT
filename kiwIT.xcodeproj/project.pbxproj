@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2167FD4C2BC058E600A45F2B /* Setup+FontStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */; };
+		2167FD4E2BC0594C00A45F2B /* Galmuri11-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2167FD4D2BC0594C00A45F2B /* Galmuri11-Bold.ttf */; };
 		216F5F892BAB2DD8008817B0 /* ContentImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216F5F882BAB2DD8008817B0 /* ContentImageView.swift */; };
 		216F5F8B2BAB2F15008817B0 /* ContentTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216F5F8A2BAB2F15008817B0 /* ContentTextView.swift */; };
 		216F5F8F2BAB302C008817B0 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216F5F8E2BAB302C008817B0 /* NetworkManager.swift */; };
@@ -90,6 +92,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2167FD4A2BC04FDF00A45F2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+FontStrings.swift"; sourceTree = "<group>"; };
+		2167FD4D2BC0594C00A45F2B /* Galmuri11-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Galmuri11-Bold.ttf"; sourceTree = "<group>"; };
 		216F5F882BAB2DD8008817B0 /* ContentImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentImageView.swift; sourceTree = "<group>"; };
 		216F5F8A2BAB2F15008817B0 /* ContentTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentTextView.swift; sourceTree = "<group>"; };
 		216F5F8E2BAB302C008817B0 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
@@ -177,6 +182,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2167FD492BC04E2F00A45F2B /* Font */ = {
+			isa = PBXGroup;
+			children = (
+				2167FD4D2BC0594C00A45F2B /* Galmuri11-Bold.ttf */,
+			);
+			path = Font;
+			sourceTree = "<group>";
+		};
 		216F5F8C2BAB2F19008817B0 /* ContentPayload */ = {
 			isa = PBXGroup;
 			children = (
@@ -310,8 +323,10 @@
 		217BCCB22B9DE5C300B5461B /* kiwIT */ = {
 			isa = PBXGroup;
 			children = (
+				2167FD4A2BC04FDF00A45F2B /* Info.plist */,
 				217BCCDF2B9DE84100B5461B /* APIKey.swift */,
 				217BCCDD2B9DE6CD00B5461B /* .gitignore */,
+				2167FD492BC04E2F00A45F2B /* Font */,
 				217BCCB32B9DE5C300B5461B /* kiwITApp.swift */,
 				219EFBC62B9F0A5200FBEBE0 /* Setup */,
 				217A51402BAECD380052A07E /* Model */,
@@ -407,6 +422,7 @@
 			isa = PBXGroup;
 			children = (
 				2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsStrings.swift */,
+				2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */,
 				219EFBC42B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift */,
 				217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */,
 				217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */,
@@ -587,6 +603,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2167FD4E2BC0594C00A45F2B /* Galmuri11-Bold.ttf in Resources */,
 				217BCCBB2B9DE5C400B5461B /* Preview Assets.xcassets in Resources */,
 				217BCCB82B9DE5C400B5461B /* Assets.xcassets in Resources */,
 			);
@@ -616,6 +633,7 @@
 			files = (
 				216F5F8F2BAB302C008817B0 /* NetworkManager.swift in Sources */,
 				2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */,
+				2167FD4C2BC058E600A45F2B /* Setup+FontStrings.swift in Sources */,
 				219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */,
 				217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */,
 				217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */,
@@ -829,6 +847,7 @@
 				DEVELOPMENT_TEAM = PSU86J5852;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = kiwIT/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -863,6 +882,7 @@
 				DEVELOPMENT_TEAM = PSU86J5852;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = kiwIT/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

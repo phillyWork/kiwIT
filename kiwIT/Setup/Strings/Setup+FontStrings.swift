@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+extension Setup {
+    
+    enum FontName {
+        static let galMuri11Bold = "Galmuri11-Bold"
+    }
+    
+}

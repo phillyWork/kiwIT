@@ -17,18 +17,17 @@ struct MainTabBarView: View {
     @State private var shouldShowLoginView = false
     
     var body: some View {
-        
         //로그인 여부 체크
         if (isUserLoggedIn) {
             TabView {
-                Group {
-                    HomeView()
-                    LectureCategoryListView()
-                    QuizView()
-                    AIInterviewView()
-                    ProfileView()
-                }
+                HomeView()
+                LectureCategoryListView()
+                QuizView()
+                AIInterviewView()
+                ProfileView()
             }
+            //전체 탭뷰 내부 모든 폰트 동일 적용 (NavBar 및 Tabbar 제외)
+            .font(Font.custom(Setup.FontName.galMuri11Bold, size: 12))
             .tint(Color.brandColor)
         } else {
             SocialLoginView()
