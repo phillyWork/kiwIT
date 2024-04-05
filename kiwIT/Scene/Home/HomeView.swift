@@ -13,7 +13,7 @@ struct HomeView: View {
             ScrollView {
                 VStack {
                     VStack {
-                        Image(systemName: Setup.ImageStrings.selectedLecture)
+                        Image(systemName: Setup.ImageStrings.defaultLecture3)
                         Text("다음에 학습할 내용")
                     }
                     .frame(width: Setup.Frame.nextContentButtonWidth, height: Setup.Frame.nextContentButtonHeight)
@@ -38,20 +38,26 @@ struct HomeView: View {
                     }
                     
                     //가로 스크롤로 카테고리 별 컨텐츠 보여주기 가능하도록?
-                    
+                 
+                    //test for content tabbar color
+                    Rectangle()
+                        .fill(Color.blue)
+                        .frame(width: Setup.Frame.contentImageWidth, height: Setup.Frame.contentImageHeight)
                     
                 }
                 //Navigation title 외에 다른 표시 방법 찾기 필요
                 .frame(maxHeight: .infinity)
+                .frame(width: Setup.Frame.deviceWidth)
                 .navigationTitle("kiwIT")
                 .navigationBarTitleDisplayMode(.large)
             }
             .scrollIndicators(.hidden)
+            .background(Color.backgroundColor)
+            .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
         }
         .tabItem {
             Label("홈", systemImage: Setup.ImageStrings.defaultHome)
         }
-        
     }
 }
 

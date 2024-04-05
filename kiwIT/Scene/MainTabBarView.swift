@@ -12,7 +12,7 @@ import SwiftUI
 struct MainTabBarView: View {
     
     //viewmodel에서 판단, 이동 예정
-    @State private var isUserLoggedIn = false
+    @State private var isUserLoggedIn = true
     
     @State private var shouldShowLoginView = false
     
@@ -21,13 +21,15 @@ struct MainTabBarView: View {
         //로그인 여부 체크
         if (isUserLoggedIn) {
             TabView {
-                HomeView()
-                LectureCategoryListView()
-                QuizView()
-                AIInterviewView()
-                ProfileView()
+                Group {
+                    HomeView()
+                    LectureCategoryListView()
+                    QuizView()
+                    AIInterviewView()
+                    ProfileView()
+                }
             }
-            .tint(Color.purple)
+            .tint(Color.brandColor)
         } else {
             SocialLoginView()
         }

@@ -23,7 +23,7 @@ struct ActiveButton: View {
                 .frame(width: Setup.Frame.nextContentButtonWidth, height: Setup.Frame.nextContentButtonHeight)
             //이미지 제거 텍스트 위주 버튼만 구성하기 (혹은 아예 버튼으로 구성할 수도...)
             VStack {
-                Image(systemName: Setup.ImageStrings.selectedLecture)
+                Image(systemName: Setup.ImageStrings.defaultLecture2)
                 Text("다음에 학습할 내용")
             }
             .frame(width: Setup.Frame.nextContentButtonWidth, height: Setup.Frame.nextContentButtonHeight)
