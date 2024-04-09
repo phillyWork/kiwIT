@@ -20,14 +20,27 @@ struct MainTabBarView: View {
         //로그인 여부 체크
         if (isUserLoggedIn) {
             TabView {
-                HomeView()
-                LectureCategoryListView()
-                QuizView()
-                AIInterviewView()
-                ProfileView()
+                    HomeView()
+                        .tabItem {
+                            Label("홈", systemImage: Setup.ImageStrings.defaultHome)
+                        }
+                    LectureCategoryListView()
+                        .tabItem {
+                            Label("학습", systemImage: Setup.ImageStrings.defaultLecture)
+                        }
+                    QuizView()
+                        .tabItem {
+                            Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
+                        }
+                    AIInterviewView()
+                        .tabItem {
+                            Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
+                        }
+                    ProfileView()
+                        .tabItem {
+                            Label("나", systemImage: Setup.ImageStrings.defaultProfile)
+                        }
             }
-            //전체 탭뷰 내부 모든 폰트 동일 적용 (NavBar 및 Tabbar 제외)
-            .font(Font.custom(Setup.FontName.galMuri11Bold, size: 12))
             .tint(Color.brandColor)
         } else {
             SocialLoginView()

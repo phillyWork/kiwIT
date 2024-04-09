@@ -55,9 +55,6 @@ struct HomeView: View {
             .background(Color.backgroundColor)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
         }
-        .tabItem {
-            Label("홈", systemImage: Setup.ImageStrings.defaultHome)
-        }
     }
 }
 

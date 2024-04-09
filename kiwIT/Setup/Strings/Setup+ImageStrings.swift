@@ -21,6 +21,10 @@ extension Setup {
         static let defaultLecture3 = "list.bullet.rectangle.portrait"
         static let defaultQuiz2 = "pencil.and.list.clipboard"
         static let defaultAiInterview2 = "server.rack"
+        
+        static let defaultXMark = "xmark"
+        static let defaultXMark2 = "xmark.square"
+        
     }
     
 }

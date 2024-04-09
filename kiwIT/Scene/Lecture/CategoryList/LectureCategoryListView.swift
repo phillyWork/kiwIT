@@ -23,9 +23,7 @@ struct LectureCategoryListView: View {
             .navigationTitle("학습 카테고리")
             .navigationBarTitleDisplayMode(.inline)
         }
-        .tabItem {
-            Label("학습", systemImage: Setup.ImageStrings.defaultLecture)
-        }
+        
     }
 }
 

@@ -10,9 +10,7 @@ import SwiftUI
 struct AIInterviewView: View {
     var body: some View {
         Text("AIInterviewView")
-            .tabItem {
-                Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
-            }
+            
     }
 }
 

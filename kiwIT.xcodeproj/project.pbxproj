@@ -64,6 +64,16 @@
 		217E55A02BB162000014B46E /* Trophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E559F2BB162000014B46E /* Trophy.swift */; };
 		217E55A42BB16CB00014B46E /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E55A32BB16CB00014B46E /* Profile.swift */; };
 		217E55A62BB1BA2D0014B46E /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E55A52BB1BA2D0014B46E /* Authorization.swift */; };
+		21816AA92BC5856D007E6FD6 /* LINESeedKR-Rg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AA62BC5856D007E6FD6 /* LINESeedKR-Rg.ttf */; };
+		21816AAA2BC5856D007E6FD6 /* LINESeedKR-Bd.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AA72BC5856D007E6FD6 /* LINESeedKR-Bd.ttf */; };
+		21816AAB2BC5856D007E6FD6 /* LINESeedKR-Th.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AA82BC5856D007E6FD6 /* LINESeedKR-Th.ttf */; };
+		21816AB42BC58585007E6FD6 /* Phudu-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AAC2BC58585007E6FD6 /* Phudu-Black.ttf */; };
+		21816AB52BC58585007E6FD6 /* Phudu-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AAD2BC58585007E6FD6 /* Phudu-Medium.ttf */; };
+		21816AB62BC58585007E6FD6 /* Phudu-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AAE2BC58585007E6FD6 /* Phudu-Light.ttf */; };
+		21816AB72BC58585007E6FD6 /* Phudu-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AAF2BC58585007E6FD6 /* Phudu-Regular.ttf */; };
+		21816AB82BC58585007E6FD6 /* Phudu-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AB02BC58585007E6FD6 /* Phudu-ExtraBold.ttf */; };
+		21816AB92BC58585007E6FD6 /* Phudu-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AB12BC58585007E6FD6 /* Phudu-Bold.ttf */; };
+		21816ABA2BC58585007E6FD6 /* Phudu-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 21816AB22BC58585007E6FD6 /* Phudu-SemiBold.ttf */; };
 		219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBA2B9F068200FBEBE0 /* HomeView.swift */; };
 		219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */; };
 		219EFBBF2B9F069600FBEBE0 /* QuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizView.swift */; };
@@ -139,6 +149,16 @@
 		217E559F2BB162000014B46E /* Trophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trophy.swift; sourceTree = "<group>"; };
 		217E55A32BB16CB00014B46E /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		217E55A52BB1BA2D0014B46E /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
+		21816AA62BC5856D007E6FD6 /* LINESeedKR-Rg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LINESeedKR-Rg.ttf"; sourceTree = "<group>"; };
+		21816AA72BC5856D007E6FD6 /* LINESeedKR-Bd.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LINESeedKR-Bd.ttf"; sourceTree = "<group>"; };
+		21816AA82BC5856D007E6FD6 /* LINESeedKR-Th.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LINESeedKR-Th.ttf"; sourceTree = "<group>"; };
+		21816AAC2BC58585007E6FD6 /* Phudu-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Phudu-Black.ttf"; sourceTree = "<group>"; };
+		21816AAD2BC58585007E6FD6 /* Phudu-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Phudu-Medium.ttf"; sourceTree = "<group>"; };
+		21816AAE2BC58585007E6FD6 /* Phudu-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Phudu-Light.ttf"; sourceTree = "<group>"; };
+		21816AAF2BC58585007E6FD6 /* Phudu-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Phudu-Regular.ttf"; sourceTree = "<group>"; };
+		21816AB02BC58585007E6FD6 /* Phudu-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Phudu-ExtraBold.ttf"; sourceTree = "<group>"; };
+		21816AB12BC58585007E6FD6 /* Phudu-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Phudu-Bold.ttf"; sourceTree = "<group>"; };
+		21816AB22BC58585007E6FD6 /* Phudu-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Phudu-SemiBold.ttf"; sourceTree = "<group>"; };
 		219EFBBA2B9F068200FBEBE0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListView.swift; sourceTree = "<group>"; };
 		219EFBBE2B9F069600FBEBE0 /* QuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizView.swift; sourceTree = "<group>"; };
@@ -186,6 +206,16 @@
 			isa = PBXGroup;
 			children = (
 				2167FD4D2BC0594C00A45F2B /* Galmuri11-Bold.ttf */,
+				21816AA72BC5856D007E6FD6 /* LINESeedKR-Bd.ttf */,
+				21816AA62BC5856D007E6FD6 /* LINESeedKR-Rg.ttf */,
+				21816AA82BC5856D007E6FD6 /* LINESeedKR-Th.ttf */,
+				21816AAC2BC58585007E6FD6 /* Phudu-Black.ttf */,
+				21816AB12BC58585007E6FD6 /* Phudu-Bold.ttf */,
+				21816AB02BC58585007E6FD6 /* Phudu-ExtraBold.ttf */,
+				21816AAE2BC58585007E6FD6 /* Phudu-Light.ttf */,
+				21816AAD2BC58585007E6FD6 /* Phudu-Medium.ttf */,
+				21816AAF2BC58585007E6FD6 /* Phudu-Regular.ttf */,
+				21816AB22BC58585007E6FD6 /* Phudu-SemiBold.ttf */,
 			);
 			path = Font;
 			sourceTree = "<group>";
@@ -292,7 +322,7 @@
 		217B53162BA2EDEB0081D418 /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				2170E7562BBC6DD7002A1DA6 /* ActiveButton.swift */,
+				21816ABC2BC595FC007E6FD6 /* Button */,
 				217B53142BA2EDE70081D418 /* SocialLoginButton.swift */,
 				216F5F8C2BAB2F19008817B0 /* ContentPayload */,
 			);
@@ -406,6 +436,14 @@
 			children = (
 			);
 			path = Quiz;
+			sourceTree = "<group>";
+		};
+		21816ABC2BC595FC007E6FD6 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				2170E7562BBC6DD7002A1DA6 /* ActiveButton.swift */,
+			);
+			path = Button;
 			sourceTree = "<group>";
 		};
 		219EFBC62B9F0A5200FBEBE0 /* Setup */ = {
@@ -603,8 +641,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				21816AB52BC58585007E6FD6 /* Phudu-Medium.ttf in Resources */,
+				21816AAB2BC5856D007E6FD6 /* LINESeedKR-Th.ttf in Resources */,
+				21816AAA2BC5856D007E6FD6 /* LINESeedKR-Bd.ttf in Resources */,
+				21816ABA2BC58585007E6FD6 /* Phudu-SemiBold.ttf in Resources */,
+				21816AB62BC58585007E6FD6 /* Phudu-Light.ttf in Resources */,
 				2167FD4E2BC0594C00A45F2B /* Galmuri11-Bold.ttf in Resources */,
+				21816AA92BC5856D007E6FD6 /* LINESeedKR-Rg.ttf in Resources */,
+				21816AB72BC58585007E6FD6 /* Phudu-Regular.ttf in Resources */,
+				21816AB42BC58585007E6FD6 /* Phudu-Black.ttf in Resources */,
+				21816AB82BC58585007E6FD6 /* Phudu-ExtraBold.ttf in Resources */,
 				217BCCBB2B9DE5C400B5461B /* Preview Assets.xcassets in Resources */,
+				21816AB92BC58585007E6FD6 /* Phudu-Bold.ttf in Resources */,
 				217BCCB82B9DE5C400B5461B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
