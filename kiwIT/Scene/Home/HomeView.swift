@@ -47,7 +47,7 @@ struct HomeView: View {
                 }
                 //Navigation title 외에 다른 표시 방법 찾기 필요
                 .frame(maxHeight: .infinity)
-                .frame(width: Setup.Frame.deviceWidth)
+                .frame(width: Setup.Frame.devicePortraitWidth)
                 .navigationTitle("kiwIT")
                 .navigationBarTitleDisplayMode(.large)
             }

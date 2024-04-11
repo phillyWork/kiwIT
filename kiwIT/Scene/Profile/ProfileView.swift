@@ -9,8 +9,13 @@ import SwiftUI
 
 struct ProfileView: View {
     var body: some View {
-        Text("ProfileView")
-            
+        
+        VStack {
+            Text("ProfileView")
+        }
+        .frame(maxHeight: .infinity)
+        .frame(width: Setup.Frame.devicePortraitWidth)
+        .background(Color.backgroundColor)
     }
 }
 

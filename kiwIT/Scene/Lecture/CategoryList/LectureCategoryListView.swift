@@ -13,13 +13,22 @@ struct LectureCategoryListView: View {
         //searchbar 대신 toggle이나 다른 버튼으로 레벨별/카테고리별 보여주도록 설정
         
         NavigationStack {
-            List(0..<100) { row in
-                NavigationLink {
-                    LectureListView()
-                } label: {
-                    Text("IT 교양")
+            ScrollView {
+                LazyVStack(spacing: 4) {
+                    ForEach(1...50, id: \.self) { row in
+                        NavigationLink {
+                            LectureListView()
+                        } label: {
+                            ContentListItemView(title: "IT 교양")
+                        }
+                    }
+                    .frame(maxHeight: .infinity)
                 }
+                .frame(maxWidth: .infinity)
+                .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
             }
+            .scrollIndicators(.hidden)
+            .background(Color.backgroundColor)
             .navigationTitle("학습 카테고리")
             .navigationBarTitleDisplayMode(.inline)
         }

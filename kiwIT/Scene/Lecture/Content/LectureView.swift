@@ -34,7 +34,10 @@ struct LectureView: View {
 //                        
 //                    }
                     
-                    ContentImageView(urlString: "")
+                    ContentSectionTitleView(title: "Section 0. 데이터 형태를 정해야 할 필요가 있을까요?")
+//                        .background(Color.red)
+                    
+                    ContentImageView(urlString: "https://i.namu.wiki/i/2_NN7d9gqwTIbXcyPdjHJ5LLVFCwTAA6dQSr7SVqBflyUK1JrL6p2K5ld415BKo7FNd1o0GBDyfDz0bWUa6K0A.webp")
                     
                     ContentTextView(context: "이 글을 보러온 분들은 이미 개발 언어를 배워본 적이 있거나, 코딩 테스트를 위해, 혹은 본격적인 개발을 위한 이론을 위해 찾아오신 분들이겠죠?")
                     
@@ -42,16 +45,12 @@ struct LectureView: View {
                     
                     ContentTextView(context: "예를 한번 들어볼까요? 다음 사진을 잘 봐주세요")
                     
-                    ActiveButton(title: "확인해보기") {
+                    ActiveButtonView(title: "확인해보기") {
                         print("Code")
                     }
                 }
                 .frame(maxWidth: .infinity)
             }
-            
-          
-            
-            
         }
         .navigationBarBackButtonHidden()
         .toolbar {

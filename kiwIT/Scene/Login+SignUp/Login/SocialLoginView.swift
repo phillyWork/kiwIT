@@ -22,9 +22,9 @@ struct SocialLoginView: View {
                 .font(.title)
             Spacer(minLength: 50)
             VStack(alignment: .center, spacing: 10) {
-                SocialLoginButton(service: .apple)
-                SocialLoginButton(service: .google)
-                SocialLoginButton(service: .kakao)
+                SocialLoginButtonView(service: .apple)
+                SocialLoginButtonView(service: .google)
+                SocialLoginButtonView(service: .kakao)
             }
             .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
         }
