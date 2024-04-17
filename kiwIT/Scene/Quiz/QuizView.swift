@@ -9,10 +9,14 @@ import SwiftUI
 
 struct QuizView: View {
     var body: some View {
-        Text("QuizView")
-            .tabItem {
-                Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
-            }
+        
+        VStack {
+            Text("QuizView")
+        }
+        .frame(maxHeight: .infinity)
+        .frame(width: Setup.Frame.devicePortraitWidth)
+        .background(Color.backgroundColor)
+        
     }
 }
 

@@ -12,16 +12,21 @@ extension Setup {
     enum ImageStrings {
         
         static let defaultHome = "house"
-        static let defaultLecture = "list.bullet.rectangle"
-        static let defaultQuiz = "pencil.circle"
-        static let defaultAiInterview = "message"
+        static let defaultLecture = "book.pages"
+        static let defaultQuiz = "square.and.pencil"
+        static let defaultAiInterview = "bubble.left.and.text.bubble.right"
         static let defaultProfile = "person.circle"
         
-        static let selectedHome = "house.fill"
-        static let selectedLecture = "list.bullet.rectangle.fill"
-        static let selectedQuiz = "pencil.circle.fill"
-        static let selectedAiInterview = "message.fill"
-        static let selectedProfile = "person.circle.fill"
+        static let defaultLecture2 = "list.bullet.rectangle"
+        static let defaultLecture3 = "list.bullet.rectangle.portrait"
+        static let defaultQuiz2 = "pencil.and.list.clipboard"
+        static let defaultAiInterview2 = "server.rack"
+        
+        static let defaultXMark = "xmark"
+        static let defaultXMark2 = "xmark.square"
+        
+        static let collapsedTriangle = "chevron.down"
+        static let expandedTriangle = "chevron.up"
         
     }
     

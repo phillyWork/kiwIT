@@ -9,10 +9,13 @@ import SwiftUI
 
 struct AIInterviewView: View {
     var body: some View {
-        Text("AIInterviewView")
-            .tabItem {
-                Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
-            }
+        
+        VStack {
+            Text("AIInterviewView")
+        }
+        .frame(maxHeight: .infinity)
+        .frame(width: Setup.Frame.devicePortraitWidth)
+        .background(Color.backgroundColor)
     }
 }
 

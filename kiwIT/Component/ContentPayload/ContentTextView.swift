@@ -15,6 +15,9 @@ struct ContentTextView: View {
         Text(context)
             .padding()
             .frame(maxWidth: .infinity)
+//            .font(.custom(Setup.FontName.notoSansMedium, size: 12))
+            .font(.custom(Setup.FontName.notoSansMedium, size: 16))
+            .foregroundStyle(Color.textColor)
     }
 }
 

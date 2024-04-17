@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Galmuri11-Bold.ttf</string>
+		<string>LINESeedKR-Bd.ttf</string>
+		<string>LINESeedKR-Rg.ttf</string>
+		<string>LINESeedKR-Th.ttf</string>
+		<string>Phudu-Black.ttf</string>
+		<string>Phudu-Bold.ttf</string>
+		<string>Phudu-ExtraBold.ttf</string>
+		<string>Phudu-Light.ttf</string>
+		<string>Phudu-Medium.ttf</string>
+		<string>Phudu-Regular.ttf</string>
+		<string>Phudu-SemiBold.ttf</string>
+		<string>NotoSansKR-Black.ttf</string>
+		<string>NotoSansKR-Bold.ttf</string>
+		<string>NotoSansKR-ExtraBold.ttf</string>
+		<string>NotoSansKR-ExtraLight.ttf</string>
+		<string>NotoSansKR-Light.ttf</string>
+		<string>NotoSansKR-Medium.ttf</string>
+		<string>NotoSansKR-Regular.ttf</string>
+		<string>NotoSansKR-SemiBold.ttf</string>
+		<string>NotoSansKR-Thin.ttf</string>
+	</array>
+</dict>
+</plist>

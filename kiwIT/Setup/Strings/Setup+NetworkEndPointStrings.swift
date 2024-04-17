@@ -13,29 +13,35 @@ extension Setup {
         
         //MARK: - User Account
         
-        static let user = "user"    //profile check, edit, withdraw
+        static let user = "/user"    //profile check, edit, withdraw
         
-        static let userSignUp = user+"/sign-up"
-        static let userSignIn = user+"/sign-in"
-        static let userSignOut = user+"/sign-out"
-        static let userRefreshAccessToken = user+"/refresh"
-        static let userAcquiredTrophyList = user+"/trophy"
-        static let userRecentAcquiredTrophy = userAcquiredTrophyList+"/latest"
-        static let userSummaryStat = user+"/stat"
+        static let userSignUp = "/sign-up"
+        static let userSignIn = "/sign-in"
+        static let userSignOut = "/sign-out"
+        static let userRefreshAccessToken = "/refresh"
+        static let userAcquiredTrophyList = "/trophy"
+        static let userRecentAcquiredTrophy = "/latest"
+        static let userSummaryStat = "/stat"
         
         //MARK: - Lecture Contents
         
-        static let content = "content/"
+        static let lectureContent = "/content"
         
-        
-        
+        static let lectureLevel = "/level"
+        static let exerciseForLecture = "/exercise"
+        static let lectureCategory = "/category"
+        static let lectureNextStudyProgress = "/progress"
+        static let completedLecture = "/studied"
         
         //MARK: - Quiz
         
-        static let quiz = "quiz/"
+        static let quiz = "/quiz"
         
-        
-        
+        static let quizList = "/group"
+        static let quizMostRecentTaken = "/latest-solved"
+        static let quizTakenList = "/solved"
+      
+        static let bookmark = "/kept"
         
     }
     
