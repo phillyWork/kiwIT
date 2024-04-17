@@ -15,7 +15,8 @@ struct ContentSectionTitleView: View {
         Text(title)
             .padding()
             .frame(maxWidth: .infinity)
-            .font(.custom(Setup.FontName.lineThin, size: 40))
+            .font(.custom(Setup.FontName.galMuri11Bold, size: 28))
+//            .font(.custom(Setup.FontName.lineThin, size: 40))
             .foregroundStyle(Color.textColor)
     }
 }

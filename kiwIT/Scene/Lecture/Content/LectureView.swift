@@ -51,6 +51,7 @@ struct LectureView: View {
                 }
                 .frame(maxWidth: .infinity)
             }
+            .background(Color.backgroundColor)
         }
         .navigationBarBackButtonHidden()
         .toolbar {

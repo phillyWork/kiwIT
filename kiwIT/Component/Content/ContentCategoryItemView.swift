@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentListItemView: View {
+struct ContentCategoryItemView: View {
 
     var itemTitle: String
     
@@ -19,6 +19,9 @@ struct ContentListItemView: View {
     
     var body: some View {
         ZStack(alignment: .center) {
+            
+            //직사각형 대신 다른 모양으로 디자인 변경 예정
+            
             Rectangle()
                 .fill(Color.shadowColor)
                 .frame(width: Setup.Frame.contentListItmeWidth, height: Setup.Frame.contentListItemHeight)
@@ -41,5 +44,5 @@ struct ContentListItemView: View {
 }
 
 #Preview {
-    ContentListItemView(title: "확인")
+    ContentCategoryItemView(title: "확인")
 }

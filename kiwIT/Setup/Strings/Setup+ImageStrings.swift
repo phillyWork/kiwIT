@@ -25,6 +25,9 @@ extension Setup {
         static let defaultXMark = "xmark"
         static let defaultXMark2 = "xmark.square"
         
+        static let collapsedTriangle = "chevron.down"
+        static let expandedTriangle = "chevron.up"
+        
     }
     
 }

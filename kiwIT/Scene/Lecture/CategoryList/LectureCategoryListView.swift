@@ -19,7 +19,7 @@ struct LectureCategoryListView: View {
                         NavigationLink {
                             LectureListView()
                         } label: {
-                            ContentListItemView(title: "IT 교양")
+                            ContentCategoryItemView(title: "IT 교양")
                         }
                     }
                     .frame(maxHeight: .infinity)
@@ -32,7 +32,6 @@ struct LectureCategoryListView: View {
             .navigationTitle("학습 카테고리")
             .navigationBarTitleDisplayMode(.inline)
         }
-        
     }
 }
 
