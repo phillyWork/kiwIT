@@ -81,7 +81,7 @@ struct LectureListView: View {
                             }
                         }
                         .scrollIndicators(.hidden)
-                        .frame(width: Setup.Frame.contentListItmeWidth)
+                        .frame(width: Setup.Frame.contentListItemWidth)
                         .background(Color.shadowColor)
                         .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
                         .padding(.top, 0)
@@ -93,6 +93,7 @@ struct LectureListView: View {
         .background(Color.backgroundColor)
         .navigationTitle("IT 교양")
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
     }
 }
 

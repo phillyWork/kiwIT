@@ -21,14 +21,28 @@ extension Setup {
         static let socialLoginButtonStackHeight = socialLoginButtonWidth * 0.3
         
         //컨텐츠 리스트 개별 Item 크기
-        static let contentListItmeWidth = devicePortraitWidth * 0.9
-        static let contentListItemHeight = contentListItmeWidth * 0.3
+        static let contentListItemWidth = devicePortraitWidth * 0.9
+        static let contentListCategoryItemHeight = contentListItemWidth * 0.55
+        static let contentListChapterItemHeight = contentListItemWidth * 0.3
+        
+        static let contentListCategoryImageWidth = contentListItemWidth * 0.65
+        static let contentListCategoryImageHeight = contentListCategoryImageWidth * 0.75
         
         static let contentListItemWidthOffset = -5.0
         static let contentListItemHeightOffset = -4.0
         
         static let contentListShadowWidthOffset = 5.0
         static let contentListShadowHeightOffset = 4.0
+        
+        
+        
+        static let contentCategoryTrapezoidWidthOffset = -7.0
+        static let contentCategoryTrapezoidHeightOffset = -7.0
+        
+        static let contentShadowTrapezoidWidthOffset = 7.0
+        static let contentShadowTrapezoidHeightOffset = 7.0
+        
+        
         
         
         //컨텐츠 Image 비율 4:3 고정
