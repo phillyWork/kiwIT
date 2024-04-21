@@ -335,8 +335,8 @@
 		2173C05A2BA0918800FDD3D9 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
-				2173C04D2BA0904900FDD3D9 /* Login+SignUp */,
 				217BCCB52B9DE5C300B5461B /* MainTabBarView.swift */,
+				2173C04D2BA0904900FDD3D9 /* Login+SignUp */,
 				219EFBCA2B9F127400FBEBE0 /* Home */,
 				219EFBCB2B9F127B00FBEBE0 /* Lecture */,
 				219EFBCC2B9F128000FBEBE0 /* Quiz */,

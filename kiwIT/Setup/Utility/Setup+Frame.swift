@@ -24,6 +24,7 @@ extension Setup {
         static let contentListItemWidth = devicePortraitWidth * 0.9
         static let contentListCategoryItemHeight = contentListItemWidth * 0.55
         static let contentListChapterItemHeight = contentListItemWidth * 0.3
+        static let contentListSectionItemHeight = contentListItemWidth * 0.2
         
         static let contentListCategoryImageWidth = contentListItemWidth * 0.65
         static let contentListCategoryImageHeight = contentListCategoryImageWidth * 0.75
@@ -35,14 +36,26 @@ extension Setup {
         static let contentListShadowHeightOffset = 4.0
         
         
-        
         static let contentCategoryTrapezoidWidthOffset = -7.0
         static let contentCategoryTrapezoidHeightOffset = -7.0
         
         static let contentShadowTrapezoidWidthOffset = 7.0
         static let contentShadowTrapezoidHeightOffset = 7.0
         
+        static let contentCategoryTrapezoidCompleteWidthOffset = 80
+        static let contentCategoryTrapezoidCompleteHeightOffset = 80
         
+        
+        
+        //컨텐츠 완료 표시용 이미지 크기
+        static let contentListCategoryCompleteImageWidth = contentListItemWidth * 0.1
+        static let contentListCategoryCompleteImageHeight = contentListItemWidth * 0.1
+        
+        static let contentListChapterCompleteImageWidth = contentListItemWidth * 0.1
+        static let contentListChapterCompleteImageHeight = contentListItemWidth * 0.1
+        
+        static let contentListSectionCompleteImageWidth = contentListItemWidth * 0.05
+        static let contentListSectionCompleteImageHeight = contentListItemWidth * 0.05
         
         
         //컨텐츠 Image 비율 4:3 고정

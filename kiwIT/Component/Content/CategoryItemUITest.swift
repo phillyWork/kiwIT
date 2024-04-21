@@ -39,7 +39,16 @@ struct CategoryItemUITest: View {
                     }
                     .offset(CGSize(width: Setup.Frame.contentCategoryTrapezoidWidthOffset, height: Setup.Frame.contentCategoryTrapezoidHeightOffset))
                 }
+            
+            EquilateralTrapezoid(ratioForHorizonLength: ratioForTrapezoidWidth)
+                .fill(.red)
+                .frame(width: Setup.Frame.contentListCategoryCompleteImageWidth, height: Setup.Frame.contentListCategoryCompleteImageHeight)
+                .overlay {
+                    Image(systemName: Setup.ImageStrings.defaultHome)
+                }
+                .offset(CGSize(width: Setup.Frame.contentCategoryTrapezoidCompleteWidthOffset, height: Setup.Frame.contentCategoryTrapezoidCompleteHeightOffset))
         }
+        .background(Color.purple)
         .padding(.vertical, 8)
         .padding(.horizontal, 5)
     }

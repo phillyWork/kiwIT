@@ -26,23 +26,23 @@ struct ContentExpandableChapterItemView<Content: View>: View {
         VStack(spacing: 0) {
             ZStack(alignment: .center) {
                 Rectangle()
-                    .fill(Color.shadowColor)
+                    .fill(isCollapsed ? Color.shadowColor : Color.brandTint)
                     .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListChapterItemHeight)
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                 HStack {
                     Text(itemTitle)
                         .font(.custom(Setup.FontName.phuduSemiBold, size: 18))
-                        .foregroundStyle(Color.textColor)
+                        .foregroundStyle(isCollapsed ? Color.textColor : .black)
                     Spacer()
                     Image(systemName: self.isCollapsed ?
                           Setup.ImageStrings.collapsedTriangle
                           : Setup.ImageStrings.expandedTriangle)
-                    .tint(Color.textColor)
+                    .foregroundStyle(self.isCollapsed ? Color.textColor : .black)
                 }
-                .scaleEffect(isCollapsed ? 1.0 : 0.9)
+                .scaleEffect(isCollapsed ? 1.0 : 0.87)
                 .frame(width: Setup.Frame.contentListItemWidth,
                        height: Setup.Frame.contentListChapterItemHeight)
-                .background(Color.surfaceColor)
+                .background(isCollapsed ? Color.surfaceColor : Color.brandBland2)
                 .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
             }
             .padding(.horizontal, 10)
