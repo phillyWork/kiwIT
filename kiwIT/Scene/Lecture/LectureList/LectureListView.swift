@@ -80,6 +80,8 @@ struct LectureListView: View {
                                                 Text("Section \(section.number). \(section.title)")
                                             }
                                             Divider()
+                                                .frame(minHeight: 1)
+                                                .background(Color.textColor)
                                         }
                                         .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
                                         .padding(.vertical, 3)

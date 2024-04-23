@@ -11,6 +11,12 @@ struct LectureView: View {
     
     @Environment(\.dismiss) var dismiss
     
+    //userDefaults에 저장한 font size 설정 가져오기
+    //없다면 default로 14 설정
+    @State private var fontSize: CGFloat = 14
+    
+    @State private var isPopOverPresented = false
+    
     //콘텐츠 학습 완료: 스크롤 맨 마지막 버튼에서 학습 완료되었다고 버튼 눌러야 확인 완료
     
     var body: some View {
@@ -39,11 +45,11 @@ struct LectureView: View {
                     
                     ContentImageView(urlString: "https://i.namu.wiki/i/2_NN7d9gqwTIbXcyPdjHJ5LLVFCwTAA6dQSr7SVqBflyUK1JrL6p2K5ld415BKo7FNd1o0GBDyfDz0bWUa6K0A.webp")
                     
-                    ContentTextView(context: "이 글을 보러온 분들은 이미 개발 언어를 배워본 적이 있거나, 코딩 테스트를 위해, 혹은 본격적인 개발을 위한 이론을 위해 찾아오신 분들이겠죠?")
+                    ContentTextView(context: "이 글을 보러온 분들은 이미 개발 언어를 배워본 적이 있거나, 코딩 테스트를 위해, 혹은 본격적인 개발을 위한 이론을 위해 찾아오신 분들이겠죠?", fontSize: fontSize)
                     
-                    ContentTextView(context: "그냥 개발하면 되지 왜 굳이 형태를 정해서 활용하려 할까요?")
+                    ContentTextView(context: "그냥 개발하면 되지 왜 굳이 형태를 정해서 활용하려 할까요?", fontSize: fontSize)
                     
-                    ContentTextView(context: "예를 한번 들어볼까요? 다음 사진을 잘 봐주세요")
+                    ContentTextView(context: "예를 한번 들어볼까요? 다음 사진을 잘 봐주세요", fontSize: fontSize)
                     
                     ActiveButtonView(title: "확인해보기") {
                         print("Code")
@@ -66,6 +72,31 @@ struct LectureView: View {
                     Image(systemName: Setup.ImageStrings.defaultXMark2)
                 })
                 .tint(Color.textColor)
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    self.isPopOverPresented = true
+                }) {
+                    Image(systemName: Setup.ImageStrings.textSize)
+                        .tint(Color.textColor)
+                }
+                .popover(isPresented: $isPopOverPresented, 
+                         attachmentAnchor: .point(.bottom),
+                         arrowEdge: .bottom,
+                         content: {
+                
+                    //따로 다른 view로 분리?
+                    VStack {
+                        Text("폰트 크기 설정: \(Int(fontSize))")
+                            .font(.custom(Setup.FontName.notoSansThin, size: 16))
+                            .foregroundStyle(Color.textColor)
+                        Slider(value: $fontSize, in: 5...100, step: 1)
+                            .tint(Color.brandColor)
+                    }
+                    .padding()
+                    .presentationCompactAdaptation(.popover)
+                    
+                })
             }
         }
     }

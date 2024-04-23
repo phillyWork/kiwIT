@@ -14,6 +14,7 @@ struct ContentSectionItemView: View {
     var body: some View {
         self.label()
             .lineLimit(2)
+            .multilineTextAlignment(.leading)
             .font(.custom(Setup.FontName.phuduSemiBold, size: 14))
             .foregroundStyle(Color.white)
             .frame(maxWidth: .infinity, alignment: .leading)

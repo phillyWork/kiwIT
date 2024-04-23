@@ -15,6 +15,9 @@ struct ContentExpandableChapterItemView<Content: View>: View {
     
     @State var contentView: () -> Content
     
+    //외부에서 계속해서 선택 여부 Update 필요해 보임
+    //다른 chapter 선택 시, 자동으로 닫히도록
+    //빈 배경 선택 시, 자동으로 닫히도록
     @State private var isCollapsed: Bool = true
     
     init(itemTitle: String, content: @escaping () -> Content) {

@@ -28,6 +28,8 @@ extension Setup {
         static let collapsedTriangle = "chevron.down"
         static let expandedTriangle = "chevron.up"
         
+        static let textSize = "textformat.size"
+        
     }
     
 }
