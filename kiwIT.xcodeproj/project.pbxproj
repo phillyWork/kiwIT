@@ -40,6 +40,8 @@
 		2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
 		2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */; };
 		2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
+		2175BE7F2BDFD4680048FBEB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE7E2BDFD4680048FBEB /* AuthManager.swift */; };
+		2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -139,6 +141,8 @@
 		2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+UserDefaultsStrings.swift"; sourceTree = "<group>"; };
 		2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListViewModel.swift; sourceTree = "<group>"; };
+		2175BE7E2BDFD4680048FBEB /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkErrorMessageStrings.swift"; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -285,6 +289,7 @@
 				217A513C2BAECBB70052A07E /* Error+Network.swift */,
 				217A513A2BAECB800052A07E /* Router.swift */,
 				216F5F8E2BAB302C008817B0 /* NetworkManager.swift */,
+				2175BE7E2BDFD4680048FBEB /* AuthManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -532,6 +537,7 @@
 			isa = PBXGroup;
 			children = (
 				2173C0642BA0971B00FDD3D9 /* Setup+UserDefaultsStrings.swift */,
+				2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */,
 				2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */,
 				219EFBC42B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift */,
 				217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */,
@@ -766,6 +772,7 @@
 				219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */,
 				217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */,
 				21816ADC2BC83BBE007E6FD6 /* ContentExpandableChapterItemView.swift in Sources */,
+				2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */,
 				217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */,
 				217A514E2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift in Sources */,
 				217D593F2BA9C208005AE418 /* LectureViewModel.swift in Sources */,
@@ -801,6 +808,7 @@
 				217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */,
 				2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */,
 				21816AD92BC82DCB007E6FD6 /* ExpandedImageView.swift in Sources */,
+				2175BE7F2BDFD4680048FBEB /* AuthManager.swift in Sources */,
 				217A514A2BAED0800052A07E /* RefreshAccessToken.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
 				214282D02BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift in Sources */,
