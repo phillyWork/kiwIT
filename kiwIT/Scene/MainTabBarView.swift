@@ -41,7 +41,7 @@ struct MainTabBarView: View {
                         .tabItem {
                             Label("학습", systemImage: Setup.ImageStrings.defaultLecture)
                         }
-                    QuizView()
+                    QuizListView()
                         .tabItem {
                             Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
                         }

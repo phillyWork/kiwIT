@@ -42,6 +42,9 @@ struct LectureCategoryListView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
         }
+        .refreshable {
+            print("Pull to Refresh Lecture List Completeness!!!")
+        }
     }
 }
 

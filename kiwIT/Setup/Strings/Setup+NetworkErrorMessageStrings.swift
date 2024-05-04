@@ -134,8 +134,7 @@ extension Setup {
         static let takenQuizListCheckError = "답안을 제출한 퀴즈 리스트 확인 권한이 없습니다. (토큰 리프레시 필요)"
         static let bookmarkedQuizCheckError = "보관한 퀴즈 확인 권한이 없습니다. (토큰 리프레시 필요)"
         
-       
-        case bookmarkQuizError = "퀴즈 보관함 처리에 실패했습니다. 다시 시도해주세요."
+        static let bookmarkQuizError = "퀴즈 보관함 처리에 실패했습니다. 다시 시도해주세요."
         
     }
 }
