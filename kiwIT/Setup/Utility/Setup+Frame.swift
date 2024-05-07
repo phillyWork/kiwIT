@@ -57,16 +57,7 @@ extension Setup {
         static let contentListSectionCompleteImageWidth = contentListItemWidth * 0.05
         static let contentListSectionCompleteImageHeight = contentListItemWidth * 0.05
         
-        
 
-        //퀴즈용 크기 개별 Item 크기
-        static let quizContentListItemWidth = devicePortraitWidth * 0.85
-        static let quizContentListItemHeight = quizContentListItemWidth * 0.35
-        
-        
-        
-        
-        
         //컨텐츠 Image 비율 4:3 고정
         static let contentImageWidth = devicePortraitWidth * 0.9
         static let contentImageHeight = contentImageWidth * 0.75
@@ -74,6 +65,20 @@ extension Setup {
         //확대 시의 Image 크기
         static let expandedContentImageWidth = devicePortraitHeight * 0.85
         static let expandedContentImageHeight = devicePortraitWidth * 0.9
+        
+        
+        //퀴즈용 크기 개별 Item 크기
+        static let quizContentListItemWidth = devicePortraitWidth * 0.85
+        static let quizContentListItemHeight = quizContentListItemWidth * 0.35
+
+        //개별 퀴즈 문제 크기
+        static let quizContentItemWidth = devicePortraitWidth * 0.88
+        static let quizContentItemHeight = quizContentListItemWidth * 1.25
+        
+        static let quizContentAnswerWidth = devicePortraitWidth * 0.8
+        static let quizContentAnswerHeight = quizContentAnswerWidth * 0.33
+        
+        
         
     }
     
