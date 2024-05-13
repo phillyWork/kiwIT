@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Level
+//struct Level
 
 
 struct LectureLevelListRequest: Encodable {

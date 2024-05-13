@@ -73,7 +73,18 @@ extension Setup {
 
         //개별 퀴즈 문제 크기
         static let quizContentItemWidth = devicePortraitWidth * 0.88
-        static let quizContentItemHeight = quizContentListItemWidth * 1.25
+        static let quizContentOXItemHeight = quizContentItemWidth * 1.25
+        static let quizContentMultipleChoiceItemHeight = quizContentItemWidth * 1.5
+        static let quizContentShortAnswerItemHeight = quizContentItemWidth * 1.34
+        
+        static let quizContentOXButtonWidth = quizContentItemWidth * 0.45
+        static let quizContentOXButtonHeight = quizContentOXButtonWidth * 0.3
+        
+        static let quizContentMultipleChoiceButtonWidth = quizContentItemWidth * 0.9
+        static let quizContentMultipleChoiceButtonHeight = quizContentMultipleChoiceButtonWidth * 0.2
+        
+        static let quizContentShortAnswerTextFieldWidth = quizContentItemWidth * 0.7
+        static let quizContentShortAnswerTextFieldHeight = quizContentShortAnswerTextFieldWidth * 0.3
         
         static let quizContentAnswerWidth = devicePortraitWidth * 0.8
         static let quizContentAnswerHeight = quizContentAnswerWidth * 0.33
