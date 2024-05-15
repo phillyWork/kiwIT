@@ -11,7 +11,7 @@ struct QuizView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @State private var testDataForQuestion = ["1입니다", "2입니다", "3입니다", "4입니다", "5입니다"]
+    @State private var testDataForQuestion = ["첫번째 문제입니다", "두번째 문제입니다", "세번째 문제입니다", "네번째 문제입니다", "다섯번째 문제입니다"]
     @State private var quizIndex = 0
     
     @State private var testDataForMultipleChoice = [["A", "B", "C", "D", "E"],
@@ -20,55 +20,113 @@ struct QuizView: View {
                                                     ["P", "Q", "R", "S", "T"],
                                                     ["U", "V", "W", "X", "Y"],]
     
+    
+    @State private var userOXAnswer = [Bool]()
+    @State private var userMultipleAnswer = [Int]()
+    @State private var userShortAnswer = [String]()
+    
+    @State private var isQuizCompleted = false
+    
     //차후 quiz payload 받아서 하나씩 나타내기
     //답변 한 만큼 새롭게 나타나도록 하기 (개수 count 필요)
     
     var body: some View {
         NavigationStack {
             ScrollView {
-//                QuizContentOX(content: $testDataForQuestion[quizIndex]) { isTappedOnO in
-//                    if isTappedOnO {
-//                        //plus on O, move on to next quiz
-//                        print("O is tapped!!!")
-//                    } else {
-//                        //plus on X, move on to next quiz
-//                        print("X is tapped!!!")
-//                    }
-//                    quizIndex += 1
-//                    
-//                    if quizIndex == testDataForQuestion.count {
-//                        print("Quiz is done")
-//                        quizIndex = 0
+                
+//                QuizContentOX(content: $testDataForQuestion[quizIndex]) { result in
+//                    switch result {
+//                    case .success(let answer):
+//                        userOXAnswer.append(answer)
+//                        print("user's answer: \(userOXAnswer)")
+//                        if userOXAnswer.count == testDataForQuestion.count {
+//                            print("Quiz is done")
+//                            isQuizCompleted = true
+//                            quizIndex = 0
+//                            userOXAnswer.removeAll()
+//                        } else {
+//                            quizIndex += 1
+//                        }
+//                    case .failure(.backToPreviousQuestion):
+//                        if quizIndex == 0 {
+//                            print("맨 처음 문제입니다!!!")
+//                        } else {
+//                            userOXAnswer.remove(at: userOXAnswer.count - 1)
+//                            print("user's answer: \(userOXAnswer)")
+//                            quizIndex -= 1
+//                        }
 //                    }
 //                }
+//                .navigationDestination(isPresented: $isQuizCompleted) {
+//                    QuizResultView()
+//                }
                 
-                QuizMultipleChoice(content: $testDataForQuestion[quizIndex],
-                                   choiceOne: $testDataForMultipleChoice[quizIndex][0],
-                                   choiceTwo: $testDataForMultipleChoice[quizIndex][1],
-                                   choiceThree: $testDataForMultipleChoice[quizIndex][2],
-                                   choiceFour: $testDataForMultipleChoice[quizIndex][3],
-                                   choiceFive: $testDataForMultipleChoice[quizIndex][4]) { selectedChoice in
-                    switch selectedChoice {
-                    case 1: print("1 is selected")
-                    case 2: print("2 is selected")
-                    case 3: print("3 is selected")
-                    case 4: print("4 is selected")
-                    case 5: print("5 is selected")
-                    default:
-                        print("wrong error")
+//                QuizMultipleChoice(content: $testDataForQuestion[quizIndex],
+//                                   choiceOne: $testDataForMultipleChoice[quizIndex][0],
+//                                   choiceTwo: $testDataForMultipleChoice[quizIndex][1],
+//                                   choiceThree: $testDataForMultipleChoice[quizIndex][2],
+//                                   choiceFour: $testDataForMultipleChoice[quizIndex][3],
+//                                   choiceFive: $testDataForMultipleChoice[quizIndex][4]) { result in
+//                    switch result {
+//                    case .success(let selectedChoice):
+//                        //0인 경우, 선택하지 않았음으로 틀린 답 처리
+//                        userMultipleAnswer.append(selectedChoice)
+//                        print("user's answer: \(userMultipleAnswer)")
+//                
+//                        if userMultipleAnswer.count == testDataForQuestion.count {
+//                            print("Quiz is done")
+//                            isQuizCompleted = true
+//                            quizIndex = 0
+//                            userMultipleAnswer.removeAll()
+//                        } else {
+//                            quizIndex += 1
+//                        }
+//                    case .failure(.backToPreviousQuestion):
+//                        if quizIndex == 0 {
+//                            print("맨 처음 문제입니다!!!")
+//                        } else {
+//                            userMultipleAnswer.remove(at: userMultipleAnswer.count - 1)
+//                            print("user's answer: \(userMultipleAnswer)")
+//                            quizIndex -= 1
+//                        }
+//                    }
+//                }
+//                                   .navigationDestination(isPresented: $isQuizCompleted) {
+//                                       QuizResultView()
+//                                   }
+                
+                    QuizContentShortAnswer(content: $testDataForQuestion[quizIndex]) { result in
+                        switch result {
+                        case .success(let userAnswer):
+                            self.userShortAnswer.append(userAnswer)
+                            print("user's answer: \(userShortAnswer)")
+                            
+                            if userShortAnswer.count == testDataForQuestion.count {
+                                print("Quiz is done")
+                                isQuizCompleted = true
+                                quizIndex = 0
+                                userShortAnswer.removeAll()
+                            } else {
+                                quizIndex += 1
+                            }
+                        case .failure(.backToPreviousQuestion):
+                            if quizIndex == 0 {
+                                print("맨 처음 문제입니다!!!")
+                            } else {
+                                userShortAnswer.remove(at: userShortAnswer.count - 1)
+                                print("user's answer: \(userShortAnswer)")
+                                quizIndex -= 1
+                            }
+                        }
                     }
-                    quizIndex += 1
-                    if quizIndex == testDataForQuestion.count {
-                        print("Quiz is done")
-                        quizIndex = 0
+                    .navigationDestination(isPresented: $isQuizCompleted) {
+                        QuizResultView()
                     }
-                }
-                
-                
-                
+               
             }
             .frame(maxWidth: .infinity)
             .background(Color.backgroundColor)
+            
         }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -85,6 +143,7 @@ struct QuizView: View {
                 .tint(Color.textColor)
             }
         }
+       
     }
 }
 
