@@ -268,12 +268,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		214282D12BD0FDE900EA3CC1 /* Shape */ = {
+		214282D12BD0FDE900EA3CC1 /* Design */ = {
 			isa = PBXGroup;
 			children = (
 				214282CF2BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift */,
 			);
-			path = Shape;
+			path = Design;
 			sourceTree = "<group>";
 		};
 		2167FD492BC04E2F00A45F2B /* Font */ = {
@@ -409,7 +409,7 @@
 			children = (
 				217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */,
 				21816ABC2BC595FC007E6FD6 /* Button */,
-				214282D12BD0FDE900EA3CC1 /* Shape */,
+				214282D12BD0FDE900EA3CC1 /* Design */,
 				21816ADA2BC83B92007E6FD6 /* LectureContent */,
 				2182676D2BE6833800D8C17C /* QuizContent */,
 				216F5F8C2BAB2F19008817B0 /* ContentPayload */,

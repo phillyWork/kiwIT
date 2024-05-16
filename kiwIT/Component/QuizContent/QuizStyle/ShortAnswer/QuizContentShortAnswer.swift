@@ -22,6 +22,9 @@ struct QuizContentShortAnswer: View {
     
     @FocusState private var isTextFieldFocused: Bool
     
+    var quizIndex: Int
+    var quizCount: Int
+    
     var completion: (Result<String, QuizError>) -> Void
     
     var body: some View {
@@ -33,18 +36,34 @@ struct QuizContentShortAnswer: View {
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                 
                 VStack {
+                    Spacer()
+                    
                     Text(content)
                         .multilineTextAlignment(.leading)
                         .font(.custom(Setup.FontName.notoSansBold, size: 25))
-                    TextField("정답을 입력해주세요", text: $textFieldInput)
-                        .padding()
-                        .background(Color.green)
+                        .foregroundStyle(Color.textColor)
+                    
+                    Spacer()
+                    
+                    ZStack {
+                        Rectangle()
+                            .fill(Color.shadowColor)
+                            .frame(width: Setup.Frame.quizContentShortAnswerTextFieldWidth, height: Setup.Frame.quizContentShortAnswerTextFieldHeight)
+                            .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
+                        
+                        TextField("",
+                                  text: $textFieldInput,
+                                  prompt: Text("정답을 입력해주세요")
+                            .foregroundColor(Color.textPlaceholderColor)
+                        )
+                        .frame(width: Setup.Frame.quizContentShortAnswerTextFieldWidth, height: Setup.Frame.quizContentShortAnswerTextFieldHeight)
+                        .background(Color.brandBland)
+                        .foregroundStyle(Color.black)
+                        .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
                         .focused($isTextFieldFocused)
-//                        .onSubmit {
-//                            print("isTextFieldFocused before state: \(isTextFieldFocused)")
-//                            isTextFieldFocused = false
-//                            print("isTextFieldFocused state after submit: \(isTextFieldFocused)")
-//                        }
+                    }
+                    
+                    Spacer()
                 }
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
                 .background(Color.surfaceColor)
@@ -54,21 +73,23 @@ struct QuizContentShortAnswer: View {
             .padding(.horizontal, 5)
             
             HStack {
-                Spacer()
-                Button(action: {
-                    print("Tap this button to go back to previous question")
-                    self.completion(.failure(.backToPreviousQuestion))
-                    textFieldInput = ""
-                }, label: {
-                    Text("이전으로")
-                })
+                if (quizIndex != 0) {
+                    Spacer()
+                    Button(action: {
+                        print("Tap this button to go back to previous question")
+                        self.completion(.failure(.backToPreviousQuestion))
+                        textFieldInput = ""
+                    }, label: {
+                        Text("이전으로")
+                    })
+                }
                 Spacer()
                 Button(action: {
                     print("Tap this button to move to next question")
                     self.completion(.success(textFieldInput))
                     textFieldInput = ""
                 }, label: {
-                    Text("다음으로")
+                    Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
                 })
                 Spacer()
             }

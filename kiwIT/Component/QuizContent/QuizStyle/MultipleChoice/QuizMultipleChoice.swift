@@ -21,6 +21,9 @@ struct QuizMultipleChoice: View {
     
     @State var userChoiceNumber = 0
     
+    var quizIndex: Int
+    var quizCount: Int
+    
     var completion: (Result<Int, QuizError>) -> Void
     
     var body: some View {
@@ -89,21 +92,23 @@ struct QuizMultipleChoice: View {
             }
             
             HStack {
-                Spacer()
-                Button(action: {
-                    print("Tap this button to go back to previous question")
-                    self.completion(.failure(.backToPreviousQuestion))
-                    userChoiceNumber = 0
-                }, label: {
-                    Text("이전으로")
-                })
+                if (quizIndex != 0) {
+                    Spacer()
+                    Button(action: {
+                        print("Tap this button to go back to previous question")
+                        self.completion(.failure(.backToPreviousQuestion))
+                        userChoiceNumber = 0
+                    }, label: {
+                        Text("이전으로")
+                    })
+                }
                 Spacer()
                 Button(action: {
                     print("Tap this button to move to next question")
                     self.completion(.success(userChoiceNumber))
                     userChoiceNumber = 0
                 }, label: {
-                    Text("다음으로")
+                    Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
                 })
                 Spacer()
             }

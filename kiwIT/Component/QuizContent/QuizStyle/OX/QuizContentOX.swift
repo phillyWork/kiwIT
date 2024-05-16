@@ -19,10 +19,31 @@ struct QuizContentOX: View {
     
     @Binding var content: String
     
-    @State private var chosenState = UserOXAnswerState.unchosen
+    @State private var chosenState: UserOXAnswerState
+//    @State private var chosenState = UserOXAnswerState.unchosen
+    
+    var quizIndex: Int
+    var quizCount: Int
+    
+    var previousAnswer: Bool?
     
     var completion: (Result<Bool, QuizError>) -> Void
+    
+    init(content: Binding<String>, quizIndex: Int, quizCount: Int, previous: Bool?, completion: @escaping (Result<Bool, QuizError>) -> Void) {
+        self._content = content
+        self.quizIndex = quizIndex
+        self.quizCount = quizCount
+        self.previousAnswer = previous
+        self.completion = completion
         
+        if let previousAnswer = previousAnswer {
+            print("previousAnswer from QuizView: \(previousAnswer)")
+            self._chosenState = State(initialValue: previousAnswer ? .chosenTrue : .chosenFalse)
+        } else {
+            self._chosenState = State(initialValue: .unchosen)
+        }
+    }
+    
     var body: some View {
         VStack {
             ZStack(alignment: .center) {
@@ -33,7 +54,7 @@ struct QuizContentOX: View {
                 
                 VStack {
                     Spacer()
-                    
+
                     Text(content)
                         .multilineTextAlignment(.leading)
                         .font(.custom(Setup.FontName.notoSansBold, size: 25))
@@ -43,8 +64,6 @@ struct QuizContentOX: View {
                     HStack {
                         Button(action: {
                             //O 표시 확인 및 다음 문제로 넘어가기
-                            print("O button is tapped. Move on to next!")
-//                            self.completion(true)
                             chosenState = chosenState == .chosenTrue ? .unchosen : .chosenTrue
                         }, label: {
                             QuizOXButtonLabel(buttonLabel: "O")
@@ -52,8 +71,6 @@ struct QuizContentOX: View {
                         .background(chosenState == .chosenTrue ? Color.brandColor : Color.surfaceColor)
                         Button(action: {
                             //X 표시 확인 및 다음 문제로 넘어가기
-                            print("X button is tapped. Move on to next!")
-//                            self.completion(false)
                             chosenState = chosenState == .chosenFalse ? .unchosen : .chosenFalse
                         }, label: {
                             QuizOXButtonLabel(buttonLabel: "X")
@@ -75,25 +92,28 @@ struct QuizContentOX: View {
             }
             
             HStack {
-                Spacer()
-                Button(action: {
-                    print("Tap this button to go back to previous question")
-                    self.completion(.failure(.backToPreviousQuestion))
-                    chosenState = .unchosen
-                }, label: {
-                    Text("이전으로")
-                })
+                if (quizIndex != 0) {
+                    Spacer()
+                    Button(action: {
+                        print("Tap this button to go back to previous question")
+                        self.completion(.failure(.backToPreviousQuestion))
+                        chosenState = .unchosen
+                    }, label: {
+                        Text("이전으로")
+                    })
+                }
                 Spacer()
                 Button(action: {
                     print("Tap this button to move to next question")
                     if chosenState == .unchosen {
+                        //Alert 띄우기
                         print("O, X 중 하나는 선택해야 합니다!!!")
                     } else {
                         chosenState == .chosenTrue ? self.completion(.success(true)) : self.completion(.success(false))
                         chosenState = .unchosen
                     }
                 }, label: {
-                    Text("다음으로")
+                    Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
                 })
                 Spacer()
             }

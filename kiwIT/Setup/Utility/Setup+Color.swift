@@ -19,5 +19,6 @@ extension Color {
     static let brandTintColor2 = Color(.brandTint2)
     static let errorHighlightColor = Color(.errorHighlight)
     static let textColor = Color(.text)
+    static let textPlaceholderColor = Color(.textPlaceholder)
     
 }

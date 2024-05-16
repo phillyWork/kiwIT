@@ -83,9 +83,9 @@ extension Setup {
         static let quizContentMultipleChoiceButtonWidth = quizContentItemWidth * 0.9
         static let quizContentMultipleChoiceButtonHeight = quizContentMultipleChoiceButtonWidth * 0.2
         
-        static let quizContentShortAnswerTextFieldWidth = quizContentItemWidth * 0.7
-        static let quizContentShortAnswerTextFieldHeight = quizContentShortAnswerTextFieldWidth * 0.3
-        
+        static let quizContentShortAnswerTextFieldWidth = quizContentItemWidth * 0.78
+        static let quizContentShortAnswerTextFieldHeight = quizContentShortAnswerTextFieldWidth * 0.2
+                
         static let quizContentAnswerWidth = devicePortraitWidth * 0.8
         static let quizContentAnswerHeight = quizContentAnswerWidth * 0.33
         
