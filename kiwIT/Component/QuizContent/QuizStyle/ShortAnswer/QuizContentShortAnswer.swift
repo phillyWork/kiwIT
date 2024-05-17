@@ -7,14 +7,24 @@
 
 import SwiftUI
 
-enum QuizError: Error {
-    case backToPreviousQuestion
-
-}
-
 struct QuizContentShortAnswer: View {
     
     //var quizPayload: QuizPayload
+    
+    //이전 답변 보여주기: viewModel에서 답변도 보유, 해당 답변 참조해서 이전 문항의 답변 통해 색칠하기?
+    
+    func updateHeight(height: CGFloat, fontSize: CGFloat) -> CGFloat {
+        if (fontSize <= 15) {
+            return height
+        } else if (fontSize <= 25) {
+            return height * 1.2
+        } else if (fontSize <= 50) {
+            return height * 2
+        } else {
+            return height * 3
+        }
+    }
+   
     
     @Binding var content: String
         
@@ -25,6 +35,8 @@ struct QuizContentShortAnswer: View {
     var quizIndex: Int
     var quizCount: Int
     
+    var fontSize: CGFloat
+    
     var completion: (Result<String, QuizError>) -> Void
     
     var body: some View {
@@ -32,7 +44,8 @@ struct QuizContentShortAnswer: View {
             ZStack(alignment: .center) {
                 Rectangle()
                     .fill(Color.shadowColor)
-                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
+//                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentShortAnswerItemHeight)
+                    .frame(width: Setup.Frame.quizContentItemWidth, height: updateHeight(height: Setup.Frame.quizContentShortAnswerItemHeight, fontSize: fontSize))
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                 
                 VStack {
@@ -40,7 +53,7 @@ struct QuizContentShortAnswer: View {
                     
                     Text(content)
                         .multilineTextAlignment(.leading)
-                        .font(.custom(Setup.FontName.notoSansBold, size: 25))
+                        .font(.custom(Setup.FontName.notoSansBold, size: fontSize))
                         .foregroundStyle(Color.textColor)
                     
                     Spacer()
@@ -65,7 +78,8 @@ struct QuizContentShortAnswer: View {
                     
                     Spacer()
                 }
-                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
+//                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentShortAnswerItemHeight)
+                .frame(width: Setup.Frame.quizContentItemWidth, height: updateHeight(height: Setup.Frame.quizContentShortAnswerItemHeight, fontSize: fontSize))
                 .background(Color.surfaceColor)
                 .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
             }

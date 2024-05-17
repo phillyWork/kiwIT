@@ -53,6 +53,7 @@
 		217A514E2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A514D2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift */; };
 		217B53132BA2EBA90081D418 /* Setup+ContentStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */; };
 		217B53152BA2EDE70081D418 /* SocialLoginButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */; };
+		217BA3BB2BF7903500919AEE /* QuizSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BA3BA2BF7903500919AEE /* QuizSetup.swift */; };
 		217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB32B9DE5C300B5461B /* kiwITApp.swift */; };
 		217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB52B9DE5C300B5461B /* MainTabBarView.swift */; };
 		217BCCB82B9DE5C400B5461B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCB72B9DE5C400B5461B /* Assets.xcassets */; };
@@ -168,6 +169,7 @@
 		217A514D2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkEndPointStrings.swift"; sourceTree = "<group>"; };
 		217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ContentStrings.swift"; sourceTree = "<group>"; };
 		217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonView.swift; sourceTree = "<group>"; };
+		217BA3BA2BF7903500919AEE /* QuizSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetup.swift; sourceTree = "<group>"; };
 		217BCCB02B9DE5C300B5461B /* kiwIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kiwIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		217BCCB32B9DE5C300B5461B /* kiwITApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITApp.swift; sourceTree = "<group>"; };
 		217BCCB52B9DE5C300B5461B /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
@@ -525,6 +527,7 @@
 		217E55A82BB1C39C0014B46E /* Quiz */ = {
 			isa = PBXGroup;
 			children = (
+				217BA3BA2BF7903500919AEE /* QuizSetup.swift */,
 			);
 			path = Quiz;
 			sourceTree = "<group>";
@@ -883,6 +886,7 @@
 				217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */,
 				21816ADC2BC83BBE007E6FD6 /* ContentExpandableChapterItemView.swift in Sources */,
 				2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */,
+				217BA3BB2BF7903500919AEE /* QuizSetup.swift in Sources */,
 				217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */,
 				218267742BE68A6F00D8C17C /* QuizResultViewModel.swift in Sources */,
 				217A514E2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift in Sources */,
