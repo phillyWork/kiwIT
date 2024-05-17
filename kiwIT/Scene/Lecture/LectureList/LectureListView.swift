@@ -25,7 +25,7 @@ struct LectureListView: View {
     //e.g.) 임시 테스트 데이터
     let items: [TestData2] = [
         TestData2(title: "모두 컴퓨터에요", number: 0, subItems: [
-            SectionData(title: "왜 배우려고 하나요", number: 0),
+            SectionData(title: "왜 배우려고 하나d요요 이건 테스트입니다 하하하하하하하하하하하하하하dfdfdfddfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdasdasdfasdfasdfasdfasdfasdfasasdfasdfasdfasdfasdfasdfassdfsdfsdfsdfdfdf", number: 0),
             SectionData(title: "섹션 테스트입니다. 111", number: 1),
             SectionData(title: "섹션 테스트입니다. 222", number: 2),
             SectionData(title: "섹션 테스트입니다. 333", number: 3),
@@ -65,34 +65,44 @@ struct LectureListView: View {
     
     var body: some View {
         //Chapter에서 Toggle로 Section까지 보여주도록 설정
-        ScrollView {
-            ForEach(items, id: \.id) { item in
-                ContentExpandableChapterItemView(
-                    itemTitle: "Chapter \(item.number). \(item.title)") {
-                        ScrollView {
-                            ForEach(item.subItems, id: \.id) { section in
-                                NavigationLink {
-                                    LectureView()
-                                } label: {
-                                    ContentSectionItemView {
-                                        Text("Section \(section.number). \(section.title)")
+        NavigationStack {
+            ScrollView {
+                ForEach(items, id: \.id) { item in
+                    ContentExpandableChapterItemView(
+                        itemTitle: "Chapter \(item.number). \(item.title)") {
+                            ScrollView {
+                                ForEach(item.subItems, id: \.id) { section in
+                                    NavigationLink {
+                                        LectureView()
+                                    } label: {
+                                        VStack {
+                                            ContentSectionItemView {
+                                                Text("Section \(section.number). \(section.title)")
+                                            }
+                                            Divider()
+                                                .frame(minHeight: 1)
+                                                .background(Color.textColor)
+                                        }
+                                        .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
+                                        .padding(.vertical, 3)
                                     }
                                 }
                             }
+                            .scrollIndicators(.hidden)
+                            .frame(width: Setup.Frame.contentListItemWidth)
+                            .background(Color.brandTintColor)
+                            .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
+                            .padding(.top, 0)
                         }
-                        .scrollIndicators(.hidden)
-                        .frame(width: Setup.Frame.contentListItmeWidth)
-                        .background(Color.shadowColor)
-                        .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
-                        .padding(.top, 0)
-                    }
+                }
             }
+            .frame(width: Setup.Frame.devicePortraitWidth)
+            .frame(maxWidth: .infinity)
+            .background(Color.backgroundColor)
+            .navigationTitle("IT 교양")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
         }
-        .frame(width: Setup.Frame.devicePortraitWidth)
-        .frame(maxWidth: .infinity)
-        .background(Color.backgroundColor)
-        .navigationTitle("IT 교양")
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

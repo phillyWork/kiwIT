@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import AuthenticationServices
 
 final class SocialLoginViewModelUnitTest: XCTestCase {
 
