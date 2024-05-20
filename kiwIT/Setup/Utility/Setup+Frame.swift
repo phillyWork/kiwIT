@@ -90,7 +90,7 @@ extension Setup {
         static let quizContentAnswerButtonWidth = quizContentItemWidth * 0.4
         static let quizContentAnswerButtonHeight = quizContentAnswerButtonWidth * 0.75
         
-//        static let quizContentAnswerDetailHeight
+        static let quizContentAnswerDetailHeight = quizContentItemWidth * 0.35
         
         
         

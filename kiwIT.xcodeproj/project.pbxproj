@@ -55,6 +55,7 @@
 		217B53152BA2EDE70081D418 /* SocialLoginButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */; };
 		217BA3BB2BF7903500919AEE /* QuizSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BA3BA2BF7903500919AEE /* QuizSetup.swift */; };
 		217BAADC2BFB826C00ADAC6B /* QuizResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BAADB2BFB826C00ADAC6B /* QuizResult.swift */; };
+		217BAADF2BFB892200ADAC6B /* QuizResultDetailEachQuestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BAADE2BFB892200ADAC6B /* QuizResultDetailEachQuestion.swift */; };
 		217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB32B9DE5C300B5461B /* kiwITApp.swift */; };
 		217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB52B9DE5C300B5461B /* MainTabBarView.swift */; };
 		217BCCB82B9DE5C400B5461B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCB72B9DE5C400B5461B /* Assets.xcassets */; };
@@ -172,6 +173,7 @@
 		217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonView.swift; sourceTree = "<group>"; };
 		217BA3BA2BF7903500919AEE /* QuizSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetup.swift; sourceTree = "<group>"; };
 		217BAADB2BFB826C00ADAC6B /* QuizResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResult.swift; sourceTree = "<group>"; };
+		217BAADE2BFB892200ADAC6B /* QuizResultDetailEachQuestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResultDetailEachQuestion.swift; sourceTree = "<group>"; };
 		217BCCB02B9DE5C300B5461B /* kiwIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kiwIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		217BCCB32B9DE5C300B5461B /* kiwITApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITApp.swift; sourceTree = "<group>"; };
 		217BCCB52B9DE5C300B5461B /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
@@ -425,6 +427,8 @@
 			isa = PBXGroup;
 			children = (
 				217BAADB2BFB826C00ADAC6B /* QuizResult.swift */,
+				218267752BE68A8500D8C17C /* QuizResultDetailView.swift */,
+				217BAADE2BFB892200ADAC6B /* QuizResultDetailEachQuestion.swift */,
 			);
 			path = ResultAndDetails;
 			sourceTree = "<group>";
@@ -603,7 +607,6 @@
 			children = (
 				218267732BE68A6F00D8C17C /* QuizResultViewModel.swift */,
 				218267702BE68A5C00D8C17C /* QuizResultView.swift */,
-				218267752BE68A8500D8C17C /* QuizResultDetailView.swift */,
 			);
 			path = QuizResult;
 			sourceTree = "<group>";
@@ -934,6 +937,7 @@
 				2173C0582BA0917100FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				217DFD322BEB7A5400C4ADC9 /* LectureLevelList.swift in Sources */,
 				217A51432BAECD5D0052A07E /* SignIn.swift in Sources */,
+				217BAADF2BFB892200ADAC6B /* QuizResultDetailEachQuestion.swift in Sources */,
 				2173C04A2BA0901600FDD3D9 /* SocialLoginView.swift in Sources */,
 				2170E7552BBC6873002A1DA6 /* Setup+Color.swift in Sources */,
 				217D59432BA9C22C005AE418 /* LectureView.swift in Sources */,

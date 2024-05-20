@@ -74,7 +74,8 @@ struct QuizResult: View {
             }
             .popover(isPresented: $isDetailButtonTapped) {
                 //상세 결과 보여주기 위한 View 및 데이터 전달하기
-                Text("상세 화면입니다")
+               
+                QuizResultDetailView()
                 
             }
 
