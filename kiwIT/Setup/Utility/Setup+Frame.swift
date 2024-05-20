@@ -86,8 +86,11 @@ extension Setup {
         static let quizContentShortAnswerTextFieldWidth = quizContentItemWidth * 0.78
         static let quizContentShortAnswerTextFieldHeight = quizContentShortAnswerTextFieldWidth * 0.2
                 
-        static let quizContentAnswerWidth = devicePortraitWidth * 0.8
-        static let quizContentAnswerHeight = quizContentAnswerWidth * 0.33
+        static let quizContentAnswerHeight = quizContentItemWidth * 1.2
+        static let quizContentAnswerButtonWidth = quizContentItemWidth * 0.4
+        static let quizContentAnswerButtonHeight = quizContentAnswerButtonWidth * 0.75
+        
+//        static let quizContentAnswerDetailHeight
         
         
         

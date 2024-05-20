@@ -54,6 +54,7 @@
 		217B53132BA2EBA90081D418 /* Setup+ContentStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */; };
 		217B53152BA2EDE70081D418 /* SocialLoginButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */; };
 		217BA3BB2BF7903500919AEE /* QuizSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BA3BA2BF7903500919AEE /* QuizSetup.swift */; };
+		217BAADC2BFB826C00ADAC6B /* QuizResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BAADB2BFB826C00ADAC6B /* QuizResult.swift */; };
 		217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB32B9DE5C300B5461B /* kiwITApp.swift */; };
 		217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCB52B9DE5C300B5461B /* MainTabBarView.swift */; };
 		217BCCB82B9DE5C400B5461B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 217BCCB72B9DE5C400B5461B /* Assets.xcassets */; };
@@ -170,6 +171,7 @@
 		217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ContentStrings.swift"; sourceTree = "<group>"; };
 		217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonView.swift; sourceTree = "<group>"; };
 		217BA3BA2BF7903500919AEE /* QuizSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizSetup.swift; sourceTree = "<group>"; };
+		217BAADB2BFB826C00ADAC6B /* QuizResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizResult.swift; sourceTree = "<group>"; };
 		217BCCB02B9DE5C300B5461B /* kiwIT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kiwIT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		217BCCB32B9DE5C300B5461B /* kiwITApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = kiwITApp.swift; sourceTree = "<group>"; };
 		217BCCB52B9DE5C300B5461B /* MainTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarView.swift; sourceTree = "<group>"; };
@@ -305,14 +307,14 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
-		216F5F8C2BAB2F19008817B0 /* ContentPayload */ = {
+		216F5F8C2BAB2F19008817B0 /* LectureContentPayload */ = {
 			isa = PBXGroup;
 			children = (
 				21816ABD2BC81BE5007E6FD6 /* ContentSectionTitleView.swift */,
 				216F5F8A2BAB2F15008817B0 /* ContentTextView.swift */,
 				21816AD52BC82DB4007E6FD6 /* ContentImage */,
 			);
-			path = ContentPayload;
+			path = LectureContentPayload;
 			sourceTree = "<group>";
 		};
 		216F5F8D2BAB3018008817B0 /* Network */ = {
@@ -414,9 +416,17 @@
 				214282D12BD0FDE900EA3CC1 /* Design */,
 				21816ADA2BC83B92007E6FD6 /* LectureContent */,
 				2182676D2BE6833800D8C17C /* QuizContent */,
-				216F5F8C2BAB2F19008817B0 /* ContentPayload */,
+				216F5F8C2BAB2F19008817B0 /* LectureContentPayload */,
 			);
 			path = Component;
+			sourceTree = "<group>";
+		};
+		217BAADD2BFB826F00ADAC6B /* ResultAndDetails */ = {
+			isa = PBXGroup;
+			children = (
+				217BAADB2BFB826C00ADAC6B /* QuizResult.swift */,
+			);
+			path = ResultAndDetails;
 			sourceTree = "<group>";
 		};
 		217BCCA72B9DE5C300B5461B = {
@@ -583,6 +593,7 @@
 			children = (
 				2182676B2BE6831C00D8C17C /* QuizListItemView.swift */,
 				2189BC3B2BF24D35007CC766 /* QuizStyle */,
+				217BAADD2BFB826F00ADAC6B /* ResultAndDetails */,
 			);
 			path = QuizContent;
 			sourceTree = "<group>";
@@ -888,6 +899,7 @@
 				2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */,
 				217BA3BB2BF7903500919AEE /* QuizSetup.swift in Sources */,
 				217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */,
+				217BAADC2BFB826C00ADAC6B /* QuizResult.swift in Sources */,
 				218267742BE68A6F00D8C17C /* QuizResultViewModel.swift in Sources */,
 				217A514E2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift in Sources */,
 				217D593F2BA9C208005AE418 /* LectureViewModel.swift in Sources */,
