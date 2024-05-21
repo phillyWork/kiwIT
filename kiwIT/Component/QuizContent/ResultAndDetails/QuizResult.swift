@@ -7,14 +7,46 @@
 
 import SwiftUI
 
+// OX 퀴즈만 전제
+
+struct QuizOXResultModel: Identifiable {
+    
+    //identifiable 목적
+    var id = UUID()
+    
+    var question: String
+    var submittedAnswer: Bool
+    var answer: Bool
+}
+
 struct QuizResult: View {
+    
+    func gradeScore(submitted: [Bool], answers: [Bool]) -> Double {
+        print("submitted: \(submitted)")
+        print("answers: \(answers)")
+        var correctCount = 0
+        for i in 0..<submitted.count {
+            if submitted[i] == answers[i] {
+                correctCount += 1
+            }
+        }
+        return Double(correctCount) / Double(submitted.count) * 100
+    }
+    
+    func createDetailQuizResultModel(questions: [String], submitted: [Bool], answers: [Bool]) -> [QuizOXResultModel] {
+        var model = [QuizOXResultModel]()
+        for i in 0..<questions.count {
+            model.append(QuizOXResultModel(question: questions[i], submittedAnswer: submitted[i], answer: answers[i]))
+        }
+        return model
+    }
 
 //    var quizResult: QuizResultModel
     
-//    var questions: [String]
-//    var answers: [String]
-//    var result: [String]
-    
+    var questions: [String]
+    var submittedAnswers: [Bool]
+    var answers: [Bool]
+ 
     @State private var isDetailButtonTapped = false
     
     var body: some View {
@@ -34,6 +66,8 @@ struct QuizResult: View {
                         .font(.custom(Setup.FontName.notoSansBold, size: 12))
                     
                     Spacer()
+                    
+                    Text("점수: \(String(format: "%.2f", gradeScore(submitted: submittedAnswers, answers: answers)))")
                     
                 }
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerHeight)
@@ -74,15 +108,13 @@ struct QuizResult: View {
             }
             .popover(isPresented: $isDetailButtonTapped) {
                 //상세 결과 보여주기 위한 View 및 데이터 전달하기
-               
-                QuizResultDetailView()
-                
+                QuizResultDetailView(quizOXResultExample: createDetailQuizResultModel(questions: questions, submitted: submittedAnswers, answers: answers))
             }
 
         }
     }
 }
 
-#Preview {
-    QuizResult()
-}
+//#Preview {
+//   QuizResult(questions: <#T##[String]#>, submittedAnswers: <#T##[Bool]#>, answers: <#T##[Bool]#>)
+//}

@@ -13,8 +13,10 @@ struct QuizResultDetailEachQuestion: View {
   
     //해설까지 같이 전달받을 수도 있음
     
+    //문제 형식 따른 답변 형식도 설정 필요...
+    
     //OX 가정
-    var quizIndex: Int
+//    var quizIndex: Int
     var question: String
     var submittedAnswer: Bool
     var answer: Bool
@@ -23,19 +25,30 @@ struct QuizResultDetailEachQuestion: View {
         ZStack(alignment: .center) {
             
             Rectangle()
-                .fill(Color.shadowColor)
+                .fill(answer == submittedAnswer ? Color.brandBlandColor : Color.errorHighlightColor)
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
             
-            HStack {
-                
-                Text("Test 결과입니다")
+            VStack {
+//                Text("\(quizIndex + 1). \(question)")
+                Text(question)
                     .multilineTextAlignment(.leading)
-                    .font(.custom(Setup.FontName.notoSansBold, size: 12))
-                
+                    .font(.custom(Setup.FontName.notoSansBold, size: 25))
+                HStack {
+                    Text("제출 답안: \(submittedAnswer ? "O" : "X")")
+                        .font(.custom(Setup.FontName.lineThin, size: 15))
+                        .foregroundStyle(Color.textColor)
+                    Divider()
+                        .frame(maxHeight: 10)
+                        .background(Color.textColor)
+                    Text("실제 답안: \(answer ? "O" : "X")")
+                        .font(.custom(Setup.FontName.lineThin, size: 15))
+                        .foregroundStyle(Color.textColor)
+                        .underline(submittedAnswer != answer, color: Color.errorHighlightColor)
+                }
             }
             .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
-            .background(answer == submittedAnswer ? Color.brandBlandColor : Color.errorHighlightColor)
+            .background(Color.surfaceColor)
             .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
         }
         .padding(.vertical, 8)
@@ -44,5 +57,5 @@ struct QuizResultDetailEachQuestion: View {
 }
 
 #Preview {
-    QuizResultDetailEachQuestion(quizIndex: 0, question: "OS는 운영체제이다", submittedAnswer: true, answer: true)
+    QuizResultDetailEachQuestion(question: "OS는 운영체제이다", submittedAnswer: false, answer: true)
 }

@@ -41,6 +41,8 @@ struct QuizView: View {
     
     @State private var isPopOverPresented = false
     
+    private let answerForOXExample = [true, false, true, true, true]
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -49,43 +51,43 @@ struct QuizView: View {
                 
                 //퀴즈 폰트: LectureView에서 적용한 폰트 슬라이더 활용, 폰트 크기도 같이 전달하기
                                 
-//                QuizContentOX(content: $testDataForQuestion[quizIndex],
-//                              quizIndex: quizIndex, 
-//                              quizCount: testDataForQuestion.count,
-//                              fontSize: fontSize) { result in
-//                    switch result {
-//                    case .success(let answer):
-//                        userOXAnswer.append(answer)
-//                                                
-//                        print("user's answer: \(userOXAnswer)")
-//                        if userOXAnswer.count == testDataForQuestion.count {
-//                            //ViewModel로 정답 전달하기 (혹은 같은 ViewModel 활용 시, 다음 View로 넘어가기)
-//                            isQuizCompleted = true
-//                            
-//                            quizIndex = 0
-//                            userOXAnswer.removeAll()
-//                            print("Quiz is done")
-//                            
-//                        } else {
-//                            quizIndex += 1
-//                        }
-//                    case .failure(.backToPreviousQuestion):
-//                        if quizIndex == 0 {
-//                            //Alert로 나타내기
-//                            print("맨 처음 문제입니다!!!")
-//                        } else {
-//                            print("user's answer: \(userOXAnswer)")
-//                            quizIndex -= 1
-//                            userOXAnswer.remove(at: userOXAnswer.count - 1)
-//                            
-//                            //향후 이전 답변 보여줄 경우, 답변 삭제보단 Index-1에서의 답변 확보 및 기존 답변을 새로운 답변으로 대체하는 식의 구성이 필요해보임
-//                            
-//                        }
-//                    }
-//                }
-//                .navigationDestination(isPresented: $isQuizCompleted) {
-//                    QuizResultView()
-//                }
+                QuizContentOX(content: $testDataForQuestion[quizIndex],
+                              quizIndex: quizIndex, 
+                              quizCount: testDataForQuestion.count,
+                              fontSize: fontSize) { result in
+                    switch result {
+                    case .success(let answer):
+                        userOXAnswer.append(answer)
+                                                
+                        print("user's answer: \(userOXAnswer)")
+                        if userOXAnswer.count == testDataForQuestion.count {
+                            //ViewModel로 정답 전달하기 (혹은 같은 ViewModel 활용 시, 다음 View로 넘어가기)
+                            isQuizCompleted = true
+                            
+                            quizIndex = 0
+                            userOXAnswer.removeAll()
+                            print("Quiz is done")
+                            
+                        } else {
+                            quizIndex += 1
+                        }
+                    case .failure(.backToPreviousQuestion):
+                        if quizIndex == 0 {
+                            //Alert로 나타내기
+                            print("맨 처음 문제입니다!!!")
+                        } else {
+                            print("user's answer: \(userOXAnswer)")
+                            quizIndex -= 1
+                            userOXAnswer.remove(at: userOXAnswer.count - 1)
+                            
+                            //향후 이전 답변 보여줄 경우, 답변 삭제보단 Index-1에서의 답변 확보 및 기존 답변을 새로운 답변으로 대체하는 식의 구성이 필요해보임
+                            
+                        }
+                    }
+                }
+                .navigationDestination(isPresented: $isQuizCompleted) {
+                    QuizResultView(testDataForQuestion: testDataForQuestion, userOXAnswer: userOXAnswer, answers: answerForOXExample)
+                }
                 
 //                QuizMultipleChoice(content: $testDataForQuestion[quizIndex],
 //                                   choiceOne: $testDataForMultipleChoice[quizIndex][0],
@@ -131,43 +133,43 @@ struct QuizView: View {
 //                                       QuizResultView()
 //                                   }
                 
-                    QuizContentShortAnswer(content: $testDataForQuestion[quizIndex],
-                                           quizIndex: quizIndex,
-                                           quizCount: testDataForQuestion.count,
-                                           fontSize: fontSize) { result in
-                        switch result {
-                        case .success(let userAnswer):
-                            self.userShortAnswer.append(userAnswer)
-                            print("user's answer: \(userShortAnswer)")
-                            
-                            if userShortAnswer.count == testDataForQuestion.count {
-                                
-                                //ViewModel로 정답 전달하기 (혹은 같은 ViewModel 활용 시, 다음 View로 넘어가기)
-                                isQuizCompleted = true
-
-                                quizIndex = 0
-                                userShortAnswer.removeAll()
-                                print("Quiz is done")
-                                
-                            } else {
-                                quizIndex += 1
-                            }
-                        case .failure(.backToPreviousQuestion):
-                            if quizIndex == 0 {
-                                //Alert로 나타내기
-                                print("맨 처음 문제입니다!!!")
-                            } else {
-                                print("user's answer: \(userShortAnswer)")
-                                quizIndex -= 1
-                                userShortAnswer.remove(at: userShortAnswer.count - 1)
-                                
-                                //향후 이전 답변 보여줄 경우, 답변 삭제보단 Index-1에서의 답변 확보 및 기존 답변을 새로운 답변으로 대체하는 식의 구성이 필요해보임
-                            }
-                        }
-                    }
-                    .navigationDestination(isPresented: $isQuizCompleted) {
-                        QuizResultView()
-                    }
+//                    QuizContentShortAnswer(content: $testDataForQuestion[quizIndex],
+//                                           quizIndex: quizIndex,
+//                                           quizCount: testDataForQuestion.count,
+//                                           fontSize: fontSize) { result in
+//                        switch result {
+//                        case .success(let userAnswer):
+//                            self.userShortAnswer.append(userAnswer)
+//                            print("user's answer: \(userShortAnswer)")
+//                            
+//                            if userShortAnswer.count == testDataForQuestion.count {
+//                                
+//                                //ViewModel로 정답 전달하기 (혹은 같은 ViewModel 활용 시, 다음 View로 넘어가기)
+//                                isQuizCompleted = true
+//
+//                                quizIndex = 0
+//                                userShortAnswer.removeAll()
+//                                print("Quiz is done")
+//                                
+//                            } else {
+//                                quizIndex += 1
+//                            }
+//                        case .failure(.backToPreviousQuestion):
+//                            if quizIndex == 0 {
+//                                //Alert로 나타내기
+//                                print("맨 처음 문제입니다!!!")
+//                            } else {
+//                                print("user's answer: \(userShortAnswer)")
+//                                quizIndex -= 1
+//                                userShortAnswer.remove(at: userShortAnswer.count - 1)
+//                                
+//                                //향후 이전 답변 보여줄 경우, 답변 삭제보단 Index-1에서의 답변 확보 및 기존 답변을 새로운 답변으로 대체하는 식의 구성이 필요해보임
+//                            }
+//                        }
+//                    }
+//                    .navigationDestination(isPresented: $isQuizCompleted) {
+//                        QuizResultView()
+//                    }
                 
             }
             .frame(maxWidth: .infinity)
