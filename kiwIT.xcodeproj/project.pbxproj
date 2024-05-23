@@ -106,6 +106,7 @@
 		218267742BE68A6F00D8C17C /* QuizResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218267732BE68A6F00D8C17C /* QuizResultViewModel.swift */; };
 		218267762BE68A8500D8C17C /* QuizResultDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218267752BE68A8500D8C17C /* QuizResultDetailView.swift */; };
 		218323862BEA6E1600FB79B5 /* QuizContentOX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218323852BEA6E1600FB79B5 /* QuizContentOX.swift */; };
+		21882D672BFF974F0018E51E /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = 21882D662BFF974F0018E51E /* NavigationTransitions */; };
 		2189BC382BF24D05007CC766 /* QuizContentShortAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC372BF24D05007CC766 /* QuizContentShortAnswer.swift */; };
 		2189BC3A2BF24D30007CC766 /* QuizMultipleChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC392BF24D30007CC766 /* QuizMultipleChoice.swift */; };
 		2189BC3D2BF250AD007CC766 /* QuizOXButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC3C2BF250AD007CC766 /* QuizOXButtonLabel.swift */; };
@@ -249,6 +250,7 @@
 				2170E74A2BBAF00A002A1DA6 /* KakaoSDKUser in Frameworks */,
 				217A51382BAECB3F0052A07E /* Alamofire in Frameworks */,
 				2170E7462BBAF00A002A1DA6 /* KakaoSDK in Frameworks */,
+				21882D672BFF974F0018E51E /* NavigationTransitions in Frameworks */,
 				2170E7482BBAF00A002A1DA6 /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -746,6 +748,7 @@
 				2170E7452BBAF00A002A1DA6 /* KakaoSDK */,
 				2170E7472BBAF00A002A1DA6 /* KakaoSDKAuth */,
 				2170E7492BBAF00A002A1DA6 /* KakaoSDKUser */,
+				21882D662BFF974F0018E51E /* NavigationTransitions */,
 			);
 			productName = kiwIT;
 			productReference = 217BCCB02B9DE5C300B5461B /* kiwIT.app */;
@@ -828,6 +831,7 @@
 			packageReferences = (
 				217A51362BAECB3F0052A07E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				2170E7442BBAF00A002A1DA6 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
+				21882D652BFF974F0018E51E /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
 			);
 			productRefGroup = 217BCCB12B9DE5C300B5461B /* Products */;
 			projectDirPath = "";
@@ -1336,6 +1340,14 @@
 				minimumVersion = 5.9.0;
 			};
 		};
+		21882D652BFF974F0018E51E /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/davdroman/swiftui-navigation-transitions.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.13.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1378,6 +1390,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 217A51362BAECB3F0052A07E /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		21882D662BFF974F0018E51E /* NavigationTransitions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 21882D652BFF974F0018E51E /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */;
+			productName = NavigationTransitions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

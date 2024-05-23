@@ -45,7 +45,9 @@ struct QuizView: View {
     
     var body: some View {
         NavigationStack {
-            ScrollView {
+            
+//            ScrollView {
+            VStack {
                 
                 //MARK: - 수정 고려사항
                 
@@ -64,8 +66,8 @@ struct QuizView: View {
                             //ViewModel로 정답 전달하기 (혹은 같은 ViewModel 활용 시, 다음 View로 넘어가기)
                             isQuizCompleted = true
                             
-                            quizIndex = 0
-                            userOXAnswer.removeAll()
+//                            quizIndex = 0
+//                            userOXAnswer.removeAll()
                             print("Quiz is done")
                             
                         } else {
@@ -86,6 +88,9 @@ struct QuizView: View {
                     }
                 }
                 .navigationDestination(isPresented: $isQuizCompleted) {
+                    
+                    //MARK: - 중간에 계산 중 화면 (빈 화면이라도) 만들고 거기서 다시 QuizResultView로 이동할 것
+                    
                     QuizResultView(testDataForQuestion: testDataForQuestion, userOXAnswer: userOXAnswer, answers: answerForOXExample)
                 }
                 
@@ -172,10 +177,12 @@ struct QuizView: View {
 //                    }
                 
             }
-            .frame(maxWidth: .infinity)
+//            .frame(maxWidth: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.backgroundColor)
             
         }
+//        .refreshable { print("to disable pull to refresh in ") }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -216,7 +223,7 @@ struct QuizView: View {
                 })
             }
         }
-       
+        
     }
 }
 

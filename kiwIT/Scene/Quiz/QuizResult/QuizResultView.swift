@@ -22,8 +22,12 @@ struct QuizResultView: View {
     
     var body: some View {
         NavigationStack {
-            QuizResult(questions: testDataForQuestion, submittedAnswers: userOXAnswer, answers: answers)
-                .navigationBarBackButtonHidden()
+            LazyVStack {
+                QuizResult(questions: testDataForQuestion, submittedAnswers: userOXAnswer, answers: answers)
+            }
+            .frame(maxHeight: .infinity)
+            .background(Color.backgroundColor)
+            .navigationBarBackButtonHidden()
         }
     }
 }

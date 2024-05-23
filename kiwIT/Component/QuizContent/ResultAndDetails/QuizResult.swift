@@ -8,7 +8,6 @@
 import SwiftUI
 
 // OX 퀴즈만 전제
-
 struct QuizOXResultModel: Identifiable {
     
     //identifiable 목적
@@ -19,28 +18,33 @@ struct QuizOXResultModel: Identifiable {
     var answer: Bool
 }
 
+func gradeScore(submitted: [Bool], answers: [Bool]) -> Double {
+    print("submitted: \(submitted)")
+    print("answers: \(answers)")
+    var correctCount = 0
+    for i in 0..<submitted.count {
+        if submitted[i] == answers[i] {
+            correctCount += 1
+        }
+    }
+    return Double(correctCount) / Double(submitted.count) * 100
+}
+
+func createDetailQuizResultModel(questions: [String], submitted: [Bool], answers: [Bool]) -> [QuizOXResultModel] {
+    var model = [QuizOXResultModel]()
+    print("questions count: \(questions.count)")
+    print("submitted count: \(submitted.count)")
+    print("answers count: \(answers.count)")
+
+    for i in 0..<questions.count {
+        model.append(QuizOXResultModel(question: questions[i], submittedAnswer: submitted[i], answer: answers[i]))
+    }
+    print("created model for each question result: \(model)")
+    return model
+}
+
 struct QuizResult: View {
     
-    func gradeScore(submitted: [Bool], answers: [Bool]) -> Double {
-        print("submitted: \(submitted)")
-        print("answers: \(answers)")
-        var correctCount = 0
-        for i in 0..<submitted.count {
-            if submitted[i] == answers[i] {
-                correctCount += 1
-            }
-        }
-        return Double(correctCount) / Double(submitted.count) * 100
-    }
-    
-    func createDetailQuizResultModel(questions: [String], submitted: [Bool], answers: [Bool]) -> [QuizOXResultModel] {
-        var model = [QuizOXResultModel]()
-        for i in 0..<questions.count {
-            model.append(QuizOXResultModel(question: questions[i], submittedAnswer: submitted[i], answer: answers[i]))
-        }
-        return model
-    }
-
 //    var quizResult: QuizResultModel
     
     var questions: [String]
@@ -69,6 +73,7 @@ struct QuizResult: View {
                     
                     Text("점수: \(String(format: "%.2f", gradeScore(submitted: submittedAnswers, answers: answers)))")
                     
+                    Spacer()
                 }
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerHeight)
                 .background(Color.surfaceColor)
@@ -106,10 +111,15 @@ struct QuizResult: View {
                 
                 Spacer()
             }
-            .popover(isPresented: $isDetailButtonTapped) {
+            .fullScreenCover(isPresented: $isDetailButtonTapped, content: {
                 //상세 결과 보여주기 위한 View 및 데이터 전달하기
                 QuizResultDetailView(quizOXResultExample: createDetailQuizResultModel(questions: questions, submitted: submittedAnswers, answers: answers))
-            }
+                    .presentationBackground(.thickMaterial)
+            })
+//            .popover(isPresented: $isDetailButtonTapped) {
+//                //상세 결과 보여주기 위한 View 및 데이터 전달하기
+//                QuizResultDetailView(quizOXResultExample: createDetailQuizResultModel(questions: questions, submitted: submittedAnswers, answers: answers))
+//            }
 
         }
     }

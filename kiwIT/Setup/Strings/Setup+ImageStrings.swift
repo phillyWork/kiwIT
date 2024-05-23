@@ -22,6 +22,7 @@ extension Setup {
         static let defaultQuiz2 = "pencil.and.list.clipboard"
         static let defaultAiInterview2 = "server.rack"
         
+        static let defaultCheckMark = "checkmark"
         static let defaultXMark = "xmark"
         static let defaultXMark2 = "xmark.square"
         

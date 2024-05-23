@@ -25,31 +25,39 @@ struct QuizResultDetailEachQuestion: View {
         ZStack(alignment: .center) {
             
             Rectangle()
-                .fill(answer == submittedAnswer ? Color.brandBlandColor : Color.errorHighlightColor)
+                .fill(Color.shadowColor)
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
             
-            VStack {
-//                Text("\(quizIndex + 1). \(question)")
-                Text(question)
-                    .multilineTextAlignment(.leading)
-                    .font(.custom(Setup.FontName.notoSansBold, size: 25))
-                HStack {
-                    Text("제출 답안: \(submittedAnswer ? "O" : "X")")
-                        .font(.custom(Setup.FontName.lineThin, size: 15))
-                        .foregroundStyle(Color.textColor)
-                    Divider()
-                        .frame(maxHeight: 10)
-                        .background(Color.textColor)
-                    Text("실제 답안: \(answer ? "O" : "X")")
-                        .font(.custom(Setup.FontName.lineThin, size: 15))
-                        .foregroundStyle(Color.textColor)
-                        .underline(submittedAnswer != answer, color: Color.errorHighlightColor)
+            HStack {
+                Image(systemName: answer == submittedAnswer ? Setup.ImageStrings.defaultCheckMark : Setup.ImageStrings.defaultXMark)
+                    .resizable()
+                    .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
+                    .foregroundStyle(answer == submittedAnswer ? Color.brandBlandColor : Color.errorHighlightColor)
+                
+                VStack {
+    //                Text("\(quizIndex + 1). \(question)")
+                    Text(question)
+                        .multilineTextAlignment(.leading)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 25))
+                    HStack {
+                        Text("제출 답안: \(submittedAnswer ? "O" : "X")")
+                            .font(.custom(Setup.FontName.lineRegular, size: 15))
+                            .foregroundStyle(Color.textColor)
+                        Divider()
+                            .frame(maxHeight: 10)
+                            .background(Color.textColor)
+                        Text("실제 답안: \(answer ? "O" : "X")")
+                            .font(.custom(Setup.FontName.lineRegular, size: 15))
+                            .foregroundStyle(Color.textColor)
+                    }
                 }
+                .padding()
             }
             .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
             .background(Color.surfaceColor)
             .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
+
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 5)
