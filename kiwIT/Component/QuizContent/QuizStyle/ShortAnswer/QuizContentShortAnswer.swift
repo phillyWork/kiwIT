@@ -13,19 +13,6 @@ struct QuizContentShortAnswer: View {
     
     //이전 답변 보여주기: viewModel에서 답변도 보유, 해당 답변 참조해서 이전 문항의 답변 통해 색칠하기?
     
-    func updateHeight(height: CGFloat, fontSize: CGFloat) -> CGFloat {
-        if (fontSize <= 15) {
-            return height
-        } else if (fontSize <= 25) {
-            return height * 1.2
-        } else if (fontSize <= 50) {
-            return height * 2
-        } else {
-            return height * 3
-        }
-    }
-   
-    
     @Binding var content: String
         
     @State var textFieldInput = ""
@@ -35,8 +22,6 @@ struct QuizContentShortAnswer: View {
     var quizIndex: Int
     var quizCount: Int
     
-    var fontSize: CGFloat
-    
     var completion: (Result<String, QuizError>) -> Void
     
     var body: some View {
@@ -44,8 +29,7 @@ struct QuizContentShortAnswer: View {
             ZStack(alignment: .center) {
                 Rectangle()
                     .fill(Color.shadowColor)
-//                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentShortAnswerItemHeight)
-                    .frame(width: Setup.Frame.quizContentItemWidth, height: updateHeight(height: Setup.Frame.quizContentShortAnswerItemHeight, fontSize: fontSize))
+                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentShortAnswerItemHeight)
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                 
                 VStack {
@@ -53,7 +37,7 @@ struct QuizContentShortAnswer: View {
                     
                     Text(content)
                         .multilineTextAlignment(.leading)
-                        .font(.custom(Setup.FontName.notoSansBold, size: fontSize))
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .foregroundStyle(Color.textColor)
                     
                     Spacer()
@@ -70,7 +54,7 @@ struct QuizContentShortAnswer: View {
                             .foregroundColor(Color.textPlaceholderColor)
                         )
                         .frame(width: Setup.Frame.quizContentShortAnswerTextFieldWidth, height: Setup.Frame.quizContentShortAnswerTextFieldHeight)
-                        .background(Color.brandBland)
+                        .background(Color.brandBlandColor)
                         .foregroundStyle(Color.black)
                         .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
                         .focused($isTextFieldFocused)
@@ -78,8 +62,7 @@ struct QuizContentShortAnswer: View {
                     
                     Spacer()
                 }
-//                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentShortAnswerItemHeight)
-                .frame(width: Setup.Frame.quizContentItemWidth, height: updateHeight(height: Setup.Frame.quizContentShortAnswerItemHeight, fontSize: fontSize))
+                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentShortAnswerItemHeight)
                 .background(Color.surfaceColor)
                 .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
             }

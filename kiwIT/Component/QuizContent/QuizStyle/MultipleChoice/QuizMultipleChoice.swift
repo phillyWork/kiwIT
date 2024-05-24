@@ -12,20 +12,7 @@ struct QuizMultipleChoice: View {
     //var quizPayload: QuizPayload
     
     //이전 답변 보여주기: viewModel에서 답변도 보유, 해당 답변 참조해서 이전 문항의 답변 통해 색칠하기?
-    
-    func updateHeight(height: CGFloat, fontSize: CGFloat) -> CGFloat {
-        if (fontSize <= 15) {
-            return height
-        } else if (fontSize <= 25) {
-            return height * 1.2
-        } else if (fontSize <= 50) {
-            return height * 2
-        } else {
-            return height * 3
-        }
-    }
    
-    
     @Binding var content: String
     
     @Binding var choiceOne: String
@@ -39,8 +26,6 @@ struct QuizMultipleChoice: View {
     var quizIndex: Int
     var quizCount: Int
     
-    var fontSize: CGFloat
-    
     var completion: (Result<Int, QuizError>) -> Void
     
     var body: some View {
@@ -49,14 +34,13 @@ struct QuizMultipleChoice: View {
                 ZStack(alignment: .center) {
                 Rectangle()
                     .fill(Color.shadowColor)
-//                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
-                    .frame(width: Setup.Frame.quizContentItemWidth, height: updateHeight(height: Setup.Frame.quizContentMultipleChoiceItemHeight, fontSize: fontSize))
+                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                 
                 VStack {
                     Text(content)
                         .multilineTextAlignment(.leading)
-                        .font(.custom(Setup.FontName.notoSansBold, size: fontSize))
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
                     VStack {
                         Button(action: {
                             userChoiceNumber = userChoiceNumber == 1 ? 0 : 1
@@ -90,8 +74,7 @@ struct QuizMultipleChoice: View {
                         .background(userChoiceNumber == 5 ? Color.brandColor : Color.surfaceColor)
                     }
                 }
-//                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
-                .frame(width: Setup.Frame.quizContentItemWidth, height: updateHeight(height: Setup.Frame.quizContentMultipleChoiceItemHeight, fontSize: fontSize))
+                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
                 .background(Color.surfaceColor)
                 .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
             }

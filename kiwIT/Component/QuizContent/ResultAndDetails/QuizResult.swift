@@ -25,8 +25,6 @@ struct QuizOXResultModel: Identifiable {
 }
 
 func gradeScore(submitted: [Bool], answers: [Bool]) -> Double {
-    print("submitted: \(submitted)")
-    print("answers: \(answers)")
     var correctCount = 0
     for i in 0..<submitted.count {
         if submitted[i] == answers[i] {
@@ -105,7 +103,6 @@ struct QuizResult: View {
                 Spacer()
                 
                 Button(action: {
-                    print("Take Quiz Again!!!")
                     completion(.takeQuizAgain)
                 }, label: {
                     Text("다시 풀기")
@@ -113,7 +110,6 @@ struct QuizResult: View {
                 Spacer()
                 
                 Button(action: {
-                    print("Show Details of Quiz Answer")
                     isDetailButtonTapped = true
                 }, label: {
                     Text("상세 보기")
@@ -122,7 +118,6 @@ struct QuizResult: View {
                 Spacer()
                 
                 Button(action: {
-                    print("Confirm Result and Go Back to Quiz List View")
                     completion(.confirmToMoveToQuizList)
                 }, label: {
                     Text("확인 완료")
@@ -135,11 +130,6 @@ struct QuizResult: View {
                 QuizResultDetailView(quizOXResultExample: createDetailQuizResultModel(questions: questions, submitted: submittedAnswers, answers: answers))
                     .presentationBackground(.thickMaterial)
             })
-//            .popover(isPresented: $isDetailButtonTapped) {
-//                //상세 결과 보여주기 위한 View 및 데이터 전달하기
-//                QuizResultDetailView(quizOXResultExample: createDetailQuizResultModel(questions: questions, submitted: submittedAnswers, answers: answers))
-//            }
-
         }
     }
 }

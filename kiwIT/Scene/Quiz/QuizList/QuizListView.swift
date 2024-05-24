@@ -9,19 +9,32 @@ import SwiftUI
 
 struct QuizListView: View {
     
-    //option 버튼으로 북마크 기능 추가 필요
+    //option 버튼으로 북마크 기능 추가 필요 및 새롭게 만들기 버튼 필요
+    
+    //To pop back to Quiz List
+//    @State private var path: [String] = []
+    @State private var path = NavigationPath()
     
     var body: some View {
         
-        NavigationStack {
+        NavigationStack(path: $path) {
             ScrollView {
                 LazyVStack(spacing: 4) {
-                    ForEach(1...50, id: \.self) { row in
-                        NavigationLink {
-                            QuizView()
-                        } label: {
+                    //Quiz payload 받아와서 개수만큼 생성, 각 quiz의 Id로 구분하기
+                    ForEach(1...5, id: \.self) { row in
+                        
+                        Button(action: {
+                            path.append("Quiz-\(row)")
+                            print("path in QuizListView: \(path)")
+                        }, label: {
                             QuizListItem(title: "기본 Quiz", ratio: 0.85)
-                        }
+                        })
+//                        .navigationDestination(for: String.self) { id in
+//                            if id.hasPrefix("Quiz-") {
+//                                QuizView(path: $path, quizID: id)
+//                            }
+//                        }
+                        
                     }
                     .frame(maxHeight: .infinity)
                 }
@@ -33,9 +46,21 @@ struct QuizListView: View {
             .navigationTitle("퀴즈")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
+            .navigationDestination(for: String.self) { id in
+                //navigationDestination shouldn't be around the destination view
+                if id.hasPrefix("Quiz-") {
+                    //퀴즈에 따라 다른 id 같이 전달 필요
+                    QuizView(path: $path, quizID: id)
+                }
+            }
+            .onAppear {
+                //update quiz result & update to server
+                
+            }
         }
         .refreshable {
             print("Refresh to update Quiz Result!!!")
+            
         }
     }
 }

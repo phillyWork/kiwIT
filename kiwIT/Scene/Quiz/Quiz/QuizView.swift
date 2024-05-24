@@ -9,7 +9,14 @@ import SwiftUI
 
 struct QuizView: View {
     
+//    @Binding var path: [String]
+    @Binding var path: NavigationPath
+    var quizID: String
+    
     @Environment(\.dismiss) var dismiss
+    
+    //Quiz Payload는 Binding으로 하고, Answer만 State로 처리하면 될 것으로 보임...
+    
     
     @State private var testDataForQuestion = ["첫번째 문제입니다", "두번째 문제입니다", "세번째 문제입니다", "네번째 문제입니다", "다섯번째 문제입니다"]
     @State private var quizIndex = 0
@@ -34,41 +41,40 @@ struct QuizView: View {
     
     //Payload 종류에 따른 View 나타내기 판단 로직 필요 (OX, 객관식, 단답형 조건 비교 필요)
     
-    
-    //userDefaults에 저장한 font size 설정 가져오기
-    //없다면 default로 14 설정
-    @State private var fontSize: CGFloat = 14
-    
     @State private var isPopOverPresented = false
     
     private let answerForOXExample = [true, false, true, true, true]
     
     var body: some View {
-        NavigationStack {
-            
+        
             //MARK: - ScrollView 계속 활용해도 가능할 듯 (refreshable disable 찾음)
             
 //            ScrollView {
             VStack {
-                                                                
                 QuizContentOX(content: $testDataForQuestion[quizIndex],
                               quizIndex: quizIndex, 
-                              quizCount: testDataForQuestion.count,
-                              fontSize: fontSize) { result in
+                              quizCount: testDataForQuestion.count) { result in
                     switch result {
                     case .success(let answer):
                         userOXAnswer.append(answer)
                                                 
                         print("user's answer: \(userOXAnswer)")
                         if userOXAnswer.count == testDataForQuestion.count {
+                            
                             //ViewModel로 정답 전달하기 (혹은 같은 ViewModel 활용 시, 다음 View로 넘어가기)
+                        
                             isQuizCompleted = true
                             
-//                            quizIndex = 0
-//                            userOXAnswer.removeAll()
+                            //pathID: Quiz의 id 포함시키기
+                            
+                            path.append("Result-\(quizID)")
+                            
+                            print("path to quiz result view: \(path)")
+                            
                             print("Quiz is done")
                             
                         } else {
+                            print("still left quizzes to take")
                             quizIndex += 1
                         }
                     case .failure(.backToPreviousQuestion):
@@ -84,12 +90,6 @@ struct QuizView: View {
                             
                         }
                     }
-                }
-                .navigationDestination(isPresented: $isQuizCompleted) {
-                    
-                    //MARK: - 중간에 계산 중 화면 (빈 화면이라도) 만들고 거기서 다시 QuizResultView로 이동할 것
-                    
-                    QuizResultView(testDataForQuestion: testDataForQuestion, userOXAnswer: userOXAnswer, answers: answerForOXExample)
                 }
                 
 //                QuizMultipleChoice(content: $testDataForQuestion[quizIndex],
@@ -132,14 +132,11 @@ struct QuizView: View {
 //                        }
 //                    }
 //                }
-//                                   .navigationDestination(isPresented: $isQuizCompleted) {
-//                                       QuizResultView()
-//                                   }
+                                  
                 
 //                    QuizContentShortAnswer(content: $testDataForQuestion[quizIndex],
 //                                           quizIndex: quizIndex,
-//                                           quizCount: testDataForQuestion.count,
-//                                           fontSize: fontSize) { result in
+//                                           quizCount: testDataForQuestion.count) { result in
 //                        switch result {
 //                        case .success(let userAnswer):
 //                            self.userShortAnswer.append(userAnswer)
@@ -170,16 +167,12 @@ struct QuizView: View {
 //                            }
 //                        }
 //                    }
-//                    .navigationDestination(isPresented: $isQuizCompleted) {
-//                        QuizResultView()
-//                    }
                 
             }
 //            .frame(maxWidth: .infinity)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.backgroundColor)
             
-        }
 //        .refreshable { print("to disable pull to refresh in ") }
         .navigationBarBackButtonHidden()
         .toolbar {
@@ -195,36 +188,35 @@ struct QuizView: View {
                 })
                 .tint(Color.textColor)
             }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    self.isPopOverPresented = true
-                }) {
-                    Image(systemName: Setup.ImageStrings.textSize)
-                        .tint(Color.textColor)
-                }
-                .popover(isPresented: $isPopOverPresented,
-                         attachmentAnchor: .point(.bottom),
-                         arrowEdge: .bottom,
-                         content: {
-                
-                    //따로 다른 view로 분리?
-                    VStack {
-                        Text("폰트 크기 설정: \(Int(fontSize))")
-                            .font(.custom(Setup.FontName.notoSansThin, size: 16))
-                            .foregroundStyle(Color.textColor)
-                        Slider(value: $fontSize, in: 5...100, step: 1)
-                            .tint(Color.brandColor)
-                    }
-                    .padding()
-                    .presentationCompactAdaptation(.popover)
-                    
-                })
-            }
         }
-        
+        .onAppear {
+//            if quizID.hasPrefix("RetakeQuiz-") {
+//                print("user takes quiz again")
+//                resetQuiz()
+//            }
+            
+            print("user takes quiz again??")
+            resetQuiz()
+        }
+        .navigationDestination(isPresented: $isQuizCompleted) {
+            let _ = print("isQuizCompleted? \(isQuizCompleted)")
+            let _ = print("Moving to Quiz Result View with path: \(path)")
+            
+            //MARK: - 중간에 계산 중 화면 (빈 화면이라도) 만들고 거기서 다시 QuizResultView로 이동할 것
+            
+            QuizResultView(path: $path, testDataForQuestion: testDataForQuestion, userOXAnswer: userOXAnswer, answers: answerForOXExample)
+        }
+    
     }
+    
+    private func resetQuiz() {
+        quizIndex = 0
+        userOXAnswer.removeAll()
+        isQuizCompleted = false
+    }
+    
 }
 
-#Preview {
-    QuizView()
-}
+//#Preview {
+//    QuizView(path: <#T##Binding<[String]>#>)
+//}

@@ -23,16 +23,12 @@ struct QuizResultDetailEachQuestion: View {
     
     var body: some View {
         ZStack(alignment: .center) {
-            
             Rectangle()
                 .fill(Color.shadowColor)
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
-            
             HStack {
-                //MARK: - Check vs. Circle for Right Answer
-//                Image(systemName: answer == submittedAnswer ? Setup.ImageStrings.defaultCircle : Setup.ImageStrings.defaultXMark)
-                Image(systemName: answer == submittedAnswer ? Setup.ImageStrings.defaultCheckMark : Setup.ImageStrings.defaultXMark)
+                Image(systemName: answer == submittedAnswer ? Setup.ImageStrings.defaultCircle : Setup.ImageStrings.defaultXMark)
                     .resizable()
                     .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
                     .scaledToFit()
@@ -44,6 +40,7 @@ struct QuizResultDetailEachQuestion: View {
                     Text(question)
                         .multilineTextAlignment(.leading)
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        .minimumScaleFactor(0.8)
                     HStack {
                         Text("제출 답안: \(submittedAnswer ? "O" : "X")")
                             .font(.custom(Setup.FontName.lineRegular, size: 15))
@@ -57,7 +54,6 @@ struct QuizResultDetailEachQuestion: View {
                     }
                 }
                 .padding()
-                
             }
             .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
             .background(Color.surfaceColor)

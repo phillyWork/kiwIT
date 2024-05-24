@@ -19,26 +19,12 @@ struct QuizContentOX: View {
     
     //이전 답변 보여주기: viewModel에서 답변도 보유, 해당 답변 참조해서 이전 문항의 답변 통해 색칠하기?
     
-    func updateHeight(height: CGFloat, fontSize: CGFloat) -> CGFloat {
-        if (fontSize <= 15) {
-            return height
-        } else if (fontSize <= 25) {
-            return height * 1.2
-        } else if (fontSize <= 50) {
-            return height * 2
-        } else {
-            return height * 3
-        }
-    }
-    
     @Binding var content: String
     
     @State private var chosenState: UserOXAnswerState = .unchosen
     
     var quizIndex: Int
     var quizCount: Int
-    
-    var fontSize: CGFloat
     
     var completion: (Result<Bool, QuizError>) -> Void
     
@@ -51,7 +37,7 @@ struct QuizContentOX: View {
                 Rectangle()
                     .fill(Color.shadowColor)
                 //.frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
-                    .frame(width: Setup.Frame.quizContentItemWidth, height: updateHeight(height: Setup.Frame.quizContentOXItemHeight, fontSize: fontSize))
+                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                 
                 VStack {
@@ -59,7 +45,8 @@ struct QuizContentOX: View {
                     
                     Text(content)
                         .multilineTextAlignment(.leading)
-                        .font(.custom(Setup.FontName.notoSansBold, size: fontSize))
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        .minimumScaleFactor(1.0)
                     
                     Spacer()
                     
@@ -88,8 +75,7 @@ struct QuizContentOX: View {
                     Spacer()
                     
                 }
-                //                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
-                .frame(width: Setup.Frame.quizContentItemWidth, height: updateHeight(height: Setup.Frame.quizContentOXItemHeight, fontSize: fontSize))
+                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
                 .background(Color.surfaceColor)
                 .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
             }
