@@ -30,16 +30,20 @@ struct QuizResultDetailEachQuestion: View {
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
             
             HStack {
+                //MARK: - Check vs. Circle for Right Answer
+//                Image(systemName: answer == submittedAnswer ? Setup.ImageStrings.defaultCircle : Setup.ImageStrings.defaultXMark)
                 Image(systemName: answer == submittedAnswer ? Setup.ImageStrings.defaultCheckMark : Setup.ImageStrings.defaultXMark)
                     .resizable()
                     .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
+                    .scaledToFit()
+                    .padding()
                     .foregroundStyle(answer == submittedAnswer ? Color.brandBlandColor : Color.errorHighlightColor)
                 
                 VStack {
     //                Text("\(quizIndex + 1). \(question)")
                     Text(question)
                         .multilineTextAlignment(.leading)
-                        .font(.custom(Setup.FontName.notoSansBold, size: 25))
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
                     HStack {
                         Text("제출 답안: \(submittedAnswer ? "O" : "X")")
                             .font(.custom(Setup.FontName.lineRegular, size: 15))
@@ -53,6 +57,7 @@ struct QuizResultDetailEachQuestion: View {
                     }
                 }
                 .padding()
+                
             }
             .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
             .background(Color.surfaceColor)
@@ -65,5 +70,8 @@ struct QuizResultDetailEachQuestion: View {
 }
 
 #Preview {
-    QuizResultDetailEachQuestion(question: "OS는 운영체제이다", submittedAnswer: false, answer: true)
+    VStack {
+        QuizResultDetailEachQuestion(question: "OS는 운영체제이다", submittedAnswer: false, answer: true)
+        QuizResultDetailEachQuestion(question: "다섯번째 문제입니다", submittedAnswer: true, answer: true)
+    }
 }

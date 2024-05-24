@@ -23,6 +23,7 @@ extension Setup {
         static let defaultAiInterview2 = "server.rack"
         
         static let defaultCheckMark = "checkmark"
+        static let defaultCircle = "circle"
         static let defaultXMark = "xmark"
         static let defaultXMark2 = "xmark.square"
         

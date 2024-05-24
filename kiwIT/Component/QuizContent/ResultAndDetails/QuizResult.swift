@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+//다시 풀기, 확인 완료 버튼 타입 설정
+enum CompleteQuizButtonType {
+    case takeQuizAgain
+    case confirmToMoveToQuizList
+}
+
 // OX 퀴즈만 전제
 struct QuizOXResultModel: Identifiable {
     
@@ -51,6 +57,8 @@ struct QuizResult: View {
     var submittedAnswers: [Bool]
     var answers: [Bool]
  
+    var completion: (CompleteQuizButtonType) -> Void
+    
     @State private var isDetailButtonTapped = false
     
     var body: some View {
@@ -71,7 +79,18 @@ struct QuizResult: View {
                     
                     Spacer()
                     
-                    Text("점수: \(String(format: "%.2f", gradeScore(submitted: submittedAnswers, answers: answers)))")
+                    Text("성취도: \(String(format: "%.2f", gradeScore(submitted: submittedAnswers, answers: answers)))%")
+                    
+                    Spacer()
+                    
+                    //MARK: - 성취도 따른 이미지 추가?
+                    
+                    AsyncImage(url: URL(string: "https://t3.ftcdn.net/jpg/01/75/28/30/360_F_175283093_kkRke2YnpL6HhNRUNPmRm4pFTV2OyLzY.jpg")) { image in
+                        image.resizable()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
                     
                     Spacer()
                 }
@@ -87,7 +106,7 @@ struct QuizResult: View {
                 
                 Button(action: {
                     print("Take Quiz Again!!!")
-                    
+                    completion(.takeQuizAgain)
                 }, label: {
                     Text("다시 풀기")
                 })
@@ -104,7 +123,7 @@ struct QuizResult: View {
                 
                 Button(action: {
                     print("Confirm Result and Go Back to Quiz List View")
-                    
+                    completion(.confirmToMoveToQuizList)
                 }, label: {
                     Text("확인 완료")
                 })

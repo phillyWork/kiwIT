@@ -46,13 +46,11 @@ struct QuizView: View {
     var body: some View {
         NavigationStack {
             
+            //MARK: - ScrollView 계속 활용해도 가능할 듯 (refreshable disable 찾음)
+            
 //            ScrollView {
             VStack {
-                
-                //MARK: - 수정 고려사항
-                
-                //퀴즈 폰트: LectureView에서 적용한 폰트 슬라이더 활용, 폰트 크기도 같이 전달하기
-                                
+                                                                
                 QuizContentOX(content: $testDataForQuestion[quizIndex],
                               quizIndex: quizIndex, 
                               quizCount: testDataForQuestion.count,

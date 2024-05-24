@@ -27,7 +27,7 @@ struct QuizResultDetailView: View {
             ForEach(quizOXResultExample) { example in
                     QuizResultDetailEachQuestion(question: example.question, submittedAnswer: example.submittedAnswer, answer: example.answer)
                         .padding(.vertical, 3)
-                        .background(Color.backgroundColor)
+//                        .background(Color.backgroundColor)
             }
             
             Button(action: {
@@ -38,7 +38,6 @@ struct QuizResultDetailView: View {
             .tint(Color.textColor)
             .padding()
 
-            
         }
         .scrollIndicators(.hidden)
         .frame(maxWidth: .infinity)
