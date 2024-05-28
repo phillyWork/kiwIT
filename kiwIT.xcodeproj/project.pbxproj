@@ -40,6 +40,8 @@
 		2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
 		2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */; };
 		2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
+		2173F9302C06124900CDF116 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 2173F92F2C06124900CDF116 /* GoogleSignIn */; };
+		2173F9322C06124900CDF116 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2173F9312C06124900CDF116 /* GoogleSignInSwift */; };
 		2175BE7F2BDFD4680048FBEB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE7E2BDFD4680048FBEB /* AuthManager.swift */; };
 		2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
@@ -106,7 +108,6 @@
 		218267742BE68A6F00D8C17C /* QuizResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218267732BE68A6F00D8C17C /* QuizResultViewModel.swift */; };
 		218267762BE68A8500D8C17C /* QuizResultDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218267752BE68A8500D8C17C /* QuizResultDetailView.swift */; };
 		218323862BEA6E1600FB79B5 /* QuizContentOX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218323852BEA6E1600FB79B5 /* QuizContentOX.swift */; };
-		21882D672BFF974F0018E51E /* NavigationTransitions in Frameworks */ = {isa = PBXBuildFile; productRef = 21882D662BFF974F0018E51E /* NavigationTransitions */; };
 		2189BC382BF24D05007CC766 /* QuizContentShortAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC372BF24D05007CC766 /* QuizContentShortAnswer.swift */; };
 		2189BC3A2BF24D30007CC766 /* QuizMultipleChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC392BF24D30007CC766 /* QuizMultipleChoice.swift */; };
 		2189BC3D2BF250AD007CC766 /* QuizOXButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC3C2BF250AD007CC766 /* QuizOXButtonLabel.swift */; };
@@ -247,10 +248,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2173F9302C06124900CDF116 /* GoogleSignIn in Frameworks */,
 				2170E74A2BBAF00A002A1DA6 /* KakaoSDKUser in Frameworks */,
 				217A51382BAECB3F0052A07E /* Alamofire in Frameworks */,
+				2173F9322C06124900CDF116 /* GoogleSignInSwift in Frameworks */,
 				2170E7462BBAF00A002A1DA6 /* KakaoSDK in Frameworks */,
-				21882D672BFF974F0018E51E /* NavigationTransitions in Frameworks */,
 				2170E7482BBAF00A002A1DA6 /* KakaoSDKAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -748,7 +750,8 @@
 				2170E7452BBAF00A002A1DA6 /* KakaoSDK */,
 				2170E7472BBAF00A002A1DA6 /* KakaoSDKAuth */,
 				2170E7492BBAF00A002A1DA6 /* KakaoSDKUser */,
-				21882D662BFF974F0018E51E /* NavigationTransitions */,
+				2173F92F2C06124900CDF116 /* GoogleSignIn */,
+				2173F9312C06124900CDF116 /* GoogleSignInSwift */,
 			);
 			productName = kiwIT;
 			productReference = 217BCCB02B9DE5C300B5461B /* kiwIT.app */;
@@ -831,7 +834,7 @@
 			packageReferences = (
 				217A51362BAECB3F0052A07E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				2170E7442BBAF00A002A1DA6 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
-				21882D652BFF974F0018E51E /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */,
+				2173F92E2C06124900CDF116 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = 217BCCB12B9DE5C300B5461B /* Products */;
 			projectDirPath = "";
@@ -1332,20 +1335,20 @@
 				minimumVersion = 2.22.0;
 			};
 		};
+		2173F92E2C06124900CDF116 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.0.0;
+			};
+		};
 		217A51362BAECB3F0052A07E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 5.9.0;
-			};
-		};
-		21882D652BFF974F0018E51E /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/davdroman/swiftui-navigation-transitions.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.13.3;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1386,15 +1389,20 @@
 			package = 2170E7442BBAF00A002A1DA6 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
 		};
+		2173F92F2C06124900CDF116 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2173F92E2C06124900CDF116 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		2173F9312C06124900CDF116 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2173F92E2C06124900CDF116 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
 		217A51372BAECB3F0052A07E /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 217A51362BAECB3F0052A07E /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		21882D662BFF974F0018E51E /* NavigationTransitions */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 21882D652BFF974F0018E51E /* XCRemoteSwiftPackageReference "swiftui-navigation-transitions" */;
-			productName = NavigationTransitions;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

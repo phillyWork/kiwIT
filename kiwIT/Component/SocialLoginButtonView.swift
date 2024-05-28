@@ -44,6 +44,8 @@ struct SocialLoginButtonView: View {
             Button {
                 //Kakao Login Action
                 print("Kakao Login Button Tapped")
+                socialLoginVM.requestKakaoUserLogin()
+                
             } label: {
                 //Kakao Login Button Image
                 Text("Kakao Login Button")

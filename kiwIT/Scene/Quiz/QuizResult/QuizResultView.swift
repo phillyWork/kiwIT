@@ -34,13 +34,13 @@ struct QuizResultView: View {
                     
                     switch result {
                     case .confirmToMoveToQuizList:
-                        
-                        //MARK: - 기능 오류 (QuizResultView path가 중간에 삭제됨. 원인 추측으로는 QuizView에서 데이터 업뎃 도중 순서 꼬임으로 그냥 QuizView path만 추가한 것을 넘김). 차후 네트워크 작업 후, hashable한 모델 설정 후에 ForEach 및 List 설정 다시 하면서 데이터 구분되도록 설정 후 다시 테스트하기 (안되면 이 버튼은 삭제하는 것으로 추정)
-                        
 //                        path.removeAll()
                         path = NavigationPath()
                         print("Go back to Quiz List")
                     case .takeQuizAgain:
+                        
+                        //MARK: - 기능 오류 (QuizResultView path가 중간에 삭제됨. 원인 추측으로는 QuizView에서 데이터 업뎃 도중 순서 꼬임으로 그냥 QuizView path만 추가한 것을 넘김). 차후 네트워크 작업 후, hashable한 모델 설정 후에 ForEach 및 List 설정 다시 하면서 데이터 구분되도록 설정 후 다시 테스트하기 (안되면 이 버튼은 삭제하는 것으로 추정)
+                        
 //                        if let quizPathID = path.first {
 //                            path = [quizPathID]
                         if (path.count > 0) {
