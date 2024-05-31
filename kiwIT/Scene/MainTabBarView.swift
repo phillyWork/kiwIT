@@ -12,23 +12,9 @@ import SwiftUI
 struct MainTabBarView: View {
     
     //viewmodel에서 판단, 이동 예정
-    @State private var isUserLoggedIn = true
-    
+    @State private var isUserLoggedIn = false
     @State private var shouldShowLoginView = false
-    
-//    init() {
-//        UINavigationBar.appearance().backgroundColor = UIColor(named: "backgroundColor")
-//        let navBarAppearance = UINavigationBarAppearance()
-//        // 객체 생성
-//        navBarAppearance.backgroundColor = UIColor(named: "backgroundColor")
-//        navBarAppearance.shadowColor = .clear
-//        // 객체 속성 변경
-//        UINavigationBar.appearance().standardAppearance = navBarAppearance
-//        UINavigationBar.appearance().compactAppearance = navBarAppearance
-//        UINavigationBar.appearance().scrollEdgeAppearance = navBarAppearance
-//        // 생성한 객체를 각각의 appearance에 할당
-//    }
-    
+        
     var body: some View {
         //로그인 여부 체크
         if (isUserLoggedIn) {

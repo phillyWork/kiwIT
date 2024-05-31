@@ -15,7 +15,11 @@ struct SocialLoginButtonView: View {
     
     var service: SocialLoginProvider
     
-    private let socialLoginVM = SocialLoginViewModel()
+//    private let socialLoginVM = SocialLoginViewModel()
+    
+    //SocialLoginView까지 처리: StateObject로 활용?
+    @StateObject var socialLoginVM = SocialLoginViewModel()
+
     
     var body: some View {
         switch service {

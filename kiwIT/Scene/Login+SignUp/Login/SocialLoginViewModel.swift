@@ -28,6 +28,8 @@ final class SocialLoginViewModel: ObservableObject {
         
     }
     
+    //MARK: - Apple Login
+    
     func requestAppleUserLogin(_ credential: ASAuthorizationCredential) {
         print("Request to Server for User's Access and Refresh Token")
         
@@ -48,39 +50,52 @@ final class SocialLoginViewModel: ObservableObject {
         }
     }
 
+    //MARK: - Kakao Login
+    
+    //async, await 활용: @MainActor로 Task로 호출한 Published 변화 추적: Main thread에서 되도록 처리하기
+    
     func requestKakaoUserLogin() {
-        //kakao talk 여부 확인
+        //kakao talk 앱 여부 확인
         if (UserApi.isKakaoTalkLoginAvailable()) {
-            UserApi.shared.loginWithKakaoTalk { oAuthToken, error in
-                if let error = error {
-                    print("Login with Kakao Talk Error: \(error)")
-                    //token 받아오기 실패 시 처리할 방안
-                    
-                }
-                //token 받아옴
-                if let oAuthToken = oAuthToken {
-                    //Token 서버에 전달하기
-                    print("token for kakao user with kakaoTalk: \(oAuthToken)")
-                    
-                }
-            }
+            requestLoginWithKakaoTalkApp()
         } else {
-            //kakao 계정(웹)으로 로그인 시도
-            UserApi.shared.loginWithKakaoAccount { oAuthToken, error in
-                if let error = error {
-                    print("Login with Kakao User Account Error: \(error)")
-                    //token 받아오기 실패 시 처리할 방안
-                    
-                }
-                //token 받아옴
-                if let oAuthToken = oAuthToken {
-                    //Token 서버에 전달하기
-                    print("token for kakao user with kakao account: \(oAuthToken)")
-                    
-                }
+            requestLoginWithKakaoWebAccount()
+        }
+    }
+    
+    func requestLoginWithKakaoTalkApp() {
+        UserApi.shared.loginWithKakaoTalk { oAuthToken, error in
+            if let error = error {
+                print("Login with Kakao Talk Error: \(error)")
+                //token 받아오기 실패 시 처리할 방안
+                
+            }
+            //token 받아옴
+            if let oAuthToken = oAuthToken {
+                //Token 서버에 전달하기
+                print("token for kakao user with kakaoTalk: \(oAuthToken)")
+                
             }
         }
     }
+    
+    func requestLoginWithKakaoWebAccount() {
+        UserApi.shared.loginWithKakaoAccount { oAuthToken, error in
+            if let error = error {
+                print("Login with Kakao User Account Error: \(error)")
+                //token 받아오기 실패 시 처리할 방안
+                
+            }
+            //token 받아옴
+            if let oAuthToken = oAuthToken {
+                //Token 서버에 전달하기
+                print("token for kakao user with kakao account: \(oAuthToken)")
+                
+            }
+        }
+    }
+    
+    //MARK: - Google Login
     
     func requestGoogleUserLogin() {
         
@@ -114,7 +129,7 @@ final class SocialLoginViewModel: ObservableObject {
     //가입 화면에서 작성한 모든 정보 기반으로 요청
     //출처, 이메일, 닉네임, 등등...
     func requestSignUp() {
-        
+        //
     }
     
 }

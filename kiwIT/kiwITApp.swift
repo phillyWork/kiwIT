@@ -16,7 +16,13 @@ import GoogleSignIn
 struct kiwITApp: App {
     
     init() {
-        KakaoSDK.initSDK(appKey: APIKey.kakaoAppKey)
+        //Config 활용 Main Bundle 내부 등록된 키를 활용
+        let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
+        
+        KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
+        
+        //APIKey.swift 내부 등록한 키값 활용
+//        KakaoSDK.initSDK(appKey: APIKey.kakaoAppKey)
     }
     
     var body: some Scene {
