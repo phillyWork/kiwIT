@@ -33,7 +33,7 @@ struct AcquiredTrophy: Decodable {
     let updatedAt: String
 }
 
-struct TrophyEntity: Decodable {
+struct TrophyEntity: Decodable, Identifiable {
     let id: String
     let title: String
     let imageUrl: String

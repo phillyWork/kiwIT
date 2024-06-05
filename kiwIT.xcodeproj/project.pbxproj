@@ -45,6 +45,7 @@
 		2173F9342C0A13DB00CDF116 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2173F9332C0A13DB00CDF116 /* Config.xcconfig */; };
 		2173F9352C0A13DB00CDF116 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2173F9332C0A13DB00CDF116 /* Config.xcconfig */; };
 		2173F9372C0F4B4600CDF116 /* TrophyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9362C0F4B4600CDF116 /* TrophyListView.swift */; };
+		2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9382C10896300CDF116 /* TrophyContent.swift */; };
 		2175BE7F2BDFD4680048FBEB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE7E2BDFD4680048FBEB /* AuthManager.swift */; };
 		2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
@@ -166,6 +167,7 @@
 		2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListViewModel.swift; sourceTree = "<group>"; };
 		2173F9332C0A13DB00CDF116 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		2173F9362C0F4B4600CDF116 /* TrophyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListView.swift; sourceTree = "<group>"; };
+		2173F9382C10896300CDF116 /* TrophyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyContent.swift; sourceTree = "<group>"; };
 		2175BE7E2BDFD4680048FBEB /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkErrorMessageStrings.swift"; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
@@ -283,12 +285,12 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		214282D12BD0FDE900EA3CC1 /* Design */ = {
+		214282D12BD0FDE900EA3CC1 /* Shape */ = {
 			isa = PBXGroup;
 			children = (
 				214282CF2BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift */,
 			);
-			path = Design;
+			path = Shape;
 			sourceTree = "<group>";
 		};
 		2167FD492BC04E2F00A45F2B /* Font */ = {
@@ -396,6 +398,14 @@
 			path = Scene;
 			sourceTree = "<group>";
 		};
+		2173F93A2C108A1C00CDF116 /* TrophyContent */ = {
+			isa = PBXGroup;
+			children = (
+				2173F9382C10896300CDF116 /* TrophyContent.swift */,
+			);
+			path = TrophyContent;
+			sourceTree = "<group>";
+		};
 		217A51402BAECD380052A07E /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -424,10 +434,11 @@
 			children = (
 				217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */,
 				21816ABC2BC595FC007E6FD6 /* Button */,
-				214282D12BD0FDE900EA3CC1 /* Design */,
+				214282D12BD0FDE900EA3CC1 /* Shape */,
 				21816ADA2BC83B92007E6FD6 /* LectureContent */,
 				2182676D2BE6833800D8C17C /* QuizContent */,
 				216F5F8C2BAB2F19008817B0 /* LectureContentPayload */,
+				2173F93A2C108A1C00CDF116 /* TrophyContent */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -945,6 +956,7 @@
 				219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */,
 				219EFBC52B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift in Sources */,
 				217E55A02BB162000014B46E /* Trophy.swift in Sources */,
+				2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */,
 				2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				217A513F2BAECD350052A07E /* SignUp.swift in Sources */,
 				216F5F892BAB2DD8008817B0 /* ContentImageView.swift in Sources */,

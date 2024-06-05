@@ -94,6 +94,10 @@ extension Setup {
         static let quizContentAnswerResultImageWidth = quizContentItemWidth * 0.15
         
         
+        //트로피 이미지 크기
+        static let trophyContentWidth = devicePortraitWidth * 0.93
+        static let trophyContentHeight = trophyContentWidth * 0.33
+        
     }
     
 }
