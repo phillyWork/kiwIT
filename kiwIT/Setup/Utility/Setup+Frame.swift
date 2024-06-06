@@ -98,6 +98,9 @@ extension Setup {
         static let trophyContentWidth = devicePortraitWidth * 0.93
         static let trophyContentHeight = trophyContentWidth * 0.33
         
+        static let recentlyAcquiredTrophyContentWidth = devicePortraitWidth * 0.17
+        static let recentlyAcquiredTrophyContentHeight = recentlyAcquiredTrophyContentWidth * 1.33
+        
     }
     
 }

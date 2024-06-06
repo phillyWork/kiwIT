@@ -9,7 +9,6 @@ import Foundation
 
 enum SocialLoginProvider: String, Encodable {
     case apple = "APPLE"
-    case google = "GOOGLE"
     case kakao = "KAKAO"
 }
 

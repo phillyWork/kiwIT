@@ -11,13 +11,10 @@ struct TrophyListView: View {
     
     //viewModel, trophyData
     
-    //MARK: - 기본 트로피 데이터 및 각 트로피 설명글 필요 (누적 기록 등 어떻게 할 지 고민)
-    
-    
     //from user data (acquired trophy data)
     let tempUserAcquiredTrophyData = [
-        AcquiredTrophy(userId: "aaa123", trophy: TrophyEntity(id: "111111111", title: "지금까지의 노력, 최고에요!", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZCbqRAGGwuZYEDajBgZx1zUgTdqBwfwVZw&s"), createdAt: "2024-02-11", updatedAt: "2024-05-23"),
-        AcquiredTrophy(userId: "aaa123", trophy: TrophyEntity(id: "333333333", title: "그대의 노력에 건배", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZCbqRAGGwuZYEDajBgZx1zUgTdqBwfwVZw&s"), createdAt: "2024-02-11", updatedAt: "2024-05-23")
+        AcquiredTrophy(id: "aaa123", trophy: TrophyEntity(id: "111111111", title: "지금까지의 노력, 최고에요!", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZCbqRAGGwuZYEDajBgZx1zUgTdqBwfwVZw&s"), createdAt: "2024-02-11", updatedAt: "2024-05-23"),
+        AcquiredTrophy(id: "aaa123", trophy: TrophyEntity(id: "333333333", title: "그대의 노력에 건배", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZCbqRAGGwuZYEDajBgZx1zUgTdqBwfwVZw&s"), createdAt: "2024-02-11", updatedAt: "2024-05-23")
     ]
     
     //basic default trophy data

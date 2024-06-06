@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 import Combine
 
 import AuthenticationServices
@@ -14,18 +15,21 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKUser
 
-import GoogleSignIn
-import GoogleSignInSwift
-
 final class SocialLoginViewModel: ObservableObject {
     
     @Published var didLoginSucceed = false
     @Published var shouldMoveToSignUp = false
         
-    //Social Login 성공 시, 서버에 로그인 request
+    //Social Login Button ViewModel에서 서버 로그인 성공 시, 
     //Token 일반화 가능하면 함수 하나로 처리, 아니라면 각자 생성
     func requestLogin() {
         
+    }
+    
+    //가입 화면에서 작성한 모든 정보 기반으로 요청
+    //출처, 이메일, 닉네임, 등등...
+    func requestSignUp() {
+        //
     }
     
     //MARK: - Apple Login
@@ -72,8 +76,16 @@ final class SocialLoginViewModel: ObservableObject {
             }
             //token 받아옴
             if let oAuthToken = oAuthToken {
+                //Network 모델로 로그인 요청
                 //Token 서버에 전달하기
                 print("token for kakao user with kakaoTalk: \(oAuthToken)")
+                
+                //성공 시, access 및 refresh token 저장 및 didLoginSucceed update
+                
+                //싪패 시, error Message 통한 어떤 action 취할 지 결정하기
+                
+                //회원가입 필요한 실패: 회원가입 화면으로 넘어가기 및 데이터 넘기기? Or 동일한 ViewModel 활용?
+                
                 
             }
         }
@@ -88,48 +100,18 @@ final class SocialLoginViewModel: ObservableObject {
             }
             //token 받아옴
             if let oAuthToken = oAuthToken {
+                //Network 모델로 로그인 요청
                 //Token 서버에 전달하기
                 print("token for kakao user with kakao account: \(oAuthToken)")
                 
+                //성공 시, access 및 refresh token 저장 및 didLoginSucceed update
+                
+                //싪패 시, error Message 통한 어떤 action 취할 지 결정하기
+                
+                //회원가입 필요한 실패: 회원가입 화면으로 넘어가기 및 데이터 넘기기? Or 동일한 ViewModel 활용?
+
             }
         }
-    }
-    
-    //MARK: - Google Login
-    
-    func requestGoogleUserLogin() {
-        
-        //rootViewController
-        guard let presentingVC = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController else {
-            print("No presentingVC!!!")
-            return
-        }
-        
-        GIDSignIn.sharedInstance.signIn(withPresenting: presentingVC) { signInResult, error in
-            guard let result = signInResult else {
-                print("Login with Google Error: \(error)")
-                
-                //유저 정보 받기 처리 실패 시 처리할 방안
-                
-                
-                return
-            }
-            
-            //로그인 성공, result에서 token 찾아 서버에 전달하기
-            
-            //result.user.idToken
-            //result.user.accessToken
-            //result.user.refreshToken
-            
-            
-        }
-    }
-    
-    
-    //가입 화면에서 작성한 모든 정보 기반으로 요청
-    //출처, 이메일, 닉네임, 등등...
-    func requestSignUp() {
-        //
     }
     
 }

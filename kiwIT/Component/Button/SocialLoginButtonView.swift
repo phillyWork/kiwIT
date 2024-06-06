@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+
 import AuthenticationServices
 
 //버튼 누른 뒤, 이미 가입되어 있다면 로그인 화면 제거, HomeView로 이동
@@ -15,11 +16,7 @@ struct SocialLoginButtonView: View {
     
     var service: SocialLoginProvider
     
-//    private let socialLoginVM = SocialLoginViewModel()
-    
-    //SocialLoginView까지 처리: StateObject로 활용?
     @StateObject var socialLoginVM = SocialLoginViewModel()
-
     
     var body: some View {
         switch service {
@@ -37,13 +34,6 @@ struct SocialLoginButtonView: View {
                     print("Failed in Sign in Apple: \(error.localizedDescription)")
                 }
             }
-        case .google:
-            Button {
-                print("Google Sign In Button Tapped")
-            } label: {
-                Text("Google Sign In Button")
-            }
-            //            GoogleSignInButton()
         case .kakao:
             Button {
                 //Kakao Login Action

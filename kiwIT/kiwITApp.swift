@@ -10,8 +10,6 @@ import SwiftUI
 import KakaoSDKCommon
 import KakaoSDKAuth
 
-import GoogleSignIn
-
 @main
 struct kiwITApp: App {
     
@@ -33,15 +31,6 @@ struct kiwITApp: App {
                     if (AuthApi.isKakaoTalkLoginUrl(url)) {
                         AuthController.handleOpenUrl(url: url)
                     }
-                    
-                    //Google
-                    GIDSignIn.sharedInstance.handle(url)
-                    
-                    //Restore User Login Status in Google?
-                    GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-                        // Check if `user` exists; otherwise, do something with `error`
-                    }
-                    
                 })
         }
     }

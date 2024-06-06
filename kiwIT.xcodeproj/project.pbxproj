@@ -40,12 +40,11 @@
 		2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
 		2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */; };
 		2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
-		2173F9302C06124900CDF116 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 2173F92F2C06124900CDF116 /* GoogleSignIn */; };
-		2173F9322C06124900CDF116 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 2173F9312C06124900CDF116 /* GoogleSignInSwift */; };
 		2173F9342C0A13DB00CDF116 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2173F9332C0A13DB00CDF116 /* Config.xcconfig */; };
 		2173F9352C0A13DB00CDF116 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2173F9332C0A13DB00CDF116 /* Config.xcconfig */; };
 		2173F9372C0F4B4600CDF116 /* TrophyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9362C0F4B4600CDF116 /* TrophyListView.swift */; };
 		2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9382C10896300CDF116 /* TrophyContent.swift */; };
+		2173F93F2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */; };
 		2175BE7F2BDFD4680048FBEB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE7E2BDFD4680048FBEB /* AuthManager.swift */; };
 		2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
@@ -168,6 +167,7 @@
 		2173F9332C0A13DB00CDF116 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		2173F9362C0F4B4600CDF116 /* TrophyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListView.swift; sourceTree = "<group>"; };
 		2173F9382C10896300CDF116 /* TrophyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyContent.swift; sourceTree = "<group>"; };
+		2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyAcquiredTrophy.swift; sourceTree = "<group>"; };
 		2175BE7E2BDFD4680048FBEB /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkErrorMessageStrings.swift"; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
@@ -255,10 +255,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2173F9302C06124900CDF116 /* GoogleSignIn in Frameworks */,
 				2170E74A2BBAF00A002A1DA6 /* KakaoSDKUser in Frameworks */,
 				217A51382BAECB3F0052A07E /* Alamofire in Frameworks */,
-				2173F9322C06124900CDF116 /* GoogleSignInSwift in Frameworks */,
 				2170E7462BBAF00A002A1DA6 /* KakaoSDK in Frameworks */,
 				2170E7482BBAF00A002A1DA6 /* KakaoSDKAuth in Frameworks */,
 			);
@@ -401,6 +399,7 @@
 		2173F93A2C108A1C00CDF116 /* TrophyContent */ = {
 			isa = PBXGroup;
 			children = (
+				2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */,
 				2173F9382C10896300CDF116 /* TrophyContent.swift */,
 			);
 			path = TrophyContent;
@@ -432,7 +431,6 @@
 		217B53162BA2EDEB0081D418 /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */,
 				21816ABC2BC595FC007E6FD6 /* Button */,
 				214282D12BD0FDE900EA3CC1 /* Shape */,
 				21816ADA2BC83B92007E6FD6 /* LectureContent */,
@@ -570,6 +568,7 @@
 		21816ABC2BC595FC007E6FD6 /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */,
 				2170E7562BBC6DD7002A1DA6 /* ActiveButtonView.swift */,
 			);
 			path = Button;
@@ -768,8 +767,6 @@
 				2170E7452BBAF00A002A1DA6 /* KakaoSDK */,
 				2170E7472BBAF00A002A1DA6 /* KakaoSDKAuth */,
 				2170E7492BBAF00A002A1DA6 /* KakaoSDKUser */,
-				2173F92F2C06124900CDF116 /* GoogleSignIn */,
-				2173F9312C06124900CDF116 /* GoogleSignInSwift */,
 			);
 			productName = kiwIT;
 			productReference = 217BCCB02B9DE5C300B5461B /* kiwIT.app */;
@@ -852,7 +849,6 @@
 			packageReferences = (
 				217A51362BAECB3F0052A07E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				2170E7442BBAF00A002A1DA6 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */,
-				2173F92E2C06124900CDF116 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 			);
 			productRefGroup = 217BCCB12B9DE5C300B5461B /* Products */;
 			projectDirPath = "";
@@ -950,6 +946,7 @@
 				217E55A42BB16CB00014B46E /* Profile.swift in Sources */,
 				219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */,
 				2189BC402BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift in Sources */,
+				2173F93F2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift in Sources */,
 				219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */,
 				218267762BE68A8500D8C17C /* QuizResultDetailView.swift in Sources */,
 				2189BC3D2BF250AD007CC766 /* QuizOXButtonLabel.swift in Sources */,
@@ -1363,14 +1360,6 @@
 				minimumVersion = 2.22.0;
 			};
 		};
-		2173F92E2C06124900CDF116 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.0.0;
-			};
-		};
 		217A51362BAECB3F0052A07E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
@@ -1416,16 +1405,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 2170E7442BBAF00A002A1DA6 /* XCRemoteSwiftPackageReference "kakao-ios-sdk" */;
 			productName = KakaoSDKUser;
-		};
-		2173F92F2C06124900CDF116 /* GoogleSignIn */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2173F92E2C06124900CDF116 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
-			productName = GoogleSignIn;
-		};
-		2173F9312C06124900CDF116 /* GoogleSignInSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 2173F92E2C06124900CDF116 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
-			productName = GoogleSignInSwift;
 		};
 		217A51372BAECB3F0052A07E /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
