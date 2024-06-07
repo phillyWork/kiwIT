@@ -20,8 +20,23 @@ struct ProfileView: View {
     @State private var showRealWithdrawAlert = false
     @State private var emailToBeWithdrawn = ""
     @State private var showEmailWithdrawalErrorAlert = false
-        
-    @Environment(\.dismiss) var dismiss
+    
+    
+    //Lecture, Quiz 및 여러 컨텐츠 기본 개수 및 진도 현황 관련 유저 데이터 가져와서 활용해야 함
+    
+    @State private var tempBasicITCategory = [
+        LectureContent(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+        LectureContent(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
+        LectureContent(id: 113, title: "교양예시3", point: 100, exercise: "연습문제3", answer: true, levelNum: 3, categoryChapterId: 111333111333),
+        LectureContent(id: 114, title: "교양예시4", point: 100, exercise: "연습문제4", answer: true, levelNum: 0, categoryChapterId: 111333111333),
+        LectureContent(id: 115, title: "교양예시5", point: 100, exercise: "연습문제5", answer: true, levelNum: 1, categoryChapterId: 111333111333),
+        LectureContent(id: 116, title: "교양예시6", point: 100, exercise: "연습문제6", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+    ]
+    
+    @State private var tempUserTakenBasicITCategory = [
+        LectureContent(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+        LectureContent(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
+    ]
     
     
     //from user data (acquired trophy data)
@@ -39,20 +54,19 @@ struct ProfileView: View {
                     Text(nickname)
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 5)
+                        .padding(.leading, 10)
                     //수정 버튼
                     Button(action: {
                         showEditNicknameAlert.toggle()
                     }, label: {
                         Text("변경하기")
                     })
-                    .padding(.trailing, 5)
+                    .padding(.trailing, 10)
                     .alert("닉네임 수정", isPresented: $showEditNicknameAlert) {
                         TextField("새로운 닉네임을 입력해주세요.", text: $nicknameToBeUpdated)
                             .foregroundStyle(Color.black)
                         Button("취소", role: .destructive) {
                             nicknameToBeUpdated = ""
-                            dismiss()
                         }
                         Button("확인", role: .cancel) {
                             if nicknameToBeUpdated.isEmpty {
@@ -73,52 +87,93 @@ struct ProfileView: View {
                         Text("빈 칸은 허용되지 않습니다.")
                     })
                 }
-                .border(Color.blue)
-
-                Spacer()
+                .padding(.bottom, 5)
                 
-                GroupBox {
+                Spacer()
+            
+                GroupBox(label: Text("학습 진도율").font(.custom(Setup.FontName.phuduRegular, size: 20)), content: {
                     VStack {
-                        Text("카테고리별 학습 진도율 나타내기")
-                        Text("레벨별? 학습 진도율 나타내기")
                         
-                    }
-                }
-                
-                
-                Spacer()
-                
-                GroupBox {
-                    VStack {
-                        Text("기본 퀴즈 진행 상황 나타내기")
-                        Text("구독 퀴즈 진행 상황 나타내기")
-                    }
-                }
-                
-                Spacer()
-                
-                GroupBox {
-                    VStack {
-                        Text("구독 AI 인터뷰 진행 상황 나타내기")
-                    }
-                }
-                
-                Spacer()
-                
-                GroupBox {
-                    VStack {
-                        HStack {
-                            Text("획득한 도전 과제")
-                            
-                            NavigationLink {
-                                TrophyListView()
-                            } label: {
-                                Text("더 보기")
-                            }
+                        Text("카테고리별 진도율 나타내기 (Header 역할)")
+                        
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("IT교양")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
+                        }
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("자료구조 & 알고리즘")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
+                        }
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("운영체제")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
+                        }
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("컴퓨터구조")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
+                        }
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("추가 진도")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
                         }
 
+                        Text("레벨별? 학습 진도율 나타내기 (Header 역할)")
+                    }
+                    .padding(.vertical, 8)
+                })
+                .backgroundStyle(Color.surfaceColor)
+                
+                Spacer()
+                
+                GroupBox(label: Text("퀴즈 현황"), content: {
+                    VStack {
+                        Text("기본 퀴즈 진행 상황 나타내기 (Header 역할)")
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("기본 퀴즈 01")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
+                        }
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("기본 퀴즈 02")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
+                        }
+                        
+                        Text("구독 퀴즈 진행 상황 나타내기 (Header 역할)")
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("구독 퀴즈 01")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
+                        }
+                    }
+                })
+                .backgroundStyle(Color.surfaceColor)
+                
+                Spacer()
+                
+                GroupBox(label: Text("인터뷰 현황"), content: {
+                    VStack {
+                        Text("구독 AI 인터뷰 진행 상황 나타내기 (Header 역할)")
+                        
+                        ProgressView(value: Double($tempUserTakenBasicITCategory.count) / Double($tempBasicITCategory.count)) {
+                            Text("Swift 모의 면접 질문 01")
+                                .font(.custom(Setup.FontName.notoSansThin, size: 15))
+                        }
+                        
+                    }
+                })
+                .backgroundStyle(Color.surfaceColor)
+                
+                Spacer()
+                
+                GroupBox(label:
+                            HStack {
+                    Text("획득한 도전 과제")
+                    
+                    NavigationLink {
+                        TrophyListView()
+                    } label: {
+                        Text("더 보기")
+                    }
+                }, content: {
                         HStack {
-                            
                             ForEach(tempUserAcquiredTrophyData) { trophyData in
                                 RecentlyAcquiredTrophy(tempImageUrlString: trophyData.trophy.imageUrl)
                             }
@@ -132,88 +187,70 @@ struct ProfileView: View {
                                 }
                             }
                         }
+                })
+                .backgroundStyle(Color.surfaceColor)
+            
+                VStack {
+                    ShrinkAnimationButtonView(title: "로그아웃") {
+                        showLogoutAlert.toggle()
                     }
-                }
-                
-                Spacer()
-                
-                
-                //버튼 이미지 View 따로 활용
-                //closure 활용, viewmodel로 전달하기
-                
-                GroupBox {
+                    .alert("회원 탈퇴", isPresented: $showLogoutAlert, actions: {
+                        Button("확인", role: .cancel) {
+                            //network: logout call
+                            
+                            print("LOG OUT!!!!")
+                            
+                            //로그인 화면 나타내기
+                            
+                        }
+                        Button("취소", role: .destructive) { }
+                    }, message: {
+                        Text("정말로 로그아웃 하실 건가요?")
+                    })
                     
-                    VStack {
-                        Button(action: {
-                            showLogoutAlert.toggle()
-                        }, label: {
-                            Text("로그아웃")
-                        })
-                        .alert("회원 탈퇴", isPresented: $showLogoutAlert, actions: {
-                            Button("확인", role: .cancel) {
-                                //network: logout call
-                                
-                                print("LOG OUT!!!!")
+                    Spacer()
+                    
+                    ShrinkAnimationButtonView(title: "회원 탈퇴") {
+                        showWithdrawAlert.toggle()
+                    }
+                    .alert("회원 탈퇴", isPresented: $showWithdrawAlert, actions: {
+                        Button("확인", role: .cancel) {
+                            showRealWithdrawAlert.toggle()
+                        }
+                        Button("취소", role: .destructive) { }
+                    }, message: {
+                        Text("정말로 탈퇴하실 건가요?")
+                    })
+                    .alert("회원 탈퇴 확인", isPresented: $showRealWithdrawAlert, actions: {
+                        TextField("가입한 이메일", text: $emailToBeWithdrawn)
+                            .foregroundStyle(Color.black)
+                        Button("확인", role: .cancel) {
+                            
+                            //가입한 이메일과 다르다면 에러 나타내기
+                            
+                            if emailToBeWithdrawn.isEmpty {
+                                showEmailWithdrawalErrorAlert = true
+                            } else {
+                                //network: 회원 탈퇴 시도하기
+                                print("Network Call to Withdraw")
                                 
                                 //로그인 화면 나타내기
                                 
-                            }
-                            Button("취소", role: .destructive) {
-                                dismiss()
-                            }
-                        }, message: {
-                            Text("정말로 로그아웃 하실 건가요?")
-                        })
-                        
-                        Button(action: {
-                            showWithdrawAlert.toggle()
-                        }, label: {
-                            Text("회원 탈퇴")
-                        })
-                        .alert("회원 탈퇴", isPresented: $showWithdrawAlert, actions: {
-                            Button("확인", role: .cancel) {
-                                showRealWithdrawAlert.toggle()
-                            }
-                            Button("취소", role: .destructive) {
-                                dismiss()
-                            }
-                        }, message: {
-                            Text("정말로 탈퇴하실 건가요?")
-                        })
-                        .alert("회원 탈퇴 확인", isPresented: $showRealWithdrawAlert, actions: {
-                            TextField("가입한 이메일", text: $emailToBeWithdrawn)
-                                .foregroundStyle(Color.black)
-                            Button("확인", role: .cancel) {
-                                
-                                //가입한 이메일과 다르다면 에러 나타내기
-                                
-                                if emailToBeWithdrawn.isEmpty {
-                                    showEmailWithdrawalErrorAlert = true
-                                } else {
-                                    //network: 회원 탈퇴 시도하기
-                                    print("Network Call to Withdraw")
-                                    
-                                    //로그인 화면 나타내기
-                                    
-                                    emailToBeWithdrawn = ""
-                                }
-                            }
-                            Button("취소", role: .destructive) {
                                 emailToBeWithdrawn = ""
-                                dismiss()
-                            }
-                        }, message: {
-                            Text("정말 탈퇴하실 의향이시라면 가입한 이메일을 입력해주세요.")
-                        })
-                        .alert("잘못된 입력입니다!", isPresented: $showEmailWithdrawalErrorAlert) {
-                            Button("확인", role: .cancel) {
-                                //탈퇴의 불편함 일부러 제공 (탈퇴 유도 막기...)
-                                dismiss()
                             }
                         }
-                        
+                        Button("취소", role: .destructive) {
+                            emailToBeWithdrawn = ""
+                        }
+                    }, message: {
+                        Text("정말 탈퇴하실 의향이시라면 가입한 이메일을 입력해주세요.")
+                    })
+                    .alert("잘못된 입력입니다!", isPresented: $showEmailWithdrawalErrorAlert) {
+                        //탈퇴의 불편함 일부러 제공 (탈퇴 유도 막기...)
+                        Button("확인", role: .cancel) { }
                     }
                 }
+                .padding(.top, 8)
                 
             }
             .frame(maxWidth: .infinity)

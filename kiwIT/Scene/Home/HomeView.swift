@@ -16,7 +16,7 @@ struct HomeView: View {
                         Image(systemName: Setup.ImageStrings.defaultLecture3)
                         Text("다음에 학습할 내용")
                     }
-                    .frame(width: Setup.Frame.nextContentButtonWidth, height: Setup.Frame.nextContentButtonHeight)
+                    .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
                     .background(Color.green)
                     .onTapGesture {
                         print("Move to Lecture Content")

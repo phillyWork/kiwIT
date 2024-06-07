@@ -14,8 +14,8 @@ extension Setup {
         static let devicePortraitWidth = UIScreen.main.bounds.width
         static let devicePortraitHeight = UIScreen.main.bounds.height
         
-        static let nextContentButtonWidth = devicePortraitWidth * 0.85
-        static let nextContentButtonHeight = nextContentButtonWidth * 0.4
+        static let shrinkAnimationButtonWidth = devicePortraitWidth * 0.85
+        static let shrinkAnimationButtonHeight = shrinkAnimationButtonWidth * 0.2
         
         static let socialLoginButtonWidth = devicePortraitWidth * 0.8
         static let socialLoginButtonStackHeight = socialLoginButtonWidth * 0.3
