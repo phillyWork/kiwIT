@@ -20,16 +20,12 @@ final class SocialLoginViewModel: ObservableObject {
     @Published var didLoginSucceed = false
     @Published var shouldMoveToSignUp = false
         
-    //Social Login Button ViewModel에서 서버 로그인 성공 시, 
+    @Published var userDataForSignUp: SignUpRequest? = nil
+    
+    //Social Login Button ViewModel에서 서버 로그인 성공 시,
     //Token 일반화 가능하면 함수 하나로 처리, 아니라면 각자 생성
     func requestLogin() {
         
-    }
-    
-    //가입 화면에서 작성한 모든 정보 기반으로 요청
-    //출처, 이메일, 닉네임, 등등...
-    func requestSignUp() {
-        //
     }
     
     //MARK: - Apple Login
@@ -80,13 +76,21 @@ final class SocialLoginViewModel: ObservableObject {
                 //Token 서버에 전달하기
                 print("token for kakao user with kakaoTalk: \(oAuthToken)")
                 
+                print("idToken: \(oAuthToken.idToken)")
+                print("accessToken: \(oAuthToken.accessToken)")
+                print("refreshToken: \(oAuthToken.refreshToken)")
+                print("scopes: \(oAuthToken.scopes)")
+
+                
                 //성공 시, access 및 refresh token 저장 및 didLoginSucceed update
+                
                 
                 //싪패 시, error Message 통한 어떤 action 취할 지 결정하기
                 
+                
                 //회원가입 필요한 실패: 회원가입 화면으로 넘어가기 및 데이터 넘기기? Or 동일한 ViewModel 활용?
-                
-                
+                self.userDataForSignUp = SignUpRequest(email: "", nickname: "", provider: SocialLoginProvider.kakao)
+                self.shouldMoveToSignUp = true
             }
         }
     }
@@ -104,12 +108,21 @@ final class SocialLoginViewModel: ObservableObject {
                 //Token 서버에 전달하기
                 print("token for kakao user with kakao account: \(oAuthToken)")
                 
+                print("idToken: \(oAuthToken.idToken)")
+                print("accessToken: \(oAuthToken.accessToken)")
+                print("refreshToken: \(oAuthToken.refreshToken)")
+                print("scopes: \(oAuthToken.scopes)")
+
+                
                 //성공 시, access 및 refresh token 저장 및 didLoginSucceed update
+                
                 
                 //싪패 시, error Message 통한 어떤 action 취할 지 결정하기
                 
+                
                 //회원가입 필요한 실패: 회원가입 화면으로 넘어가기 및 데이터 넘기기? Or 동일한 ViewModel 활용?
-
+                self.userDataForSignUp = SignUpRequest(email: "", nickname: "", provider: SocialLoginProvider.kakao)
+                self.shouldMoveToSignUp = true
             }
         }
     }

@@ -45,6 +45,26 @@
 		2173F9372C0F4B4600CDF116 /* TrophyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9362C0F4B4600CDF116 /* TrophyListView.swift */; };
 		2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9382C10896300CDF116 /* TrophyContent.swift */; };
 		2173F93F2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */; };
+		2173F9452C15EC0F00CDF116 /* SignUpInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9442C15EC0F00CDF116 /* SignUpInfoViewModel.swift */; };
+		2173F9462C15EF9900CDF116 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513E2BAECD350052A07E /* SignUp.swift */; };
+		2173F9472C15EF9B00CDF116 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E55A52BB1BA2D0014B46E /* Authorization.swift */; };
+		2173F9482C15EF9D00CDF116 /* SignIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A51422BAECD5D0052A07E /* SignIn.swift */; };
+		2173F9492C15EF9F00CDF116 /* RefreshAccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A51492BAED0800052A07E /* RefreshAccessToken.swift */; };
+		2173F94A2C15EFA100CDF116 /* Trophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E559F2BB162000014B46E /* Trophy.swift */; };
+		2173F94B2C15EFA300CDF116 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E55A32BB16CB00014B46E /* Profile.swift */; };
+		2173F94C2C15EFAC00CDF116 /* Error+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513C2BAECBB70052A07E /* Error+Network.swift */; };
+		2173F94D2C15EFAF00CDF116 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
+		2173F94E2C15EFB200CDF116 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216F5F8E2BAB302C008817B0 /* NetworkManager.swift */; };
+		2173F94F2C15EFB500CDF116 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE7E2BDFD4680048FBEB /* AuthManager.swift */; };
+		2173F9502C15F05300CDF116 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A51452BAECDE50052A07E /* Type.swift */; };
+		2173F9512C15F05600CDF116 /* Setup+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */; };
+		2173F9532C15F05D00CDF116 /* Setup+NetworkErrorMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */; };
+		2173F9542C15F05F00CDF116 /* Setup+FontStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */; };
+		2173F9552C15F06700CDF116 /* Setup+ContentStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */; };
+		2173F9562C15F06900CDF116 /* Setup+ImageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC42B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift */; };
+		2173F9572C15F06B00CDF116 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
+		2173F9582C15F06E00CDF116 /* Setup+NetworkEndPointStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A514D2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift */; };
+		2173F9592C15F0C200CDF116 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCDF2B9DE84100B5461B /* APIKey.swift */; };
 		2175BE7F2BDFD4680048FBEB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE7E2BDFD4680048FBEB /* AuthManager.swift */; };
 		2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
@@ -168,6 +188,7 @@
 		2173F9362C0F4B4600CDF116 /* TrophyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListView.swift; sourceTree = "<group>"; };
 		2173F9382C10896300CDF116 /* TrophyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyContent.swift; sourceTree = "<group>"; };
 		2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyAcquiredTrophy.swift; sourceTree = "<group>"; };
+		2173F9442C15EC0F00CDF116 /* SignUpInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInfoViewModel.swift; sourceTree = "<group>"; };
 		2175BE7E2BDFD4680048FBEB /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkErrorMessageStrings.swift"; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
@@ -367,6 +388,7 @@
 		2173C0532BA090CC00FDD3D9 /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
+				2173F9442C15EC0F00CDF116 /* SignUpInfoViewModel.swift */,
 				2173C04B2BA0902000FDD3D9 /* SignUpInfoView.swift */,
 			);
 			name = SignUp;
@@ -981,6 +1003,7 @@
 				214282D02BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift in Sources */,
 				219EFBBF2B9F069600FBEBE0 /* QuizListView.swift in Sources */,
 				2173F9372C0F4B4600CDF116 /* TrophyListView.swift in Sources */,
+				2173F9452C15EC0F00CDF116 /* SignUpInfoViewModel.swift in Sources */,
 				218267652BE6808200D8C17C /* QuizListViewModel.swift in Sources */,
 				217E55A62BB1BA2D0014B46E /* Authorization.swift in Sources */,
 				214282D32BD1023C00EA3CC1 /* CategoryItemUITest.swift in Sources */,
@@ -993,14 +1016,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2173F9562C15F06900CDF116 /* Setup+ImageStrings.swift in Sources */,
+				2173F9532C15F05D00CDF116 /* Setup+NetworkErrorMessageStrings.swift in Sources */,
+				2173F94E2C15EFB200CDF116 /* NetworkManager.swift in Sources */,
 				2173C0632BA0953B00FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
+				2173F9582C15F06E00CDF116 /* Setup+NetworkEndPointStrings.swift in Sources */,
+				2173F9482C15EF9D00CDF116 /* SignIn.swift in Sources */,
 				2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */,
 				2173C05E2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift in Sources */,
+				2173F94D2C15EFAF00CDF116 /* Router.swift in Sources */,
+				2173F9472C15EF9B00CDF116 /* Authorization.swift in Sources */,
+				2173F9512C15F05600CDF116 /* Setup+Frame.swift in Sources */,
+				2173F9552C15F06700CDF116 /* Setup+ContentStrings.swift in Sources */,
+				2173F9462C15EF9900CDF116 /* SignUp.swift in Sources */,
+				2173F94C2C15EFAC00CDF116 /* Error+Network.swift in Sources */,
+				2173F94F2C15EFB500CDF116 /* AuthManager.swift in Sources */,
 				2173C0662BA0977700FDD3D9 /* Setup+UserDefaultsStrings.swift in Sources */,
+				2173F9502C15F05300CDF116 /* Type.swift in Sources */,
 				2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */,
+				2173F9592C15F0C200CDF116 /* APIKey.swift in Sources */,
+				2173F94B2C15EFA300CDF116 /* Profile.swift in Sources */,
+				2173F9492C15EF9F00CDF116 /* RefreshAccessToken.swift in Sources */,
 				2173C0562BA090F700FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				217BCCC52B9DE5C400B5461B /* LectureViewModelUnitTest.swift in Sources */,
+				2173F94A2C15EFA100CDF116 /* Trophy.swift in Sources */,
+				2173F9542C15F05F00CDF116 /* Setup+FontStrings.swift in Sources */,
+				2173F9572C15F06B00CDF116 /* Setup+NetworkStrings.swift in Sources */,
 				219EFBD32B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift in Sources */,
 				2173C0602BA0927200FDD3D9 /* UserDefaultsTest.swift in Sources */,
 			);

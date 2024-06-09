@@ -8,11 +8,18 @@
 import SwiftUI
 
 struct SignUpInfoView: View {
+    
+    @ObservedObject var signUpInfoVM: SignUpInfoViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text("nickname: \(signUpInfoVM.userDataForSignUp.nickname)")
+            Text("email: \(signUpInfoVM.userDataForSignUp.email)")
+            Text("provider: \(signUpInfoVM.userDataForSignUp.provider)")
+        }
     }
 }
 
 #Preview {
-    SignUpInfoView()
+    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: SignUpRequest(email: "aaa@bbb.com", nickname: "abcabc123123", provider: SocialLoginProvider.apple)))
 }

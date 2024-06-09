@@ -10,6 +10,8 @@ import Alamofire
 
 enum Router: URLRequestConvertible {
     
+    //의문: request type은 다르지만 사실상 내부 내용물 동일할 경우 타입 동일화 Or 각자 케이스 구분?
+    
     //MARK: - User
     case signUp(request: SignUpRequest)
     case signIn(request: SignInRequest)
@@ -21,6 +23,7 @@ enum Router: URLRequestConvertible {
     case acquiredTrophyList(request: TrophyRequest)
     case mostRecentAcquiredTrophy(request: TrophyRequest)
 
+    //누적 통계 필요?
     case summaryStat
     
     //MARK: - Lecture Contents
@@ -167,9 +170,19 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.refreshTokenTitle: request.refreshToken]
         case .profileEdit(let request):
             return [Setup.NetworkStrings.nicknameTitle: request.nickname]
-        case .signOut, .withdraw, .profileCheck, .acquiredTrophyList, .mostRecentAcquiredTrophy:
+        case .signOut, .withdraw, .profileCheck, .mostRecentAcquiredTrophy, .acquiredTrophyList:
             return ["": ""]
-
+            
+        //Pagination 활용 목적
+//        case .acquiredTrophyList(let request):
+//            if let next = request.next, let limit = request.limit {
+//                return [
+//                    Setup.NetworkStrings.trophyNextPageQueryTitle: next,
+//                    Setup.NetworkStrings.trophyLimitPageQueryTitle: limit
+//                ]
+//            } else {
+//                return ["": ""]
+//            }
             
         case .summaryStat:
             return ["": ""]
@@ -180,14 +193,19 @@ enum Router: URLRequestConvertible {
         }
     }
     
-    private var parameters: Parameters? {
+    //Pagination 활용 목적
+    private var parameters: [String: Int]? {
         switch self {
-        case .acquiredTrophyList(let request), .mostRecentAcquiredTrophy(let request):
-            return [
-                Setup.NetworkStrings.trophyNextPageQueryTitle: request.next,
-                Setup.NetworkStrings.trophyLimitPageQueryTitle: request.limit
-            ]
-        default: 
+        case .acquiredTrophyList(let request):
+            if let next = request.next, let limit = request.limit {
+                return [
+                    Setup.NetworkStrings.trophyNextPageQueryTitle: next,
+                    Setup.NetworkStrings.trophyLimitPageQueryTitle: limit
+                ]
+            } else {
+                return nil
+            }
+        default:
             return nil
         }
     }
@@ -197,21 +215,24 @@ enum Router: URLRequestConvertible {
         var request = URLRequest(url: url)
         request.headers = header
         request.method = method
+                
+        switch self {
+            //header에 json 없거나 multipart/data-form과 같은 경우
+        case .acquiredTrophyList:
+            
+//            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(body, into: request)
+            
+            if let parameters = parameters {
+                request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(parameters, into: request)
+            } else {
+                request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(body, into: request)
+            }
+        default:
+            //json인 경우
+            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
+        }
         
-        //Build 목적
-        request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
         return request
-        
-//        if let parameter = parameters {
-//            //그 외 header에 json 없거나 multipart/data-form과 같은 경우
-//            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(parameter, into: request)
-//            return request
-//        } else {
-//            //json인 경우
-//            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
-//            return request
-//        }
-
     }
     
 }

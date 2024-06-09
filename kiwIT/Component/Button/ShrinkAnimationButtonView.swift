@@ -13,6 +13,10 @@ struct ShrinkAnimationButtonView: View {
     var buttonTitle: String
     
     //image string 입력받기: 다음으로, 로그아웃, 회원탈퇴 용 시스템 이미지 활용???
+    var imageString: String?
+    
+    //color 입력받기: 로그아웃, 회원탈퇴 용 컬러 설정
+    var buttonColor: Color?
     
     @State private var tapped = false
     

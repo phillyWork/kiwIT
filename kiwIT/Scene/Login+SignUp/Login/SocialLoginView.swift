@@ -13,19 +13,22 @@ import SwiftUI
 
 struct SocialLoginView: View {
     
-    @StateObject private var socialLoginVM = SocialLoginViewModel()
+    @ObservedObject private var socialLoginVM = SocialLoginViewModel()
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        VStack {
-            Text(Setup.ContentStrings.appTitle)
-                .font(.title)
-            Spacer(minLength: 50)
-            VStack(alignment: .center, spacing: 10) {
-                SocialLoginButtonView(service: .apple)
-                SocialLoginButtonView(service: .kakao)
+        
+        NavigationStack {
+            VStack {
+                Text(Setup.ContentStrings.appTitle)
+                    .font(.title)
+                Spacer(minLength: 50)
+                VStack(alignment: .center, spacing: 10) {
+                    SocialLoginButtonView(service: .apple)
+                    SocialLoginButtonView(service: .kakao)
+                }
+                .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
             }
-            .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
         }
         .onChange(of: socialLoginVM.didLoginSucceed) { newValue in
             if newValue {
@@ -33,12 +36,11 @@ struct SocialLoginView: View {
                 dismiss()
             }
         }
-        .onChange(of: socialLoginVM.shouldMoveToSignUp) { newValue in
-            if newValue {
-                print("New User! Move to SignUpInfoView")
-                dismiss()
+        .navigationDestination(isPresented: $socialLoginVM.shouldMoveToSignUp, destination: {
+            if let userDataForSignUp = socialLoginVM.userDataForSignUp {
+                SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: userDataForSignUp))
             }
-        }
+        })
     }
 }
 
