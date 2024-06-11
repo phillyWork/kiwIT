@@ -13,11 +13,13 @@ import SwiftUI
 
 struct SocialLoginView: View {
     
-    @ObservedObject private var socialLoginVM = SocialLoginViewModel()
+    //ObservedObject: 상위 뷰 및 전체에서 활용
+    //StateObject: 해당 뷰의 생명주기 동안만 상태 유지
+    
+    @StateObject private var socialLoginVM = SocialLoginViewModel()
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        
         NavigationStack {
             VStack {
                 Text(Setup.ContentStrings.appTitle)
@@ -29,18 +31,24 @@ struct SocialLoginView: View {
                 }
                 .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
             }
-        }
-        .onChange(of: socialLoginVM.didLoginSucceed) { newValue in
-            if newValue {
-                print("Login Succeed. Move to HomeView")
-                dismiss()
+            .onChange(of: socialLoginVM.didLoginSucceed) { newValue in
+                if newValue {
+                    print("Login Succeed. Move to HomeView")
+                    dismiss()
+                } else {
+                    print("Not Succeeding in Login")
+                }
+            }
+            .navigationDestination(isPresented: $socialLoginVM.shouldMoveToSignUp) {
+                let _ = print("navigationDestination???: \(socialLoginVM.shouldMoveToSignUp)")
+                if let userDataForSignUp = socialLoginVM.userDataForSignUp {
+                    let _ = print("data to pass to signup: \(userDataForSignUp)")
+                    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: userDataForSignUp))
+                } else {
+                    let _ = print("---Empty View---")
+                }
             }
         }
-        .navigationDestination(isPresented: $socialLoginVM.shouldMoveToSignUp, destination: {
-            if let userDataForSignUp = socialLoginVM.userDataForSignUp {
-                SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: userDataForSignUp))
-            }
-        })
     }
 }
 

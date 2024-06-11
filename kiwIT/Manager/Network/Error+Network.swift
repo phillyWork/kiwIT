@@ -50,22 +50,15 @@ struct NetworkErrorMessage {
     
     var message: String {
         switch status {
-        case 202:
-            switch errorCase {
-            case .signIn:
-                return Setup.NetworkErrorMessage.signInError202
-            default:
-                return "Error Code 202"
-            }
-        case 204:
-            switch errorCase {
-            case .mostRecentAcquiredTrophy:
-                return Setup.NetworkErrorMessage.mostRecentTakenQuizError204
-            case .mostRecentTakenQuiz:
-                return Setup.NetworkErrorMessage.mostRecentTakenQuizError204
-            default:
-                return "Error Code 204"
-            }
+//        case 204:
+//            switch errorCase {
+//            case .mostRecentAcquiredTrophy:
+//                return Setup.NetworkErrorMessage.mostRecentTakenQuizError204
+//            case .mostRecentTakenQuiz:
+//                return Setup.NetworkErrorMessage.mostRecentTakenQuizError204
+//            default:
+//                return "Error Code 204"
+//            }
         case 400:
             switch errorCase {
             case .signUp:
@@ -134,6 +127,41 @@ struct NetworkErrorMessage {
             }
         default:
             return "Network Error: Invalid Case Error Messages"
+        }
+    }
+}
+
+enum NetworkError: Error {
+
+//    case noHistory(message: String)
+    case invalidRequestBody(message: String)
+    case invalidAccessToken(message: String)
+    case invalidPathVariable(message: String)
+    case invalidContent(message: String)
+    
+    init?(statusCode: Int, message: String) {
+        switch statusCode {
+//        case 204: self = .noHistory(message: message)
+        case 400: self = .invalidRequestBody(message: message)
+        case 401: self = .invalidAccessToken(message: message)
+        case 410: self = .invalidPathVariable(message: message)
+        case 500: self = .invalidContent(message: message)
+        default: return nil
+        }
+    }
+    
+    var description: String {
+        switch self {
+//        case .noHistory(let message):
+//            return message
+        case .invalidRequestBody(let message):
+            return message
+        case .invalidAccessToken(let message):
+            return message
+        case .invalidPathVariable(let message):
+            return message
+        case .invalidContent(let message):
+            return message
         }
     }
 }

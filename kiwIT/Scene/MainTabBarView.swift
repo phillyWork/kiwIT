@@ -12,7 +12,7 @@ import SwiftUI
 struct MainTabBarView: View {
     
     //viewmodel에서 판단, 이동 예정
-    @State private var isUserLoggedIn = true
+    @State private var isUserLoggedIn = false
     @State private var shouldShowLoginView = false
         
     var body: some View {

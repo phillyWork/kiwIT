@@ -11,10 +11,12 @@ import Combine
 
 final class SignUpInfoViewModel: ObservableObject {
     
-    @Published var userDataForSignUp: SignUpRequest
+    var userDataForSignUp: SignUpRequest
     
     init(userDataForSignUp: SignUpRequest) {
+        print("about to initialize viewmodel")
         self.userDataForSignUp = userDataForSignUp
+        print("passed userData from SocialLoginView: \(userDataForSignUp)")
     }
     
     //가입 화면에서 작성한 모든 정보 기반으로 요청
