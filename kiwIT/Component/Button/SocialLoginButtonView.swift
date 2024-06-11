@@ -9,16 +9,35 @@ import SwiftUI
 
 import AuthenticationServices
 
-//버튼 누른 뒤, 이미 가입되어 있다면 로그인 화면 제거, HomeView로 이동
-//가입되어 있지 않다면 회원가입 view로
+//1. SocialLoginView ~ SocialLoginVM
+//2. SocialLoginButton ~ SocialLoginButtonVM
+//3. SocialLoginButton tap: SocialLoginButtonVM requestLogin
+//4. request 결과 ~ 로그인 성공 / 회원가입 필요 / 실패
+//5-1. 로그인 성공 --> SocialLoginVM의 didSucceedLogin 변경
+//5-2. 회원가입 필요 --> SocialLoginVM의 shouldMoveToSignUp 변경
+//5-3. 실패 --> 에러 케이스 처리 필요
 
 struct SocialLoginButtonView: View {
     
+    @StateObject var socialLoginButtonVM = SocialLoginButtonViewModel()
+    @ObservedObject var socialLoginVM: SocialLoginViewModel
+    
     var service: SocialLoginProvider
     
-    @StateObject var socialLoginVM = SocialLoginViewModel()
+    var body: some View {     
+        AnyView(loginButton)
+            .onAppear {
+                socialLoginButtonVM.serverLoginResultPublisher
+                    .sink { success, error, userData in
+                        socialLoginVM.handleSocialLoginResult(success: success, error: error, userData: userData)
+                    }
+                    .store(in: &socialLoginButtonVM.cancellables)
+            }
+        
+    }
     
-    var body: some View {
+    @ViewBuilder
+    private var loginButton: some View {
         switch service {
         case .apple:
             SignInWithAppleButton { request in
@@ -28,7 +47,7 @@ struct SocialLoginButtonView: View {
                 switch result {
                 case .success(let authResult):
                     print("Succeed in Sign in Apple")
-                    socialLoginVM.requestAppleUserLogin(authResult.credential)
+                    socialLoginButtonVM.requestAppleUserLogin(authResult.credential)
                 case .failure(let error):
                     //실패: 유저 허가하지 않음
                     print("Failed in Sign in Apple: \(error.localizedDescription)")
@@ -38,18 +57,16 @@ struct SocialLoginButtonView: View {
             Button {
                 //Kakao Login Action
                 print("Kakao Login Button Tapped")
-                socialLoginVM.requestKakaoUserLogin()
-                
+                socialLoginButtonVM.requestKakaoUserLogin()
             } label: {
                 //Kakao Login Button Image
                 Text("Kakao Login Button")
             }
-            
         }
     }
     
 }
 
 #Preview {
-    SocialLoginButtonView(service: .apple)
+    SocialLoginButtonView(socialLoginVM: SocialLoginViewModel(), service: .apple)
 }

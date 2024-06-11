@@ -135,6 +135,8 @@
 		2189BC3A2BF24D30007CC766 /* QuizMultipleChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC392BF24D30007CC766 /* QuizMultipleChoice.swift */; };
 		2189BC3D2BF250AD007CC766 /* QuizOXButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC3C2BF250AD007CC766 /* QuizOXButtonLabel.swift */; };
 		2189BC402BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC3F2BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift */; };
+		219489552C18517600E684AC /* SocialLoginButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219489542C18517600E684AC /* SocialLoginButtonViewModel.swift */; };
+		219489572C18796F00E684AC /* Error+ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219489562C18796F00E684AC /* Error+ServiceProvider.swift */; };
 		219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBA2B9F068200FBEBE0 /* HomeView.swift */; };
 		219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */; };
 		219EFBBF2B9F069600FBEBE0 /* QuizListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizListView.swift */; };
@@ -261,6 +263,8 @@
 		2189BC392BF24D30007CC766 /* QuizMultipleChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMultipleChoice.swift; sourceTree = "<group>"; };
 		2189BC3C2BF250AD007CC766 /* QuizOXButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizOXButtonLabel.swift; sourceTree = "<group>"; };
 		2189BC3F2BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMultipleChoiceButtonLabel.swift; sourceTree = "<group>"; };
+		219489542C18517600E684AC /* SocialLoginButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonViewModel.swift; sourceTree = "<group>"; };
+		219489562C18796F00E684AC /* Error+ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+ServiceProvider.swift"; sourceTree = "<group>"; };
 		219EFBBA2B9F068200FBEBE0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListView.swift; sourceTree = "<group>"; };
 		219EFBBE2B9F069600FBEBE0 /* QuizListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizListView.swift; sourceTree = "<group>"; };
@@ -352,6 +356,7 @@
 		216F5F8D2BAB3018008817B0 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				219489562C18796F00E684AC /* Error+ServiceProvider.swift */,
 				217A513C2BAECBB70052A07E /* Error+Network.swift */,
 				217A513A2BAECB800052A07E /* Router.swift */,
 				216F5F8E2BAB302C008817B0 /* NetworkManager.swift */,
@@ -590,6 +595,7 @@
 		21816ABC2BC595FC007E6FD6 /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				219489542C18517600E684AC /* SocialLoginButtonViewModel.swift */,
 				217B53142BA2EDE70081D418 /* SocialLoginButtonView.swift */,
 				2170E7562BBC6DD7002A1DA6 /* ShrinkAnimationButtonView.swift */,
 			);
@@ -1004,7 +1010,9 @@
 				219EFBBF2B9F069600FBEBE0 /* QuizListView.swift in Sources */,
 				2173F9372C0F4B4600CDF116 /* TrophyListView.swift in Sources */,
 				2173F9452C15EC0F00CDF116 /* SignUpInfoViewModel.swift in Sources */,
+				219489572C18796F00E684AC /* Error+ServiceProvider.swift in Sources */,
 				218267652BE6808200D8C17C /* QuizListViewModel.swift in Sources */,
+				219489552C18517600E684AC /* SocialLoginButtonViewModel.swift in Sources */,
 				217E55A62BB1BA2D0014B46E /* Authorization.swift in Sources */,
 				214282D32BD1023C00EA3CC1 /* CategoryItemUITest.swift in Sources */,
 				21816ABE2BC81BE5007E6FD6 /* ContentSectionTitleView.swift in Sources */,
