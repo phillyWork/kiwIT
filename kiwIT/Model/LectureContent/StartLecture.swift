@@ -12,11 +12,11 @@ struct StartLectureRequest: Encodable {
 }
 
 struct StartLectureResponse: Decodable {
-    let paylod: [StartLecturePayload]
+    var paylod: [StartLecturePayload]
 }
 
 struct StartLecturePayload: Codable {
-    let id: Int
-    let title: String
-    let contentList: [LectureContent]
+    var id: Int
+    var title: String
+    var contentList: [LectureContent]
 }

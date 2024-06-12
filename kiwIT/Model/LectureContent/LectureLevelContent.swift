@@ -8,19 +8,19 @@
 import Foundation
 
 struct LectureLevelContentRequest: Encodable {
-    let access: String
+    var access: String
 }
 
 struct LectureLevelContentResponse: Decodable {
-    let payload: [LectureContent]
+    var payload: [LectureContent]
 }
 
 struct LectureContent: Codable {
-    let id: Int
-    let title: String
-    let point: Int
-    let exercise: String
-    let answer: Bool
-    let levelNum: Int
-    let categoryChapterId: Int
+    var id: Int
+    var title: String
+    var point: Int
+    var exercise: String
+    var answer: Bool
+    var levelNum: Int
+    var categoryChapterId: Int
 }

@@ -13,15 +13,17 @@ final class SignUpInfoViewModel: ObservableObject {
     
     var userDataForSignUp: SignUpRequest
     
+    @Published var toggleSwitchIsOn = false
+    @Published var isNicknameEmpty = false
+    
     init(userDataForSignUp: SignUpRequest) {
         print("about to initialize viewmodel")
         self.userDataForSignUp = userDataForSignUp
     }
         
     //가입 화면에서 작성한 모든 정보 기반으로 요청
-    //출처, 이메일, 닉네임, 등등...
     func requestSignUp() {
-    
+        
     }
     
 }

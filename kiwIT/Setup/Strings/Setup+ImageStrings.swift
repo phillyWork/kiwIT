@@ -32,6 +32,9 @@ extension Setup {
         
         static let textSize = "textformat.size"
         
+        static let toggleButtonUnchecked = "square"
+        static let toggleButtonChecked = "checkmark.square.fill"
+        
     }
     
 }

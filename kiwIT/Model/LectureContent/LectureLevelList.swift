@@ -11,14 +11,14 @@ import Foundation
 
 
 struct LectureLevelListRequest: Encodable {
-    let access: String
+    var access: String
 }
 
 struct LectureLevelListResponse: Decodable {
-    let levelList: [LectureLevelPayload]
+    var levelList: [LectureLevelPayload]
 }
 
 struct LectureLevelPayload: Codable {
-    let num: Int
-    let title: String
+    var num: Int
+    var title: String
 }

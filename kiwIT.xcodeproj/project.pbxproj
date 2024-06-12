@@ -137,6 +137,7 @@
 		2189BC402BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC3F2BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift */; };
 		219489552C18517600E684AC /* SocialLoginButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219489542C18517600E684AC /* SocialLoginButtonViewModel.swift */; };
 		219489572C18796F00E684AC /* Error+ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219489562C18796F00E684AC /* Error+ServiceProvider.swift */; };
+		219489592C199E1F00E684AC /* CheckboxToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219489582C199E1F00E684AC /* CheckboxToggleStyle.swift */; };
 		219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBA2B9F068200FBEBE0 /* HomeView.swift */; };
 		219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */; };
 		219EFBBF2B9F069600FBEBE0 /* QuizListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizListView.swift */; };
@@ -265,6 +266,7 @@
 		2189BC3F2BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMultipleChoiceButtonLabel.swift; sourceTree = "<group>"; };
 		219489542C18517600E684AC /* SocialLoginButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonViewModel.swift; sourceTree = "<group>"; };
 		219489562C18796F00E684AC /* Error+ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+ServiceProvider.swift"; sourceTree = "<group>"; };
+		219489582C199E1F00E684AC /* CheckboxToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckboxToggleStyle.swift; sourceTree = "<group>"; };
 		219EFBBA2B9F068200FBEBE0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListView.swift; sourceTree = "<group>"; };
 		219EFBBE2B9F069600FBEBE0 /* QuizListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizListView.swift; sourceTree = "<group>"; };
@@ -308,12 +310,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		214282D12BD0FDE900EA3CC1 /* Shape */ = {
+		214282D12BD0FDE900EA3CC1 /* Style */ = {
 			isa = PBXGroup;
 			children = (
 				214282CF2BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift */,
+				219489582C199E1F00E684AC /* CheckboxToggleStyle.swift */,
 			);
-			path = Shape;
+			path = Style;
 			sourceTree = "<group>";
 		};
 		2167FD492BC04E2F00A45F2B /* Font */ = {
@@ -458,8 +461,8 @@
 		217B53162BA2EDEB0081D418 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				214282D12BD0FDE900EA3CC1 /* Style */,
 				21816ABC2BC595FC007E6FD6 /* Button */,
-				214282D12BD0FDE900EA3CC1 /* Shape */,
 				21816ADA2BC83B92007E6FD6 /* LectureContent */,
 				2182676D2BE6833800D8C17C /* QuizContent */,
 				216F5F8C2BAB2F19008817B0 /* LectureContentPayload */,
@@ -987,6 +990,7 @@
 				216F5F892BAB2DD8008817B0 /* ContentImageView.swift in Sources */,
 				217A51462BAECDE50052A07E /* Type.swift in Sources */,
 				21816AD42BC82568007E6FD6 /* ContentCategoryItemView.swift in Sources */,
+				219489592C199E1F00E684AC /* CheckboxToggleStyle.swift in Sources */,
 				2173C0582BA0917100FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				217DFD322BEB7A5400C4ADC9 /* LectureLevelList.swift in Sources */,
 				217A51432BAECD5D0052A07E /* SignIn.swift in Sources */,

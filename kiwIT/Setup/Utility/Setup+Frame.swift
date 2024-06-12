@@ -20,6 +20,9 @@ extension Setup {
         static let socialLoginButtonWidth = devicePortraitWidth * 0.8
         static let socialLoginButtonStackHeight = socialLoginButtonWidth * 0.3
         
+        static let signUpContentWidth = devicePortraitWidth * 0.9
+        static let signUpConfirmScrollViewHeight = devicePortraitHeight * 0.45
+        
         //컨텐츠 리스트 개별 Item 크기
         static let contentListItemWidth = devicePortraitWidth * 0.9
         static let contentListCategoryItemHeight = contentListItemWidth * 0.55

@@ -8,19 +8,19 @@
 import Foundation
 
 struct SignInRequest: Encodable {
-    let token: String
-    let provider: SocialLoginProvider
+    var token: String
+    var provider: SocialLoginProvider
 }
 
 struct SignInResponseSuccess: Decodable {
-    let accessToken: String
-    let refreshToken: String
+    var accessToken: String
+    var refreshToken: String
 }
 
 struct SignInResponseSignUpRequired: Decodable {
-    let email: String
-    let nickname: String
-    let provider: String
+    var email: String
+    var nickname: String
+    var provider: String
 }
 
 enum SignInResponse: Decodable {

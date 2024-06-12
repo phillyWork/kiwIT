@@ -8,5 +8,5 @@
 import Foundation
 
 struct AuthorizationRequest {
-    let access: String
+    var access: String
 }

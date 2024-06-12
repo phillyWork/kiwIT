@@ -51,7 +51,7 @@ struct LectureView: View {
                     
                     ContentTextView(context: "예를 한번 들어볼까요? 다음 사진을 잘 봐주세요", fontSize: fontSize)
                     
-                    ShrinkAnimationButtonView(title: "확인해보기") {
+                    ShrinkAnimationButtonView(title: "확인해보기", color: Color.brandColor) {
                         print("Code")
                     }
                 }
