@@ -40,22 +40,27 @@ struct ProfileView: View {
     
     
     //from user data (acquired trophy data)
-    let tempUserAcquiredTrophyData = [
+    var tempUserAcquiredTrophyData = [
         AcquiredTrophy(id: "aaa123", trophy: TrophyEntity(id: "111111111", title: "지금까지의 노력, 최고에요!", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZCbqRAGGwuZYEDajBgZx1zUgTdqBwfwVZw&s"), createdAt: "2024-02-11", updatedAt: "2024-05-23"),
         AcquiredTrophy(id: "aaa123", trophy: TrophyEntity(id: "333333333", title: "그대의 노력에 건배", imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHZCbqRAGGwuZYEDajBgZx1zUgTdqBwfwVZw&s"), createdAt: "2024-02-11", updatedAt: "2024-05-23")
+    ]
+    
+    //acquired가 5개 안되는 경우
+    var tempEmptyTrophy = [
+        TrophyEntity(id: "zzzzzz", title: "빈 트로피", imageUrl: "https://i.pinimg.com/474x/9f/d2/eb/9fd2eb8b2481dfaa37bc669c9d2b9fb4.jpg"),
+        TrophyEntity(id: "zzzzzz", title: "빈 트로피", imageUrl: "https://i.pinimg.com/474x/9f/d2/eb/9fd2eb8b2481dfaa37bc669c9d2b9fb4.jpg"),
+        TrophyEntity(id: "zzzzzz", title: "빈 트로피", imageUrl: "https://i.pinimg.com/474x/9f/d2/eb/9fd2eb8b2481dfaa37bc669c9d2b9fb4.jpg"),
     ]
 
     
     var body: some View {
         NavigationStack {
             ScrollView {
-                   
                 HStack {
                     Text(nickname)
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 10)
-                    //수정 버튼
                     Button(action: {
                         showEditNicknameAlert.toggle()
                     }, label: {
@@ -166,7 +171,6 @@ struct ProfileView: View {
                 GroupBox(label:
                             HStack {
                     Text("획득한 도전 과제")
-                    
                     NavigationLink {
                         TrophyListView()
                     } label: {
@@ -177,13 +181,9 @@ struct ProfileView: View {
                             ForEach(tempUserAcquiredTrophyData) { trophyData in
                                 RecentlyAcquiredTrophy(tempImageUrlString: trophyData.trophy.imageUrl)
                             }
-                            
                             if (tempUserAcquiredTrophyData.count < 5) {
-                                //5개 안되는 경우: 나머지는 빈칸 이미지로 나타내기
-                                //warning: 고정값 활용 필요 --> 빈 개수만큼 빈 트로피 entity 따로 만들기?
-                                let count = 5 - tempUserAcquiredTrophyData.count
-                                ForEach(0..<count) { num in
-                                    RecentlyAcquiredTrophy(tempImageUrlString: "https://i.pinimg.com/474x/9f/d2/eb/9fd2eb8b2481dfaa37bc669c9d2b9fb4.jpg")
+                                ForEach(tempEmptyTrophy) { trophy in
+                                    RecentlyAcquiredTrophy(tempImageUrlString: trophy.imageUrl)
                                 }
                             }
                         }
@@ -191,10 +191,10 @@ struct ProfileView: View {
                 .backgroundStyle(Color.surfaceColor)
             
                 VStack {
-                    ShrinkAnimationButtonView(title: "로그아웃") {
+                    ShrinkAnimationButtonView(title: "로그아웃", color: Color.brandBlandColor) {
                         showLogoutAlert.toggle()
                     }
-                    .alert("회원 탈퇴", isPresented: $showLogoutAlert, actions: {
+                    .alert("로그 아웃", isPresented: $showLogoutAlert, actions: {
                         Button("확인", role: .cancel) {
                             //network: logout call
                             
@@ -210,7 +210,7 @@ struct ProfileView: View {
                     
                     Spacer()
                     
-                    ShrinkAnimationButtonView(title: "회원 탈퇴") {
+                    ShrinkAnimationButtonView(title: "회원 탈퇴", color: Color.errorHighlightColor) {
                         showWithdrawAlert.toggle()
                     }
                     .alert("회원 탈퇴", isPresented: $showWithdrawAlert, actions: {
@@ -251,7 +251,6 @@ struct ProfileView: View {
                     }
                 }
                 .padding(.top, 8)
-                
             }
             .frame(maxWidth: .infinity)
             .background(Color.backgroundColor)

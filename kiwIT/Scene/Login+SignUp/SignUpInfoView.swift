@@ -14,7 +14,7 @@ struct SignUpInfoView: View {
     @FocusState private var isTextFieldFocused: Bool
     
     var body: some View {
-        VStack {
+        ScrollView {
             Text("회원 가입 정보")
                 .font(.custom(Setup.FontName.notoSansBold, size: 25))
                 .padding(.vertical, 8)
@@ -30,11 +30,15 @@ struct SignUpInfoView: View {
                     Text("닉네임: ")
                     TextField("",
                               text: $signUpInfoVM.userDataForSignUp.nickname,
-                              prompt: Text("닉네임을 입력해주세요")
+                              prompt: Text("닉네임 입력은 필수입니다")
                         .foregroundColor(Color.textPlaceholderColor)
                     )
+                    .onSubmit {
+                        signUpInfoVM.updateNicknameEmptiness()
+                    }
+                    .background(Color.brandBlandColor)
+                    .foregroundStyle(Color.black)
                     .focused($isTextFieldFocused)
-                    .background(Color.shadowColor)
                 }
                 
                 HStack {
@@ -51,6 +55,7 @@ struct SignUpInfoView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, 8)
                 
                 ScrollView {
                     Text("동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...")
@@ -58,13 +63,12 @@ struct SignUpInfoView: View {
                 }
                 .frame(height: Setup.Frame.signUpConfirmScrollViewHeight)
                 .background(Color.shadowColor)
-                .border(Color.purple)
             
                 HStack {
                     Button(action: {
-                        signUpInfoVM.toggleSwitchIsOn.toggle()
+                        signUpInfoVM.isToggleSwitchOn.toggle()
                     }, label: {
-                        Image(systemName: signUpInfoVM.toggleSwitchIsOn ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked)
+                        Image(systemName: signUpInfoVM.isToggleSwitchOn ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked)
                             .imageScale(.large)
                             .foregroundStyle(Color.brandColor)
                     })
@@ -79,18 +83,19 @@ struct SignUpInfoView: View {
             
             Spacer()
             
-            if signUpInfoVM.toggleSwitchIsOn && !signUpInfoVM.isNicknameEmpty {
-                ShrinkAnimationButtonView(title: "회원 가입", color: Color.brandColor) {
+            ShrinkAnimationButtonView(title: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? "회원 가입" : "필수 사항 입력이 우선됩니다", color: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Color.brandColor : Color.errorHighlightColor) {
+                
+                if signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty {
                     signUpInfoVM.requestSignUp()
+                } else {
+                    signUpInfoVM.showSignUpRequestIsNotSetAlert.toggle()
                 }
-                .padding(.vertical, 12)
-            } else {
-                ShrinkAnimationButtonView(title: "가입 준비", color: Color.gray) {
-                    signUpInfoVM.requestSignUp()
-                }
-                .padding(.vertical, 12)
+                
             }
-            
+            .padding(.vertical, 12)
+            .alert("회원 가입을 시도할 수 없습니다", isPresented: $signUpInfoVM.showSignUpRequestIsNotSetAlert, actions: { }, message: {
+                Text("닉네임을 입력해주시고 안내 사항을 체크해주셔야 회원 가입을 할 수 있습니다")
+            })
         }
         .frame(maxHeight: .infinity)
         .padding(.horizontal, 8)
