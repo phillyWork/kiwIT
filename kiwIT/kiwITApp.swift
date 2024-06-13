@@ -15,7 +15,8 @@ struct kiwITApp: App {
     
     init() {
         //Config 활용 Main Bundle 내부 등록된 키를 활용
-        let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
+//        let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
+        let kakaoAppKey = Bundle.main.infoDictionary?[Setup.ContentStrings.kakaoNativeKeyString] ?? ""
         
         KakaoSDK.initSDK(appKey: kakaoAppKey as! String)
         

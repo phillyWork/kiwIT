@@ -17,17 +17,13 @@ final class SocialLoginViewModel: ObservableObject {
     
     var userDataForSignUp: SignUpRequest? = nil
     
-    private var cancellables = Set<AnyCancellable>()
-    
-    var providerToken = ""
-    
     init() {
         print("DEBUG: SocialLoginViewModel initialized")
     }
     
     //Social Login Button ViewModel에서 서버 로그인 성공 시,
     //Token 일반화 가능하면 함수 하나로 처리, 아니라면 각자 생성
-    func handleSocialLoginResult(success: Bool, error: String? = nil, userData: SignUpRequest? = nil) {
+    func handleSocialLoginResult(success: Bool, errorMessage: String? = nil, userData: SignUpRequest? = nil) {
         if success {
             print("Login Succeed!!!")
             self.didLoginSucceed = true
@@ -37,15 +33,10 @@ final class SocialLoginViewModel: ObservableObject {
                 self.userDataForSignUp = userData
                 self.shouldMoveToSignUp = true
             } else {
-                print("error message from server: \(error)")
-                self.errorMessage = error
+                print("Sign In failed with error message: \(errorMessage)")
+                self.errorMessage = errorMessage
             }
         }
     }
-    
-    
-
-    
-
     
 }

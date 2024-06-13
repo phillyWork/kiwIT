@@ -7,16 +7,15 @@
 
 import Foundation
 
-extension Setup {
+enum Setup {
     enum NetworkErrorMessage {
         
         static let invalidAccessToken = "요청 권한이 존재하지 않음. 토큰 리프레시 필요."
         
-        
-        static let signUpError = "중복된 닉네임이 존재합니다. 다른 닉네임을 입력해주세요."
-        static let signInError202 = "회원가입이 필요합니다. 다음을 입력해주세요."
         static let signInError400 = "소셜 로그인에 오류가 발생했습니다. 다시 시도해주세요."
-       
+        
+        static let signUpError = "닉네임 중복 혹은 이미 가입되어 있는 계정입니다. 다시 시도해주세요."
+        
         //내부적 처리?
         static let signOutError = "로그아웃 권한이 없습니다.(토큰 리프레시 필요)"
         

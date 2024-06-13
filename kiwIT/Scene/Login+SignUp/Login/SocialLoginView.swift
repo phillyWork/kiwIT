@@ -33,7 +33,7 @@ struct SocialLoginView: View {
     //StateObject: 해당 뷰의 생명주기 동안만 상태 유지
     
     @StateObject private var socialLoginVM = SocialLoginViewModel()
-    @Environment(\.dismiss) var dismiss
+    @ObservedObject var mainTabBarVM: MainTabBarViewModel
     
     var body: some View {
         NavigationStack {
@@ -47,21 +47,19 @@ struct SocialLoginView: View {
                 }
                 .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
             }
+            .frame(maxWidth: .infinity)
+            .background(Color.backgroundColor)
             .onChange(of: socialLoginVM.didLoginSucceed) { newValue in
                 if newValue {
                     print("Login Succeed. Move to HomeView")
-                    dismiss()
+                    mainTabBarVM.isUserLoggedIn = true
                 } else {
-                    print("Not Succeeding in Login")
+                    print("Not Succeeding in Login. Should show error message: \(socialLoginVM.errorMessage)")
                 }
             }
             .navigationDestination(isPresented: $socialLoginVM.shouldMoveToSignUp) {
-                let _ = print("navigationDestination???: \(socialLoginVM.shouldMoveToSignUp)")
                 if let userDataForSignUp = socialLoginVM.userDataForSignUp {
-                    let _ = print("data to pass to signup: \(userDataForSignUp)")
-                    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: userDataForSignUp))
-                } else {
-                    let _ = print("---Empty View---")
+                    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: userDataForSignUp), mainTabBarVM: mainTabBarVM)
                 }
             }
         }
@@ -69,5 +67,5 @@ struct SocialLoginView: View {
 }
 
 #Preview {
-    SocialLoginView()
+    SocialLoginView(mainTabBarVM: MainTabBarViewModel())
 }

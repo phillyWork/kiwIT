@@ -10,6 +10,7 @@ import SwiftUI
 struct SignUpInfoView: View {
 
     @StateObject var signUpInfoVM: SignUpInfoViewModel
+    @ObservedObject var mainTabBarVM: MainTabBarViewModel
     
     @FocusState private var isTextFieldFocused: Bool
     
@@ -59,10 +60,11 @@ struct SignUpInfoView: View {
                 
                 ScrollView {
                     Text("동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...")
+                        .foregroundStyle(Color.black)
                         .padding()
                 }
                 .frame(height: Setup.Frame.signUpConfirmScrollViewHeight)
-                .background(Color.shadowColor)
+                .background(Color.brandBlandColor)
             
                 HStack {
                     Button(action: {
@@ -100,9 +102,15 @@ struct SignUpInfoView: View {
         .frame(maxHeight: .infinity)
         .padding(.horizontal, 8)
         .background(Color.backgroundColor)
+        .onChange(of: signUpInfoVM.didSignUpSucceed) { newValue in
+            if newValue {
+                print("Sign Up and Login Succeed!!! Move to TabViews")
+                mainTabBarVM.isUserLoggedIn = true
+            }
+        }
     }
 }
 
 #Preview {
-    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: SignUpRequest(email: "aaa@bbb.com", nickname: "abcabc123123", provider: SocialLoginProvider.apple)))
+    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: SignUpRequest(email: "aaa@bbb.com", nickname: "abcabc123123", provider: SocialLoginProvider.apple)), mainTabBarVM: MainTabBarViewModel())
 }

@@ -19,7 +19,7 @@ import AuthenticationServices
 
 struct SocialLoginButtonView: View {
     
-    @StateObject var socialLoginButtonVM = SocialLoginButtonViewModel()
+    @StateObject private var socialLoginButtonVM = SocialLoginButtonViewModel()
     @ObservedObject var socialLoginVM: SocialLoginViewModel
     
     var service: SocialLoginProvider
@@ -29,11 +29,10 @@ struct SocialLoginButtonView: View {
             .onAppear {
                 socialLoginButtonVM.serverLoginResultPublisher
                     .sink { success, error, userData in
-                        socialLoginVM.handleSocialLoginResult(success: success, error: error, userData: userData)
+                        socialLoginVM.handleSocialLoginResult(success: success, errorMessage: error, userData: userData)
                     }
                     .store(in: &socialLoginButtonVM.cancellables)
             }
-        
     }
     
     @ViewBuilder
@@ -42,7 +41,7 @@ struct SocialLoginButtonView: View {
         case .apple:
             SignInWithAppleButton { request in
                 //Sign in Apple Action with request (요청할 정보)
-                request.requestedScopes = [.email]
+                request.requestedScopes = [.email, .fullName]
             } onCompletion: { result in
                 switch result {
                 case .success(let authResult):
@@ -55,8 +54,6 @@ struct SocialLoginButtonView: View {
             }
         case .kakao:
             Button {
-                //Kakao Login Action
-                print("Kakao Login Button Tapped")
                 socialLoginButtonVM.requestKakaoUserLogin()
             } label: {
                 //Kakao Login Button Image

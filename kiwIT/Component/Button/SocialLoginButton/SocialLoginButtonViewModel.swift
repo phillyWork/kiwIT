@@ -91,14 +91,46 @@ final class SocialLoginButtonViewModel: ObservableObject {
                 case .finished:
                     break
                 case .failure(let error):
-                    self.serverLoginResultPublisher.send((false, error.localizedDescription, nil))
+                    if let signInError = error as? NetworkError {
+                        self.serverLoginResultPublisher.send((false, signInError.description, nil))
+                    } else {
+                        self.serverLoginResultPublisher.send((false, error.localizedDescription, nil))
+                    }
                 }
             } receiveValue: { response in
                 switch response {
                 case .signInSuccess(let tokenResponse):
-                    //save token in keychain / userDefaults
                     
-                    self.serverLoginResultPublisher.send((true, nil, nil))
+                    //MARK: - 로그인 성공: 기존 userdefaults 저장된 email과 동일한 Email인지 확인 필요?
+                    
+                    
+                    
+                    
+                    if let existingToken = KeyChainManager.shared.read() {
+                        if KeyChainManager.shared.update(token: UserTokenValue(access: tokenResponse.accessToken, refresh: tokenResponse.refreshToken)) {
+                            print("Login Succeed, Token Exists, Updated Token")
+                            self.serverLoginResultPublisher.send((true, nil, nil))
+                        } else {
+                            print("Login Succeed, Token Exists, but Cannot Update Token")
+                            //MARK: - Update Token Again or Exist and Move Up?
+                            
+                        }
+                    } else {
+                        //MARK: - <#Section Heading#>
+                        if KeyChainManager.shared.create(token: UserTokenValue(access: tokenResponse.accessToken, refresh: tokenResponse.refreshToken)) {
+                            print("Login Succeed, Token Not Exist, Created Token")
+                            self.serverLoginResultPublisher.send((true, nil, nil))
+                        } else {
+                            print("Login Succeed, Token Not Exist, but Cannot Create Token")
+                            //MARK: - Create Token Again or Exist and Move Up?
+                            
+                        }
+                    }
+                    
+//                    UserDefaultsManager.shared.saveToUserDefaults(newValue: tokenResponse.accessToken, forKey: "access")
+//                    UserDefaultsManager.shared.saveToUserDefaults(newValue: tokenResponse.refreshToken, forKey: "refresh")
+//                    self.serverLoginResultPublisher.send((true, nil, nil))
+                    
                 case .signUpRequired(let userData):
                     self.serverLoginResultPublisher.send((false, nil, SignUpRequest(email: userData.email, nickname: userData.nickname, provider: .kakao)))
                 }

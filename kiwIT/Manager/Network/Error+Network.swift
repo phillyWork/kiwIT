@@ -135,7 +135,7 @@ enum NetworkError: Error {
 
 //    case noHistory(message: String)
     case invalidRequestBody(message: String)
-    case invalidAccessToken(message: String)
+    case invalidToken(message: String)
     case invalidPathVariable(message: String)
     case invalidContent(message: String)
     
@@ -143,7 +143,7 @@ enum NetworkError: Error {
         switch statusCode {
 //        case 204: self = .noHistory(message: message)
         case 400: self = .invalidRequestBody(message: message)
-        case 401: self = .invalidAccessToken(message: message)
+        case 401: self = .invalidToken(message: message)
         case 410: self = .invalidPathVariable(message: message)
         case 500: self = .invalidContent(message: message)
         default: return nil
@@ -156,7 +156,7 @@ enum NetworkError: Error {
 //            return message
         case .invalidRequestBody(let message):
             return message
-        case .invalidAccessToken(let message):
+        case .invalidToken(let message):
             return message
         case .invalidPathVariable(let message):
             return message
