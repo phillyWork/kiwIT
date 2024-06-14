@@ -103,8 +103,7 @@ final class SocialLoginButtonViewModel: ObservableObject {
                     
                     //MARK: - 로그인 성공: 기존 userdefaults 저장된 email과 동일한 Email인지 확인 필요?
                     
-                    
-                    
+                    //MARK: - UserDefaults에 성공한 계정의 이메일 저장할 타이밍 설정
                     
                     if let existingToken = KeyChainManager.shared.read() {
                         if KeyChainManager.shared.update(token: UserTokenValue(access: tokenResponse.accessToken, refresh: tokenResponse.refreshToken)) {
@@ -116,7 +115,15 @@ final class SocialLoginButtonViewModel: ObservableObject {
                             
                         }
                     } else {
-                        //MARK: - <#Section Heading#>
+                       
+                        //MARK: - 로그인 성공, 기존 저장한 keychain 존재하지 않을 경우
+                        
+                        //MARK: - 이메일 먼저 userdefaults에 저장, 그 후 keychain 새로 생성하기
+                        
+                        //MARK: - 이메일 확인 위해선 Profile 요청으로 이메일 확인 필요...
+                        
+                        
+                        
                         if KeyChainManager.shared.create(token: UserTokenValue(access: tokenResponse.accessToken, refresh: tokenResponse.refreshToken)) {
                             print("Login Succeed, Token Not Exist, Created Token")
                             self.serverLoginResultPublisher.send((true, nil, nil))

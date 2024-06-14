@@ -72,6 +72,9 @@
 		2177B2C02C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */; };
 		2177B2C22C1B1E3600BEB3BE /* Setup+KeyChainKeyStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2C12C1B1E3600BEB3BE /* Setup+KeyChainKeyStrings.swift */; };
 		2177B2C52C1B280F00BEB3BE /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2BC2C1B1D0E00BEB3BE /* KeyChainManager.swift */; };
+		2177B2C62C1B455000BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */; };
+		2177B2C72C1B455200BEB3BE /* Setup+KeyChainKeyStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2C12C1B1E3600BEB3BE /* Setup+KeyChainKeyStrings.swift */; };
+		2177B2C92C1B4A2C00BEB3BE /* KeyChainManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2C82C1B4A2C00BEB3BE /* KeyChainManagerTest.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -203,6 +206,7 @@
 		2177B2BC2C1B1D0E00BEB3BE /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+UserDefaultsKeyStrings.swift"; sourceTree = "<group>"; };
 		2177B2C12C1B1E3600BEB3BE /* Setup+KeyChainKeyStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+KeyChainKeyStrings.swift"; sourceTree = "<group>"; };
+		2177B2C82C1B4A2C00BEB3BE /* KeyChainManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManagerTest.swift; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -585,6 +589,7 @@
 		217BCCC32B9DE5C400B5461B /* kiwITTests */ = {
 			isa = PBXGroup;
 			children = (
+				2177B2C82C1B4A2C00BEB3BE /* KeyChainManagerTest.swift */,
 				2173C05F2BA0927200FDD3D9 /* UserDefaultsTest.swift */,
 				2173C05D2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift */,
 				219EFBD22B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift */,
@@ -1088,6 +1093,7 @@
 				2173F9532C15F05D00CDF116 /* Setup+NetworkErrorMessageStrings.swift in Sources */,
 				2173F94E2C15EFB200CDF116 /* NetworkManager.swift in Sources */,
 				2173C0632BA0953B00FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
+				2177B2C72C1B455200BEB3BE /* Setup+KeyChainKeyStrings.swift in Sources */,
 				2173F9582C15F06E00CDF116 /* Setup+NetworkEndPointStrings.swift in Sources */,
 				2173F9482C15EF9D00CDF116 /* SignIn.swift in Sources */,
 				2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */,
@@ -1103,12 +1109,14 @@
 				2177B2C52C1B280F00BEB3BE /* KeyChainManager.swift in Sources */,
 				2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */,
+				2177B2C62C1B455000BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */,
 				2173F9592C15F0C200CDF116 /* APIKey.swift in Sources */,
 				2173F94B2C15EFA300CDF116 /* Profile.swift in Sources */,
 				2173F9492C15EF9F00CDF116 /* RefreshAccessToken.swift in Sources */,
 				2173C0562BA090F700FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				217BCCC52B9DE5C400B5461B /* LectureViewModelUnitTest.swift in Sources */,
 				2173F94A2C15EFA100CDF116 /* Trophy.swift in Sources */,
+				2177B2C92C1B4A2C00BEB3BE /* KeyChainManagerTest.swift in Sources */,
 				2173F9542C15F05F00CDF116 /* Setup+FontStrings.swift in Sources */,
 				2173F9572C15F06B00CDF116 /* Setup+NetworkStrings.swift in Sources */,
 				219EFBD32B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift in Sources */,

@@ -16,6 +16,12 @@ struct UserTokenValue: Codable {
 
 //Token 저장 목적
 
+//MARK: - KeyChain: 앱 삭제 후 재설치해도 값은 저장된 그대로 존재
+
+//MARK: - iCloud로 공유 가능하도록 설정 가능 (서로 다른 디바이스에서 해당 앱 활용할 시)
+//kSecAttrSynchronizable
+
+
 final class KeyChainManager {
     
     static let shared = KeyChainManager()
@@ -30,14 +36,14 @@ final class KeyChainManager {
             let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
             let encodedToken = try JSONEncoder().encode(token)
            
-            let query: [String: Any] = [
-                kSecClass as String: kSecClassKey,
-                kSecAttrService as String: serviceName as! String,
-                kSecAttrAccount as String: accountEmail,
-                kSecValueData as String: encodedToken
-            ]
+            let query = [
+                kSecClass: kSecClassGenericPassword,
+                kSecAttrService: serviceName as! String,
+                kSecAttrAccount: accountEmail,
+                kSecValueData: encodedToken
+            ] as CFDictionary
             
-            let status = SecItemAdd(query as CFDictionary, nil)
+            let status = SecItemAdd(query, nil)
             
             guard status == errSecSuccess else {
                 print("Keychain Create Data Error")
@@ -59,17 +65,17 @@ final class KeyChainManager {
             let serviceName = Bundle.main.infoDictionary?[Setup.ContentStrings.serviceNameString] ?? ""
             let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
             
-            let query: [String: Any] = [
-                kSecClass as String: kSecClassKey,
-                kSecAttrService as String: serviceName as! String,
-                kSecAttrAccount as String: accountEmail,
-                kSecMatchLimit as String: kSecMatchLimitOne,
-                kSecReturnData as String: true,
+            let query = [
+                kSecClass: kSecClassGenericPassword,
+                kSecAttrService: serviceName as! String,
+                kSecAttrAccount: accountEmail,
+                kSecMatchLimit: kSecMatchLimitOne,
+                kSecReturnData: true,
                 kSecReturnAttributes as String: true
-            ]
+            ] as CFDictionary
             
             var item: CFTypeRef?
-            let status = SecItemCopyMatching(query as CFDictionary, &item)
+            let status = SecItemCopyMatching(query, &item)
             
             guard status != errSecItemNotFound else {
                 print("Keychain Item Not Found")
@@ -111,18 +117,17 @@ final class KeyChainManager {
             let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
             let encodedToken = try JSONEncoder().encode(token)
            
+            let query = [
+                kSecClass: kSecClassGenericPassword,
+                kSecAttrService: serviceName as! String,
+                kSecAttrAccount: accountEmail
+            ] as CFDictionary
             
-            let query: [String: Any] = [
-                kSecClass as String: kSecClassKey,
-            ]
+            let attributes = [
+                kSecValueData: encodedToken
+            ] as CFDictionary
             
-            let attributes: [String: Any] = [
-                kSecAttrService as String: serviceName as! String,
-                kSecAttrAccount as String: accountEmail,
-                kSecValueData as String: encodedToken
-            ]
-            
-            let status = SecItemUpdate(query as CFDictionary, attributes as CFDictionary)
+            let status = SecItemUpdate(query, attributes)
             
             guard status != errSecItemNotFound else {
                 print("Keychain Updated Item Not Found")
@@ -149,13 +154,13 @@ final class KeyChainManager {
             let serviceName = Bundle.main.infoDictionary?[Setup.ContentStrings.serviceNameString] ?? ""
             let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
             
-            let query: [String: Any] = [
-                kSecClass as String: kSecClassKey,
-                kSecAttrService as String: serviceName as! String,
-                kSecAttrAccount as String: accountEmail,
-            ]
+            let query = [
+                kSecClass: kSecClassGenericPassword,
+                kSecAttrService: serviceName as! String,
+                kSecAttrAccount: accountEmail,
+            ] as CFDictionary
                         
-            let status = SecItemDelete(query as CFDictionary)
+            let status = SecItemDelete(query)
             
             //삭제: 없는 아이템 삭제 에러 상관 없음
             guard status == errSecSuccess || status == errSecItemNotFound else {
@@ -170,6 +175,25 @@ final class KeyChainManager {
             print("KEYCHAIN DELETE -- No Bundle Identifier, Nothing on Saved Email")
             return false
         }
+    }
+    
+    //For App Launched First Time
+    func deleteAll() -> Bool {
+        var deletionCount = 0
+        let secClass = [kSecClassGenericPassword, kSecClassInternetPassword, kSecClassCertificate, kSecClassKey, kSecClassIdentity]
+        secClass.forEach {
+            let status = SecItemDelete([
+                kSecClass: $0,
+                kSecAttrSynchronizable: kSecAttrSynchronizableAny
+            ] as CFDictionary)
+            if status != errSecSuccess && status != errSecItemNotFound {
+                //Error while removing class $0
+                print("Error While Removing Whole -- class: \($0)")
+            } else {
+                deletionCount += 1
+            }
+        }
+        return deletionCount == secClass.count ? true : false
     }
     
 }

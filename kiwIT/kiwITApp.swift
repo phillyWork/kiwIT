@@ -22,6 +22,12 @@ struct kiwITApp: App {
         
         //APIKey.swift 내부 등록한 키값 활용
 //        KakaoSDK.initSDK(appKey: APIKey.kakaoAppKey)
+        
+        
+        //앱 처음 실행인지 체크
+        //처음이라면 KeyChain 모두 삭제 후, 앱 실행 시작
+        
+        
     }
     
     var body: some Scene {

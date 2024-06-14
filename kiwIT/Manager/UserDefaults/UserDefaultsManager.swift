@@ -7,8 +7,7 @@
 
 import Foundation
 
-//MARK: - Convert to KeyChain for Security
-
+//MARK: - 앱 삭제 시, 같이 삭제됨
 
 final class UserDefaultsManager {
     
