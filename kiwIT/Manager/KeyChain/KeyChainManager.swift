@@ -14,13 +14,12 @@ struct UserTokenValue: Codable {
     var refresh: String
 }
 
-//Token 저장 목적
-
 //MARK: - KeyChain: 앱 삭제 후 재설치해도 값은 저장된 그대로 존재
 
-//MARK: - iCloud로 공유 가능하도록 설정 가능 (서로 다른 디바이스에서 해당 앱 활용할 시)
-//kSecAttrSynchronizable
+//Token 저장 목적
 
+//iCloud로 공유 가능하도록 설정 가능 (서로 다른 디바이스에서 해당 앱 활용할 시)
+//kSecAttrSynchronizable
 
 final class KeyChainManager {
     
@@ -177,9 +176,7 @@ final class KeyChainManager {
         }
     }
     
-    //For App Launched First Time
-    func deleteAll() -> Bool {
-        var deletionCount = 0
+    func deleteAll() {
         let secClass = [kSecClassGenericPassword, kSecClassInternetPassword, kSecClassCertificate, kSecClassKey, kSecClassIdentity]
         secClass.forEach {
             let status = SecItemDelete([
@@ -189,11 +186,8 @@ final class KeyChainManager {
             if status != errSecSuccess && status != errSecItemNotFound {
                 //Error while removing class $0
                 print("Error While Removing Whole -- class: \($0)")
-            } else {
-                deletionCount += 1
             }
         }
-        return deletionCount == secClass.count ? true : false
     }
     
 }

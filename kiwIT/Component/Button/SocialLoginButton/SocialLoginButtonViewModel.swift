@@ -101,10 +101,12 @@ final class SocialLoginButtonViewModel: ObservableObject {
                 switch response {
                 case .signInSuccess(let tokenResponse):
                     
-                    //MARK: - 로그인 성공: 기존 userdefaults 저장된 email과 동일한 Email인지 확인 필요?
+                    //MARK: - 로그인 성공: Token 활용해서 profile 요청, 이메일 받아와서 UserDefaults 이메일과 동일한 지 체크
+                    //MARK: - 동일하면 그대로 Update
+                    //MARK: - 아니라면 기존 토큰 keychain에서 삭제, 그 후 기존 UserDefaults update 후 토큰 Keychain에 새로 Create
+                    //MARK: - 존재하지 않다면 새로 UserDefaults에 추가, 그 후 토큰 keychain에 새로 create
                     
-                    //MARK: - UserDefaults에 성공한 계정의 이메일 저장할 타이밍 설정
-                    
+                                        
                     if let existingToken = KeyChainManager.shared.read() {
                         if KeyChainManager.shared.update(token: UserTokenValue(access: tokenResponse.accessToken, refresh: tokenResponse.refreshToken)) {
                             print("Login Succeed, Token Exists, Updated Token")

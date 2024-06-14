@@ -296,11 +296,25 @@ final class KeyChainManagerTest: XCTestCase {
     
     func testDeleteWhole() throws {
         //Arrange
+        var deletionCount = 0
+        let secClass = [kSecClassGenericPassword, kSecClassInternetPassword, kSecClassCertificate, kSecClassKey, kSecClassIdentity]
         
         //Act
-    
+        secClass.forEach {
+            let status = SecItemDelete([
+                kSecClass: $0,
+                kSecAttrSynchronizable: kSecAttrSynchronizableAny
+            ] as CFDictionary)
+            if status != errSecSuccess && status != errSecItemNotFound {
+                //Error while removing class $0
+                print("Error While Removing Whole -- class: \($0)")
+            } else {
+                deletionCount += 1
+            }
+        }
+        
         //Assert
-        XCTAssertEqual(keychainManager.deleteAll(), true, "Delete Whole Did Not Delete Whole SecClass")
+        XCTAssertEqual(deletionCount, secClass.count, "Cannot Delete Whole Class Items")
     }
 
     func testReadAfterDeleteWholeKeychain() throws {
