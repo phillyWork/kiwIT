@@ -11,9 +11,6 @@ extension Setup {
     
     enum ContentStrings {
         static let appTitle = "kiwIT"
-        
         static let kakaoNativeKeyString = "KAKAO_NATIVE_APP_KEY"
-        static let serviceNameString = "BUNDLE_IDENTIFIER"
-        
     }
 }

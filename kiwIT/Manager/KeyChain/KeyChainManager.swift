@@ -21,17 +21,19 @@ struct UserTokenValue: Codable {
 //iCloud로 공유 가능하도록 설정 가능 (서로 다른 디바이스에서 해당 앱 활용할 시)
 //kSecAttrSynchronizable
 
+
+//MARK: - ServiceProvider들 토큰 저장 필요함 --> 메서드 인풋을 Generic 처리?
+
+
 final class KeyChainManager {
     
     static let shared = KeyChainManager()
     private init() { }
 
-    //MARK: - throws로 BundleIdentifier 없거나 UserDefaults Email 가져오지 못하거나 Encoder/Decoder 활용 못하는 에러 처리 따로 필요?
-    
     //새롭게 저장: 처음 계정 생성 시 혹은 계정 존재하지만 새로운 기기에서 처음 시작 시
     func create(token: UserTokenValue) -> Bool {
         do {
-            let serviceName = Bundle.main.infoDictionary?[Setup.ContentStrings.serviceNameString] ?? ""
+            let serviceName = Setup.ContentStrings.appTitle
             let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
             let encodedToken = try JSONEncoder().encode(token)
            
@@ -61,14 +63,15 @@ final class KeyChainManager {
     //저장된 데이터 불러오기
     func read() -> UserTokenValue? {
         do {
-            let serviceName = Bundle.main.infoDictionary?[Setup.ContentStrings.serviceNameString] ?? ""
+            let serviceName = Setup.ContentStrings.appTitle
             let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
+            
+            print("accountEmail: \(accountEmail)")
             
             let query = [
                 kSecClass: kSecClassGenericPassword,
-                kSecAttrService: serviceName as! String,
+                kSecAttrService: serviceName,
                 kSecAttrAccount: accountEmail,
-                kSecMatchLimit: kSecMatchLimitOne,
                 kSecReturnData: true,
                 kSecReturnAttributes as String: true
             ] as CFDictionary
@@ -112,7 +115,7 @@ final class KeyChainManager {
     //저장된 데이터 업데이트
     func update(token: UserTokenValue) -> Bool {
         do {
-            let serviceName = Bundle.main.infoDictionary?[Setup.ContentStrings.serviceNameString] ?? ""
+            let serviceName = Setup.ContentStrings.appTitle
             let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
             let encodedToken = try JSONEncoder().encode(token)
            
@@ -150,7 +153,7 @@ final class KeyChainManager {
     //저장된 데이터 삭제
     func delete() -> Bool {
         do {
-            let serviceName = Bundle.main.infoDictionary?[Setup.ContentStrings.serviceNameString] ?? ""
+            let serviceName = Setup.ContentStrings.appTitle
             let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
             
             let query = [

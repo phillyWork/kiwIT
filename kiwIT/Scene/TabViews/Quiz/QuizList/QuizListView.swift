@@ -7,7 +7,11 @@
 
 import SwiftUI
 
+//MARK: - Quiz: 퀴즈 리스트, 내역 조회, 퀴즈 시작, 퀴즈 보관, 결과
 struct QuizListView: View {
+    
+    @StateObject var quizListVM = QuizListViewModel()
+    @ObservedObject var tabViewsVM: TabViewsViewModel
     
     //option 버튼으로 북마크 기능 추가 필요 및 새롭게 만들기 버튼 필요
     
@@ -66,5 +70,6 @@ struct QuizListView: View {
 }
 
 #Preview {
-    QuizListView()
+//    QuizListView(tabViewsVM: TabViewsViewModel(MainTabBarViewModel().userProfileData))
+    QuizListView(tabViewsVM: TabViewsViewModel())
 }

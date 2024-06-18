@@ -7,8 +7,12 @@
 
 import SwiftUI
 
+//MARK: - Lecture: 레벨 및 과목 리스트, 내역 조회, 학습 시작, 학습 보관, 결과
 struct LectureCategoryListView: View {
 
+    @StateObject var lectureCategoryListVM = LectureCategoryListViewModel()
+    @ObservedObject var tabViewsVM: TabViewsViewModel
+    
     let animation = Animation.linear.repeatForever(autoreverses: false)
     
     var body: some View {
@@ -49,5 +53,6 @@ struct LectureCategoryListView: View {
 }
 
 #Preview {
-    LectureCategoryListView()
+//    LectureCategoryListView(tabViewsVM: TabViewsViewModel(MainTabBarViewModel().userProfileData))
+    LectureCategoryListView(tabViewsVM: TabViewsViewModel())
 }

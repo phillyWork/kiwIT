@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-//조건 추가 scene 필요?
-
 struct MainTabBarView: View {
     
     //로그아웃 및 회원탈퇴 시에, 다시 로그인 화면 띄워야 함으로, root level에서 계속 체크하고 있기
@@ -17,6 +15,7 @@ struct MainTabBarView: View {
     var body: some View {
         //로그인 여부 체크
         if (mainTabBarVM.isUserLoggedIn) {
+//            TabViews(tabViewsVM: TabViewsViewModel(mainTabBarVM.userProfileData), mainTabBarVM: mainTabBarVM)
             TabViews(mainTabBarVM: mainTabBarVM)
         } else {
             SocialLoginView(mainTabBarVM: mainTabBarVM)

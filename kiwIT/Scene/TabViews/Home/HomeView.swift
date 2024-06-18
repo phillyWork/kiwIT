@@ -7,7 +7,17 @@
 
 import SwiftUI
 
+//MARK: - Home: 유저 닉네임, 최근 진도 및 퀴즈 결과, 다음 진도, 가장 최근 획득한 트로피...
 struct HomeView: View {
+    
+    @StateObject var homeVM = HomeViewModel()
+    @ObservedObject var tabViewsVM: TabViewsViewModel
+    
+//    init(tabViewsVM: TabViewsViewModel) {
+//        self.tabViewsVM = tabViewsVM
+//        homeVM.checkProfile(with: tabViewsVM.profileData)
+//    }
+    
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -15,6 +25,9 @@ struct HomeView: View {
                     VStack {
                         Image(systemName: Setup.ImageStrings.defaultLecture3)
                         Text("다음에 학습할 내용")
+                        Text("Profile Data id: \(tabViewsVM.profileData?.id)")
+                        Text("Profile Data nickname: \(tabViewsVM.profileData?.nickname)")
+                        Text("Profile Data email: \(tabViewsVM.profileData?.email)")
                     }
                     .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
                     .background(Color.green)
@@ -55,9 +68,13 @@ struct HomeView: View {
             .background(Color.backgroundColor)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
         }
+        .onAppear {
+            homeVM.checkProfile(with: tabViewsVM.profileData)
+        }
     }
 }
 
 #Preview {
-    HomeView()
+//    HomeView(tabViewsVM: TabViewsViewModel(MainTabBarViewModel().userProfileData))
+    HomeView(tabViewsVM: TabViewsViewModel())
 }

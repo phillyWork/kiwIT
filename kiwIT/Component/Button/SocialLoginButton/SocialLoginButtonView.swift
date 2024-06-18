@@ -28,8 +28,8 @@ struct SocialLoginButtonView: View {
         AnyView(loginButton)
             .onAppear {
                 socialLoginButtonVM.serverLoginResultPublisher
-                    .sink { success, error, userData in
-                        socialLoginVM.handleSocialLoginResult(success: success, errorMessage: error, userData: userData)
+                    .sink { success, error, profileData, userData in
+                        socialLoginVM.handleSocialLoginResult(success: success, errorMessage: error, profileData: profileData, userDataToSignUp: userData)
                     }
                     .store(in: &socialLoginButtonVM.cancellables)
             }

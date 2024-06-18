@@ -9,56 +9,32 @@ import Foundation
 
 import Combine
 
+//MARK: - 기능 순서
+//MARK: - 1. Keychain에 Token 존재 여부 확인
+//MARK: - 1-a. 존재 O --> Request Refresh Token으로 Token Availability 파악
+//MARK: - 1-a-1. Updated Token: 새로운 Token으로 update, 원하는 작업 Request
+//MARK: - 1-a-2. Refresh Token Error: 토큰 만료 등 에러 --> (토큰 삭제 혹은 놔두고) LoginView
+//MARK: - 1-b. No Token --> LoginView
+
 final class MainTabBarViewModel: ObservableObject {
     
     @Published var isUserLoggedIn = false
+    @Published var userProfileData: ProfileResponse?
+
+    let profileUpdateSubject = PassthroughSubject<ProfileResponse, Never>()
     
-    var cancellables = Set<AnyCancellable>()
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
         print("DEBUG - MainTabBarViewModel initialized")
         
-        //when app launches: check token - whether user is already logged in server
+        //when app launches: check token - whether user is already logged in server or not
         checkToken()
         
         print("DEBUG - End of MainTabBarViewModel initialization")
     }
     
-    //MARK: - Refactor with Keychain
-    
     private func checkToken() {
-       
-    
-//        do {
-//            let savedRefreshToken = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: "refresh") as String
-//            
-//            NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: savedRefreshToken)), errorCase: .refreshToken)
-//                .sink { completion in
-//                    switch completion {
-//                    case .finished:
-//                        break
-//                    case .failure(let error):
-//                        //a-1-2. refresh token is out of time --> user needs to log in again
-//                        
-//                        print("error: \(error)")
-//                    }
-//                } receiveValue: { response in
-//                    print("updated token response: \(response)")
-//                    //a-1-1. new access & refresh token --> user is still logged in
-//                }
-//                .store(in: &self.cancellables)
-//            
-//        } catch UserDefaultsError.noDataInUserDefaults {
-//            isUserLoggedIn = false
-//        } catch UserDefaultsError.cannotDecodeData {
-//            UserDefaultsManager.shared.deleteFromUserDefaults(forKey: "refresh")
-//            UserDefaultsManager.shared.deleteFromUserDefaults(forKey: "access")
-//            isUserLoggedIn = false
-//        } catch {
-//            isUserLoggedIn = false
-//        }
-  
-        
         //a. check access token lifetime via server
         if let savedToken = KeyChainManager.shared.read() {
             NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: savedToken.refresh)), errorCase: .refreshToken)
@@ -68,15 +44,17 @@ final class MainTabBarViewModel: ObservableObject {
                         break
                     case .failure(let error):
                         print("error: \(error)")
-                        if let refreshTokenError = error as? NetworkError {
+                        
+                        //MARK: - 지우는 과정 고민해봐야함: 로그아웃하고 다시 로그인하고 로그아웃할 경우 저장된 키체인값 없어서 의도와 다른 로그아웃 루트 탐
+                        
+                        if error is NetworkError {
                             //a-1-2. refresh token is out of time
                             //delete existing keychain
                             if KeyChainManager.shared.delete() {
                                 print("At First: Token Exists, Deleted Token, Should Login")
                             } else {
                                 print("At First: Token Exists, Cannot Delete Token")
-                                //MARK: - Delete Token Again or just Login Again?
-                                
+                                KeyChainManager.shared.deleteAll()
                             }
                         } else {
                             //a-1-3. refresh token error occurred!!!
@@ -84,8 +62,7 @@ final class MainTabBarViewModel: ObservableObject {
                                 print("At First: Token Exists, Refresh Request Error Occurred, Deleted Token, Should Login")
                             } else {
                                 print("At First: Token Exists, Refresh Request Error Occurred, Cannot Delete Token")
-                                //MARK: - Delete Token Again or just Login Again?
-                                
+                                KeyChainManager.shared.deleteAll()
                             }
                         }
                         //user needs to log in again
@@ -95,24 +72,21 @@ final class MainTabBarViewModel: ObservableObject {
                     print("updated token response: \(response)")
                     //a-1-1. new updated access & refresh token
                     //update token data, user is still logged in
-                    
                     if KeyChainManager.shared.update(token: UserTokenValue(access: response.accessToken, refresh: response.refreshToken)) {
-                        print("At First: Token Exists, Updated Token, Show HomeView")
-                        self.isUserLoggedIn = true
+                        print("At First: Token Exists, Updated Token")
                     } else {
                         print("At First: Token Exists, Cannot Update Token")
-                        //MARK: - Update Token again or just Login Again?
-                        
+                        KeyChainManager.shared.create(token: UserTokenValue(access: response.accessToken, refresh: response.refreshToken))
+                        //token Update 불가능해도 토큰 체크 시 다시 요청하면서 처리해야 하므로 넘어가기
                     }
+                    self.isUserLoggedIn = true
                 }
                 .store(in: &self.cancellables)
         } else {
             //a-2. no token saved in keychain/userdefaults
             //user never logged in this device or needs to log in
+            print("No Saved Token At First. Needs to Log In")
             self.isUserLoggedIn = false
         }
-        
-        
     }
-    
 }

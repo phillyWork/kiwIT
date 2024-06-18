@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+import Combine
+
 //버튼 누른 뒤, 이미 가입되어 있다면 로그인 화면 제거, HomeView로 이동
 //가입되어 있지 않다면 회원가입 view로
 
@@ -52,6 +54,11 @@ struct SocialLoginView: View {
             .onChange(of: socialLoginVM.didLoginSucceed) { newValue in
                 if newValue {
                     print("Login Succeed. Move to HomeView")
+                    if let profile = socialLoginVM.profileData {
+                        mainTabBarVM.userProfileData = profile
+                    } else {
+                        print("Can't get profile data from SignIn!!!")
+                    }
                     mainTabBarVM.isUserLoggedIn = true
                 } else {
                     print("Not Succeeding in Login. Should show error message: \(socialLoginVM.errorMessage)")

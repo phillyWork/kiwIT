@@ -7,19 +7,32 @@
 
 import Foundation
 
+//response에 body없는 경우
+
 enum SocialLoginProvider: String, Encodable {
     case apple = "APPLE"
     case kakao = "KAKAO"
 }
 
-//MARK: - Build 목적으로 예외 처리 중
-
 //구독 여부
-//enum UserPlan: Decodable {
-//    
-//}
+enum UserPlan: String, Codable {
+    case basic = "BASIC"
+    case normal = "NORMAL"
+    case subscribed = "SUBSCRIBED"
+    case unknown = "UNKNOWN"
+    
+    init(from decoder: any Decoder) throws {
+        self = try UserPlan(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+    }
+}
 
 //활성화, 임시 탈퇴, 완전 탈퇴 구분
-//enum UserStatus: Decodable {
-//    
-//}
+enum UserStatus: String, Codable {
+    case activated = "ACTIVATED"
+    case deactivated = "DEACTIVATED"
+    case unknown = "UNKNOWN"
+    
+    init(from decoder: any Decoder) throws {
+        self = try UserStatus(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+    }
+}

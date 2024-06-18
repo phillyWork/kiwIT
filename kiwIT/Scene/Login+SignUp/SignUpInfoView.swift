@@ -78,7 +78,6 @@ struct SignUpInfoView: View {
                         .foregroundStyle(Color.textColor)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
-                .border(Color.purple)
                 .padding(.vertical, 8)
                 
             }

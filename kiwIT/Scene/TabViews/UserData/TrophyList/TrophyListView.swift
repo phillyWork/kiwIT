@@ -10,6 +10,8 @@ import SwiftUI
 struct TrophyListView: View {
     
     //viewModel, trophyData
+    @StateObject var trophyListVM = TrophyListViewModel()
+    
     
     //from user data (acquired trophy data)
     let tempUserAcquiredTrophyData = [

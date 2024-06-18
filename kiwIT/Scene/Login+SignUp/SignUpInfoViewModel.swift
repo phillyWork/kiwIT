@@ -33,8 +33,6 @@ final class SignUpInfoViewModel: ObservableObject {
     func requestSignUp() {
         print("data so far to request signup: \(userDataForSignUp)")
         
-        //MARK: - 네트워크 Signup 시도하기
-        
         NetworkManager.shared.request(type: SignUpResponse.self, api: .signUp(request: userDataForSignUp), errorCase: .signUp)
             .sink { completion in
                 switch completion {
@@ -45,37 +43,22 @@ final class SignUpInfoViewModel: ObservableObject {
                 }
             } receiveValue: { response in
                 print("SignUpRequest Response: \(response)")
-                
-                //새로 가입, 이미 가입한 다른 이메일 계정 존재 시
-                if let existingToken = KeyChainManager.shared.read() {
-                    //해당 계정 Keychain 삭제 및 새로 등록하기
-                    
-                    
-                    
-                    if KeyChainManager.shared.delete() {
-                        
-                    }
-                    if KeyChainManager.shared.create(token: UserTokenValue(access: response.accessToken, refresh: response.refreshToken)) {
-                        print("SignUp Succeed, Created Token")
-                    } else {
-                        
-                    }
-                } else {
-                    if KeyChainManager.shared.create(token: UserTokenValue(access: response.accessToken, refresh: response.refreshToken)) {
-                        print("SignUp Succeed, Created Token")
-                    } else {
-                        
-                    }
-
-                }
-                
-//                UserDefaultsManager.shared.saveToUserDefaults(newValue: response.accessToken, forKey: "accessToken")
-//                UserDefaultsManager.shared.saveToUserDefaults(newValue: response.refreshToken, forKey: "refreshToken")
-//                print("Sign Up Succeed!")
-//                self.didSignUpSucceed = true
-                
+                self.updateToken(token: response, newEmail: self.userDataForSignUp.email)
             }
             .store(in: &self.cancellables)
+    }
+    
+    private func updateToken(token: SignUpResponse, newEmail: String) {
+        //새로 가입 성공: 기존 저장된 Keychain 삭제, 그 후 새롭게 UserDefaults와 Keychain create
+        KeyChainManager.shared.deleteAll()
+        
+        UserDefaultsManager.shared.saveToUserDefaults(newValue: newEmail, forKey: Setup.UserDefaultsKeyStrings.emailString)
+        
+        KeyChainManager.shared.create(token: UserTokenValue(access: token.accessToken, refresh: token.refreshToken))
+        
+        self.didSignUpSucceed = true
+        
+        print("Success in Sign Up, Update UserDefaults, Create New Token in KeyChain")
     }
     
 }

@@ -7,20 +7,11 @@
 
 import SwiftUI
 
+//MARK: - Profile: 유저 닉네임, 학습 진도율 (학습 완료 콘텐츠 리스트, 전체 대비), 퀴즈 진도율 (퀴즈 완료 그룹 리스트, 전체 대비), 트로피 획득 내역 (전체 대비), 로그아웃, 회원탈퇴
 struct ProfileView: View {
     
-    @State private var nickname: String = "Test Nickname"
-    @State private var showEditNicknameAlert = false
-    @State private var showNicknameErrorAlert = false
-    @State private var nicknameToBeUpdated = ""
-    
-    @State private var showLogoutAlert = false
-    
-    @State private var showWithdrawAlert = false
-    @State private var showRealWithdrawAlert = false
-    @State private var emailToBeWithdrawn = ""
-    @State private var showEmailWithdrawalErrorAlert = false
-    
+    @StateObject var profileVM = ProfileViewModel()
+    @ObservedObject var tabViewsVM: TabViewsViewModel
     
     //Lecture, Quiz 및 여러 컨텐츠 기본 개수 및 진도 현황 관련 유저 데이터 가져와서 활용해야 함
     
@@ -57,45 +48,50 @@ struct ProfileView: View {
         NavigationStack {
             ScrollView {
                 HStack {
-                    Text(nickname)
+                    Text(tabViewsVM.profileData?.nickname ?? "Anonymous User")
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 10)
                     Button(action: {
-                        showEditNicknameAlert.toggle()
+                        profileVM.showEditNicknameAlert.toggle()
                     }, label: {
                         Text("변경하기")
                     })
                     .padding(.trailing, 10)
-                    .alert("닉네임 수정", isPresented: $showEditNicknameAlert) {
-                        TextField("새로운 닉네임을 입력해주세요.", text: $nicknameToBeUpdated)
-                            .foregroundStyle(Color.black)
+                    .alert("닉네임 수정", isPresented: $profileVM.showEditNicknameAlert) {
+                        TextField("타이틀",
+                                  text: $profileVM.nicknameInputFromUser,
+                                  prompt: Text("새로운 닉네임을 입력해주세요.")
+                        )
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
+                        .foregroundStyle(Color.black)
                         Button("취소", role: .destructive) {
-                            nicknameToBeUpdated = ""
+                            profileVM.nicknameInputFromUser.removeAll()
                         }
                         Button("확인", role: .cancel) {
-                            if nicknameToBeUpdated.isEmpty {
-                                showNicknameErrorAlert = true
+                            if profileVM.nicknameInputFromUser.isEmpty {
+                                profileVM.showNicknameErrorAlert = true
                             } else {
-                                //Network call: update nickname
-                                
-                                nickname = nicknameToBeUpdated
-                                nicknameToBeUpdated = ""
+                                profileVM.updateNickname { updatedProfile in
+                                    tabViewsVM.updateProfileFromProfileView(updatedProfile)
+                                    profileVM.nicknameInputFromUser.removeAll()
+                                }
                             }
                         }
                     }
-                    .alert("오류", isPresented: $showNicknameErrorAlert, actions: {
+                    .alert("오류", isPresented: $profileVM.showNicknameErrorAlert, actions: {
                         Button("확인", role: .cancel) {
-                            showEditNicknameAlert = true
+                            profileVM.showEditNicknameAlert = true
                         }
                     }, message: {
-                        Text("빈 칸은 허용되지 않습니다.")
+                        Text("오류 발생! 다시 시도해주세요.")
                     })
                 }
                 .padding(.bottom, 5)
                 
                 Spacer()
-            
+                
                 GroupBox(label: Text("학습 진도율").font(.custom(Setup.FontName.phuduRegular, size: 20)), content: {
                     VStack {
                         
@@ -121,7 +117,7 @@ struct ProfileView: View {
                             Text("추가 진도")
                                 .font(.custom(Setup.FontName.notoSansThin, size: 15))
                         }
-
+                        
                         Text("레벨별? 학습 진도율 나타내기 (Header 역할)")
                     }
                     .padding(.vertical, 8)
@@ -177,31 +173,32 @@ struct ProfileView: View {
                         Text("더 보기")
                     }
                 }, content: {
-                        HStack {
-                            ForEach(tempUserAcquiredTrophyData) { trophyData in
-                                RecentlyAcquiredTrophy(tempImageUrlString: trophyData.trophy.imageUrl)
-                            }
-                            if (tempUserAcquiredTrophyData.count < 5) {
-                                ForEach(tempEmptyTrophy) { trophy in
-                                    RecentlyAcquiredTrophy(tempImageUrlString: trophy.imageUrl)
-                                }
+                    HStack {
+                        ForEach(tempUserAcquiredTrophyData) { trophyData in
+                            RecentlyAcquiredTrophy(tempImageUrlString: trophyData.trophy.imageUrl)
+                        }
+                        if (tempUserAcquiredTrophyData.count < 5) {
+                            ForEach(tempEmptyTrophy) { trophy in
+                                RecentlyAcquiredTrophy(tempImageUrlString: trophy.imageUrl)
                             }
                         }
+                    }
                 })
                 .backgroundStyle(Color.surfaceColor)
-            
+                
                 VStack {
                     ShrinkAnimationButtonView(title: "로그아웃", color: Color.brandBlandColor) {
-                        showLogoutAlert.toggle()
+                        profileVM.showLogoutAlert.toggle()
                     }
-                    .alert("로그 아웃", isPresented: $showLogoutAlert, actions: {
+                    .alert("로그 아웃", isPresented: $profileVM.showLogoutAlert, actions: {
                         Button("확인", role: .cancel) {
-                            //network: logout call
-                            
-                            print("LOG OUT!!!!")
-                            
-                            //로그인 화면 나타내기
-                            
+                            profileVM.signOut { didSucceed in
+                                if didSucceed {
+                                    print("LOG OUT!!!!")
+                                    //로그인 화면 나타내기
+                                    tabViewsVM.isTokenAvailable = false
+                                }
+                            }
                         }
                         Button("취소", role: .destructive) { }
                     }, message: {
@@ -211,41 +208,41 @@ struct ProfileView: View {
                     Spacer()
                     
                     ShrinkAnimationButtonView(title: "회원 탈퇴", color: Color.errorHighlightColor) {
-                        showWithdrawAlert.toggle()
+                        profileVM.showWithdrawAlert.toggle()
                     }
-                    .alert("회원 탈퇴", isPresented: $showWithdrawAlert, actions: {
+                    .alert("회원 탈퇴", isPresented: $profileVM.showWithdrawAlert, actions: {
                         Button("확인", role: .cancel) {
-                            showRealWithdrawAlert.toggle()
+                            profileVM.showRealWithdrawAlert.toggle()
                         }
                         Button("취소", role: .destructive) { }
                     }, message: {
                         Text("정말로 탈퇴하실 건가요?")
                     })
-                    .alert("회원 탈퇴 확인", isPresented: $showRealWithdrawAlert, actions: {
-                        TextField("가입한 이메일", text: $emailToBeWithdrawn)
+                    .alert("회원 탈퇴 확인", isPresented: $profileVM.showRealWithdrawAlert, actions: {
+                        TextField("가입한 이메일", text: $profileVM.emailToBeWithdrawn)
                             .foregroundStyle(Color.black)
                         Button("확인", role: .cancel) {
                             
                             //가입한 이메일과 다르다면 에러 나타내기
                             
-                            if emailToBeWithdrawn.isEmpty {
-                                showEmailWithdrawalErrorAlert = true
+                            if profileVM.emailToBeWithdrawn.isEmpty {
+                                profileVM.showEmailWithdrawalErrorAlert = true
                             } else {
-                                //network: 회원 탈퇴 시도하기
-                                print("Network Call to Withdraw")
+                                //MARK: - WithDraw 메서드 작성
+//                                profileVM.withdraw()
                                 
                                 //로그인 화면 나타내기
                                 
-                                emailToBeWithdrawn = ""
+                                profileVM.emailToBeWithdrawn.removeAll()
                             }
                         }
                         Button("취소", role: .destructive) {
-                            emailToBeWithdrawn = ""
+                            profileVM.emailToBeWithdrawn.removeAll()
                         }
                     }, message: {
                         Text("정말 탈퇴하실 의향이시라면 가입한 이메일을 입력해주세요.")
                     })
-                    .alert("잘못된 입력입니다!", isPresented: $showEmailWithdrawalErrorAlert) {
+                    .alert("잘못된 입력입니다!", isPresented: $profileVM.showEmailWithdrawalErrorAlert) {
                         //탈퇴의 불편함 일부러 제공 (탈퇴 유도 막기...)
                         Button("확인", role: .cancel) { }
                     }
@@ -257,6 +254,13 @@ struct ProfileView: View {
             .navigationTitle("프로필 정보")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
+            .alert("로그인 오류!", isPresented: $profileVM.showSessionExpiredAlert, actions: {
+                Button("확인", role: .cancel) {
+                    tabViewsVM.isTokenAvailable = false
+                }
+            }, message: {
+                Text("세션이 만료되었어요. 다시 로그인해주세요.")
+            })
         }
         .refreshable {
             print("Pull to Refresh Profile Data!!!")
@@ -266,5 +270,6 @@ struct ProfileView: View {
 }
 
 #Preview {
-    ProfileView()
+//    ProfileView(tabViewsVM: TabViewsViewModel(MainTabBarViewModel().userProfileData))
+    ProfileView(tabViewsVM: TabViewsViewModel())
 }

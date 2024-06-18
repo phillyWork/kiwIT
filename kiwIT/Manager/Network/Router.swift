@@ -154,7 +154,7 @@ enum Router: URLRequestConvertible {
         }
     }
     
-    private var body: [String: String] {
+    private var body: [String: String]? {
         switch self {
         case .signUp(let request):
             return [
@@ -172,7 +172,7 @@ enum Router: URLRequestConvertible {
         case .profileEdit(let request):
             return [Setup.NetworkStrings.nicknameTitle: request.nickname]
         case .signOut, .withdraw, .profileCheck, .mostRecentAcquiredTrophy, .acquiredTrophyList:
-            return ["": ""]
+            return nil
             
         //Pagination 활용 목적
 //        case .acquiredTrophyList(let request):
@@ -186,11 +186,11 @@ enum Router: URLRequestConvertible {
 //            }
             
         case .summaryStat:
-            return ["": ""]
+            return nil
             
             
         default:
-            return ["": ""]
+            return nil
         }
     }
     
@@ -220,9 +220,6 @@ enum Router: URLRequestConvertible {
         switch self {
             //header에 json 없거나 multipart/data-form과 같은 경우
         case .acquiredTrophyList:
-            
-//            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(body, into: request)
-            
             if let parameters = parameters {
                 request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(parameters, into: request)
             } else {

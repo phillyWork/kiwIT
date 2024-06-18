@@ -13,13 +13,12 @@ struct ProfileEditRequest: Encodable {
 }
 
 struct ProfileResponse: Decodable {
-    //id type 확인 필요
-    var id: String
+    var id: Int
     var email: String
     var nickname: String
     var point: Int
     //구독 여부 타입 분류 필요
-    var plan: String
+    var plan: UserPlan
     //유저 형태 타입 분류 필요
-    var status: String
+    var status: UserStatus
 }

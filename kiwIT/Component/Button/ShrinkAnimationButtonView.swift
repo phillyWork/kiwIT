@@ -13,10 +13,6 @@ struct ShrinkAnimationButtonView: View {
     var buttonTitle: String
     var buttonColor: Color
     
-    //image string 입력받기: 다음으로, 로그아웃, 회원탈퇴 용 시스템 이미지 활용???
-    var imageString: String?
-    
-    
     @State private var tapped = false
     
     init(title: String, color: Color, tapAction: @escaping () -> Void) {
@@ -33,12 +29,10 @@ struct ShrinkAnimationButtonView: View {
             Button(action: {
                 withAnimation {
                     self.tapped.toggle()
-                    print("tapped first: \(tapped)")
                 }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.0001) {
                     withAnimation {
                         self.tapped.toggle()
-                        print("after async: \(tapped)")
                     }
                     self.action()
                 }
