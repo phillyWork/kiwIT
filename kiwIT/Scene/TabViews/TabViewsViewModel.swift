@@ -12,50 +12,109 @@ import Combine
 //모든 Network 요청: access token 기반 --> KeyChain에서 불러와서 Network 요청하기
 
 final class TabViewsViewModel: ObservableObject {
-    
-    @Published var isTokenAvailable = true
+
     @Published var profileData: ProfileResponse?
+    @Published var isLoginAvailable = true
     @Published var didUpdateProfileFromOtherView = false
     
     private var cancellables = Set<AnyCancellable>()
-        
+            
     func checkProfile(with profile: ProfileResponse?) {
         if let profile = profile {
             self.profileData = profile
             print("Passed Profile Data: \(profileData)")
         } else {
             print("No Profile Data Passed!!!")
-            requestUserProfile()
+            retrieveUserProfile()
         }
     }
     
-    private func requestUserProfile() {
-        if let token = KeyChainManager.shared.read() {
-            NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: token.access)), errorCase: .profileCheck)
-                .sink { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        if let profileError = error as? NetworkError {
-                            print("Error for Requesting Profile Data: \(profileError.description)")
-                        } else {
-                            print("Error for Other Reason: \(error.localizedDescription)")
-                        }
-                    }
-                } receiveValue: { response in
-                    print("Profile Response: \(response)")
-                    self.profileData = response
-                }
-                .store(in: &self.cancellables)
-        } else {
-            //No Token Saved From KeyChain!!!
-            print("No Token Saved in KeyChain in TabsViewModel!!!")
-            isTokenAvailable = false
+    //Profile 전달되지 않음 혹은 업데이트된 프로필 필요한 경우
+    private func retrieveUserProfile() {
+        do {
+            let userId = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String
+            if let token = KeyChainManager.shared.read(userId) {
+                self.requestProfile(token, userId: userId)
+            } else {
+                print("No Token Saved in KeyChain in TabsViewModel!!!")
+                isLoginAvailable = false
+            }
+        } catch {
+            print("No Saved Id to check Token!!!")
+            isLoginAvailable = false
         }
+    }
+    
+    private func requestProfile(_ token: UserTokenValue, userId: String) {
+        NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: token.access)), errorCase: .profileCheck)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    if let profileError = error as? NetworkError {
+                        switch profileError {
+                        case .invalidRequestBody(_):
+                            print("Profile Check Error in TabViewsViewModel: \(profileError.description)")
+                        case .invalidToken(_):
+                            print("Invalid Access token in TabViewsViewModel: \(profileError.description)")
+                            self.requestRefreshToken(token, userId: userId)
+                        default:
+                            print("Profile Check Error in TabViewsViewModel: \(profileError.description)")
+                            self.isLoginAvailable = false
+                        }
+                    } else {
+                        print("Profile Check Error in TabViewsViewModel for other reason: \(error.localizedDescription)")
+                        self.isLoginAvailable = false
+                    }
+                }
+            } receiveValue: { response in
+                print("Profile Response: \(response)")
+                self.profileData = response
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func requestRefreshToken(_ token: UserTokenValue, userId: String) {
+        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    if let refreshError = error as? NetworkError {
+                        switch refreshError {
+                        case .invalidToken(_):
+                            print("Invalid For Both Access and Refresh. Needs to Sign In Again")
+                            self.handleRefreshTokenExpired(userId: userId)
+                        default:
+                            print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
+                            self.handleRefreshTokenExpired(userId: userId)
+                        }
+                    } else {
+                        print("Refresh Token Error for other eason: \(error.localizedDescription) -- Needs to Sign In Again")
+                        self.handleRefreshTokenExpired(userId: userId)
+                    }
+                }
+            } receiveValue: { response in
+                print("Update Token!!!")
+                self.updateToken(response, userId: userId)
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func handleRefreshTokenExpired(userId: String) {
+        print("To Remove User Data and Move to SignIn")
+        //저장된 token 삭제,
+        KeyChainManager.shared.delete(userId)
+        //저장된 userdefaults id 삭제
+        UserDefaultsManager.shared.deleteFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString)
+        //로그인 화면 이동하기
+        self.isLoginAvailable = false
+    }
+    
+    private func updateToken(_ token: RefreshAccessTokenResponse, userId: String) {
+        KeyChainManager.shared.update(UserTokenValue(access: token.accessToken, refresh: token.refreshToken), id: userId)
+        print("Call ProfileRequest Again!!!")
+        self.requestProfile(UserTokenValue(access: token.accessToken, refresh: token.refreshToken), userId: userId)
     }
     
     func updateProfileFromProfileView(_ newProfile: ProfileResponse) {
+        print("Updated Profile: \(newProfile)")
         self.profileData = newProfile
         self.didUpdateProfileFromOtherView = true
     }

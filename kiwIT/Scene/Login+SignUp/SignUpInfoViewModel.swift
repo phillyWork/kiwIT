@@ -10,19 +10,22 @@ import Foundation
 import Combine
 
 final class SignUpInfoViewModel: ObservableObject {
-    
-    var userDataForSignUp: SignUpRequest
-    
+        
     @Published var isToggleSwitchOn = false
     @Published var isNicknameEmpty = false
     @Published var showSignUpRequestIsNotSetAlert = false
     @Published var didSignUpSucceed = false
-    
-    var cancellables = Set<AnyCancellable>()
+    @Published var showSignUpErrorAlert = false
+
+    private var cancellables = Set<AnyCancellable>()
+
+    var userDataForSignUp: SignUpRequest
+    var signedUpProfile: ProfileResponse?
     
     init(userDataForSignUp: SignUpRequest) {
         print("DEBUG - initialize SignUpInfo ViewModel")
         self.userDataForSignUp = userDataForSignUp
+        print("DEBUG - initialize SignUpInfo ViewModel Done")
     }
         
     func updateNicknameEmptiness() {
@@ -35,28 +38,53 @@ final class SignUpInfoViewModel: ObservableObject {
         
         NetworkManager.shared.request(type: SignUpResponse.self, api: .signUp(request: userDataForSignUp), errorCase: .signUp)
             .sink { completion in
-                switch completion {
-                case .finished:
-                    print("Sign Up Request Succeed!!! End of Network")
-                case .failure(let error):
-                    print("Error For Sign Up Request: \(error.localizedDescription)")
+                if case .failure(let error) = completion {
+                    if let signUpError = error as? NetworkError {
+                        switch signUpError {
+                        case .invalidRequestBody(_):
+                            print("Nickname Duplicated or Cannot SignUp!! -- \(signUpError.description)")
+                        default:
+                            print("other reason for signup network error: \(signUpError.description)")
+                        }
+                    } else {
+                        print("Error For Sign Up Request for other reason: \(error.localizedDescription)")
+                    }
+                    self.showSignUpErrorAlert = true
                 }
             } receiveValue: { response in
                 print("SignUpRequest Response: \(response)")
-                self.updateToken(token: response, newEmail: self.userDataForSignUp.email)
+                self.requestProfile(response)
             }
             .store(in: &self.cancellables)
     }
     
-    private func updateToken(token: SignUpResponse, newEmail: String) {
+    private func requestProfile(_ userToken: SignUpResponse) {
+        NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: userToken.accessToken)), errorCase: .profileCheck)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    if let profileError = error as? NetworkError {
+                        print("Profile Check Error in SignUp!! -- \(profileError.description)")
+                    } else {
+                        print("Error For Sign Up Request for other reason: \(error.localizedDescription)")
+                    }
+                    self.didSignUpSucceed = true
+                }
+            } receiveValue: { response in
+                self.updateToken(token: userToken, profile: response)
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func updateToken(token: SignUpResponse, profile: ProfileResponse) {
         //새로 가입 성공: 기존 저장된 Keychain 삭제, 그 후 새롭게 UserDefaults와 Keychain create
         KeyChainManager.shared.deleteAll()
         
-        UserDefaultsManager.shared.saveToUserDefaults(newValue: newEmail, forKey: Setup.UserDefaultsKeyStrings.emailString)
+        UserDefaultsManager.shared.saveToUserDefaults(newValue: String(profile.id), forKey: Setup.UserDefaultsKeyStrings.userIdString)
         
-        KeyChainManager.shared.create(token: UserTokenValue(access: token.accessToken, refresh: token.refreshToken))
+        KeyChainManager.shared.create(UserTokenValue(access: token.accessToken, refresh: token.refreshToken), id: String(profile.id))
         
-        self.didSignUpSucceed = true
+        signedUpProfile = profile
+        didSignUpSucceed = true
         
         print("Success in Sign Up, Update UserDefaults, Create New Token in KeyChain")
     }

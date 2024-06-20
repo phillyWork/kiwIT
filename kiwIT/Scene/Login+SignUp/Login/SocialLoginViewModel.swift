@@ -15,8 +15,8 @@ final class SocialLoginViewModel: ObservableObject {
     @Published var shouldMoveToSignUp = false
     @Published var errorMessage: String?
    
-    var profileData: ProfileResponse? = nil
-    var userDataForSignUp: SignUpRequest? = nil
+    var profileData: ProfileResponse?
+    var userDataForSignUp: SignUpRequest?
     
     init() {
         print("DEBUG: SocialLoginViewModel initialized")

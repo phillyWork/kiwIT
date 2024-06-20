@@ -11,6 +11,9 @@ import Combine
 
 import Alamofire
 
+
+//MARK: - 함수 구조 변경 필요
+
 final class ProfileViewModel: ObservableObject {
     
     @Published private var debouncedNickname = ""
@@ -29,16 +32,18 @@ final class ProfileViewModel: ObservableObject {
     
     @Published var showLogoutAlert = false
     
-    private let debounceInterval = 0.5
     private var cancellables = Set<AnyCancellable>()
     
-    init() {
+    var updateProfileClosure: ((ProfileResponse) -> Void)?
+    
+    init(updateProfileClosure: @escaping (ProfileResponse) -> Void) {
+        self.updateProfileClosure = updateProfileClosure
         setupDebounce()
     }
     
     private func setupDebounce() {
         $nicknameInputFromUser
-            .debounce(for: .seconds(debounceInterval), scheduler: RunLoop.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] debouncedValue in
                 self?.debouncedNickname = debouncedValue
             }
@@ -49,63 +54,126 @@ final class ProfileViewModel: ObservableObject {
         print("how to handle this debounced input -- \(newValue)")
     }
     
-    func updateNickname(completion: @escaping (ProfileResponse) -> Void) {
-        
-        //1. check Token Availability
-        if let token = KeyChainManager.shared.read() {
-            NetworkManager.shared.request(type: ProfileResponse.self, api: .profileEdit(request: ProfileEditRequest(access: token.access, nickname: debouncedNickname)), errorCase: .profileEdit)
-                .sink { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        if let nicknameUpdateErr = error as? NetworkError {
-                            print("Profile Nickname Update Error: \(nicknameUpdateErr.description)")
-                        } else {
-                            print("Profile Nickname Update Error By Other Reason: \(error.localizedDescription)")
-                        }
-                        self.showNicknameErrorAlert = true
-                    }
-                } receiveValue: { response in
-                    print("Updated Profile Nickname: \(response)")
-                    completion(response)
-                }
-                .store(in: &self.cancellables)
-        } else {
-            //No Token: Move to LogIn Again!!!
-            print("No Token in ProfileView!!! Should Move to Log-In!!!")
-            self.showSessionExpiredAlert = true            
-        }
-    }
-    
-    func signOut(resultCompletion: @escaping (Bool) -> Void) {
-        if let token = KeyChainManager.shared.read() {
-            print("SignOut with Saved Token!!!")
-            NetworkManager.shared.request(type: Empty.self, api: .signOut(request: AuthorizationRequest(access: token.access)), errorCase: .signOut)
-                .sink { completion in
-                    switch completion {
-                    case .finished:
-                        break
-                    case .failure(let error):
-                        if let signOutError = error as? NetworkError {
-                            print("SignOut with Network Error: \(signOutError.description)")
-                        } else {
-                            print("Signout Error for Other Reason: \(error.localizedDescription)")
-                        }
-                        resultCompletion(false)
-                    }
-                } receiveValue: { _ in
-                    print("Response for Sign Out Success!")
-                    resultCompletion(true)
-                }
-                .store(in: &self.cancellables)
-        } else {
-            //No Token: Move to LogIn Again!!!
-            print("No Token in ProfileView!!! Should Move to Log-In!!!")
+    func updateNickname() {
+        do {
+            let userId = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String
+            if let token = KeyChainManager.shared.read(userId) {
+                self.requestProfileEdit(token, nickname: debouncedNickname, userId: userId)
+            } else {
+                //No Token: Move to LogIn Again!!!
+                print("No Token in ProfileView!!! Should Move to Log-In!!!")
+                self.showSessionExpiredAlert = true
+            }
+        } catch {
+            print("No Saved id!!! Should Login!!!")
             self.showSessionExpiredAlert = true
         }
     }
     
+    private func requestProfileEdit(_ current: UserTokenValue, nickname: String, userId: String) {
+        NetworkManager.shared.request(type: ProfileResponse.self, api: .profileEdit(request: ProfileEditRequest(access: current.access, nickname: nickname)), errorCase: .profileEdit)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    if let profileEditError = error as? NetworkError {
+                        switch profileEditError {
+                        case .invalidRequestBody(_):
+                            print("Cannot Update Profile Nickname in ProfileViewModel: \(profileEditError.description)")
+                            self.showNicknameErrorAlert = true
+                        case .invalidToken(_):
+                            print("Access Token is not available in ProfileViewModel: \(profileEditError.description)")
+                            self.requestRefreshToken(current, nickname: nickname, userId: userId)
+                        default:
+                            print("Profile Update Error in ProfileViewModel: \(profileEditError.description)")
+                            self.showNicknameErrorAlert = true
+                        }
+                    } else {
+                        print("Profile Edit Request Error for other reason in ProfileViewModel: \(error.localizedDescription)")
+                        self.showNicknameErrorAlert = true
+                    }
+                }
+            } receiveValue: { response in
+                print("Getting Updated Profile Data from Server! Available Saved Token!")
+                self.updateProfileClosure?(response)
+                self.nicknameInputFromUser.removeAll()
+            }
+            .store(in: &self.cancellables)
+    }
     
+    private func requestRefreshToken(_ current: UserTokenValue, nickname: String, userId: String) {
+        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: current.refresh)), errorCase: .refreshToken)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    if let refreshError = error as? NetworkError {
+                        switch refreshError {
+                        case .invalidToken(_):
+                            print("Invalid For Both Access and Refresh. Needs to Sign In Again")
+                            self.removeSensitiveUserData(userId: userId)
+                        default:
+                            print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
+                            self.removeSensitiveUserData(userId: userId)
+                        }
+                        //로그인 화면 이동하기
+                        self.showSessionExpiredAlert = true
+                    } else {
+                        print("Refresh Token Error for other eason: \(error.localizedDescription) -- Needs to Sign In Again")
+                        self.removeSensitiveUserData(userId: userId)
+                        //로그인 화면 이동하기
+                        self.showSessionExpiredAlert = true
+                    }
+                }
+            } receiveValue: { response in
+                print("Update Token!!!")
+                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
+                
+                print("Call ProfileRequest Again!!!")
+                self.requestProfileEdit(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), nickname: nickname, userId: userId)
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    private func removeSensitiveUserData(userId: String) {
+        print("To Remove User Data and Move to SignIn")
+        //저장된 token 삭제
+        KeyChainManager.shared.delete(userId)
+        //저장된 userdefaults id 삭제
+        UserDefaultsManager.shared.deleteFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString)
+    }
+    
+    func signOut(resultCompletion: @escaping (Bool) -> Void) {
+        do {
+            let userId = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String
+            if let token = KeyChainManager.shared.read(userId) {
+                NetworkManager.shared.request(type: Empty.self, api: .signOut(request: AuthorizationRequest(access: token.access)), errorCase: .signOut)
+                    .sink { completion in
+                        if case .failure(let error) = completion {
+                            if let profileError = error as? NetworkError {
+                                print("SignOut Error in ProfileViewModel: \(profileError.description)")
+                            } else {
+                                print("SignOut Error in ProfileViewModel for other reason: \(error.localizedDescription)")
+                            }
+                            resultCompletion(false)
+                        }
+                    } receiveValue: { _ in
+                        print("Response for Sign Out Success!")
+                        self.handleSignOutSucceed()
+                        resultCompletion(true)
+                    }
+                    .store(in: &self.cancellables)
+            } else {
+                //No Token: Move to LogIn Again!!!
+                print("No Token in ProfileView!!! Should Move to Log-In!!!")
+                self.showSessionExpiredAlert = true
+            }
+        } catch {
+            print("No Saved Email!!! Should Login!!!")
+            self.showSessionExpiredAlert = true
+        }
+    }
+    
+    private func handleSignOutSucceed() {
+        if let userId = try? UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String {
+            self.removeSensitiveUserData(userId: userId)
+        }
+    }
     
 }

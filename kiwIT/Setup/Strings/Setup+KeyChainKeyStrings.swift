@@ -10,6 +10,6 @@ import Foundation
 extension Setup {
     
     enum KeyChainKeyStrings {
-        
+        static let serviceName = "kiwIT"
     }
 }

@@ -16,7 +16,7 @@ final class NetworkManager {
     private init() { }
     
     func request<T: Decodable>(type: T.Type, api: Router, errorCase: NetworkErrorCase) -> AnyPublisher<T, Error> {
-        
+
         return Future<T, Error> { promise in
             AF.request(api)
                 .validate()

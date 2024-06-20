@@ -29,6 +29,9 @@ struct kiwITApp: App {
     private func checkFirstLaunch() {
         //앱 처음 실행인지 체크
         //처음이라면 KeyChain 모두 삭제 후, 앱 실행 시작
+        
+        //MARK: - Network, Keychain, UserDefaults Manager Singleton 목적: 모든 ViewModel에서 셋 모두 활용 --> 매번 instance 생성은 메모리 overhead 우려
+        
         do {
             let hasLaunchedBefore = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.checkLaunchingFirstTime) as Bool
 

@@ -10,8 +10,17 @@ import SwiftUI
 //MARK: - Profile: 유저 닉네임, 학습 진도율 (학습 완료 콘텐츠 리스트, 전체 대비), 퀴즈 진도율 (퀴즈 완료 그룹 리스트, 전체 대비), 트로피 획득 내역 (전체 대비), 로그아웃, 회원탈퇴
 struct ProfileView: View {
     
-    @StateObject var profileVM = ProfileViewModel()
+//    @StateObject var profileVM = ProfileViewModel()
+    @StateObject var profileVM: ProfileViewModel
     @ObservedObject var tabViewsVM: TabViewsViewModel
+    
+    init(tabViewsVM: TabViewsViewModel) {
+        _tabViewsVM = ObservedObject(wrappedValue: tabViewsVM)
+        let profileVM = ProfileViewModel { updatedProfile in
+            tabViewsVM.updateProfileFromProfileView(updatedProfile)
+        }
+        _profileVM = StateObject(wrappedValue: profileVM)
+    }
     
     //Lecture, Quiz 및 여러 컨텐츠 기본 개수 및 진도 현황 관련 유저 데이터 가져와서 활용해야 함
     
@@ -73,10 +82,12 @@ struct ProfileView: View {
                             if profileVM.nicknameInputFromUser.isEmpty {
                                 profileVM.showNicknameErrorAlert = true
                             } else {
-                                profileVM.updateNickname { updatedProfile in
-                                    tabViewsVM.updateProfileFromProfileView(updatedProfile)
-                                    profileVM.nicknameInputFromUser.removeAll()
-                                }
+                                profileVM.updateNickname()
+                                
+//                                profileVM.updateNickname { updatedProfile in
+//                                    tabViewsVM.updateProfileFromProfileView(updatedProfile)
+//                                    profileVM.nicknameInputFromUser.removeAll()
+//                                }
                             }
                         }
                     }
@@ -196,7 +207,7 @@ struct ProfileView: View {
                                 if didSucceed {
                                     print("LOG OUT!!!!")
                                     //로그인 화면 나타내기
-                                    tabViewsVM.isTokenAvailable = false
+                                    tabViewsVM.isLoginAvailable = false
                                 }
                             }
                         }
@@ -256,7 +267,7 @@ struct ProfileView: View {
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
             .alert("로그인 오류!", isPresented: $profileVM.showSessionExpiredAlert, actions: {
                 Button("확인", role: .cancel) {
-                    tabViewsVM.isTokenAvailable = false
+                    tabViewsVM.isLoginAvailable = false
                 }
             }, message: {
                 Text("세션이 만료되었어요. 다시 로그인해주세요.")
@@ -270,6 +281,5 @@ struct ProfileView: View {
 }
 
 #Preview {
-//    ProfileView(tabViewsVM: TabViewsViewModel(MainTabBarViewModel().userProfileData))
     ProfileView(tabViewsVM: TabViewsViewModel())
 }

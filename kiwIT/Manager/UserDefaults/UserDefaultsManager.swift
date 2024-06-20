@@ -33,7 +33,7 @@ final class UserDefaultsManager {
         let encoder = JSONEncoder()
         do {
             let encoded = try encoder.encode(newValue)
-            userDefault.setValue(encoded, forKey: forKey)
+            userDefault.set(encoded, forKey: forKey)
             return true
         } catch {
             return false

@@ -15,7 +15,6 @@ struct MainTabBarView: View {
     var body: some View {
         //로그인 여부 체크
         if (mainTabBarVM.isUserLoggedIn) {
-//            TabViews(tabViewsVM: TabViewsViewModel(mainTabBarVM.userProfileData), mainTabBarVM: mainTabBarVM)
             TabViews(mainTabBarVM: mainTabBarVM)
         } else {
             SocialLoginView(mainTabBarVM: mainTabBarVM)

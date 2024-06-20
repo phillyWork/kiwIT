@@ -15,8 +15,6 @@ import KakaoSDKCommon
 import KakaoSDKAuth
 import KakaoSDKUser
 
-//Service Provider에게서 받은 Token 전달하기
-
 final class SocialLoginButtonViewModel: ObservableObject {
     
     var cancellables = Set<AnyCancellable>()
@@ -85,21 +83,14 @@ final class SocialLoginButtonViewModel: ObservableObject {
     }
     
     private func handleKakaoToken(_ token: OAuthToken) {
-        
-        //MARK: - Save Kakao Token to KeyChain
-        
-        
         NetworkManager.shared.request(type: SignInResponse.self, api: .signIn(request: SignInRequest(token: token.accessToken, provider: .kakao)), errorCase: .signIn)
             .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
+                if case .failure(let error) = completion {
                     if let signInError = error as? NetworkError {
                         print("SignInError as Network: \(signInError.description)")
                         self.serverLoginResultPublisher.send((false, signInError.description, nil, nil))
                     } else {
-                        print("SignInError as other reason: \(error.localizedDescription)")
+                        print("SignInError as other reason")
                         self.serverLoginResultPublisher.send((false, error.localizedDescription, nil, nil))
                     }
                 }
@@ -108,14 +99,13 @@ final class SocialLoginButtonViewModel: ObservableObject {
                 switch response {
                 case .signInSuccess(let tokenResponse):
                     //로그인 성공: Token 활용해서 profile 요청, 이메일 받아오기
-                    self.requestProfileEmail(tokenResponse) { profile in
+                    self.requestProfile(tokenResponse) { profile in
                         print("Profile Passed From RequestProfile!!!")
                         guard let profile = profile else {
                             //프로필 얻어오기 에러: 현재 로그인한 계정 이메일 모름
                             //기존 키체인 삭제, 일회성 로그인으로 처리하기
                             //다음 로그인 체크 시, 저장된 토큰 없으므로 새로 로그인하기
                             print("Error for Profile Request!!!")
-                            KeyChainManager.shared.delete()
                             self.serverLoginResultPublisher.send((true, nil, nil, nil))
                             return
                         }
@@ -128,68 +118,34 @@ final class SocialLoginButtonViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    private func requestProfileEmail(_ token: SignInResponseSuccess, returnCompletion: @escaping (ProfileResponse?) -> Void) {
-        print("Request for Profile Email to update Token Data")
+    private func requestProfile(_ token: SignInResponseSuccess, returnCompletion: @escaping (ProfileResponse?) -> Void) {
+        print("Request for Profile Id to update Token Data")
         NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: token.accessToken)), errorCase: .profileCheck)
             .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Error for Profile Email in SignIn: \(error.localizedDescription)")
-                    returnCompletion(nil)
+                if case .failure(let error) = completion {
+                    if let profileError = error as? NetworkError {
+                        print("Error for Profile Id in SignIn: \(profileError.description)")
+                        returnCompletion(nil)
+                    } else {
+                        print("Error for Profile Id in SignIn: \(error.localizedDescription)")
+                        returnCompletion(nil)
+                    }
                 }
             } receiveValue: { response in
-                print("Profile Response in Email: \(response)")
+                print("Profile Response in requestProfile: \(response)")
                 returnCompletion(response)
             }
             .store(in: &self.cancellables)
     }
     
     private func updateToken(token: SignInResponseSuccess, profile: ProfileResponse) {
-        //UserDefaults 저장된 이메일과 동일한 지 체크
-        do {
-            let savedEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
-            if savedEmail == profile.email {
-                //동일: 해당 이메일 활용, 토큰 Update
-                if KeyChainManager.shared.update(token: UserTokenValue(access: token.accessToken, refresh: token.refreshToken)) {
-                    print("Login Succeed, Token Exists, Updated Token")
-                } else {
-                    print("Login Succeed, Token Exists, but Cannot Update Token")
-                }
-               
-                //토큰 업데이트 하지 못하더라도 어차피 다음 session에서 다시 체크
-                //기존 토큰 만료되었으므로 refresh request 혹은 login request 다시 시도함
-                self.serverLoginResultPublisher.send((true, nil, profile, nil))
-                
-                print("Same Email as Before, Done Anyhow for checking later...")
-            } else {
-                //동일X: 기존 토큰 keychain에서 삭제, UserDefaults update 후 토큰 Keychain에 새로 Create
-                if KeyChainManager.shared.delete() {
-                    print("Deleting Token from Keychain Succeed!")
-                } else {
-                    print("Deleting Token from Keychain Failed!!!")
-                }
-                
-                UserDefaultsManager.shared.saveToUserDefaults(newValue: profile.email, forKey: Setup.UserDefaultsKeyStrings.emailString)
-                
-                KeyChainManager.shared.create(token: UserTokenValue(access: token.accessToken, refresh: token.refreshToken))
-                
-                self.serverLoginResultPublisher.send((true, nil, profile, nil))
-                
-                print("Not Same Email as Before, Updated UserDefaults, Created Token")
-            }
-        } catch {
-            print("Error for getting email -- No Saved Email")
-            //UserDefaults에 존재 X: 새로 email 추가, 그 후 토큰 keychain에 새로 create
-            UserDefaultsManager.shared.saveToUserDefaults(newValue: profile.email, forKey: Setup.UserDefaultsKeyStrings.emailString)
-            
-            KeyChainManager.shared.create(token: UserTokenValue(access: token.accessToken, refresh: token.refreshToken))
-            
-            self.serverLoginResultPublisher.send((true, nil, profile, nil))
-            
-            print("No Saved Email, Updated UserDefaults, Created Token")
+        if let userId = try? UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String, userId == String(profile.id) {
+            KeyChainManager.shared.update(UserTokenValue(access: token.accessToken, refresh: token.refreshToken), id: userId)
+        } else {
+            UserDefaultsManager.shared.saveToUserDefaults(newValue: String(profile.id), forKey: Setup.UserDefaultsKeyStrings.userIdString)
+            KeyChainManager.shared.create(UserTokenValue(access: token.accessToken, refresh: token.refreshToken), id: String(profile.id))
         }
+        self.serverLoginResultPublisher.send((true, nil, profile, nil))
     }
         
 }

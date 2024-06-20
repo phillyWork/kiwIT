@@ -12,12 +12,7 @@ struct HomeView: View {
     
     @StateObject var homeVM = HomeViewModel()
     @ObservedObject var tabViewsVM: TabViewsViewModel
-    
-//    init(tabViewsVM: TabViewsViewModel) {
-//        self.tabViewsVM = tabViewsVM
-//        homeVM.checkProfile(with: tabViewsVM.profileData)
-//    }
-    
+        
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -75,6 +70,5 @@ struct HomeView: View {
 }
 
 #Preview {
-//    HomeView(tabViewsVM: TabViewsViewModel(MainTabBarViewModel().userProfileData))
     HomeView(tabViewsVM: TabViewsViewModel())
 }

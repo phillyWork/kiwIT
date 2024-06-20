@@ -56,7 +56,6 @@
 		2173F94C2C15EFAC00CDF116 /* Error+Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513C2BAECBB70052A07E /* Error+Network.swift */; };
 		2173F94D2C15EFAF00CDF116 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
 		2173F94E2C15EFB200CDF116 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216F5F8E2BAB302C008817B0 /* NetworkManager.swift */; };
-		2173F94F2C15EFB500CDF116 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE7E2BDFD4680048FBEB /* AuthManager.swift */; };
 		2173F9502C15F05300CDF116 /* Type.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A51452BAECDE50052A07E /* Type.swift */; };
 		2173F9512C15F05600CDF116 /* Setup+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */; };
 		2173F9532C15F05D00CDF116 /* Setup+NetworkErrorMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */; };
@@ -66,7 +65,6 @@
 		2173F9572C15F06B00CDF116 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		2173F9582C15F06E00CDF116 /* Setup+NetworkEndPointStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A514D2BAED1880052A07E /* Setup+NetworkEndPointStrings.swift */; };
 		2173F9592C15F0C200CDF116 /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCDF2B9DE84100B5461B /* APIKey.swift */; };
-		2175BE7F2BDFD4680048FBEB /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE7E2BDFD4680048FBEB /* AuthManager.swift */; };
 		2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */; };
 		2177B2BD2C1B1D0E00BEB3BE /* KeyChainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2BC2C1B1D0E00BEB3BE /* KeyChainManager.swift */; };
 		2177B2C02C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */; };
@@ -78,6 +76,7 @@
 		2177B2CB2C20750700BEB3BE /* AIInterviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2CA2C20750700BEB3BE /* AIInterviewViewModel.swift */; };
 		2177B2CD2C2076D700BEB3BE /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2CC2C2076D700BEB3BE /* ProfileViewModel.swift */; };
 		2177B2D02C20A84100BEB3BE /* TrophyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2CF2C20A84100BEB3BE /* TrophyListViewModel.swift */; };
+		2177B30F2C243B7B00BEB3BE /* Setup+Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B30E2C243B7B00BEB3BE /* Setup+Time.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -204,7 +203,6 @@
 		2173F9382C10896300CDF116 /* TrophyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyContent.swift; sourceTree = "<group>"; };
 		2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyAcquiredTrophy.swift; sourceTree = "<group>"; };
 		2173F9442C15EC0F00CDF116 /* SignUpInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInfoViewModel.swift; sourceTree = "<group>"; };
-		2175BE7E2BDFD4680048FBEB /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkErrorMessageStrings.swift"; sourceTree = "<group>"; };
 		2177B2BC2C1B1D0E00BEB3BE /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
 		2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+UserDefaultsKeyStrings.swift"; sourceTree = "<group>"; };
@@ -213,6 +211,7 @@
 		2177B2CA2C20750700BEB3BE /* AIInterviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInterviewViewModel.swift; sourceTree = "<group>"; };
 		2177B2CC2C2076D700BEB3BE /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		2177B2CF2C20A84100BEB3BE /* TrophyListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListViewModel.swift; sourceTree = "<group>"; };
+		2177B30E2C243B7B00BEB3BE /* Setup+Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+Time.swift"; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -402,7 +401,6 @@
 				217A513C2BAECBB70052A07E /* Error+Network.swift */,
 				217A513A2BAECB800052A07E /* Router.swift */,
 				216F5F8E2BAB302C008817B0 /* NetworkManager.swift */,
-				2175BE7E2BDFD4680048FBEB /* AuthManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -854,6 +852,7 @@
 			isa = PBXGroup;
 			children = (
 				219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */,
+				2177B30E2C243B7B00BEB3BE /* Setup+Time.swift */,
 				2170E7542BBC6873002A1DA6 /* Setup+Color.swift */,
 			);
 			path = Utility;
@@ -1090,7 +1089,6 @@
 				217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */,
 				2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */,
 				21816AD92BC82DCB007E6FD6 /* ExpandedImageView.swift in Sources */,
-				2175BE7F2BDFD4680048FBEB /* AuthManager.swift in Sources */,
 				217A514A2BAED0800052A07E /* RefreshAccessToken.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
 				218267712BE68A5C00D8C17C /* QuizResultView.swift in Sources */,
@@ -1109,6 +1107,7 @@
 				214282D32BD1023C00EA3CC1 /* CategoryItemUITest.swift in Sources */,
 				21816ABE2BC81BE5007E6FD6 /* ContentSectionTitleView.swift in Sources */,
 				2182676C2BE6831C00D8C17C /* QuizListItemView.swift in Sources */,
+				2177B30F2C243B7B00BEB3BE /* Setup+Time.swift in Sources */,
 				2177B2C02C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1132,7 +1131,6 @@
 				2173F9552C15F06700CDF116 /* Setup+ContentStrings.swift in Sources */,
 				2173F9462C15EF9900CDF116 /* SignUp.swift in Sources */,
 				2173F94C2C15EFAC00CDF116 /* Error+Network.swift in Sources */,
-				2173F94F2C15EFB500CDF116 /* AuthManager.swift in Sources */,
 				2173F9502C15F05300CDF116 /* Type.swift in Sources */,
 				2177B2C52C1B280F00BEB3BE /* KeyChainManager.swift in Sources */,
 				2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */,

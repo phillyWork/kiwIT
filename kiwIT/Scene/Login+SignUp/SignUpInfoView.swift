@@ -98,12 +98,20 @@ struct SignUpInfoView: View {
                 Text("닉네임을 입력해주시고 안내 사항을 체크해주셔야 회원 가입을 할 수 있습니다")
             })
         }
+        .alert("회원 가입 오류!", isPresented: $signUpInfoVM.showSignUpErrorAlert, actions: {
+            Button("확인", role: .cancel) { }
+        }, message: {
+            Text("닉네임 중복 또는 회원 가입을 할 수 없는 계정입니다! 다시 시도해주세요.")
+        })
         .frame(maxHeight: .infinity)
         .padding(.horizontal, 8)
         .background(Color.backgroundColor)
         .onChange(of: signUpInfoVM.didSignUpSucceed) { newValue in
             if newValue {
                 print("Sign Up and Login Succeed!!! Move to TabViews")
+                if let profile = signUpInfoVM.signedUpProfile {
+                    mainTabBarVM.userProfileData = profile
+                }
                 mainTabBarVM.isUserLoggedIn = true
             }
         }

@@ -14,171 +14,134 @@ struct UserTokenValue: Codable {
     var refresh: String
 }
 
-//MARK: - KeyChain: 앱 삭제 후 재설치해도 값은 저장된 그대로 존재
-
-//Token 저장 목적
-
+//KeyChain: 앱 삭제 후 재설치해도 값은 저장된 그대로 존재
 //iCloud로 공유 가능하도록 설정 가능 (서로 다른 디바이스에서 해당 앱 활용할 시)
 //kSecAttrSynchronizable
-
-
-//MARK: - ServiceProvider들 토큰 저장 필요함 --> 메서드 인풋을 Generic 처리?
-
 
 final class KeyChainManager {
     
     static let shared = KeyChainManager()
     private init() { }
-
-    //새롭게 저장: 처음 계정 생성 시 혹은 계정 존재하지만 새로운 기기에서 처음 시작 시
-    func create(token: UserTokenValue) -> Bool {
+    
+    func create(_ token: UserTokenValue, id: String) {
         do {
-            let serviceName = Setup.ContentStrings.appTitle
-            let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
-            let encodedToken = try JSONEncoder().encode(token)
-           
+            let serviceName = Setup.KeyChainKeyStrings.serviceName
+            let encodedData = try JSONEncoder().encode(token)
+            
             let query = [
                 kSecClass: kSecClassGenericPassword,
-                kSecAttrService: serviceName as! String,
-                kSecAttrAccount: accountEmail,
-                kSecValueData: encodedToken
+                kSecAttrService: serviceName,
+                kSecAttrAccount: id,
+                kSecValueData: encodedData
             ] as CFDictionary
             
             let status = SecItemAdd(query, nil)
             
             guard status == errSecSuccess else {
-                print("Keychain Create Data Error")
-                return false
+                print("Keychain Create Data Error: \(SecCopyErrorMessageString(status, nil))")
+                return
             }
             
-            print("status for create: \(SecCopyErrorMessageString(status, nil))")
-            
-            return true
+            print("Keychain Create Succeed!")
         } catch {
-            print("KEYCHAIN CREATE -- No Bundle Identifier, Nothing on Saved Email, or Cannot Encode Token Data")
-            return false
+            print("KEYCHAIN CREATE Error with JSONEncoder")
         }
     }
     
-    //저장된 데이터 불러오기
-    func read() -> UserTokenValue? {
+    func read (_ id: String) -> UserTokenValue? {
+        let serviceName = Setup.KeyChainKeyStrings.serviceName
+        
+        let query = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrService: serviceName,
+            kSecAttrAccount: id,
+            kSecReturnData: true,
+            kSecReturnAttributes as String: true
+        ] as CFDictionary
+        
+        var item: CFTypeRef?
+        let status = SecItemCopyMatching(query, &item)
+        
+        guard status != errSecItemNotFound else {
+            print("Keychain Item Not Found -- \(SecCopyErrorMessageString(status, nil))")
+            return nil
+        }
+        
+        guard status == errSecSuccess else {
+            print("Keychain Read Data Error -- \(SecCopyErrorMessageString(status, nil))")
+            return nil
+        }
+        
+        guard let existingItem = item as? [String: Any],
+              let tokenData = existingItem[kSecValueData as String] as? Data
+        else {
+            print("No Saved Data in KeyChain item")
+            return nil
+        }
+        
         do {
-            let serviceName = Setup.ContentStrings.appTitle
-            let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
-            
-            print("accountEmail: \(accountEmail)")
-            
-            let query = [
-                kSecClass: kSecClassGenericPassword,
-                kSecAttrService: serviceName,
-                kSecAttrAccount: accountEmail,
-                kSecReturnData: true,
-                kSecReturnAttributes as String: true
-            ] as CFDictionary
-            
-            var item: CFTypeRef?
-            let status = SecItemCopyMatching(query, &item)
-            
-            guard status != errSecItemNotFound else {
-                print("Keychain Item Not Found")
-                return nil
-            }
-            
-            guard status == errSecSuccess else {
-                print("Keychain Read Data Error")
-                return nil
-            }
-            
-            print("status for read: \(SecCopyErrorMessageString(status, nil))")
-            
-            guard let existingItem = item as? [String: Any],
-                  let tokenData = existingItem[kSecValueData as String] as? Data
-            else {
-                print("No Existing Data or token saved in KeyChain item")
-                return nil
-            }
-            
-            do {
-                let token = try JSONDecoder().decode(UserTokenValue.self, from: tokenData)
-                print("token from KeyChain: \(token)")
-                return token
-            } catch {
-                print("Cannot Decode Token Data from KeyChain")
-                return nil
-            }
+            let token = try JSONDecoder().decode(UserTokenValue.self, from: tokenData)
+            print("token from KeyChain: \(token)")
+            return token
         } catch {
-            print("KEYCHAIN READ -- No Bundle Identifier, Nothing on Saved Email")
+            print("Cannot Decode Data from KeyChain")
             return nil
         }
     }
-    
-    //저장된 데이터 업데이트
-    func update(token: UserTokenValue) -> Bool {
+        
+    func update(_ newToken: UserTokenValue, id: String) -> Bool {
         do {
-            let serviceName = Setup.ContentStrings.appTitle
-            let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
-            let encodedToken = try JSONEncoder().encode(token)
-           
+            let serviceName = Setup.KeyChainKeyStrings.serviceName
+            let encodedData = try JSONEncoder().encode(newToken)
+                        
             let query = [
                 kSecClass: kSecClassGenericPassword,
-                kSecAttrService: serviceName as! String,
-                kSecAttrAccount: accountEmail
+                kSecAttrService: serviceName,
+                kSecAttrAccount: id
             ] as CFDictionary
             
             let attributes = [
-                kSecValueData: encodedToken
+                kSecValueData: encodedData
             ] as CFDictionary
             
             let status = SecItemUpdate(query, attributes)
             
             guard status != errSecItemNotFound else {
-                print("Keychain Updated Item Not Found")
+                print("Keychain Item to Update Not Found: \(SecCopyErrorMessageString(status, nil))")
                 return false
             }
             
             guard status == errSecSuccess else {
-                print("Keychain Update Data Error")
+                print("Keychain Update Data Error: \(SecCopyErrorMessageString(status, nil))")
                 return false
             }
             
-            print("status for update: \(SecCopyErrorMessageString(status, nil))")
-            
+            print("Keychain Update Succeed!")
             return true
         } catch {
-            print("KEYCHAIN UPDATE -- No Bundle Identifier, Nothing on Saved Email, or Cannot Encode Token Data")
+            print("KEYCHAIN Update Error with JSONEncoder")
             return false
         }
     }
     
-    //저장된 데이터 삭제
-    func delete() -> Bool {
-        do {
-            let serviceName = Setup.ContentStrings.appTitle
-            let accountEmail = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.emailString) as String
-            
-            let query = [
-                kSecClass: kSecClassGenericPassword,
-                kSecAttrService: serviceName as! String,
-                kSecAttrAccount: accountEmail,
-            ] as CFDictionary
-                        
-            let status = SecItemDelete(query)
-            
-            //삭제: 없는 아이템 삭제 에러 상관 없음
-            guard status == errSecSuccess || status == errSecItemNotFound else {
-                print("Keychain Delete Data Error")
-                return false
-            }
-            
-            print("status for delete: \(SecCopyErrorMessageString(status, nil))")
-            
-            return true
-        } catch {
-            print("KEYCHAIN DELETE -- No Bundle Identifier, Nothing on Saved Email")
-            return false
+    func delete(_ id: String) {
+        let serviceName = Setup.KeyChainKeyStrings.serviceName
+        
+        let query = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrService: serviceName,
+            kSecAttrAccount: id,
+        ] as CFDictionary
+        
+        let status = SecItemDelete(query)
+        
+        //삭제: 없는 아이템 삭제 에러 상관 없음
+        guard status == errSecSuccess || status == errSecItemNotFound else {
+            print("Keychain Delete Data Error: \(SecCopyErrorMessageString(status, nil))")
+            return
         }
     }
-    
+        
     func deleteAll() {
         let secClass = [kSecClassGenericPassword, kSecClassInternetPassword, kSecClassCertificate, kSecClassKey, kSecClassIdentity]
         secClass.forEach {

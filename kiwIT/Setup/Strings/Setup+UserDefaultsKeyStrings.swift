@@ -10,7 +10,7 @@ import Foundation
 extension Setup {
     
     enum UserDefaultsKeyStrings {
-        static let emailString = "emailForAccountAttribute"
+        static let userIdString = "userIdForToken"
         static let checkLaunchingFirstTime = "launchFirstTime"
     }
 }
