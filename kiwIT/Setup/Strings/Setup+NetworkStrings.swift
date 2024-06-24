@@ -16,7 +16,11 @@ extension Setup {
         static let providerTitle = "provider"
         static let accessTokenTitle = "token"
         static let refreshTokenTitle = "refreshToken"
-        static let trophyNextPageQueryTitle = "next"
-        static let trophyLimitPageQueryTitle = "limit"
+        static let lectureExerciseAnswerTitle = "answer"
+        static let submitQuizAnswerListTitle = "answerList"
+        static let queryStringNextPageTitle = "next"
+        static let queryStringLimitPageTitle = "limit"
+        static let queryStringByLevelTitle = "byLevel"
+        static let queryStringTagTitle = "tag"
     }
 }

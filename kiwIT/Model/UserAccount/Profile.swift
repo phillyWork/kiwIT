@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProfileEditRequest: Encodable {
+struct ProfileEditRequest {
     var access: String
     var nickname: String
 }

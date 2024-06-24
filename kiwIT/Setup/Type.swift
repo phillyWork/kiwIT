@@ -16,13 +16,12 @@ enum SocialLoginProvider: String, Encodable {
 
 //구독 여부
 enum UserPlan: String, Codable {
-    case basic = "BASIC"
     case normal = "NORMAL"
-    case subscribed = "SUBSCRIBED"
-    case unknown = "UNKNOWN"
+    case pro = "PRO"
+    case premium = "PREMIUM"
     
     init(from decoder: any Decoder) throws {
-        self = try UserPlan(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
+        self = try UserPlan(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .normal
     }
 }
 
@@ -30,9 +29,22 @@ enum UserPlan: String, Codable {
 enum UserStatus: String, Codable {
     case activated = "ACTIVATED"
     case deactivated = "DEACTIVATED"
+    case banned = "BANNED"
+    case deleted = "DELETED"
     case unknown = "UNKNOWN"
     
     init(from decoder: any Decoder) throws {
         self = try UserStatus(rawValue: decoder.singleValueContainer().decode(RawValue.self)) ?? .unknown
     }
+}
+
+//enum LectureContentPayloadType: String, Codable {
+//    case textContent = "text"
+//    case imageFile = "image"
+//}
+
+enum QuizType: String, Codable {
+    case multipleChoice = "multiple"
+    case trueOrFalse = "tf"
+    case shortAnswer = "short"
 }

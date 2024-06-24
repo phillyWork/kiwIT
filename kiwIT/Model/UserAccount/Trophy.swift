@@ -7,9 +7,11 @@
 
 import Foundation
 
+import Alamofire
+
 //MARK: - Request
 
-struct TrophyRequest: Encodable {
+struct TrophyRequest {
     var access: String
     var next: Int?
     var limit: Int?
@@ -21,16 +23,38 @@ struct AcquiredTrophyListResponse: Decodable {
     var acquiredList: [AcquiredTrophy]
 }
 
-struct MostRecentAcquiredTrophyResponse: Decodable {
+struct MostRecentAcquiredTrophySuccess: Decodable {
     var mostAcquiredTrophy: AcquiredTrophy
 }
 
+enum MostRecentAcquiredTrophyResponse: Decodable {
+    case success(MostRecentAcquiredTrophySuccess)
+    case emptyBody          //Empty Body
+
+    enum CodingKeys: String, CodingKey {
+        case acquiredList
+        case emptyBody
+    }
+        
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if let acquired = try? container.decode(AcquiredTrophy.self, forKey: .acquiredList) {
+            let mostTrophySuccess = MostRecentAcquiredTrophySuccess(mostAcquiredTrophy: acquired)
+            print("Most Recent Acquired Trophy data: \(mostTrophySuccess)")
+            self = .success(mostTrophySuccess)
+        } else if let emptyBody = try? container.decode(Empty.self, forKey: .emptyBody) {
+            print("No Acquired Trophy Data")
+            self = .emptyBody
+        } else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Data does not match any SignInResponse type"))
+        }
+    }
+}
+
+
 struct AcquiredTrophy: Decodable, Identifiable {
-    
-    //MARK: - userId 대신 Id로 받는 것 처리 필요
-    
     var id: String
-//    let userId: String
     var trophy: TrophyEntity
     //시간 타입 설정 필요
     var createdAt: String

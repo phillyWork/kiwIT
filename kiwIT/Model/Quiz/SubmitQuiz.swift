@@ -1,0 +1,30 @@
+//
+//  SubmitQuiz.swift
+//  kiwIT
+//
+//  Created by Heedon on 6/21/24.
+//
+
+import Foundation
+
+struct SubmitQuizRequest {
+    var quizGroupId: String
+    var access: String
+    var answerList: [QuizAnswer]
+}
+
+struct QuizAnswer: Encodable {
+    var quizId: Int
+    var answer: String
+    
+    //개별 퀴즈 문항의 id와 해당 답안으로 구성된 Object의 배열
+    //TF 문제의 경우 “True”, “False”의 문자열로
+}
+
+struct SubmitQuizResponse: Decodable {
+    var id: Int         //id for each submitted answer result
+    var userId: Int
+    var quizGroupId: Int
+    var latestScore: Int
+    var highestScore: Int
+}

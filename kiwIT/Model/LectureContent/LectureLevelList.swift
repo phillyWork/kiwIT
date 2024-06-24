@@ -7,18 +7,11 @@
 
 import Foundation
 
-//struct Level
-
-
-struct LectureLevelListRequest: Encodable {
-    var access: String
-}
-
 struct LectureLevelListResponse: Decodable {
-    var levelList: [LectureLevelPayload]
+    var list: [LectureLevelListPayload]
 }
 
-struct LectureLevelPayload: Codable {
+struct LectureLevelListPayload: Decodable {
     var num: Int
     var title: String
 }

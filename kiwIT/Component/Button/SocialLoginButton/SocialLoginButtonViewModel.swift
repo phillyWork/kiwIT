@@ -102,9 +102,7 @@ final class SocialLoginButtonViewModel: ObservableObject {
                     self.requestProfile(tokenResponse) { profile in
                         print("Profile Passed From RequestProfile!!!")
                         guard let profile = profile else {
-                            //프로필 얻어오기 에러: 현재 로그인한 계정 이메일 모름
-                            //기존 키체인 삭제, 일회성 로그인으로 처리하기
-                            //다음 로그인 체크 시, 저장된 토큰 없으므로 새로 로그인하기
+                            //프로필 얻어오기 에러: 현재 로그인한 계정 정보 모름
                             print("Error for Profile Request!!!")
                             self.serverLoginResultPublisher.send((true, nil, nil, nil))
                             return

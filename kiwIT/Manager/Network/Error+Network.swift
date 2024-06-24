@@ -50,15 +50,6 @@ struct NetworkErrorMessage {
     
     var message: String {
         switch status {
-//        case 204:
-//            switch errorCase {
-//            case .mostRecentAcquiredTrophy:
-//                return Setup.NetworkErrorMessage.mostRecentTakenQuizError204
-//            case .mostRecentTakenQuiz:
-//                return Setup.NetworkErrorMessage.mostRecentTakenQuizError204
-//            default:
-//                return "Error Code 204"
-//            }
         case 400:
             switch errorCase {
             case .signUp:
@@ -132,8 +123,6 @@ struct NetworkErrorMessage {
 }
 
 enum NetworkError: Error {
-
-//    case noHistory(message: String)
     case invalidRequestBody(message: String)
     case invalidToken(message: String)
     case invalidPathVariable(message: String)
@@ -141,7 +130,6 @@ enum NetworkError: Error {
     
     init?(statusCode: Int, message: String) {
         switch statusCode {
-//        case 204: self = .noHistory(message: message)
         case 400: self = .invalidRequestBody(message: message)
         case 401: self = .invalidToken(message: message)
         case 410: self = .invalidPathVariable(message: message)
@@ -152,8 +140,6 @@ enum NetworkError: Error {
     
     var description: String {
         switch self {
-//        case .noHistory(let message):
-//            return message
         case .invalidRequestBody(let message):
             return message
         case .invalidToken(let message):

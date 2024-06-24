@@ -25,17 +25,17 @@ struct ProfileView: View {
     //Lecture, Quiz 및 여러 컨텐츠 기본 개수 및 진도 현황 관련 유저 데이터 가져와서 활용해야 함
     
     @State private var tempBasicITCategory = [
-        LectureContent(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
-        LectureContent(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
-        LectureContent(id: 113, title: "교양예시3", point: 100, exercise: "연습문제3", answer: true, levelNum: 3, categoryChapterId: 111333111333),
-        LectureContent(id: 114, title: "교양예시4", point: 100, exercise: "연습문제4", answer: true, levelNum: 0, categoryChapterId: 111333111333),
-        LectureContent(id: 115, title: "교양예시5", point: 100, exercise: "연습문제5", answer: true, levelNum: 1, categoryChapterId: 111333111333),
-        LectureContent(id: 116, title: "교양예시6", point: 100, exercise: "연습문제6", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+        LectureListPayload(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+        LectureListPayload(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
+        LectureListPayload(id: 113, title: "교양예시3", point: 100, exercise: "연습문제3", answer: true, levelNum: 3, categoryChapterId: 111333111333),
+        LectureListPayload(id: 114, title: "교양예시4", point: 100, exercise: "연습문제4", answer: true, levelNum: 0, categoryChapterId: 111333111333),
+        LectureListPayload(id: 115, title: "교양예시5", point: 100, exercise: "연습문제5", answer: true, levelNum: 1, categoryChapterId: 111333111333),
+        LectureListPayload(id: 116, title: "교양예시6", point: 100, exercise: "연습문제6", answer: true, levelNum: 2, categoryChapterId: 111333111333),
     ]
     
     @State private var tempUserTakenBasicITCategory = [
-        LectureContent(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
-        LectureContent(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
+        LectureListPayload(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+        LectureListPayload(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
     ]
     
     
