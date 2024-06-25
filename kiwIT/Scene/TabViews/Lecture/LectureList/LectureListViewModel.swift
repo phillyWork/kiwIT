@@ -10,5 +10,5 @@ import Combine
 
 final class LectureListViewModel: ObservableObject {
     
-    
+   
 }

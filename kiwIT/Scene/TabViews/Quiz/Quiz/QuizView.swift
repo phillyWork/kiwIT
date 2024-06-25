@@ -47,8 +47,10 @@ struct QuizView: View {
     
     var body: some View {
         
-            //MARK: - ScrollView 계속 활용해도 가능할 듯 (refreshable disable 찾음)
+        //MARK: - ScrollView 계속 활용해도 가능할 듯 (refreshable disable 찾음)
             
+        //MARK: - 실제 퀴즈 보는 중 및 결과 화면에서는 탭바 가리기 
+        
 //            ScrollView {
             VStack {
                 QuizContentOX(content: $testDataForQuestion[quizIndex],

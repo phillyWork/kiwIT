@@ -7,33 +7,52 @@
 
 import SwiftUI
 
+enum TabType: Int, Hashable, CaseIterable, Identifiable {
+    case home
+    case lecture
+    case quiz
+    case interview
+    case profile
+    
+    var id: Int {
+        rawValue
+    }
+}
+
 struct TabViews: View {
     
     @StateObject var tabViewsVM = TabViewsViewModel()
     @ObservedObject var mainTabBarVM: MainTabBarViewModel
-        
+    
+    @State private var selectedTab: TabType = .home
+    
     var body: some View {
-        TabView {
-                HomeView(tabViewsVM: tabViewsVM)
-                    .tabItem {
-                        Label("홈", systemImage: Setup.ImageStrings.defaultHome)
-                    }
-                LectureCategoryListView(tabViewsVM: tabViewsVM)
-                    .tabItem {
-                        Label("학습", systemImage: Setup.ImageStrings.defaultLecture)
-                    }
-                QuizListView(tabViewsVM: tabViewsVM)
-                    .tabItem {
-                        Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
-                    }
-                AIInterviewView(tabViewsVM: tabViewsVM)
-                    .tabItem {
-                        Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
-                    }
-                ProfileView(tabViewsVM: tabViewsVM)
-                    .tabItem {
-                        Label("나", systemImage: Setup.ImageStrings.defaultProfile)
-                    }
+        TabView(selection: $selectedTab) {
+            HomeView(tabViewsVM: tabViewsVM)
+                .tabItem {
+                    Label("홈", systemImage: Setup.ImageStrings.defaultHome)
+                }
+                .tag(TabType.home)
+            LectureCategoryListView(tabViewsVM: tabViewsVM)
+                .tabItem {
+                    Label("학습", systemImage: Setup.ImageStrings.defaultLecture)
+                }
+                .tag(TabType.home)
+            QuizListView(tabViewsVM: tabViewsVM)
+                .tabItem {
+                    Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
+                }
+                .tag(TabType.home)
+            AIInterviewView(tabViewsVM: tabViewsVM)
+                .tabItem {
+                    Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
+                }
+                .tag(TabType.home)
+            ProfileView(tabViewsVM: tabViewsVM)
+                .tabItem {
+                    Label("나", systemImage: Setup.ImageStrings.defaultProfile)
+                }
+                .tag(TabType.home)
         }
         .tint(Color.brandColor)
         .onAppear {

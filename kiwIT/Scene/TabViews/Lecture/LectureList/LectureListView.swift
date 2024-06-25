@@ -22,6 +22,9 @@ struct SectionData: Identifiable {
 
 struct LectureListView: View {
 
+    
+    @StateObject var lectureListVM = LectureListViewModel()
+    
     //e.g.) 임시 테스트 데이터
     let items: [TestData2] = [
         TestData2(title: "모두 컴퓨터에요", number: 0, subItems: [
@@ -62,10 +65,8 @@ struct LectureListView: View {
         ])
     ]
     
-    
     var body: some View {
         //Chapter에서 Toggle로 Section까지 보여주도록 설정
-        NavigationStack {
             ScrollView {
                 ForEach(items, id: \.id) { item in
                     ContentExpandableChapterItemView(
@@ -73,7 +74,7 @@ struct LectureListView: View {
                             ScrollView {
                                 ForEach(item.subItems, id: \.id) { section in
                                     NavigationLink {
-                                        LectureView()
+                                       LectureView(lectureListVM: lectureListVM)
                                     } label: {
                                         VStack {
                                             ContentSectionItemView {
@@ -102,7 +103,6 @@ struct LectureListView: View {
             .navigationTitle("IT 교양")
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-        }
     }
 }
 

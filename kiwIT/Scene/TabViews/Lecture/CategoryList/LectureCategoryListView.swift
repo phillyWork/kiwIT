@@ -23,16 +23,11 @@ struct LectureCategoryListView: View {
             ScrollView {
                 LazyVStack(spacing: 4) {
                     ForEach(1...50, id: \.self) { row in
-                        withAnimation {
-                            NavigationLink {
-                                withAnimation(animation) {
-                                    LectureListView()
-                                        .rotationEffect(.degrees(360))
-                                }
-                            } label: {
-                                //ContentCategoryItemView(title: "IT 교양")
-                                CategoryItemUITest(title: "IT 교양", ratio: 0.75)
-                            }
+                        NavigationLink {
+                            LectureListView()
+                                .toolbar(.hidden, for: .tabBar)
+                        } label: {
+                            LectureCategoryItemView(title: "IT 교양", ratio: 0.75)
                         }
                     }
                     .frame(maxHeight: .infinity)
@@ -53,6 +48,5 @@ struct LectureCategoryListView: View {
 }
 
 #Preview {
-//    LectureCategoryListView(tabViewsVM: TabViewsViewModel(MainTabBarViewModel().userProfileData))
     LectureCategoryListView(tabViewsVM: TabViewsViewModel())
 }

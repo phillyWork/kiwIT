@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CategoryItemUITest: View {
+struct LectureCategoryItemView: View {
     
     var itemTitle: String
     var ratioForTrapezoidWidth: CGFloat
@@ -60,5 +60,5 @@ struct CategoryItemUITest: View {
 }
 
 #Preview {
-    CategoryItemUITest(title: "테스트", ratio: 0.75)
+    LectureCategoryItemView(title: "테스트", ratio: 0.75)
 }

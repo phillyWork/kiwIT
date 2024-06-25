@@ -11,7 +11,7 @@
 		212339A02C19F40700B397F8 /* TabViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2123399F2C19F40700B397F8 /* TabViews.swift */; };
 		212339A22C19F66E00B397F8 /* TabViewsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212339A12C19F66E00B397F8 /* TabViewsViewModel.swift */; };
 		214282D02BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214282CF2BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift */; };
-		214282D32BD1023C00EA3CC1 /* CategoryItemUITest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214282D22BD1023C00EA3CC1 /* CategoryItemUITest.swift */; };
+		214282D32BD1023C00EA3CC1 /* LectureCategoryItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 214282D22BD1023C00EA3CC1 /* LectureCategoryItemView.swift */; };
 		2163D08A2BCFCA1800A42EBB /* ContentSectionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2163D0892BCFCA1800A42EBB /* ContentSectionItemView.swift */; };
 		2167FD4C2BC058E600A45F2B /* Setup+FontStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */; };
 		2167FD4E2BC0594C00A45F2B /* Galmuri11-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2167FD4D2BC0594C00A45F2B /* Galmuri11-Bold.ttf */; };
@@ -91,6 +91,19 @@
 		2177B32D2C25A32D00BEB3BE /* ExerciseForLecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B32C2C25A32D00BEB3BE /* ExerciseForLecture.swift */; };
 		2177B32F2C25A67D00BEB3BE /* MostRecentlyTakenQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B32E2C25A67D00BEB3BE /* MostRecentlyTakenQuiz.swift */; };
 		2177B3312C29B02B00BEB3BE /* ContentWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3302C29B02B00BEB3BE /* ContentWebView.swift */; };
+		2177B3322C29BA1D00BEB3BE /* LectureLevelContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3282C25A11100BEB3BE /* LectureLevelContent.swift */; };
+		2177B3332C29BA3600BEB3BE /* StartLecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217DFD352BEB7C4300C4ADC9 /* StartLecture.swift */; };
+		2177B3342C29BA3C00BEB3BE /* ExerciseForLecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B32C2C25A32D00BEB3BE /* ExerciseForLecture.swift */; };
+		2177B3352C29BA4000BEB3BE /* LectureCategoryContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B32A2C25A1F700BEB3BE /* LectureCategoryContent.swift */; };
+		2177B3362C29BA4500BEB3BE /* CheckCompletedLecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3182C25959D00BEB3BE /* CheckCompletedLecture.swift */; };
+		2177B3372C29BA4A00BEB3BE /* BookmarkLecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B31A2C25972C00BEB3BE /* BookmarkLecture.swift */; };
+		2177B3382C29BA5100BEB3BE /* QuizGroupList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B31E2C25989B00BEB3BE /* QuizGroupList.swift */; };
+		2177B3392C29BA5600BEB3BE /* StartQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3202C2598AE00BEB3BE /* StartQuiz.swift */; };
+		2177B33A2C29BA5A00BEB3BE /* SubmitQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3262C259E0B00BEB3BE /* SubmitQuiz.swift */; };
+		2177B33B2C29BA5E00BEB3BE /* CheckCompletedQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3222C2598C400BEB3BE /* CheckCompletedQuiz.swift */; };
+		2177B33C2C29BA6200BEB3BE /* BookmarkQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3242C2598CB00BEB3BE /* BookmarkQuiz.swift */; };
+		2177B33D2C29BA9100BEB3BE /* CompleteLecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3102C258C6D00BEB3BE /* CompleteLecture.swift */; };
+		2177B33E2C29BA9700BEB3BE /* MostRecentlyTakenQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B32E2C25A67D00BEB3BE /* MostRecentlyTakenQuiz.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -192,7 +205,7 @@
 		2123399F2C19F40700B397F8 /* TabViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViews.swift; sourceTree = "<group>"; };
 		212339A12C19F66E00B397F8 /* TabViewsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewsViewModel.swift; sourceTree = "<group>"; };
 		214282CF2BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquilateralTrapezoid.swift; sourceTree = "<group>"; };
-		214282D22BD1023C00EA3CC1 /* CategoryItemUITest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryItemUITest.swift; sourceTree = "<group>"; };
+		214282D22BD1023C00EA3CC1 /* LectureCategoryItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCategoryItemView.swift; sourceTree = "<group>"; };
 		2163D0892BCFCA1800A42EBB /* ContentSectionItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSectionItemView.swift; sourceTree = "<group>"; };
 		2167FD4A2BC04FDF00A45F2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+FontStrings.swift"; sourceTree = "<group>"; };
@@ -368,6 +381,7 @@
 				212339A12C19F66E00B397F8 /* TabViewsViewModel.swift */,
 				2123399F2C19F40700B397F8 /* TabViews.swift */,
 				219EFBCA2B9F127400FBEBE0 /* Home */,
+				219EFBCB2B9F127B00FBEBE0 /* Lecture */,
 				219EFBCC2B9F128000FBEBE0 /* Quiz */,
 				219EFBCD2B9F128500FBEBE0 /* AIInterview */,
 				219EFBCE2B9F128B00FBEBE0 /* UserData */,
@@ -733,7 +747,7 @@
 		21816ADA2BC83B92007E6FD6 /* LectureContent */ = {
 			isa = PBXGroup;
 			children = (
-				214282D22BD1023C00EA3CC1 /* CategoryItemUITest.swift */,
+				214282D22BD1023C00EA3CC1 /* LectureCategoryItemView.swift */,
 				21816AD32BC82568007E6FD6 /* ContentCategoryItemView.swift */,
 				21816ADB2BC83BBE007E6FD6 /* ContentExpandableChapterItemView.swift */,
 				2163D0892BCFCA1800A42EBB /* ContentSectionItemView.swift */,
@@ -844,7 +858,6 @@
 			children = (
 				2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */,
 				219EFBBA2B9F068200FBEBE0 /* HomeView.swift */,
-				219EFBCB2B9F127B00FBEBE0 /* Lecture */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -1156,7 +1169,7 @@
 				2177B32B2C25A1F700BEB3BE /* LectureCategoryContent.swift in Sources */,
 				217E55A62BB1BA2D0014B46E /* Authorization.swift in Sources */,
 				2177B2BD2C1B1D0E00BEB3BE /* KeyChainManager.swift in Sources */,
-				214282D32BD1023C00EA3CC1 /* CategoryItemUITest.swift in Sources */,
+				214282D32BD1023C00EA3CC1 /* LectureCategoryItemView.swift in Sources */,
 				21816ABE2BC81BE5007E6FD6 /* ContentSectionTitleView.swift in Sources */,
 				2182676C2BE6831C00D8C17C /* QuizListItemView.swift in Sources */,
 				2177B30F2C243B7B00BEB3BE /* Setup+Time.swift in Sources */,
@@ -1173,32 +1186,45 @@
 				2173F94E2C15EFB200CDF116 /* NetworkManager.swift in Sources */,
 				2173C0632BA0953B00FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
 				2177B2C72C1B455200BEB3BE /* Setup+KeyChainKeyStrings.swift in Sources */,
+				2177B33D2C29BA9100BEB3BE /* CompleteLecture.swift in Sources */,
 				2173F9582C15F06E00CDF116 /* Setup+NetworkEndPointStrings.swift in Sources */,
 				2173F9482C15EF9D00CDF116 /* SignIn.swift in Sources */,
 				2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */,
 				2173C05E2BA0924300FDD3D9 /* SocialLoginViewModelUnitTest.swift in Sources */,
+				2177B3362C29BA4500BEB3BE /* CheckCompletedLecture.swift in Sources */,
 				2173F94D2C15EFAF00CDF116 /* Router.swift in Sources */,
+				2177B3342C29BA3C00BEB3BE /* ExerciseForLecture.swift in Sources */,
 				2173F9472C15EF9B00CDF116 /* Authorization.swift in Sources */,
 				2173F9512C15F05600CDF116 /* Setup+Frame.swift in Sources */,
 				2173F9552C15F06700CDF116 /* Setup+ContentStrings.swift in Sources */,
 				2173F9462C15EF9900CDF116 /* SignUp.swift in Sources */,
+				2177B33C2C29BA6200BEB3BE /* BookmarkQuiz.swift in Sources */,
 				2173F94C2C15EFAC00CDF116 /* Error+Network.swift in Sources */,
 				2173F9502C15F05300CDF116 /* Type.swift in Sources */,
 				2177B2C52C1B280F00BEB3BE /* KeyChainManager.swift in Sources */,
+				2177B3392C29BA5600BEB3BE /* StartQuiz.swift in Sources */,
 				2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */,
+				2177B33B2C29BA5E00BEB3BE /* CheckCompletedQuiz.swift in Sources */,
 				2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */,
 				2177B2C62C1B455000BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */,
 				2173F9592C15F0C200CDF116 /* APIKey.swift in Sources */,
+				2177B33A2C29BA5A00BEB3BE /* SubmitQuiz.swift in Sources */,
+				2177B3352C29BA4000BEB3BE /* LectureCategoryContent.swift in Sources */,
 				2173F94B2C15EFA300CDF116 /* Profile.swift in Sources */,
 				2173F9492C15EF9F00CDF116 /* RefreshAccessToken.swift in Sources */,
+				2177B33E2C29BA9700BEB3BE /* MostRecentlyTakenQuiz.swift in Sources */,
+				2177B3382C29BA5100BEB3BE /* QuizGroupList.swift in Sources */,
 				2173C0562BA090F700FDD3D9 /* SocialLoginViewModel.swift in Sources */,
+				2177B3332C29BA3600BEB3BE /* StartLecture.swift in Sources */,
 				217BCCC52B9DE5C400B5461B /* LectureViewModelUnitTest.swift in Sources */,
 				2173F94A2C15EFA100CDF116 /* Trophy.swift in Sources */,
 				2177B2C92C1B4A2C00BEB3BE /* KeyChainManagerTest.swift in Sources */,
+				2177B3322C29BA1D00BEB3BE /* LectureLevelContent.swift in Sources */,
 				2173F9542C15F05F00CDF116 /* Setup+FontStrings.swift in Sources */,
 				2173F9572C15F06B00CDF116 /* Setup+NetworkStrings.swift in Sources */,
 				219EFBD32B9F4DE200FBEBE0 /* HomeViewModelUnitTest.swift in Sources */,
 				2173C0602BA0927200FDD3D9 /* UserDefaultsTest.swift in Sources */,
+				2177B3372C29BA4A00BEB3BE /* BookmarkLecture.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

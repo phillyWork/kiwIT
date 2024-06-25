@@ -29,17 +29,3 @@ struct WebViewSetup: UIViewRepresentable {
     }
 
 }
-
-struct ContentWebView: View {
-    
-    //for notion webview design example
-    let url = "https://quartz-concrete-fb2.notion.site/af3f2d0e634d4c649eecca118ae41b93?pvs=4"
-    
-    var body: some View {
-        WebViewSetup(urlString: url)
-    }
-}
-
-#Preview {
-    ContentWebView()
-}

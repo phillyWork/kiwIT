@@ -35,6 +35,8 @@ extension Setup {
         static let toggleButtonUnchecked = "square"
         static let toggleButtonChecked = "checkmark.square.fill"
         
+        static let bookmarkNotYet = "bookmark"
+        static let bookmarked = "bookmark.fill"
     }
     
 }
