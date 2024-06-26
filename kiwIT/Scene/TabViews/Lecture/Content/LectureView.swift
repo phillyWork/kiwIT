@@ -9,8 +9,8 @@ import SwiftUI
 
 struct LectureView: View {
     
-    @ObservedObject var lectureListVM: LectureListViewModel
     @StateObject var lectureVM = LectureViewModel()
+    @ObservedObject var lectureListVM: LectureListViewModel
     
     @Environment(\.dismiss) private var dismiss
     
@@ -23,8 +23,6 @@ struct LectureView: View {
     @State private var fontSize: CGFloat = 14
     
     @State private var isPopOverPresented = false
-    
-    //콘텐츠 학습 완료: 스크롤 맨 마지막 버튼에서 학습 완료되었다고 버튼 눌러야 확인 완료
     
     var body: some View {
         VStack {

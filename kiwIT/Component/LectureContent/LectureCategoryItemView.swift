@@ -11,12 +11,14 @@ struct LectureCategoryItemView: View {
     
     var itemTitle: String
     var ratioForTrapezoidWidth: CGFloat
+    var imageUrl: String
     
     @State private var isTapped: Bool = false
     
-    init(title: String, ratio: CGFloat) {
+    init(title: String, ratio: CGFloat, imageUrl: String = "") {
         self.itemTitle = title
         self.ratioForTrapezoidWidth = ratio
+        self.imageUrl = imageUrl
     }
     
     var body: some View {
@@ -32,9 +34,16 @@ struct LectureCategoryItemView: View {
                 .overlay {
                     HStack(alignment: .center) {
                         //해당 Category 어울리는 이미지 파일 필요
-                        Image(systemName: Setup.ImageStrings.defaultLecture2)
-                            .tint(Color.textColor)
+                        if !imageUrl.isEmpty {
+                            AsyncImage(url: URL(string: imageUrl), content: { image in
+                                image.resizable()
+                                    .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
+                                    .scaledToFit()
+                            }, placeholder: {
+                                ProgressView()
+                            })
                             .border(Color.textColor)
+                        }
                         Text(itemTitle)
                             .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                             .foregroundStyle(Color.textColor)

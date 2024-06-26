@@ -10,7 +10,6 @@ import SwiftUI
 //MARK: - Profile: 유저 닉네임, 학습 진도율 (학습 완료 콘텐츠 리스트, 전체 대비), 퀴즈 진도율 (퀴즈 완료 그룹 리스트, 전체 대비), 트로피 획득 내역 (전체 대비), 로그아웃, 회원탈퇴
 struct ProfileView: View {
     
-//    @StateObject var profileVM = ProfileViewModel()
     @StateObject var profileVM: ProfileViewModel
     @ObservedObject var tabViewsVM: TabViewsViewModel
     
@@ -25,17 +24,17 @@ struct ProfileView: View {
     //Lecture, Quiz 및 여러 컨텐츠 기본 개수 및 진도 현황 관련 유저 데이터 가져와서 활용해야 함
     
     @State private var tempBasicITCategory = [
-        LectureListPayload(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
-        LectureListPayload(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
-        LectureListPayload(id: 113, title: "교양예시3", point: 100, exercise: "연습문제3", answer: true, levelNum: 3, categoryChapterId: 111333111333),
-        LectureListPayload(id: 114, title: "교양예시4", point: 100, exercise: "연습문제4", answer: true, levelNum: 0, categoryChapterId: 111333111333),
-        LectureListPayload(id: 115, title: "교양예시5", point: 100, exercise: "연습문제5", answer: true, levelNum: 1, categoryChapterId: 111333111333),
-        LectureListPayload(id: 116, title: "교양예시6", point: 100, exercise: "연습문제6", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+        LectureContentListPayload(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+        LectureContentListPayload(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
+        LectureContentListPayload(id: 113, title: "교양예시3", point: 100, exercise: "연습문제3", answer: true, levelNum: 3, categoryChapterId: 111333111333),
+        LectureContentListPayload(id: 114, title: "교양예시4", point: 100, exercise: "연습문제4", answer: true, levelNum: 0, categoryChapterId: 111333111333),
+        LectureContentListPayload(id: 115, title: "교양예시5", point: 100, exercise: "연습문제5", answer: true, levelNum: 1, categoryChapterId: 111333111333),
+        LectureContentListPayload(id: 116, title: "교양예시6", point: 100, exercise: "연습문제6", answer: true, levelNum: 2, categoryChapterId: 111333111333),
     ]
     
     @State private var tempUserTakenBasicITCategory = [
-        LectureListPayload(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
-        LectureListPayload(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
+        LectureContentListPayload(id: 111, title: "교양예시1", point: 100, exercise: "연습문제1", answer: true, levelNum: 2, categoryChapterId: 111333111333),
+        LectureContentListPayload(id: 112, title: "교양예시2", point: 100, exercise: "연습문제2", answer: false, levelNum: 1, categoryChapterId: 111333111333),
     ]
     
     

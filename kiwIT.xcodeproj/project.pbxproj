@@ -38,9 +38,9 @@
 		2173C0622BA093A100FDD3D9 /* Error+UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0612BA093A100FDD3D9 /* Error+UserDefaultsManager.swift */; };
 		2173C0632BA0953B00FDD3D9 /* Error+UserDefaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0612BA093A100FDD3D9 /* Error+UserDefaultsManager.swift */; };
 		2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */; };
-		2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
+		2173C06B2BA0A1BA00FDD3D9 /* LectureContentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureContentListViewModel.swift */; };
 		2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */; };
-		2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */; };
+		2173C08C2BA0A56500FDD3D9 /* LectureContentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173C06A2BA0A1BA00FDD3D9 /* LectureContentListViewModel.swift */; };
 		2173F9342C0A13DB00CDF116 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2173F9332C0A13DB00CDF116 /* Config.xcconfig */; };
 		2173F9352C0A13DB00CDF116 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2173F9332C0A13DB00CDF116 /* Config.xcconfig */; };
 		2173F9372C0F4B4600CDF116 /* TrophyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9362C0F4B4600CDF116 /* TrophyListView.swift */; };
@@ -104,6 +104,7 @@
 		2177B33C2C29BA6200BEB3BE /* BookmarkQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3242C2598CB00BEB3BE /* BookmarkQuiz.swift */; };
 		2177B33D2C29BA9100BEB3BE /* CompleteLecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3102C258C6D00BEB3BE /* CompleteLecture.swift */; };
 		2177B33E2C29BA9700BEB3BE /* MostRecentlyTakenQuiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B32E2C25A67D00BEB3BE /* MostRecentlyTakenQuiz.swift */; };
+		2177B3402C2C471400BEB3BE /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B33F2C2C471400BEB3BE /* EmptyView.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -129,8 +130,8 @@
 		217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217BCCDF2B9DE84100B5461B /* APIKey.swift */; };
 		217D593F2BA9C208005AE418 /* LectureViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D593E2BA9C208005AE418 /* LectureViewModel.swift */; };
 		217D59432BA9C22C005AE418 /* LectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59422BA9C22C005AE418 /* LectureView.swift */; };
-		217D59452BA9C700005AE418 /* LectureCategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59442BA9C700005AE418 /* LectureCategoryListView.swift */; };
-		217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59462BA9C712005AE418 /* LectureCategoryListViewModel.swift */; };
+		217D59452BA9C700005AE418 /* LectureListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59442BA9C700005AE418 /* LectureListView.swift */; };
+		217D59472BA9C713005AE418 /* LectureListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217D59462BA9C712005AE418 /* LectureListViewModel.swift */; };
 		217DFD322BEB7A5400C4ADC9 /* LectureLevelList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217DFD312BEB7A5400C4ADC9 /* LectureLevelList.swift */; };
 		217DFD362BEB7C4300C4ADC9 /* StartLecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217DFD352BEB7C4300C4ADC9 /* StartLecture.swift */; };
 		217E55A02BB162000014B46E /* Trophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E559F2BB162000014B46E /* Trophy.swift */; };
@@ -174,7 +175,7 @@
 		219489552C18517600E684AC /* SocialLoginButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219489542C18517600E684AC /* SocialLoginButtonViewModel.swift */; };
 		219489572C18796F00E684AC /* Error+ServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219489562C18796F00E684AC /* Error+ServiceProvider.swift */; };
 		219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBA2B9F068200FBEBE0 /* HomeView.swift */; };
-		219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */; };
+		219EFBBD2B9F068E00FBEBE0 /* LectureContentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureContentListView.swift */; };
 		219EFBBF2B9F069600FBEBE0 /* QuizListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizListView.swift */; };
 		219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */; };
 		219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */; };
@@ -223,7 +224,7 @@
 		2173C05F2BA0927200FDD3D9 /* UserDefaultsTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsTest.swift; sourceTree = "<group>"; };
 		2173C0612BA093A100FDD3D9 /* Error+UserDefaultsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+UserDefaultsManager.swift"; sourceTree = "<group>"; };
 		2173C0682BA0A18000FDD3D9 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
-		2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListViewModel.swift; sourceTree = "<group>"; };
+		2173C06A2BA0A1BA00FDD3D9 /* LectureContentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureContentListViewModel.swift; sourceTree = "<group>"; };
 		2173F9332C0A13DB00CDF116 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		2173F9362C0F4B4600CDF116 /* TrophyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListView.swift; sourceTree = "<group>"; };
 		2173F9382C10896300CDF116 /* TrophyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyContent.swift; sourceTree = "<group>"; };
@@ -252,6 +253,7 @@
 		2177B32C2C25A32D00BEB3BE /* ExerciseForLecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseForLecture.swift; sourceTree = "<group>"; };
 		2177B32E2C25A67D00BEB3BE /* MostRecentlyTakenQuiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MostRecentlyTakenQuiz.swift; sourceTree = "<group>"; };
 		2177B3302C29B02B00BEB3BE /* ContentWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentWebView.swift; sourceTree = "<group>"; };
+		2177B33F2C2C471400BEB3BE /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -279,8 +281,8 @@
 		217BCCDF2B9DE84100B5461B /* APIKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIKey.swift; sourceTree = "<group>"; };
 		217D593E2BA9C208005AE418 /* LectureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureViewModel.swift; sourceTree = "<group>"; };
 		217D59422BA9C22C005AE418 /* LectureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureView.swift; sourceTree = "<group>"; };
-		217D59442BA9C700005AE418 /* LectureCategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCategoryListView.swift; sourceTree = "<group>"; };
-		217D59462BA9C712005AE418 /* LectureCategoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureCategoryListViewModel.swift; sourceTree = "<group>"; };
+		217D59442BA9C700005AE418 /* LectureListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListView.swift; sourceTree = "<group>"; };
+		217D59462BA9C712005AE418 /* LectureListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListViewModel.swift; sourceTree = "<group>"; };
 		217DFD312BEB7A5400C4ADC9 /* LectureLevelList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureLevelList.swift; sourceTree = "<group>"; };
 		217DFD352BEB7C4300C4ADC9 /* StartLecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartLecture.swift; sourceTree = "<group>"; };
 		217E559F2BB162000014B46E /* Trophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trophy.swift; sourceTree = "<group>"; };
@@ -324,7 +326,7 @@
 		219489542C18517600E684AC /* SocialLoginButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialLoginButtonViewModel.swift; sourceTree = "<group>"; };
 		219489562C18796F00E684AC /* Error+ServiceProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+ServiceProvider.swift"; sourceTree = "<group>"; };
 		219EFBBA2B9F068200FBEBE0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureListView.swift; sourceTree = "<group>"; };
+		219EFBBC2B9F068E00FBEBE0 /* LectureContentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureContentListView.swift; sourceTree = "<group>"; };
 		219EFBBE2B9F069600FBEBE0 /* QuizListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizListView.swift; sourceTree = "<group>"; };
 		219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInterviewView.swift; sourceTree = "<group>"; };
 		219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -380,6 +382,7 @@
 			children = (
 				212339A12C19F66E00B397F8 /* TabViewsViewModel.swift */,
 				2123399F2C19F40700B397F8 /* TabViews.swift */,
+				2177B33F2C2C471400BEB3BE /* EmptyView.swift */,
 				219EFBCA2B9F127400FBEBE0 /* Home */,
 				219EFBCB2B9F127B00FBEBE0 /* Lecture */,
 				219EFBCC2B9F128000FBEBE0 /* Quiz */,
@@ -669,13 +672,13 @@
 			path = kiwITUITests;
 			sourceTree = "<group>";
 		};
-		217D59402BA9C20D005AE418 /* LectureList */ = {
+		217D59402BA9C20D005AE418 /* LectureContentList */ = {
 			isa = PBXGroup;
 			children = (
-				2173C06A2BA0A1BA00FDD3D9 /* LectureListViewModel.swift */,
-				219EFBBC2B9F068E00FBEBE0 /* LectureListView.swift */,
+				2173C06A2BA0A1BA00FDD3D9 /* LectureContentListViewModel.swift */,
+				219EFBBC2B9F068E00FBEBE0 /* LectureContentListView.swift */,
 			);
-			path = LectureList;
+			path = LectureContentList;
 			sourceTree = "<group>";
 		};
 		217D59412BA9C216005AE418 /* Content */ = {
@@ -687,13 +690,13 @@
 			path = Content;
 			sourceTree = "<group>";
 		};
-		217D59482BA9C716005AE418 /* CategoryList */ = {
+		217D59482BA9C716005AE418 /* LectureList */ = {
 			isa = PBXGroup;
 			children = (
-				217D59462BA9C712005AE418 /* LectureCategoryListViewModel.swift */,
-				217D59442BA9C700005AE418 /* LectureCategoryListView.swift */,
+				217D59462BA9C712005AE418 /* LectureListViewModel.swift */,
+				217D59442BA9C700005AE418 /* LectureListView.swift */,
 			);
-			path = CategoryList;
+			path = LectureList;
 			sourceTree = "<group>";
 		};
 		217E55A72BB1C3900014B46E /* LectureContent */ = {
@@ -865,8 +868,8 @@
 		219EFBCB2B9F127B00FBEBE0 /* Lecture */ = {
 			isa = PBXGroup;
 			children = (
-				217D59482BA9C716005AE418 /* CategoryList */,
-				217D59402BA9C20D005AE418 /* LectureList */,
+				217D59482BA9C716005AE418 /* LectureList */,
+				217D59402BA9C20D005AE418 /* LectureContentList */,
 				217D59412BA9C216005AE418 /* Content */,
 			);
 			path = Lecture;
@@ -1090,7 +1093,7 @@
 				2177B3312C29B02B00BEB3BE /* ContentWebView.swift in Sources */,
 				2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */,
 				217BA3BB2BF7903500919AEE /* QuizSetup.swift in Sources */,
-				217D59472BA9C713005AE418 /* LectureCategoryListViewModel.swift in Sources */,
+				217D59472BA9C713005AE418 /* LectureListViewModel.swift in Sources */,
 				217BAADC2BFB826C00ADAC6B /* QuizResult.swift in Sources */,
 				218267742BE68A6F00D8C17C /* QuizResultViewModel.swift in Sources */,
 				212339A02C19F40700B397F8 /* TabViews.swift in Sources */,
@@ -1102,7 +1105,7 @@
 				217A513D2BAECBB70052A07E /* Error+Network.swift in Sources */,
 				219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */,
 				2177B32F2C25A67D00BEB3BE /* MostRecentlyTakenQuiz.swift in Sources */,
-				217D59452BA9C700005AE418 /* LectureCategoryListView.swift in Sources */,
+				217D59452BA9C700005AE418 /* LectureListView.swift in Sources */,
 				2177B2D02C20A84100BEB3BE /* TrophyListViewModel.swift in Sources */,
 				2177B3112C258C6D00BEB3BE /* CompleteLecture.swift in Sources */,
 				2189BC382BF24D05007CC766 /* QuizContentShortAnswer.swift in Sources */,
@@ -1120,7 +1123,7 @@
 				219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */,
 				218267762BE68A8500D8C17C /* QuizResultDetailView.swift in Sources */,
 				2189BC3D2BF250AD007CC766 /* QuizOXButtonLabel.swift in Sources */,
-				219EFBBD2B9F068E00FBEBE0 /* LectureListView.swift in Sources */,
+				219EFBBD2B9F068E00FBEBE0 /* LectureContentListView.swift in Sources */,
 				219EFBC52B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift in Sources */,
 				217E55A02BB162000014B46E /* Trophy.swift in Sources */,
 				2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */,
@@ -1131,6 +1134,7 @@
 				216F5F892BAB2DD8008817B0 /* ContentImageView.swift in Sources */,
 				217A51462BAECDE50052A07E /* Type.swift in Sources */,
 				21816AD42BC82568007E6FD6 /* ContentCategoryItemView.swift in Sources */,
+				2177B3402C2C471400BEB3BE /* EmptyView.swift in Sources */,
 				2173C0582BA0917100FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				217DFD322BEB7A5400C4ADC9 /* LectureLevelList.swift in Sources */,
 				2177B32D2C25A32D00BEB3BE /* ExerciseForLecture.swift in Sources */,
@@ -1150,7 +1154,7 @@
 				2189BC3A2BF24D30007CC766 /* QuizMultipleChoice.swift in Sources */,
 				217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */,
 				2177B3292C25A11100BEB3BE /* LectureLevelContent.swift in Sources */,
-				2173C06B2BA0A1BA00FDD3D9 /* LectureListViewModel.swift in Sources */,
+				2173C06B2BA0A1BA00FDD3D9 /* LectureContentListViewModel.swift in Sources */,
 				21816AD92BC82DCB007E6FD6 /* ExpandedImageView.swift in Sources */,
 				217A514A2BAED0800052A07E /* RefreshAccessToken.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
@@ -1205,7 +1209,7 @@
 				2177B3392C29BA5600BEB3BE /* StartQuiz.swift in Sources */,
 				2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				2177B33B2C29BA5E00BEB3BE /* CheckCompletedQuiz.swift in Sources */,
-				2173C08C2BA0A56500FDD3D9 /* LectureListViewModel.swift in Sources */,
+				2173C08C2BA0A56500FDD3D9 /* LectureContentListViewModel.swift in Sources */,
 				2177B2C62C1B455000BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */,
 				2173F9592C15F0C200CDF116 /* APIKey.swift in Sources */,
 				2177B33A2C29BA5A00BEB3BE /* SubmitQuiz.swift in Sources */,

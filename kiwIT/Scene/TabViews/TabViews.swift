@@ -33,7 +33,7 @@ struct TabViews: View {
                     Label("홈", systemImage: Setup.ImageStrings.defaultHome)
                 }
                 .tag(TabType.home)
-            LectureCategoryListView(tabViewsVM: tabViewsVM)
+            LectureListView(tabViewsVM: tabViewsVM)
                 .tabItem {
                     Label("학습", systemImage: Setup.ImageStrings.defaultLecture)
                 }

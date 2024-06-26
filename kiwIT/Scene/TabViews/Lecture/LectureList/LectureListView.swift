@@ -1,111 +1,97 @@
 //
-//  LectureView.swift
+//  LectureCategoryListView.swift
 //  kiwIT
 //
-//  Created by Heedon on 3/11/24.
+//  Created by Heedon on 3/19/24.
 //
 
 import SwiftUI
 
-struct TestData2: Identifiable {
-    let id = UUID()
-    let title: String
-    let number: Int
-    let subItems: [SectionData]
+enum LectureListType: String, CaseIterable {
+    case category = "과목"
+    case level = "레벨"
 }
 
-struct SectionData: Identifiable {
-    let id = UUID()
-    let title: String
-    let number: Int
-}
-
+//MARK: - Lecture: 레벨 및 과목 리스트, 내역 조회, 학습 시작, 학습 보관, 결과
 struct LectureListView: View {
-
     
     @StateObject var lectureListVM = LectureListViewModel()
-    
-    //e.g.) 임시 테스트 데이터
-    let items: [TestData2] = [
-        TestData2(title: "모두 컴퓨터에요", number: 0, subItems: [
-            SectionData(title: "왜 배우려고 하나d요요 이건 테스트입니다 하하하하하하하하하하하하하하dfdfdfddfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdfdasdasdfasdfasdfasdfasdfasdfasasdfasdfasdfasdfasdfasdfassdfsdfsdfsdfdfdf", number: 0),
-            SectionData(title: "섹션 테스트입니다. 111", number: 1),
-            SectionData(title: "섹션 테스트입니다. 222", number: 2),
-            SectionData(title: "섹션 테스트입니다. 333", number: 3),
-            SectionData(title: "섹션 테스트입니다. 444", number: 4),
-            SectionData(title: "섹션 테스트입니다. 555", number: 5),
-            SectionData(title: "섹션 테스트입니다. 666", number: 6),
-            SectionData(title: "섹션 테스트입니다. 777", number: 7)
-        ]),
-        TestData2(title: "이건 왜 다르죠", number: 1, subItems: [
-            SectionData(title: "왜 배우려고 하나요", number: 0),
-            SectionData(title: "섹션 테스트입니다. 111", number: 1),
-            SectionData(title: "섹션 테스트입니다. 222", number: 2),
-            SectionData(title: "섹션 테스트입니다. 333", number: 3),
-            SectionData(title: "섹션 테스트입니다. 444", number: 4),
-            SectionData(title: "섹션 테스트입니다. 555", number: 5),
-            SectionData(title: "섹션 테스트입니다. 666", number: 6),
-            SectionData(title: "섹션 테스트입니다. 777", number: 7),
-            SectionData(title: "왜 배우려고 하나요", number: 8),
-            SectionData(title: "섹션 테스트입니다. 999", number: 9),
-            SectionData(title: "섹션 테스트입니다. 101010", number: 10),
-            SectionData(title: "섹션 테스트입니다. 111111", number: 11),
-            SectionData(title: "섹션 테스트입니다. 121212", number: 12),
-            SectionData(title: "섹션 테스트입니다. 131313", number: 13),
-            SectionData(title: "섹션 테스트입니다. 141414", number: 14),
-            SectionData(title: "섹션 테스트입니다. 151515", number: 15)
-        ]),
-        TestData2(title: "테스트 용 챕터입니다.", number: 2, subItems: [
-            SectionData(title: "왜 배우려고 하나요", number: 0),
-            SectionData(title: "섹션 테스트입니다. 111", number: 1),
-            SectionData(title: "섹션 테스트입니다. 222", number: 2),
-            SectionData(title: "섹션 테스트입니다. 333", number: 3),
-            SectionData(title: "섹션 테스트입니다. 444", number: 4),
-            SectionData(title: "섹션 테스트입니다. 555", number: 5)
-        ])
-    ]
+    @ObservedObject var tabViewsVM: TabViewsViewModel
     
     var body: some View {
-        //Chapter에서 Toggle로 Section까지 보여주도록 설정
-            ScrollView {
-                ForEach(items, id: \.id) { item in
-                    ContentExpandableChapterItemView(
-                        itemTitle: "Chapter \(item.number). \(item.title)") {
-                            ScrollView {
-                                ForEach(item.subItems, id: \.id) { section in
+        NavigationStack {
+            VStack {
+                Picker("Pick", selection: $lectureListVM.lectureType) {
+                    ForEach(LectureListType.allCases, id: \.self) {
+                        Text($0.rawValue)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, 8)
+                .onChange(of: lectureListVM.lectureType) { _ in
+                    lectureListVM.updateViewByPickerSelection()
+                }
+                
+                ScrollView {
+                    VStack {
+                        Image(systemName: Setup.ImageStrings.topDirection)
+                            .scaledToFit()
+                        Text("당겨서 새로고침")
+                            .font(.custom(Setup.FontName.lineThin, size: 12))
+                            .foregroundStyle(Color.textColor)
+                    }
+                    if (lectureListVM.showLectureList) {
+                        LazyVStack(spacing: 4) {
+                            switch lectureListVM.lectureType {
+                            case .category:
+                                ForEach(lectureListVM.lectureCategoryListData, id: \.self) { data in
                                     NavigationLink {
-                                       LectureView(lectureListVM: lectureListVM)
+                                        LectureContentListView(lectureListVM: lectureListVM)
+                                            .toolbar(.hidden, for: .tabBar)
                                     } label: {
-                                        VStack {
-                                            ContentSectionItemView {
-                                                Text("Section \(section.number). \(section.title)")
-                                            }
-                                            Divider()
-                                                .frame(minHeight: 1)
-                                                .background(Color.textColor)
-                                        }
-                                        .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
-                                        .padding(.vertical, 3)
+                                        LectureCategoryItemView(title: data.title, ratio: 0.75, imageUrl: data.thumbnailUrl)
                                     }
                                 }
+                                .frame(maxHeight: .infinity)
+                            case .level:
+                                ForEach(lectureListVM.lectureLevelListData, id: \.self) { data in
+                                    NavigationLink {
+                                        LectureContentListView(lectureListVM: lectureListVM)
+                                            .toolbar(.hidden, for: .tabBar)
+                                    } label: {
+                                        LectureCategoryItemView(title: data.title, ratio: 0.75)
+                                    }
+                                }
+                                .frame(maxHeight: .infinity)
                             }
-                            .scrollIndicators(.hidden)
-                            .frame(width: Setup.Frame.contentListItemWidth)
-                            .background(Color.brandTintColor)
-                            .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
-                            .padding(.top, 0)
                         }
+                        .frame(maxWidth: .infinity)
+                        .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
+                    } else {
+                        EmptyView()
+                            .frame(maxWidth: .infinity)
+                            .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
+                    }
+                }
+                .scrollIndicators(.hidden)
+                .navigationTitle("학습 카테고리")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
+                .onChange(of: lectureListVM.isLoginAvailable) { newValue in
+                    if !newValue {
+                        tabViewsVM.isLoginAvailable = false
+                    }
                 }
             }
-            .frame(width: Setup.Frame.devicePortraitWidth)
-            .frame(maxWidth: .infinity)
             .background(Color.backgroundColor)
-            .navigationTitle("IT 교양")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
+        }
+        .refreshable {
+            print("Pull to Refresh Lecture List in \(lectureListVM.lectureType)!!!")
+            lectureListVM.requestLectureList()
+        }
     }
 }
 
 #Preview {
-    LectureListView()
+    LectureListView(tabViewsVM: TabViewsViewModel())
 }

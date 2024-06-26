@@ -15,5 +15,5 @@ struct LectureCategoryContentRequest {
 struct LectureCategoryContentResponse: Decodable {
     var id: Int
     var title: String
-    var contentList: [LectureListPayload]
+    var contentList: [LectureContentListPayload]
 }

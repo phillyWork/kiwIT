@@ -14,11 +14,7 @@ struct LectureLevelContentRequest {
     var limit: Int?
 }
 
-struct LectureLevelContentResponse: Decodable {
-    var list: [LectureListPayload]
-}
-
-struct LectureListPayload: Decodable {
+struct LectureContentListPayload: Decodable {
     var id: Int
     var title: String
     var point: Int
