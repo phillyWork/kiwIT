@@ -12,7 +12,7 @@ struct LectureCategoryContentRequest {
     var access: String
 }
 
-struct LectureCategoryContentResponse: Decodable {
+struct LectureCategoryContentResponse: Decodable, Hashable {
     var id: Int
     var title: String
     var contentList: [LectureContentListPayload]

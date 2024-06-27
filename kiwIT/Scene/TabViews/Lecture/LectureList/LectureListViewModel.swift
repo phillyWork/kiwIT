@@ -54,7 +54,7 @@ final class LectureListViewModel: ObservableObject {
     }
     
     func performRequestLectureList() {
-        guard let tokenData = checkTokenData() else {
+        guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
             isLoginAvailable = false
             return
@@ -65,20 +65,6 @@ final class LectureListViewModel: ObservableObject {
             requestLectureListBasedOnCategory(tokenData.0, userId: tokenData.1)
         case .level:
             requestLectureListBasedOnLevel(tokenData.0, userId: tokenData.1)
-        }
-    }
-    
-    private func checkTokenData() -> (UserTokenValue, String)? {
-        do {
-            let userId = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String
-            guard let tokenData = KeyChainManager.shared.read(userId) else {
-                print("No Saved Token")
-                return nil
-            }
-            return (tokenData, userId)
-        } catch {
-            print("No Id to check token!!!")
-            return nil
         }
     }
     
@@ -139,14 +125,19 @@ final class LectureListViewModel: ObservableObject {
                     if let refreshError = error as? NetworkError {
                         switch refreshError {
                         case .invalidToken(_):
-                            self.handleRefreshTokenExpired(userId: userId)
+                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+                            self.isLoginAvailable = false
                         default:
                             print("Other Network Error for getting refreshed token in lecture categorylistviewmodel: \(refreshError.description)")
-                            self.handleRefreshTokenExpired(userId: userId)
+                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+                            //로그인 화면 이동하기
+                            self.isLoginAvailable = false
                         }
                     } else {
                         print("Other Error for getting refreshed token in lecture categorylistviewmodel: \(error.localizedDescription)")
-                        self.handleRefreshTokenExpired(userId: userId)
+                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+                        //로그인 화면 이동하기
+                        self.isLoginAvailable = false
                     }
                 }
             } receiveValue: { response in
@@ -155,15 +146,4 @@ final class LectureListViewModel: ObservableObject {
             }
             .store(in: &self.cancellables)
     }
-    
-    private func handleRefreshTokenExpired(userId: String) {
-        print("To Remove User Data and Move to SignIn")
-        //저장된 token 삭제,
-        KeyChainManager.shared.delete(userId)
-        //저장된 userdefaults id 삭제
-        UserDefaultsManager.shared.deleteFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString)
-        //로그인 화면 이동하기
-        self.isLoginAvailable = false
-    }
-    
 }

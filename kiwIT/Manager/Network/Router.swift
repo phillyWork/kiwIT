@@ -77,15 +77,15 @@ enum Router: URLRequestConvertible {
         case .lectureLevelListCheck:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureLevel
         case .lectureLevelListContentCheck(let request):
-            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureLevel + "/:\(request.levelId)"
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureLevel + "/\(request.levelId)"
         case .startOfLecture(let request), .completionOfLecture(let request):
-            return Setup.NetworkEndpointStrings.lectureContent + "/:\(request.contentId)"
+            return Setup.NetworkEndpointStrings.lectureContent + "/\(request.contentId)"
         case .exerciseForLecture(let request):
-            return Setup.NetworkEndpointStrings.lectureContent + "/:\(request.contentId)" + Setup.NetworkEndpointStrings.exerciseForLecture
+            return Setup.NetworkEndpointStrings.lectureContent + "/\(request.contentId)" + Setup.NetworkEndpointStrings.exerciseForLecture
         case .lectureCategoryListCheck:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureCategory
         case .lectureCategoryListContentCheck(let request):
-            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureCategory + "/:\(request.categoryId)"
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureCategory + "/\(request.categoryId)"
         case .lectureNextStudyProgress:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureNextStudyProgress
         case .completedLectureListCheck:
@@ -93,13 +93,13 @@ enum Router: URLRequestConvertible {
         case .bookmarkedLectureCheck:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.bookmark
         case .bookmarkLecture(let request):
-            return Setup.NetworkEndpointStrings.lectureContent + "/:\(request.contentId)" + Setup.NetworkEndpointStrings.bookmark
+            return Setup.NetworkEndpointStrings.lectureContent + "/\(request.contentId)" + Setup.NetworkEndpointStrings.bookmark
         case .quizListCheck:
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList
         case .startTakingQuiz(let request):
-            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/:\(request.quizGroupId)"
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/\(request.quizGroupId)"
         case .submitQuizAnswers(let request), .submitQuizAnswersNTimes(let request):
-            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/:\(request.quizGroupId)"
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/\(request.quizGroupId)"
         case .mostRecentlyTakenQuiz:
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + Setup.NetworkEndpointStrings.quizMostRecentTaken
         case .takenQuizListCheck:
@@ -107,7 +107,7 @@ enum Router: URLRequestConvertible {
         case .bookmarkedQuizCheck:
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.bookmark
         case .bookmarkQuiz(let request):
-            return Setup.NetworkEndpointStrings.quiz + "/:\(request.quizId)" + Setup.NetworkEndpointStrings.bookmark
+            return Setup.NetworkEndpointStrings.quiz + "/\(request.quizId)" + Setup.NetworkEndpointStrings.bookmark
         }
     }
         
@@ -167,7 +167,7 @@ enum Router: URLRequestConvertible {
 
     //MARK: - element들 String화하기
     
-    private var body: [String: String]? {
+    private var query: [String: String]? {
         switch self {
         case .signUp(let request):
             return [
@@ -188,7 +188,7 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.lectureExerciseAnswerTitle: "\(request.answer)"]
         case .submitQuizAnswers(let request), .submitQuizAnswersNTimes(let request):
             return [Setup.NetworkStrings.submitQuizAnswerListTitle: "\(request.answerList)"]
-        case .signOut, .withdraw, .profileCheck, .mostRecentAcquiredTrophy, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .lectureNextStudyProgress, .bookmarkLecture, .startTakingQuiz, .mostRecentlyTakenQuiz, .bookmarkedQuizCheck, .bookmarkQuiz:
+        case .signOut, .withdraw, .profileCheck, .mostRecentAcquiredTrophy, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .lectureNextStudyProgress, .bookmarkLecture, .startTakingQuiz, .mostRecentlyTakenQuiz, .bookmarkQuiz:
             return nil
         case .summaryStat:
             return nil
@@ -230,6 +230,12 @@ enum Router: URLRequestConvertible {
                 Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
                 Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)"
             ]
+        case .bookmarkedQuizCheck(let request):
+            guard let next = request.next, let limit = request.limit else { return nil }
+            return [
+                Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
+                Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)"
+            ]
         default:
             return nil
         }
@@ -243,11 +249,11 @@ enum Router: URLRequestConvertible {
                 
         switch self {
         //header에 json 없거나 multipart/data-form과 같은 경우
-        case .acquiredTrophyList, .lectureLevelListCheck, .completionOfLecture, .bookmarkedLectureCheck, .quizListCheck, .takenQuizListCheck:
-            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(body, into: request)
+        case .acquiredTrophyList, .lectureLevelListContentCheck, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .takenQuizListCheck, .bookmarkedQuizCheck:
+            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
         default:
             //json인 경우
-            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
+            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(query, into: request)
         }
         return request
     }

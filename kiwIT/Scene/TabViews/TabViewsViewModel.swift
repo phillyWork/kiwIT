@@ -80,14 +80,20 @@ final class TabViewsViewModel: ObservableObject {
                         switch refreshError {
                         case .invalidToken(_):
                             print("Invalid For Both Access and Refresh. Needs to Sign In Again")
-                            self.handleRefreshTokenExpired(userId: userId)
+                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+                            //로그인 화면 이동하기
+                            self.isLoginAvailable = false
                         default:
                             print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
-                            self.handleRefreshTokenExpired(userId: userId)
+                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+                            //로그인 화면 이동하기
+                            self.isLoginAvailable = false
                         }
                     } else {
                         print("Refresh Token Error for other eason: \(error.localizedDescription) -- Needs to Sign In Again")
-                        self.handleRefreshTokenExpired(userId: userId)
+                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+                        //로그인 화면 이동하기
+                        self.isLoginAvailable = false
                     }
                 }
             } receiveValue: { response in
@@ -95,16 +101,6 @@ final class TabViewsViewModel: ObservableObject {
                 self.updateToken(response, userId: userId)
             }
             .store(in: &self.cancellables)
-    }
-    
-    private func handleRefreshTokenExpired(userId: String) {
-        print("To Remove User Data and Move to SignIn")
-        //저장된 token 삭제,
-        KeyChainManager.shared.delete(userId)
-        //저장된 userdefaults id 삭제
-        UserDefaultsManager.shared.deleteFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString)
-        //로그인 화면 이동하기
-        self.isLoginAvailable = false
     }
     
     private func updateToken(_ token: RefreshAccessTokenResponse, userId: String) {

@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-enum LectureListType: String, CaseIterable {
-    case category = "과목"
-    case level = "레벨"
-}
-
 //MARK: - Lecture: 레벨 및 과목 리스트, 내역 조회, 학습 시작, 학습 보관, 결과
 struct LectureListView: View {
     
@@ -46,7 +41,7 @@ struct LectureListView: View {
                             case .category:
                                 ForEach(lectureListVM.lectureCategoryListData, id: \.self) { data in
                                     NavigationLink {
-                                        LectureContentListView(lectureListVM: lectureListVM)
+                                        LectureContentListView(lectureListVM: lectureListVM, typeId: data.id, navTitle: data.title)
                                             .toolbar(.hidden, for: .tabBar)
                                     } label: {
                                         LectureCategoryItemView(title: data.title, ratio: 0.75, imageUrl: data.thumbnailUrl)
@@ -56,7 +51,7 @@ struct LectureListView: View {
                             case .level:
                                 ForEach(lectureListVM.lectureLevelListData, id: \.self) { data in
                                     NavigationLink {
-                                        LectureContentListView(lectureListVM: lectureListVM)
+                                        LectureContentListView(lectureListVM: lectureListVM, typeId: data.num, navTitle: data.title)
                                             .toolbar(.hidden, for: .tabBar)
                                     } label: {
                                         LectureCategoryItemView(title: data.title, ratio: 0.75)

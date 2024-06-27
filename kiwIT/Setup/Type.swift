@@ -43,8 +43,15 @@ enum UserStatus: String, Codable {
 //    case imageFile = "image"
 //}
 
+enum LectureListType: String, CaseIterable {
+    case category = "과목"
+    case level = "레벨"
+}
+
 enum QuizType: String, Codable {
     case multipleChoice = "multiple"
     case trueOrFalse = "tf"
     case shortAnswer = "short"
 }
+
+

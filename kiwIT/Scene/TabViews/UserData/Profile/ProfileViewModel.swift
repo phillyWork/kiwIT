@@ -107,16 +107,16 @@ final class ProfileViewModel: ObservableObject {
                         switch refreshError {
                         case .invalidToken(_):
                             print("Invalid For Both Access and Refresh. Needs to Sign In Again")
-                            self.removeSensitiveUserData(userId: userId)
+                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
                         default:
                             print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
-                            self.removeSensitiveUserData(userId: userId)
+                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
                         }
                         //로그인 화면 이동하기
                         self.showSessionExpiredAlert = true
                     } else {
                         print("Refresh Token Error for other eason: \(error.localizedDescription) -- Needs to Sign In Again")
-                        self.removeSensitiveUserData(userId: userId)
+                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
                         //로그인 화면 이동하기
                         self.showSessionExpiredAlert = true
                     }
@@ -129,14 +129,6 @@ final class ProfileViewModel: ObservableObject {
                 self.requestProfileEdit(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), nickname: nickname, userId: userId)
             }
             .store(in: &self.cancellables)
-    }
-    
-    private func removeSensitiveUserData(userId: String) {
-        print("To Remove User Data and Move to SignIn")
-        //저장된 token 삭제
-        KeyChainManager.shared.delete(userId)
-        //저장된 userdefaults id 삭제
-        UserDefaultsManager.shared.deleteFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString)
     }
     
     func signOut(resultCompletion: @escaping (Bool) -> Void) {
@@ -172,7 +164,8 @@ final class ProfileViewModel: ObservableObject {
     
     private func handleSignOutSucceed() {
         if let userId = try? UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String {
-            self.removeSensitiveUserData(userId: userId)
+            //재로그인 및 다른 계정 로그인: 네트워크 콜 횟수 줄이기 목적
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
         }
     }
     

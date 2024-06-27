@@ -10,7 +10,7 @@ import SwiftUI
 struct LectureView: View {
     
     @StateObject var lectureVM = LectureViewModel()
-    @ObservedObject var lectureListVM: LectureListViewModel
+    @ObservedObject var lectureContentListVM: LectureContentListViewModel
     
     @Environment(\.dismiss) private var dismiss
     

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentCategoryItemView: View {
+struct ContentNotExpandableChapterItemView: View {
 
     var itemTitle: String
     
@@ -22,11 +22,6 @@ struct ContentCategoryItemView: View {
                 .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListCategoryItemHeight)
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
             HStack {
-                //해당 Category 어울리는 이미지 파일 필요
-                Image(systemName: Setup.ImageStrings.defaultLecture2)
-                    .tint(Color.textColor)
-//                    .frame(width: Setup.Frame.contentListCategoryImageWidth, height: Setup.Frame.contentListCategoryImageHeight)
-                    .border(Color.textColor)
                 Text(itemTitle)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                     .foregroundStyle(Color.textColor)
@@ -41,5 +36,5 @@ struct ContentCategoryItemView: View {
 }
 
 #Preview {
-    ContentCategoryItemView(title: "확인")
+    ContentNotExpandableChapterItemView(title: "확인")
 }
