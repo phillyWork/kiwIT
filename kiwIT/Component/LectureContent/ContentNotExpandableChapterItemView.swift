@@ -19,18 +19,18 @@ struct ContentNotExpandableChapterItemView: View {
         ZStack(alignment: .center) {
             Rectangle()
                 .fill(Color.shadowColor)
-                .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListCategoryItemHeight)
+                .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListNotExpandableHeight)
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
             HStack {
                 Text(itemTitle)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                     .foregroundStyle(Color.textColor)
             }
-            .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListCategoryItemHeight)
+            .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListNotExpandableHeight)
             .background(Color.surfaceColor)
             .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
         }
-        .padding(.vertical, 20)
+        .padding(.vertical, 10)
         .padding(.horizontal, 10)
     }
 }

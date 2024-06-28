@@ -26,7 +26,17 @@ struct LectureView: View {
     
     var body: some View {
         VStack {
-            WebViewSetup(urlString: lectureVM.url)
+            ZStack {
+                WebViewSetup(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: lectureVM.url)
+                    .opacity(lectureVM.showProgressViewForLoadingWeb ? 0 : 1)
+                if lectureVM.showProgressViewForLoadingWeb {
+                    ProgressView {
+                        Text("컨텐츠 가져오는 중")
+                    }
+                    .scaleEffect(1.5, anchor: .center)
+                }
+            }
+            .animation(.easeInOut, value: lectureVM.showProgressViewForLoadingWeb)
         }
         .background(Color.backgroundColor)
         .navigationBarBackButtonHidden()

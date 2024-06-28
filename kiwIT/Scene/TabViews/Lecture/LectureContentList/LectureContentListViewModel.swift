@@ -16,7 +16,9 @@ final class LectureContentListViewModel: ObservableObject {
     @Published var lectureContentListCategoryType: [LectureCategoryContentResponse] = []
     
     @Published var isLoginAvailable = false
-    @Published var cameBackFromLectureView = false
+    
+    //MARK: - 에러 처리 위한 방안? 빈 화면?
+    @Published var showEmptyView = false
     
     private let dataCountPerRequestForLevelContentRequest = 4
     private var currentDataForLevelContentRequest = 0
@@ -44,12 +46,10 @@ final class LectureContentListViewModel: ObservableObject {
         requestContentLayer(tokenData.0, userId: tokenData.1, type: type, typeId: typeId)
     }
     
-    //MARK: - 페이지네이션 오류 처리 필요
-    
     func loadMoreContentListLevelType() {
         guard canLoadMoreData else { return }
         print("About to Load More Level Content!!!")
-        currentDataForLevelContentRequest += dataCountPerRequestForLevelContentRequest
+        currentDataForLevelContentRequest += 1
         requestContentData(.level, typeId: typeId)
     }
     
@@ -121,6 +121,9 @@ final class LectureContentListViewModel: ObservableObject {
             }
             .store(in: &self.cancellables)
     }
+    
+    //MARK: - Refresh Token 어디서나 동일 작업 But 후속 조치가 viewmodel마다 달라짐...
+    //MARK: - 공통 함수로 처리, 결과물 publish 하도록 처리?
     
     private func requestRefreshToken(_ token: UserTokenValue, userId: String, type: LectureListType, typeId: Int) {
         NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)

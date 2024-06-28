@@ -11,7 +11,7 @@ import Combine
 
 final class LectureViewModel: ObservableObject {
     
-    @Published var dismissLectureView = false
+    @Published var showProgressViewForLoadingWeb = true
     
     @Published var showLectureExampleAlert = false
     @Published var showExampleAnswerAlert = false
