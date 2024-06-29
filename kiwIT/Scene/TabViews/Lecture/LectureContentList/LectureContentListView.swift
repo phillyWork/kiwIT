@@ -7,27 +7,17 @@
 
 import SwiftUI
 
-//struct TestData2: Identifiable {
-//    let id = UUID()
-//    let title: String
-//    let number: Int
-//    let subItems: [SectionData]
-//}
-//
-//struct SectionData: Identifiable {
-//    let id = UUID()
-//    let title: String
-//    let number: Int
-//}
-
 struct LectureContentListView: View {
     
     @StateObject var lectureContentListVM: LectureContentListViewModel
     @ObservedObject var lectureListVM: LectureListViewModel
     
-    init(lectureListVM: LectureListViewModel, typeId: Int, navTitle: String) {
+    @Binding var isLoginAvailable: Bool
+    
+    init(lectureListVM: LectureListViewModel, typeId: Int, navTitle: String, isLoginAvailable: Binding<Bool>) {
         self.lectureListVM = lectureListVM
         _lectureContentListVM = StateObject(wrappedValue: LectureContentListViewModel(typeId: typeId, navTitle: navTitle, lectureType: lectureListVM.lectureType))
+        self._isLoginAvailable = isLoginAvailable
     }
     
     var body: some View {
@@ -41,7 +31,7 @@ struct LectureContentListView: View {
                                 LazyVStack(spacing: 5) {
                                     ForEach(item.contentList, id: \.self) { data in
                                         NavigationLink {
-                                            LectureView(lectureContentListVM: lectureContentListVM)
+                                            LectureView(lectureContentListVM: lectureContentListVM, contentId: data.id, isLoginAvailable: $isLoginAvailable)
                                         } label: {
                                             VStack {
                                                 ContentSectionItemView {
@@ -67,7 +57,7 @@ struct LectureContentListView: View {
                 case .level:
                     ForEach(lectureContentListVM.lectureContentListLevelType, id: \.self) { item in
                         NavigationLink {
-                            LectureView(lectureContentListVM: lectureContentListVM)
+                            LectureView(lectureContentListVM: lectureContentListVM, contentId: item.id, isLoginAvailable: $isLoginAvailable)
                         } label: {
                             ContentNotExpandableChapterItemView(title: item.title)
                         }
@@ -88,9 +78,11 @@ struct LectureContentListView: View {
         .navigationTitle("\(lectureContentListVM.navTitle)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-        .onChange(of: lectureContentListVM.isLoginAvailable) { newValue in
-            if !newValue {
-                lectureListVM.isLoginAvailable = false
+        .onChange(of: lectureContentListVM.shouldLoginAgain) { newValue in
+            if newValue {
+                print("Should Login Due to session expired in LectureContentListView")
+//                lectureListVM.isLoginAvailable = false
+                isLoginAvailable = false
             }
         }
         //to disable pull to refresh
@@ -98,6 +90,6 @@ struct LectureContentListView: View {
     }
 }
 
-#Preview {
-    LectureContentListView(lectureListVM: LectureListViewModel(), typeId: 1, navTitle: "연습")
-}
+//#Preview {
+//    LectureContentListView(lectureListVM: LectureListViewModel(), typeId: 1, navTitle: "연습"), isLoginAvailable: <#Binding<Bool>#>
+//}

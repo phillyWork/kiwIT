@@ -15,7 +15,7 @@ final class LectureContentListViewModel: ObservableObject {
     @Published var lectureContentListLevelType: [LectureContentListPayload] = []
     @Published var lectureContentListCategoryType: [LectureCategoryContentResponse] = []
     
-    @Published var isLoginAvailable = false
+    @Published var shouldLoginAgain = false
     
     //MARK: - 에러 처리 위한 방안? 빈 화면?
     @Published var showEmptyView = false
@@ -40,7 +40,7 @@ final class LectureContentListViewModel: ObservableObject {
         print("Check Token Data in LectureContentListViewModel")
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
-            isLoginAvailable = false
+            shouldLoginAgain = true
             return
         }
         requestContentLayer(tokenData.0, userId: tokenData.1, type: type, typeId: typeId)
@@ -133,16 +133,16 @@ final class LectureContentListViewModel: ObservableObject {
                         switch refreshError {
                         case .invalidToken(_):
                             AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.isLoginAvailable = false
-                        default: 
+                            self.shouldLoginAgain = true
+                        default:
                             print("Refresh Token Error for network reason: \(refreshError.description)")
                             AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.isLoginAvailable = false
+                            self.shouldLoginAgain = true
                         }
                     } else {
                         print("Category Content Error for other reason: \(error.localizedDescription)")
                         AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        self.isLoginAvailable = false
+                        self.shouldLoginAgain = true
                     }
                 }
             } receiveValue: { response in

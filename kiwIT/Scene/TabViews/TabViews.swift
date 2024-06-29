@@ -59,7 +59,7 @@ struct TabViews: View {
             tabViewsVM.checkProfile(with: mainTabBarVM.userProfileData)
         }
         .onReceive(tabViewsVM.$isLoginAvailable) { isAvailable in
-            print("is available? -- \(isAvailable)")
+            print("is login available? -- \(isAvailable) in TabViews")
             mainTabBarVM.isUserLoggedIn = isAvailable
         }
     }

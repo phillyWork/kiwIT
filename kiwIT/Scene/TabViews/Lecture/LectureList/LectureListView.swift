@@ -41,8 +41,7 @@ struct LectureListView: View {
                             case .category:
                                 ForEach(lectureListVM.lectureCategoryListData, id: \.self) { data in
                                     NavigationLink {
-                                        LectureContentListView(lectureListVM: lectureListVM, typeId: data.id, navTitle: data.title)
-                                            .toolbar(.hidden, for: .tabBar)
+                                        LectureContentListView(lectureListVM: lectureListVM, typeId: data.id, navTitle: data.title, isLoginAvailable: $tabViewsVM.isLoginAvailable)
                                     } label: {
                                         LectureCategoryItemView(title: data.title, ratio: 0.75, imageUrl: data.thumbnailUrl)
                                     }
@@ -51,8 +50,7 @@ struct LectureListView: View {
                             case .level:
                                 ForEach(lectureListVM.lectureLevelListData, id: \.self) { data in
                                     NavigationLink {
-                                        LectureContentListView(lectureListVM: lectureListVM, typeId: data.num, navTitle: data.title)
-                                            .toolbar(.hidden, for: .tabBar)
+                                        LectureContentListView(lectureListVM: lectureListVM, typeId: data.num, navTitle: data.title, isLoginAvailable: $tabViewsVM.isLoginAvailable)
                                     } label: {
                                         LectureCategoryItemView(title: data.title, ratio: 0.75)
                                     }
@@ -72,8 +70,8 @@ struct LectureListView: View {
                 .navigationTitle("학습 카테고리")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-                .onChange(of: lectureListVM.isLoginAvailable) { newValue in
-                    if !newValue {
+                .onChange(of: lectureListVM.shouldLoginAgain) { newValue in
+                    if newValue {
                         tabViewsVM.isLoginAvailable = false
                     }
                 }

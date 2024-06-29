@@ -11,7 +11,7 @@ import Combine
 
 final class LectureListViewModel: ObservableObject {
     
-    @Published var isLoginAvailable = true
+    @Published var shouldLoginAgain = false
     @Published var showLectureList = false
 
     @Published var lectureType = LectureListType.category
@@ -56,7 +56,7 @@ final class LectureListViewModel: ObservableObject {
     func performRequestLectureList() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
-            isLoginAvailable = false
+            shouldLoginAgain = true
             return
         }
         
@@ -126,18 +126,18 @@ final class LectureListViewModel: ObservableObject {
                         switch refreshError {
                         case .invalidToken(_):
                             AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.isLoginAvailable = false
+                            self.shouldLoginAgain = true
                         default:
                             print("Other Network Error for getting refreshed token in lecture categorylistviewmodel: \(refreshError.description)")
                             AuthManager.shared.handleRefreshTokenExpired(userId: userId)
                             //로그인 화면 이동하기
-                            self.isLoginAvailable = false
+                            self.shouldLoginAgain = true
                         }
                     } else {
                         print("Other Error for getting refreshed token in lecture categorylistviewmodel: \(error.localizedDescription)")
                         AuthManager.shared.handleRefreshTokenExpired(userId: userId)
                         //로그인 화면 이동하기
-                        self.isLoginAvailable = false
+                        self.shouldLoginAgain = true
                     }
                 }
             } receiveValue: { response in

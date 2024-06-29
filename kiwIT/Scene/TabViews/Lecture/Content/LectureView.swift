@@ -9,8 +9,10 @@ import SwiftUI
 
 struct LectureView: View {
     
-    @StateObject var lectureVM = LectureViewModel()
+    @StateObject var lectureVM: LectureViewModel
     @ObservedObject var lectureContentListVM: LectureContentListViewModel
+    
+    @Binding var isLoginAvailable: Bool
     
     @Environment(\.dismiss) private var dismiss
     
@@ -18,22 +20,24 @@ struct LectureView: View {
     //MARK: - 완료 버튼: Alert로 Example 문제와 O, X 버튼 --> 정답 여부 alert --> 확인 시 학습 완료 및 webview 닫기
     //MARK: - 보관함 버튼: 해당 학습 컨텐츠 보관하기 처리
     
-    //userDefaults에 저장한 font size 설정 가져오기
-    //없다면 default로 14 설정
-    @State private var fontSize: CGFloat = 14
-    
-    @State private var isPopOverPresented = false
+    init(lectureContentListVM: LectureContentListViewModel, contentId: Int, isLoginAvailable: Binding<Bool>) {
+        self.lectureContentListVM = lectureContentListVM
+        _lectureVM = StateObject(wrappedValue: LectureViewModel(contentId: contentId))
+        self._isLoginAvailable = isLoginAvailable
+    }
     
     var body: some View {
         VStack {
             ZStack {
-                WebViewSetup(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: lectureVM.url)
-                    .opacity(lectureVM.showProgressViewForLoadingWeb ? 0 : 1)
-                if lectureVM.showProgressViewForLoadingWeb {
-                    ProgressView {
-                        Text("컨텐츠 가져오는 중")
+                if let url = lectureVM.lectureContent?.payloadUrl {
+                    WebViewSetup(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: url)
+                        .opacity(lectureVM.showProgressViewForLoadingWeb ? 0 : 1)
+                    if lectureVM.showProgressViewForLoadingWeb {
+                        ProgressView {
+                            Text("컨텐츠 가져오는 중")
+                        }
+                        .scaleEffect(1.5, anchor: .center)
                     }
-                    .scaleEffect(1.5, anchor: .center)
                 }
             }
             .animation(.easeInOut, value: lectureVM.showProgressViewForLoadingWeb)
@@ -49,7 +53,6 @@ struct LectureView: View {
                 })
                 .tint(Color.textColor)
             }
-            
             ToolbarItemGroup(placement: .primaryAction) {
                 Button(action: {
                     lectureVM.showLectureExampleAlert = true
@@ -68,17 +71,18 @@ struct LectureView: View {
                         Text("X")
                     }
                 } message: {
-                    Text("학습 예시 문제입니다 (예시 답안은 X).")
+                        Text(lectureVM.lectureContent?.exercise ?? "예시 문제입니다")
                 }
                 .alert(lectureVM.checkExampleAnswer() ? "정답입니다!" : "오답입니다!", isPresented: $lectureVM.showExampleAnswerAlert){
                     Button(role: .cancel) {
-                        dismiss()
+                        lectureVM.requestSubmitExerciseAnswer()
                     } label: {
                         Text("확인")
                     }
                 } message: {
-                    Text("정답이면 간단 해설, 오답이면 정답 설명하기")
+                    Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent?.answer)입니다.")
                 }
+                
                 Button(action: {
                     print("bookmark this lecture!!!")
                     lectureVM.isThisLectureBookmarked.toggle()
@@ -89,36 +93,51 @@ struct LectureView: View {
                     Image(systemName: lectureVM.isThisLectureBookmarked ? Setup.ImageStrings.bookmarked : Setup.ImageStrings.bookmarkNotYet)
                 })
             }
-            
-            //MARK: - 텍스트 크기 설정: Notion에 어떻게 전달할지 찾아보기
-            //MARK: - 찾은 바로는 전달하기 어려워 보임 (노션에서 설정 다르게 하지 않는 이상?)
-            
-//            ToolbarItem(placement: .topBarTrailing) {
-//                Button(action: {
-//                    self.isPopOverPresented = true
-//                }) {
-//                    Image(systemName: Setup.ImageStrings.textSize)
-//                        .tint(Color.textColor)
-//                }
-//                .popover(isPresented: $isPopOverPresented,
-//                         attachmentAnchor: .point(.bottom),
-//                         arrowEdge: .bottom,
-//                         content: {
-//
-//                    //따로 다른 view로 분리?
-//                    VStack {
-//                        Text("폰트 크기 설정: \(Int(fontSize))")
-//                            .font(.custom(Setup.FontName.notoSansThin, size: 16))
-//                            .foregroundStyle(Color.textColor)
-//                        Slider(value: $fontSize, in: 5...100, step: 1)
-//                            .tint(Color.brandColor)
-//                    }
-//                    .padding()
-//                    .presentationCompactAdaptation(.popover)
-//
-//                })
-//            }
-            
+        }
+        .alert("학습 시작 오류!!!", isPresented: $lectureVM.showStartLectureErrorAlertToDismiss, actions: {
+            Button(action: {
+                dismiss()
+            }, label: {
+                Text("확인")
+                    .foregroundStyle(Color.errorHighlightColor)
+            })
+        }, message: {
+            Text("컨텐츠를 불러오는 데 오류가 발생했습니다. 다시 시도해주세요.")
+        })
+        .alert("학습 완료 오류!!!", isPresented: $lectureVM.showCompleteLectureErrorAlertToRetry, actions: {
+            Button(action: {
+//                lectureVM.showCompleteLectureErrorAlertToRetry = false
+            }, label: {
+                Text("확인")
+                    .foregroundStyle(Color.errorHighlightColor)
+            })
+        }, message: {
+            Text("학습 완료 처리에 실패했습니다. 다시 시도해주세요.")
+        })
+        .alert("예제 제출 오류!!!", isPresented: $lectureVM.showSubmitExerciseErrorAlertToRetry, actions: {
+            Button(action: {
+                self.lectureVM.showExampleAnswerAlert = true
+            }, label: {
+                Text("확인")
+                    .foregroundStyle(Color.errorHighlightColor)
+            })
+        }, message: {
+            Text("예제 풀이 등록에 실패했습니다. 다시 시도해주세요.")
+        })
+        .alert("로그인 오류!", isPresented: $lectureVM.shouldLoginAgain, actions: {
+            Button(action: {
+                isLoginAvailable = false
+            }, label: {
+                Text("확인")
+                    .foregroundStyle(Color.errorHighlightColor)
+            })
+        }, message: {
+            Text("세션이 만료되어 다시 로그인해주세요!")
+        })
+        .onChange(of: lectureVM.lectureStudyAllDone) { newValue in
+            if newValue {
+                dismiss()
+            }
         }
     }
 }
