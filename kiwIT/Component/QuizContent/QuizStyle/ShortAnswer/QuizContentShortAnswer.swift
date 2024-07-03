@@ -9,13 +9,9 @@ import SwiftUI
 
 struct QuizContentShortAnswer: View {
     
-    //var quizPayload: QuizPayload
-    
-    //이전 답변 보여주기: viewModel에서 답변도 보유, 해당 답변 참조해서 이전 문항의 답변 통해 색칠하기?
-    
-    @Binding var content: String
+    var quizPayload: QuizPayload
         
-    @State var textFieldInput = ""
+    @State var textFieldInput: String = ""
     
     @FocusState private var isTextFieldFocused: Bool
     
@@ -23,9 +19,10 @@ struct QuizContentShortAnswer: View {
     var quizCount: Int
     
     var completion: (Result<String, QuizError>) -> Void
-    
+        
     var body: some View {
         VStack {
+            
             ZStack(alignment: .center) {
                 Rectangle()
                     .fill(Color.shadowColor)
@@ -35,7 +32,7 @@ struct QuizContentShortAnswer: View {
                 VStack {
                     Spacer()
                     
-                    Text(content)
+                    Text(quizPayload.question)
                         .multilineTextAlignment(.leading)
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .foregroundStyle(Color.textColor)
@@ -72,22 +69,22 @@ struct QuizContentShortAnswer: View {
             HStack {
                 if (quizIndex != 0) {
                     Spacer()
-                    Button(action: {
+                    Button {
                         print("Tap this button to go back to previous question")
                         self.completion(.failure(.backToPreviousQuestion))
                         textFieldInput = ""
-                    }, label: {
+                    } label: {
                         Text("이전으로")
-                    })
+                    }
                 }
                 Spacer()
-                Button(action: {
+                Button {
                     print("Tap this button to move to next question")
                     self.completion(.success(textFieldInput))
                     textFieldInput = ""
-                }, label: {
+                } label: {
                     Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
-                })
+                }
                 Spacer()
             }
             

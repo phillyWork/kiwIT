@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QuizMultipleChoiceButtonLabel: View {
     
-    @Binding var choiceLabel: String
+    var choiceLabel: String
     
     var body: some View {
         Text(choiceLabel)

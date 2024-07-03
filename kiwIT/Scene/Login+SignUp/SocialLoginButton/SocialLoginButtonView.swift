@@ -56,12 +56,11 @@ struct SocialLoginButtonView: View {
             Button {
                 socialLoginButtonVM.requestKakaoUserLogin()
             } label: {
-                //Kakao Login Button Image
+                //MARK: - 카카오 로그인 버튼 이미지 필요
                 Text("Kakao Login Button")
             }
         }
     }
-    
 }
 
 #Preview {

@@ -23,6 +23,6 @@ final class HomeViewModel: ObservableObject {
     }
     
     func requestProfile() {
-        
+        //MARK: - 결과물 tabViewsViewModel에도 업데이트 필요
     }
 }

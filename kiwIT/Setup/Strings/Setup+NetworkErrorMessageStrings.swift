@@ -106,26 +106,15 @@ enum Setup {
         
         //내부적 처리?
         static let quizListCheckError401 = "퀴즈 리스트 요청 권한이 없습니다. (토큰 리프레시 필요)"
-        static let startTakingQuizError401 = "퀴즈 풀이 권한이 없습니다. (토큰 리프레시 필요)"
         
-        static let startTakingQuizError410 = "해당 퀴즈는 조회할 수 업습니다."
+        static let startTakingQuizError400 = "해당 퀴즈는 조회할 수 업습니다."
+        static let startTakingQuizError401 = "퀴즈 풀이 권한이 없습니다. (토큰 리프레시 필요)"
         
         static let submitQuizAnswersError400 = "모든 문제의 답안을 작성해야 제출할 수 있습니다."
         
         //내부적 처리?
         static let submitQuizAnswersError401 = "문제 답안 제출 권한이 없습니다. (토큰 리프레시 필요)"
-    
-        static let submitQuizAnswersError410 = "해당 퀴즈는 문제 풀이가 불가능합니다."
         
-
-        static let submitQuizAnswersNTimesError400 = "모든 문제의 답안을 작성해야 제출할 수 있습니다."
-        
-        //내부적 처리?
-        static let submitQuizAnswersNTimesError401 = "문제 답안 제출 권한이 없습니다. (토큰 리프레시 필요)"
-        
-        static let submitQuizAnswersNTimesError410 = "해당 퀴즈는 문제 풀이가 불가능합니다."
-        
-     
         static let mostRecentTakenQuizError204 = "최근 답안을 제출한 퀴즈가 존재하지 않습니다."
         
         //내부적 처리?

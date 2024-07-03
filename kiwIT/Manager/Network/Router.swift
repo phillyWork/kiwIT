@@ -42,7 +42,6 @@ enum Router: URLRequestConvertible {
     case quizListCheck(request: QuizGroupListRequest)
     case startTakingQuiz(request: StartQuizRequest)
     case submitQuizAnswers(request: SubmitQuizRequest)
-    case submitQuizAnswersNTimes(request: SubmitQuizRequest)
     case mostRecentlyTakenQuiz(request: AuthorizationRequest)
     case takenQuizListCheck(request: CheckCompletedOrBookmarkedQuizRequest)
     case bookmarkedQuizCheck(request: CheckCompletedOrBookmarkedQuizRequest)
@@ -98,7 +97,7 @@ enum Router: URLRequestConvertible {
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList
         case .startTakingQuiz(let request):
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/\(request.quizGroupId)"
-        case .submitQuizAnswers(let request), .submitQuizAnswersNTimes(let request):
+        case .submitQuizAnswers(let request):
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/\(request.quizGroupId)"
         case .mostRecentlyTakenQuiz:
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + Setup.NetworkEndpointStrings.quizMostRecentTaken
@@ -139,7 +138,7 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .startTakingQuiz(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
-        case .submitQuizAnswers(let request), .submitQuizAnswersNTimes(let request):
+        case .submitQuizAnswers(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .takenQuizListCheck(let request), .bookmarkedQuizCheck(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
@@ -152,9 +151,9 @@ enum Router: URLRequestConvertible {
     
     private var method: HTTPMethod {
         switch self {
-        case .signUp, .signIn, .completionOfLecture, .submitQuizAnswers:
+        case .signUp, .signIn, .completionOfLecture, .submitQuizAnswers, .bookmarkQuiz:
             return .post
-        case .signOut, .refreshToken, .profileEdit, .exerciseForLecture, .bookmarkLecture, .submitQuizAnswersNTimes, .bookmarkQuiz:
+        case .signOut, .refreshToken, .profileEdit, .exerciseForLecture, .bookmarkLecture:
             return .patch
         case .withdraw:
             return .delete
@@ -186,7 +185,7 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.nicknameTitle: request.nickname]
         case .exerciseForLecture(let request):
             return [Setup.NetworkStrings.lectureExerciseAnswerTitle: "\(request.answer)"]
-        case .submitQuizAnswers(let request), .submitQuizAnswersNTimes(let request):
+        case .submitQuizAnswers(let request):
             return [Setup.NetworkStrings.submitQuizAnswerListTitle: "\(request.answerList)"]
         case .signOut, .withdraw, .profileCheck, .mostRecentAcquiredTrophy, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .lectureNextStudyProgress, .bookmarkLecture, .startTakingQuiz, .mostRecentlyTakenQuiz, .bookmarkQuiz:
             return nil

@@ -36,5 +36,5 @@ struct ContentNotExpandableChapterItemView: View {
 }
 
 #Preview {
-    ContentNotExpandableChapterItemView(title: "확인")
+    ContentNotExpandableChapterItemView(title: Setup.ContentStrings.confirm)
 }

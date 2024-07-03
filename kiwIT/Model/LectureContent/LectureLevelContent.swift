@@ -22,4 +22,5 @@ struct LectureContentListPayload: Decodable, Hashable {
     var answer: Bool
     var levelNum: Int
     var categoryChapterId: Int
+    var payloadUrl: String
 }

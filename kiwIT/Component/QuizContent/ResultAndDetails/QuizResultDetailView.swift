@@ -30,11 +30,11 @@ struct QuizResultDetailView: View {
 //                        .background(Color.backgroundColor)
             }
             
-            Button(action: {
+            Button {
                 dismiss()
-            }, label: {
+            } label: {
                 Image(systemName: Setup.ImageStrings.defaultXMark2)
-            })
+            }
             .tint(Color.textColor)
             .padding()
 

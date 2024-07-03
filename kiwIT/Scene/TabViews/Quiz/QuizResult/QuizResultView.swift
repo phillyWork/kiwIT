@@ -9,21 +9,21 @@ import SwiftUI
 
 struct QuizResultView: View {
     
-//    @Binding var path: [String]
+    @StateObject var quizResultVM: QuizResultViewModel
+    @ObservedObject var quizVM: QuizViewModel
+    
     @Binding var path: NavigationPath
-    
-    //방안 1. ViewModel 공유, QuizView user answer 공유 및 활용해서 결과 보여주기
-    
-    //방안 2. ViewModel 분리, 답변 전달받아 결과 보여주기
-    //다시 테스트 버튼 누를 시, 새롭게 QuizView와 QuizViewModel 설정하도록 데이터 전달하기
-    
-    
+    @Binding var isLoginAvailable: Bool
+        
     //OX 문제 예시...
     var testDataForQuestion: [String]
     var userOXAnswer: [Bool]
     var answers: [Bool]
     
     var body: some View {
+        
+        //MARK: - 계산 중 화면 (빈 화면이라도) 보여주고, 그 동안 서버 업데이트 처리, 실제 결과 나타내기
+        
             LazyVStack {
                 
                 let _ = print("In QuizResultView, path is :\(path)")
@@ -57,6 +57,14 @@ struct QuizResultView: View {
             .frame(maxHeight: .infinity)
             .background(Color.backgroundColor)
             .navigationBarBackButtonHidden()
+            .alert("로그인 오류!", isPresented: $quizResultVM.shouldLoginAgain) {
+                ErrorAlertConfirmButton {
+                    isLoginAvailable = false
+                }
+            } message: {
+                Text("세션 만료입니다. 다시 로그인해주세요!")
+            }
+
     }
 }
 

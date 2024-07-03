@@ -36,7 +36,6 @@ enum NetworkErrorCase {
     case quizListCheck
     case startTakingQuiz
     case submitQuizAnswers
-    case submitQuizAnswersNTimes
     case mostRecentTakenQuiz
     case takenQuizListCheck
     case bookmarkedQuizCheck
@@ -74,10 +73,10 @@ struct NetworkErrorMessage {
                 return Setup.NetworkErrorMessage.bookmarkLectureError400
             case .quizListCheck:
                 return Setup.NetworkErrorMessage.quizListCheckError400
+            case .startTakingQuiz:
+                return Setup.NetworkErrorMessage.startTakingQuizError400
             case .submitQuizAnswers:
                 return Setup.NetworkErrorMessage.submitQuizAnswersError400
-            case .submitQuizAnswersNTimes:
-                return Setup.NetworkErrorMessage.submitQuizAnswersNTimesError400
             case .bookmarkQuiz:
                 return Setup.NetworkErrorMessage.bookmarkQuizError
             default:
@@ -86,29 +85,6 @@ struct NetworkErrorMessage {
         case 401:
             //case별로 다른 메시지가 필요할 지, 혹은 내부적으로 어차피 access token refresh이므로 그냥 넘어가도 될 지 고민
             return Setup.NetworkErrorMessage.invalidAccessToken
-        case 410:
-            switch errorCase {
-            case .lectureLevelListContentCheck:
-                return Setup.NetworkErrorMessage.lectureLevelListContentCheckError410
-            case .startOfLecture:
-                return Setup.NetworkErrorMessage.startOfLectureError410
-            case .completionOfLecture:
-                return Setup.NetworkErrorMessage.completionOfLectureError410
-            case .exerciseForLecture:
-                return Setup.NetworkErrorMessage.exerciseForLectureError410
-            case .lectureCategoryListContentCheck:
-                return Setup.NetworkErrorMessage.lectureCategoryListContentCheckError410
-            case .bookmarkLecture:
-                return Setup.NetworkErrorMessage.bookmarkLectureError410
-            case .startTakingQuiz:
-                return Setup.NetworkErrorMessage.startTakingQuizError410
-            case .submitQuizAnswers:
-                return Setup.NetworkErrorMessage.submitQuizAnswersError410
-            case .submitQuizAnswersNTimes:
-                return Setup.NetworkErrorMessage.submitQuizAnswersNTimesError410
-            default:
-                return "Error Code 410"
-            }
         case 500:
             switch errorCase {
             case .profileEdit:
@@ -125,14 +101,12 @@ struct NetworkErrorMessage {
 enum NetworkError: Error {
     case invalidRequestBody(message: String)
     case invalidToken(message: String)
-    case invalidPathVariable(message: String)
     case invalidContent(message: String)
     
     init?(statusCode: Int, message: String) {
         switch statusCode {
         case 400: self = .invalidRequestBody(message: message)
         case 401: self = .invalidToken(message: message)
-        case 410: self = .invalidPathVariable(message: message)
         case 500: self = .invalidContent(message: message)
         default: return nil
         }
@@ -143,8 +117,6 @@ enum NetworkError: Error {
         case .invalidRequestBody(let message):
             return message
         case .invalidToken(let message):
-            return message
-        case .invalidPathVariable(let message):
             return message
         case .invalidContent(let message):
             return message

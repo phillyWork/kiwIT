@@ -8,7 +8,7 @@
 import Foundation
 
 struct SubmitQuizRequest {
-    var quizGroupId: String
+    var quizGroupId: Int
     var access: String
     var answerList: [QuizAnswer]
 }
@@ -22,7 +22,6 @@ struct QuizAnswer: Encodable {
 }
 
 struct SubmitQuizResponse: Decodable {
-    var id: Int         //id for each submitted answer result
     var userId: Int
     var quizGroupId: Int
     var latestScore: Int

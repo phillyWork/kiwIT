@@ -16,10 +16,6 @@ struct LectureView: View {
     
     @Environment(\.dismiss) private var dismiss
     
-    //MARK: - 오른쪽 Button: 완료 및 보관함 버튼
-    //MARK: - 완료 버튼: Alert로 Example 문제와 O, X 버튼 --> 정답 여부 alert --> 확인 시 학습 완료 및 webview 닫기
-    //MARK: - 보관함 버튼: 해당 학습 컨텐츠 보관하기 처리
-    
     init(lectureContentListVM: LectureContentListViewModel, contentId: Int, isLoginAvailable: Binding<Bool>) {
         self.lectureContentListVM = lectureContentListVM
         _lectureVM = StateObject(wrappedValue: LectureViewModel(contentId: contentId))
@@ -46,19 +42,22 @@ struct LectureView: View {
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
+                Button {
                     dismiss()
-                }, label: {
+                } label: {
                     Image(systemName: Setup.ImageStrings.defaultXMark2)
-                })
+                }
                 .tint(Color.textColor)
             }
             ToolbarItemGroup(placement: .primaryAction) {
-                Button(action: {
-                    lectureVM.showLectureExampleAlert = true
-                }, label: {
+                
+                //MARK: - 여러번 눌리지 않도록 처리?
+                
+                Button {
+                    lectureVM.requestCompleteLectureContent()
+                } label: {
                     Text("학습 완료")
-                })
+                }
                 .alert("학습 확인 문제", isPresented: $lectureVM.showLectureExampleAlert) {
                     Button(role: .cancel) {
                         lectureVM.updateAnswerAsTrue()
@@ -77,62 +76,51 @@ struct LectureView: View {
                     Button(role: .cancel) {
                         lectureVM.requestSubmitExerciseAnswer()
                     } label: {
-                        Text("확인")
+                        Text(Setup.ContentStrings.confirm)
                     }
                 } message: {
                     Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent?.answer)입니다.")
                 }
                 
-                Button(action: {
-                    print("bookmark this lecture!!!")
-                    lectureVM.isThisLectureBookmarked.toggle()
-                    
-                    //MARK: - 버튼 누를 때마다 bookmark 처리 함수 호출 --> Debounce 혹은 throttle 활용 방안?
-                    
-                }, label: {
+                Button {
+                    lectureVM.requestBookmarkThisLecture()
+                } label: {
                     Image(systemName: lectureVM.isThisLectureBookmarked ? Setup.ImageStrings.bookmarked : Setup.ImageStrings.bookmarkNotYet)
-                })
+                }
             }
         }
         .alert("학습 시작 오류!!!", isPresented: $lectureVM.showStartLectureErrorAlertToDismiss, actions: {
-            Button(action: {
+            ErrorAlertConfirmButton {
                 dismiss()
-            }, label: {
-                Text("확인")
-                    .foregroundStyle(Color.errorHighlightColor)
-            })
+            }
         }, message: {
             Text("컨텐츠를 불러오는 데 오류가 발생했습니다. 다시 시도해주세요.")
         })
         .alert("학습 완료 오류!!!", isPresented: $lectureVM.showCompleteLectureErrorAlertToRetry, actions: {
-            Button(action: {
+            ErrorAlertConfirmButton {
 //                lectureVM.showCompleteLectureErrorAlertToRetry = false
-            }, label: {
-                Text("확인")
-                    .foregroundStyle(Color.errorHighlightColor)
-            })
+            }
         }, message: {
             Text("학습 완료 처리에 실패했습니다. 다시 시도해주세요.")
         })
         .alert("예제 제출 오류!!!", isPresented: $lectureVM.showSubmitExerciseErrorAlertToRetry, actions: {
-            Button(action: {
-                self.lectureVM.showExampleAnswerAlert = true
-            }, label: {
-                Text("확인")
-                    .foregroundStyle(Color.errorHighlightColor)
-            })
+            ErrorAlertConfirmButton {
+                lectureVM.showExampleAnswerAlert = true
+            }
         }, message: {
             Text("예제 풀이 등록에 실패했습니다. 다시 시도해주세요.")
         })
-        .alert("로그인 오류!", isPresented: $lectureVM.shouldLoginAgain, actions: {
-            Button(action: {
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureVM.shouldLoginAgain, actions: {
+            ErrorAlertConfirmButton {
                 isLoginAvailable = false
-            }, label: {
-                Text("확인")
-                    .foregroundStyle(Color.errorHighlightColor)
-            })
+            }
         }, message: {
-            Text("세션이 만료되어 다시 로그인해주세요!")
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
+        })
+        .alert("북마크 오류!", isPresented: $lectureVM.showBookmarkErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("보관함 처리에 실패했습니다. 다시 시도해주세요.")
         })
         .onChange(of: lectureVM.lectureStudyAllDone) { newValue in
             if newValue {

@@ -15,11 +15,7 @@ enum UserOXAnswerState {
 
 struct QuizContentOX: View {
     
-    //var quizPayload: QuizPayload
-    
-    //이전 답변 보여주기: viewModel에서 답변도 보유, 해당 답변 참조해서 이전 문항의 답변 통해 색칠하기?
-    
-    @Binding var content: String
+    var quizPayload: QuizPayload
     
     @State private var chosenState: UserOXAnswerState = .unchosen
     
@@ -36,14 +32,13 @@ struct QuizContentOX: View {
                 
                 Rectangle()
                     .fill(Color.shadowColor)
-                //.frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
                     .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                 
                 VStack {
                     Spacer()
                     
-                    Text(content)
+                    Text(quizPayload.question)
                         .multilineTextAlignment(.leading)
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .minimumScaleFactor(1.0)
@@ -54,20 +49,20 @@ struct QuizContentOX: View {
                         
                         //MARK: - 이전 답변 가져온 것 적용되지 않는 문제 존재
                         
-                        Button(action: {
+                        Button {
                             //O 표시 확인 및 다음 문제로 넘어가기
                             chosenState = chosenState == .chosenTrue ? .unchosen : .chosenTrue
-                        }, label: {
+                        } label: {
                             QuizOXButtonLabel(buttonLabel: "O")
-                        })
+                        }
                         .background(chosenState == .chosenTrue ? Color.brandColor : Color.surfaceColor)
                         
-                        Button(action: {
+                        Button {
                             //X 표시 확인 및 다음 문제로 넘어가기
                             chosenState = chosenState == .chosenFalse ? .unchosen : .chosenFalse
-                        }, label: {
+                        } label: {
                             QuizOXButtonLabel(buttonLabel: "X")
-                        })
+                        }
                         .background(chosenState == .chosenFalse ? Color.brandColor : Color.surfaceColor)
                         
                     }
@@ -81,23 +76,20 @@ struct QuizContentOX: View {
             }
             .padding(.vertical, 8)
             .padding(.horizontal, 5)
-            .onDisappear {
-                self.content = ""
-            }
         }
             HStack {
                 if (quizIndex != 0) {
                     Spacer()
-                    Button(action: {
+                    Button {
                         print("Tap this button to go back to previous question")
                         self.completion(.failure(.backToPreviousQuestion))
                         chosenState = .unchosen
-                    }, label: {
+                    } label: {
                         Text("이전으로")
-                    })
+                    }
                 }
                 Spacer()
-                Button(action: {
+                Button {
                     print("Tap this button to move to next question")
                     if chosenState == .unchosen {
                         //Alert 띄우기
@@ -106,9 +98,9 @@ struct QuizContentOX: View {
                         chosenState == .chosenTrue ? self.completion(.success(true)) : self.completion(.success(false))
                         chosenState = .unchosen
                     }
-                }, label: {
+                } label: {
                     Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
-                })
+                }
                 Spacer()
             }
             

@@ -8,7 +8,7 @@
 import Foundation
 
 struct StartQuizRequest {
-    var quizGroupId: String
+    var quizGroupId: Int
     var access: String
 }
 
@@ -25,14 +25,14 @@ struct QuizPayload: Decodable {
     var type: QuizType
     var title: String
     var question: String
-    var answer: String      //multiple: Int, trueOrFalse: Bool
+    var answer: String      //should change type in viewmodel when multiple: Int, trueOrFalse: Bool
     var explanation: String
     var score: Int
-    var choiceList: [MultipleChoiceList]?
-    // multiple choice 아닌 경우 choiceList 조회하지 않음 (Lazy Loading)
+    var choiceList: [MultipleChoiceList]?   // multiple choice 아닌 경우 choiceList 조회하지 않음 (Lazy Loading)
+    var kept: Bool
 }
 
-struct MultipleChoiceList: Decodable {
+struct MultipleChoiceList: Decodable, Hashable {
     var number: Int
     var quizId: Int
     var payload: String

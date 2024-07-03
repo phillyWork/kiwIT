@@ -47,7 +47,7 @@ enum MostRecentAcquiredTrophyResponse: Decodable {
             print("No Acquired Trophy Data")
             self = .emptyBody
         } else {
-            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Data does not match any SignInResponse type"))
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Data does not match any MostRecentlyAcquiredTrophy type"))
         }
     }
 }

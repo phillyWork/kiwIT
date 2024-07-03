@@ -102,26 +102,26 @@ struct QuizResult: View {
             HStack {
                 Spacer()
                 
-                Button(action: {
+                Button {
                     completion(.takeQuizAgain)
-                }, label: {
+                } label: {
                     Text("다시 풀기")
-                })
+                }
                 Spacer()
                 
-                Button(action: {
+                Button {
                     isDetailButtonTapped = true
-                }, label: {
+                } label: {
                     Text("상세 보기")
-                })
+                }
                 
                 Spacer()
                 
-                Button(action: {
+                Button {
                     completion(.confirmToMoveToQuizList)
-                }, label: {
+                } label: {
                     Text("확인 완료")
-                })
+                }
                 
                 Spacer()
             }

@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-//MARK: - Lecture: 레벨 및 과목 리스트, 내역 조회, 학습 시작, 학습 보관, 결과
 struct LectureListView: View {
     
     @StateObject var lectureListVM = LectureListViewModel()
@@ -29,7 +28,7 @@ struct LectureListView: View {
                 
                 ScrollView {
                     VStack {
-                        Image(systemName: Setup.ImageStrings.topDirection)
+                        Image(systemName: Setup.ImageStrings.downDirection)
                             .scaledToFit()
                         Text("당겨서 새로고침")
                             .font(.custom(Setup.FontName.lineThin, size: 12))
@@ -61,23 +60,30 @@ struct LectureListView: View {
                         .frame(maxWidth: .infinity)
                         .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
                     } else {
-                        EmptyView()
+                        CustomEmptyView()
                             .frame(maxWidth: .infinity)
                             .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
                     }
                 }
                 .scrollIndicators(.hidden)
-                .navigationTitle("학습 카테고리")
+                .navigationTitle(Setup.ContentStrings.lectureContentTitle)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-                .onChange(of: lectureListVM.shouldLoginAgain) { newValue in
-                    if newValue {
-                        tabViewsVM.isLoginAvailable = false
-                    }
-                }
+//                .onChange(of: lectureListVM.shouldLoginAgain) { newValue in
+//                    if newValue {
+//                        tabViewsVM.isLoginAvailable = false
+//                    }
+//                }
             }
             .background(Color.backgroundColor)
         }
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureListVM.shouldLoginAgain, actions: {
+            ErrorAlertConfirmButton {
+                tabViewsVM.isLoginAvailable = false
+            }
+        }, message: {
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
+        })
         .refreshable {
             print("Pull to Refresh Lecture List in \(lectureListVM.lectureType)!!!")
             lectureListVM.requestLectureList()

@@ -14,11 +14,7 @@ struct QuizGroupListRequest {
     var tag: String?
 }
 
-struct QuizGroupListResponse: Decodable {
-    var list: [QuizGroupPayload]
-}
-
-struct QuizGroupPayload: Decodable {
+struct QuizGroupPayload: Decodable, Hashable {
     var id: Int
     var title: String
     var subtitle: String
@@ -27,7 +23,7 @@ struct QuizGroupPayload: Decodable {
     var categoryChapter: QuizCategoryChapter
 }
 
-struct QuizCategoryChapter: Decodable {
+struct QuizCategoryChapter: Decodable, Hashable {
     var id: Int
     var title: String
 }

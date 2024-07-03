@@ -13,6 +13,7 @@ enum LectureViewActionType {
     case startLecture
     case completeLecture
     case exerciseQuestion
+    case bookmarkLecture
 }
 
 //MARK: - API 수정 완료 시: 실제 학습 시작 및 완료, 예제 문제 처리 테스트하기
@@ -26,7 +27,8 @@ final class LectureViewModel: ObservableObject {
     @Published var showExampleAnswerAlert = false
     
     @Published var isThisLectureBookmarked = false
-    
+    @Published var showBookmarkErrorAlert = false
+        
     @Published var shouldLoginAgain = false
     
     @Published var showStartLectureErrorAlertToDismiss = false
@@ -34,7 +36,7 @@ final class LectureViewModel: ObservableObject {
     @Published var showSubmitExerciseErrorAlertToRetry = false
     
     @Published var lectureStudyAllDone = false
-    
+        
     private var userExampleAnswer = false
 
     private var cancellables = Set<AnyCancellable>()
@@ -65,9 +67,6 @@ final class LectureViewModel: ObservableObject {
                         switch startLectureError {
                         case .invalidToken(_):
                             self.requestRefreshToken(.startLecture, token: token, userId: userId)
-                        case .invalidPathVariable(_):
-                            print("No Content Id for this lecture: \(startLectureError.description)")
-                            self.showStartLectureErrorAlertToDismiss = true
                         default:
                             print("Start Lecture Error for network reason: \(startLectureError.description)")
                             self.showStartLectureErrorAlertToDismiss = true
@@ -81,9 +80,14 @@ final class LectureViewModel: ObservableObject {
                 print("Start Lecture Right Away!!!")
                 self.lectureContent = response
                 self.showProgressViewForLoadingWeb = false
+                if let alreadyTaken = response.contentStudied {
+                    self.isThisLectureBookmarked = alreadyTaken.kept
+                }
             }
             .store(in: &self.cancellables)
     }
+    
+    //MARK: - 동일 콘텐츠 두 번째 요청부터 400 에러 발생
     
     func requestCompleteLectureContent() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
@@ -98,9 +102,6 @@ final class LectureViewModel: ObservableObject {
                         switch completeLectureError {
                         case .invalidToken(_):
                             self.requestRefreshToken(.completeLecture, token: tokenData.0, userId: tokenData.1)
-                        case .invalidPathVariable(_):
-                            print("Complete Lecture Error for no content Id: \(completeLectureError.description)")
-                            self.showCompleteLectureErrorAlertToRetry = true
                         default:
                             print("Complete Lecture Error for network reason: \(completeLectureError.description)")
                             self.showCompleteLectureErrorAlertToRetry = true
@@ -148,9 +149,6 @@ final class LectureViewModel: ObservableObject {
                             self.showSubmitExerciseErrorAlertToRetry = true
                         case .invalidToken(_):
                             self.requestRefreshToken(.exerciseQuestion, token: tokenData.0, userId: tokenData.1)
-                        case .invalidPathVariable(_):
-                            print("No Content Id for this lecture: \(submitExerciseError.description)")
-                            self.showSubmitExerciseErrorAlertToRetry = true
                         default:
                             print("Submit Exercise Error for network reason: \(submitExerciseError.description)")
                             self.showSubmitExerciseErrorAlertToRetry = true
@@ -198,9 +196,50 @@ final class LectureViewModel: ObservableObject {
                     self.requestCompleteLectureContent()
                 case .exerciseQuestion:
                     self.requestSubmitExerciseAnswer()
+                case .bookmarkLecture:
+                    self.requestBookmarkThisLecture()
                 }
             }
             .store(in: &self.cancellables)
     }
 
+    //MARK: - 버튼 누를 때마다 bookmark 처리 함수 호출 --> Debounce 혹은 throttle 활용 방안?
+    
+    func requestBookmarkThisLecture() {
+        guard let tokenData = AuthManager.shared.checkTokenData() else {
+            print("Should Login Again!!!")
+            shouldLoginAgain = true
+            return
+        }
+        NetworkManager.shared.request(type: CompleteLectureResponse.self, api: .bookmarkLecture(request: HandleLectureRequest(contentId: contentId, access: tokenData.0.access)), errorCase: .bookmarkLecture)
+            .sink { completion in
+                if case .failure(let error) = completion {
+                    if let bookmarkLectureError = error as? NetworkError {
+                        switch bookmarkLectureError {
+                        case .invalidRequestBody(_):
+                            print("Bookmark Lecture Error for Failure: \(bookmarkLectureError.description)")
+                            self.showBookmarkErrorAlert = true
+                            self.isThisLectureBookmarked = false
+                        case .invalidToken(_):
+                            self.requestRefreshToken(.bookmarkLecture, token: tokenData.0, userId: tokenData.1)
+                        default:
+                            print("Bookmark Lecture Error for Network Reason: \(bookmarkLectureError.description)")
+                            self.showBookmarkErrorAlert = true
+                            self.isThisLectureBookmarked = false
+                        }
+                    } else {
+                        print("Bookmark Lecture Error for other reason: \(error.localizedDescription)")
+                        self.showBookmarkErrorAlert = true
+                        self.isThisLectureBookmarked = false
+                    }
+                }
+            } receiveValue: { response in
+                print("Received Response for Bookmark result: \(response)")
+                self.isThisLectureBookmarked = response.kept
+            }
+            .store(in: &self.cancellables)
+    }
+    
+    
+    
 }

@@ -16,22 +16,22 @@ struct SignUpInfoView: View {
     
     var body: some View {
         ScrollView {
-            Text("회원 가입 정보")
+            Text(Setup.ContentStrings.SignUp.userInfo)
                 .font(.custom(Setup.FontName.notoSansBold, size: 25))
                 .padding(.vertical, 8)
             
             Group {
                 HStack {
-                    Text("이메일: ")
+                    Text(Setup.ContentStrings.SignUp.email)
                     Text(signUpInfoVM.userDataForSignUp.email)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
                 HStack {
-                    Text("닉네임: ")
+                    Text(Setup.ContentStrings.SignUp.nickname)
                     TextField("",
                               text: $signUpInfoVM.userDataForSignUp.nickname,
-                              prompt: Text("닉네임 입력은 필수입니다")
+                              prompt: Text(Setup.ContentStrings.SignUp.requiredToFillInNickname)
                         .foregroundColor(Color.textPlaceholderColor)
                     )
                     .onSubmit {
@@ -43,23 +43,23 @@ struct SignUpInfoView: View {
                 }
                 
                 HStack {
-                    Text("서비스: ")
+                    Text(Setup.ContentStrings.SignUp.serviceProvider)
                     HStack {
                         Image(systemName: signUpInfoVM.userDataForSignUp.provider == .apple ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked )
                             .foregroundStyle(Color.brandColor)
-                        Text("애플")
+                        Text(Setup.ContentStrings.SignUp.apple)
                     }
                     HStack {
                         Image(systemName: signUpInfoVM.userDataForSignUp.provider == .kakao ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked )
                             .foregroundStyle(Color.brandColor)
-                        Text("카카오")
+                        Text(Setup.ContentStrings.SignUp.kakao)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, 8)
                 
                 ScrollView {
-                    Text("동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...동의 내용 확인 사항들...")
+                    Text(Setup.ContentStrings.SignUp.infoToBeGiven)
                         .foregroundStyle(Color.black)
                         .padding()
                 }
@@ -67,48 +67,45 @@ struct SignUpInfoView: View {
                 .background(Color.brandBlandColor)
             
                 HStack {
-                    Button(action: {
+                    Button {
                         signUpInfoVM.isToggleSwitchOn.toggle()
-                    }, label: {
+                    } label: {
                         Image(systemName: signUpInfoVM.isToggleSwitchOn ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked)
                             .imageScale(.large)
                             .foregroundStyle(Color.brandColor)
-                    })
-                    Text("안내 사항을 확인하고 동의합니다")
+                    }
+                    Text(Setup.ContentStrings.SignUp.checkInfoAndAgree)
                         .foregroundStyle(Color.textColor)
                 }
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.vertical, 8)
-                
             }
             
             Spacer()
             
-            ShrinkAnimationButtonView(title: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? "회원 가입" : "필수 사항 입력이 우선됩니다", color: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Color.brandColor : Color.errorHighlightColor) {
+            ShrinkAnimationButtonView(title: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Setup.ContentStrings.SignUp.signUpText : Setup.ContentStrings.SignUp.cannotSignUpText, color: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Color.brandColor : Color.errorHighlightColor) {
                 
                 if signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty {
                     signUpInfoVM.requestSignUp()
                 } else {
                     signUpInfoVM.showSignUpRequestIsNotSetAlert.toggle()
                 }
-                
             }
             .padding(.vertical, 12)
-            .alert("회원 가입을 시도할 수 없습니다", isPresented: $signUpInfoVM.showSignUpRequestIsNotSetAlert, actions: { }, message: {
-                Text("닉네임을 입력해주시고 안내 사항을 체크해주셔야 회원 가입을 할 수 있습니다")
+            .alert(Setup.ContentStrings.SignUp.notReadyToSignUpErrorAlertTitle, isPresented: $signUpInfoVM.showSignUpRequestIsNotSetAlert, actions: { }, message: {
+                Text(Setup.ContentStrings.SignUp.notReadyToSignUpErrorAlertMessage)
             })
         }
-        .alert("회원 가입 오류!", isPresented: $signUpInfoVM.showSignUpErrorAlert, actions: {
-            Button("확인", role: .cancel) { }
+        .alert(Setup.ContentStrings.SignUp.signUpErrorAlertTitle, isPresented: $signUpInfoVM.showSignUpErrorAlert, actions: {
+            Button(Setup.ContentStrings.confirm, role: .cancel) { }
         }, message: {
-            Text("닉네임 중복 또는 회원 가입을 할 수 없는 계정입니다! 다시 시도해주세요.")
+            Text(Setup.ContentStrings.SignUp.signUpErrorAlertMessage)
         })
         .frame(maxHeight: .infinity)
         .padding(.horizontal, 8)
         .background(Color.backgroundColor)
         .onChange(of: signUpInfoVM.didSignUpSucceed) { newValue in
             if newValue {
-                print("Sign Up and Login Succeed!!! Move to TabViews")
                 if let profile = signUpInfoVM.signedUpProfile {
                     mainTabBarVM.userProfileData = profile
                 }

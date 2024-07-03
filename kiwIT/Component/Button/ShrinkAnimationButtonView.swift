@@ -26,7 +26,7 @@ struct ShrinkAnimationButtonView: View {
             Rectangle()
                 .fill(Color.shadowColor)
                 .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
-            Button(action: {
+            Button {
                 withAnimation {
                     self.tapped.toggle()
                 }
@@ -36,11 +36,11 @@ struct ShrinkAnimationButtonView: View {
                     }
                     self.action()
                 }
-            }, label: {
+            } label: {
                 Text(buttonTitle)
                     .foregroundStyle(Color.textColor)
                     .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
-            })
+            }
             .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
             .background(buttonColor)
             .offset(CGSize(width: -8.0, height: -8.0))

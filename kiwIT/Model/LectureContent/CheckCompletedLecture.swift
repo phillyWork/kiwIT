@@ -11,14 +11,10 @@ struct CompletedLectureListCheckRequest {
     var access: String
     var next: Int?
     var limit: Int?
-    var byLevel: Bool?
+    var byLevel: Bool?  //레벨 기준 분류 확인하기
 }
 
-struct CompletedLectureListCheckResponse: Decodable {
-    var list: [CompletedLecture]
-}
-
-struct CompletedLecture: Decodable {
+struct CompletedOrBookmarkedLecture: Decodable {
     var id: Int         //Quiz Group ID
     var title: String
     var point: Int
@@ -26,5 +22,6 @@ struct CompletedLecture: Decodable {
     var answer: Bool
     var levelNum: Int
     var categoryChapterId: Int
+    var payloadUrl: String
     var contentStudied: CompleteLectureResponse
 }

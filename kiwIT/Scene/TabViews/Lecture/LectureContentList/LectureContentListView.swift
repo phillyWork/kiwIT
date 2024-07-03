@@ -22,50 +22,55 @@ struct LectureContentListView: View {
     
     var body: some View {
         ScrollView {
-            LazyVStack(spacing: 5) {
-                switch lectureListVM.lectureType {
-                case .category:
-                    ForEach(lectureContentListVM.lectureContentListCategoryType, id: \.self) { item in
-                        ContentExpandableChapterItemView(itemTitle: item.title) {
-                            ScrollView {
-                                LazyVStack(spacing: 5) {
-                                    ForEach(item.contentList, id: \.self) { data in
-                                        NavigationLink {
-                                            LectureView(lectureContentListVM: lectureContentListVM, contentId: data.id, isLoginAvailable: $isLoginAvailable)
-                                        } label: {
-                                            VStack {
-                                                ContentSectionItemView {
-                                                    Text("\(data.title)")
+            if lectureContentListVM.showEmptyView {
+                CustomEmptyView()
+                    .frame(maxWidth: .infinity)
+            } else {
+                LazyVStack(spacing: 5) {
+                    switch lectureListVM.lectureType {
+                    case .category:
+                        ForEach(lectureContentListVM.lectureContentListCategoryType, id: \.self) { item in
+                            ContentExpandableChapterItemView(itemTitle: item.title) {
+                                ScrollView {
+                                    LazyVStack(spacing: 5) {
+                                        ForEach(item.contentList, id: \.self) { data in
+                                            NavigationLink {
+                                                LectureView(lectureContentListVM: lectureContentListVM, contentId: data.id, isLoginAvailable: $isLoginAvailable)
+                                            } label: {
+                                                VStack {
+                                                    ContentSectionItemView {
+                                                        Text("\(data.title)")
+                                                    }
+                                                    Divider()
+                                                        .frame(minHeight: 1)
+                                                        .background(Color.textColor)
                                                 }
-                                                Divider()
-                                                    .frame(minHeight: 1)
-                                                    .background(Color.textColor)
+                                                .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
+                                                .padding(.vertical, 3)
                                             }
-                                            .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
-                                            .padding(.vertical, 3)
                                         }
                                     }
                                 }
+                                .scrollIndicators(.hidden)
+                                .frame(width: Setup.Frame.contentListItemWidth)
+                                .background(Color.brandTintColor)
+                                .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
+                                .padding(.top, 0)
                             }
-                            .scrollIndicators(.hidden)
-                            .frame(width: Setup.Frame.contentListItemWidth)
-                            .background(Color.brandTintColor)
-                            .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: 0))
-                            .padding(.top, 0)
                         }
-                    }
-                case .level:
-                    ForEach(lectureContentListVM.lectureContentListLevelType, id: \.self) { item in
-                        NavigationLink {
-                            LectureView(lectureContentListVM: lectureContentListVM, contentId: item.id, isLoginAvailable: $isLoginAvailable)
-                        } label: {
-                            ContentNotExpandableChapterItemView(title: item.title)
-                        }
-                        .onAppear {
-                            print("Check data for pagination!!!")
-                            if lectureContentListVM.lectureContentListLevelType.last == item {
-                                print("Last data for list: should call more!!!")
-                                lectureContentListVM.loadMoreContentListLevelType()
+                    case .level:
+                        ForEach(lectureContentListVM.lectureContentListLevelType, id: \.self) { item in
+                            NavigationLink {
+                                LectureView(lectureContentListVM: lectureContentListVM, contentId: item.id, isLoginAvailable: $isLoginAvailable)
+                            } label: {
+                                ContentNotExpandableChapterItemView(title: item.title)
+                            }
+                            .onAppear {
+                                print("Check data for pagination!!!")
+                                if lectureContentListVM.lectureContentListLevelType.last == item {
+                                    print("Last data for list: should call more!!!")
+                                    lectureContentListVM.loadMoreContentListLevelType()
+                                }
                             }
                         }
                     }
@@ -78,18 +83,20 @@ struct LectureContentListView: View {
         .navigationTitle("\(lectureContentListVM.navTitle)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-        .onChange(of: lectureContentListVM.shouldLoginAgain) { newValue in
-            if newValue {
-                print("Should Login Due to session expired in LectureContentListView")
-//                lectureListVM.isLoginAvailable = false
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureContentListVM.shouldLoginAgain, actions: {
+            ErrorAlertConfirmButton {
                 isLoginAvailable = false
             }
-        }
+        }, message: {
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
+        })
+//        .onChange(of: lectureContentListVM.shouldLoginAgain) { newValue in
+//            if newValue {
+//                print("Should Login Due to session expired in LectureContentListView")
+//                isLoginAvailable = false
+//            }
+//        }
         //to disable pull to refresh
         .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)
     }
 }
-
-//#Preview {
-//    LectureContentListView(lectureListVM: LectureListViewModel(), typeId: 1, navTitle: "연습"), isLoginAvailable: <#Binding<Bool>#>
-//}
