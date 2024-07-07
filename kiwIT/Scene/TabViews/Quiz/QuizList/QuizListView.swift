@@ -26,7 +26,7 @@ struct QuizListView: View {
                         .foregroundStyle(Color.textColor)
                 }
                 if quizListVM.showEmptyView {
-                    CustomEmptyView()
+                    WholeEmptyView()
                         .frame(maxWidth: .infinity)
                 } else {
                     LazyVStack(spacing: 4) {

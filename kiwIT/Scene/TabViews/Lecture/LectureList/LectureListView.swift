@@ -60,7 +60,7 @@ struct LectureListView: View {
                         .frame(maxWidth: .infinity)
                         .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
                     } else {
-                        CustomEmptyView()
+                        WholeEmptyView()
                             .frame(maxWidth: .infinity)
                             .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
                     }
@@ -69,11 +69,6 @@ struct LectureListView: View {
                 .navigationTitle(Setup.ContentStrings.lectureContentTitle)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-//                .onChange(of: lectureListVM.shouldLoginAgain) { newValue in
-//                    if newValue {
-//                        tabViewsVM.isLoginAvailable = false
-//                    }
-//                }
             }
             .background(Color.backgroundColor)
         }

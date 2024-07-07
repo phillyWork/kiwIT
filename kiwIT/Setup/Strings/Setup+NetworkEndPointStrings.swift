@@ -19,8 +19,6 @@ extension Setup {
         static let userSignIn = "/sign-in"
         static let userSignOut = "/sign-out"
         static let userRefreshAccessToken = "/refresh"
-        static let userAcquiredTrophyList = "/trophy"
-        static let userRecentAcquiredTrophy = "/latest"
         static let userSummaryStat = "/stat"
         
         //MARK: - Lecture Contents
@@ -43,6 +41,12 @@ extension Setup {
       
         static let bookmark = "/kept"
         
+        //MARK: - Trophy
+        
+        static let trophy = "/trophy"
+        
+        static let acquiredTrophyList = "/my"
+        static let latestAcquiredTrophy = "/latest"
     }
     
 }

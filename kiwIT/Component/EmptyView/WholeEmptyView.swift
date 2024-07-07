@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct CustomEmptyView: View {
+struct WholeEmptyView: View {
     var body: some View {
         Text("Empty Result!!!")
             .foregroundStyle(Color.textColor)
@@ -16,5 +16,5 @@ struct CustomEmptyView: View {
 }
 
 #Preview {
-    CustomEmptyView()
+    WholeEmptyView()
 }

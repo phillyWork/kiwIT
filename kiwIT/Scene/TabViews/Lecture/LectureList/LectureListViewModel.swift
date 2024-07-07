@@ -40,10 +40,6 @@ final class LectureListViewModel: ObservableObject {
         }
     }
     
-    func requestLectureList() {
-        requestSubject.send(())
-    }
-    
     private func setupDebounce() {
         requestSubject
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
@@ -51,6 +47,10 @@ final class LectureListViewModel: ObservableObject {
                 self?.performRequestLectureList()
             }
             .store(in: &cancellables)
+    }
+    
+    func requestLectureList() {
+        requestSubject.send(())
     }
     
     func performRequestLectureList() {
@@ -130,13 +130,11 @@ final class LectureListViewModel: ObservableObject {
                         default:
                             print("Other Network Error for getting refreshed token in lecture categorylistviewmodel: \(refreshError.description)")
                             AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            //로그인 화면 이동하기
                             self.shouldLoginAgain = true
                         }
                     } else {
                         print("Other Error for getting refreshed token in lecture categorylistviewmodel: \(error.localizedDescription)")
                         AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        //로그인 화면 이동하기
                         self.shouldLoginAgain = true
                     }
                 }

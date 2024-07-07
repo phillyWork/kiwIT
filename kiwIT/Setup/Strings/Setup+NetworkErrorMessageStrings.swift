@@ -23,12 +23,8 @@ enum Setup {
         
         //내부적 처리?
         static let profileCheckError400 = "유저 정보가 존재하지 않습니다."
-        static let profileCheckError401 = "유저 정보 확인 권한이 없습니다.(토큰 리프레시 필요)"
 
         static let profileEditError400 = "중복된 닉네임이 존재합니다. 다른 닉네임을 입력해주세요."
-        
-        //내부적 처리?
-        static let profileEditError401 = "유저 정보 수정 권한이 없습니다.(토큰 리프레시 필요)"
 
         //미정된 API doc
         static let profileEditError500 = "미확인 사유(분리 예정 필요)"
@@ -36,64 +32,31 @@ enum Setup {
         
         static let withdrawError400 = "잘못된 회원탈퇴 요청입니다. 다시 시도해주세요."
         
-        //내부적 처리?
-        static let withdrawError401 = "회원 탈퇴 요청 권한이 없습니다. (토큰 리프레시 필요)"
-        
-        
-        static let acquiredTrophyListError400 = "잘못된 요청입니다. 다시 시도해주세요."
-        
-        //내부적 처리?
-        static let acquiredTrophyListError401 = "트로피 획득 내역 확인 권한이 없습니다. (토큰 리프레시 필요)"
-        
-        
-        static let mostRecentAcquiredTrophyError204 = "획득한 트로피가 존재하지 않습니다."
-        
-        static let mostRecentAcquiredTrophyError400 = "잘못된 요청입니다. 다시 시도해주세요."
-       
-        //내부적 처리?
-        static let mostRecentAcquiredTrophyError401 = "가장 최근 획득한 트로피 확인 권한이 없습니다. (토큰 리프레시 필요)"
-        
-        
         //case summaryStat
        
         
-        
         //내부적 처리?
         static let lectureLevelListCheckError = "레벨 리스트 조회 권한이 없습니다. (토큰 리프레시 필요)"
-        static let lectureLevelListContentCheckError401 = "레벨 리스트의 컨텐츠 조회 권한이 없습니다. (토큰 리프레시 필요)"
         
         static let lectureLevelListContentCheckError410 = "해당 레벨의 컨텐츠가 존재하지 않습니다."
         
-        //내부적 처리?
-        static let startOfLectureError401 = "학습 시작 권한이 없습니다. (토큰 리프레시 필요)"
-
         static let startOfLectureError410 = "해당 학습 컨텐츠가 존재하지 않습니다."
-        
-        
-        //내부적 처리?
-        static let completionOfLectureError401 = "학습 완료 권한이 없습니다. (토큰 리프레시 필요)"
         
         static let completionOfLectureError410 = "해당 학습 컨텐츠가 존재하지 않습니다."
 
         
         static let exerciseForLectureError400 = "정답을 입력해야 합니다."
 
-        //내부적 처리?
-        static let exerciseForLectureError401 = "예제 문제 풀이 권한이 없습니다. (토큰 리프레시 필요)"
-        
         static let exerciseForLectureError410 = "해당 학습 컨텐츠가 존재하지 않습니다."
         
         
         //내부적 처리?
         static let lectureCategoryListCheckError = "과목 리스트 조회 권한이 없습니다. (토큰 리프레시 필요)"
-        static let lectureCategoryListContentCheckError401 = "과목 리스트의 컨텐츠 조회 권한이 없습니다. (토큰 리프레시 필요)"
-        
+       
         static let lectureCategoryListContentCheckError410 = "해당 과목의 컨텐츠가 존재하지 않습니다."
         
         static let lectureNextStudyProgressError400 = "이전에 학습한 내용이 존재하지 않습니다."
       
-        //내부적 처리?
-        static let lectureNextStudyProgressError401 = "다음 학습 진도 확인 권한이 없습니다. (토큰 리프레시 필요)"
         static let completedLectureListCheckError = "학습 완료 리스트 확인 권한이 없습니다. (토큰 리프레시 필요)"
         static let bookmarkedLectureCheckError = "보관한 학습 컨텐츠 확인 권한이 없습니다. (토큰 리프레시 필요)"
 
@@ -104,25 +67,31 @@ enum Setup {
      
         static let quizListCheckError400 = "잘못된 퀴즈 리스트 요청입니다. 다시 시도해주세요."
         
-        //내부적 처리?
-        static let quizListCheckError401 = "퀴즈 리스트 요청 권한이 없습니다. (토큰 리프레시 필요)"
         
         static let startTakingQuizError400 = "해당 퀴즈는 조회할 수 업습니다."
-        static let startTakingQuizError401 = "퀴즈 풀이 권한이 없습니다. (토큰 리프레시 필요)"
         
         static let submitQuizAnswersError400 = "모든 문제의 답안을 작성해야 제출할 수 있습니다."
         
-        //내부적 처리?
-        static let submitQuizAnswersError401 = "문제 답안 제출 권한이 없습니다. (토큰 리프레시 필요)"
+        static let latestTakenQuizError204 = "아직 푼 퀴즈가 없습니다."
         
-        static let mostRecentTakenQuizError204 = "최근 답안을 제출한 퀴즈가 존재하지 않습니다."
-        
-        //내부적 처리?
-        static let mostRecentTakenQuizError401 = "가장 최근에 답안을 제출한 퀴즈 확인 권한이 없습니다. (토큰 리프레시 필요)"
         static let takenQuizListCheckError = "답안을 제출한 퀴즈 리스트 확인 권한이 없습니다. (토큰 리프레시 필요)"
         static let bookmarkedQuizCheckError = "보관한 퀴즈 확인 권한이 없습니다. (토큰 리프레시 필요)"
         
         static let bookmarkQuizError = "퀴즈 보관함 처리에 실패했습니다. 다시 시도해주세요."
         
+        
+        static let wholeTrophyListError = "잘못된 요청입니다. 트로피 리스트를 가져올 수 없습니다."
+        
+        static let trophyDetailError = "잘못된 트로피 정보입니다. 다시 시도해주세요."
+        
+        static let acquiredTrophyListError400 = "잘못된 요청입니다. 다시 시도해주세요."
+        
+        static let latestAcquiredTrophyError204 = "아직 획득한 트로피가 없습니다."
+        
+        static let latestAcquiredTrophyError400 = "잘못된 요청입니다. 다시 시도해주세요."
+       
+        static let confirmTrophyAcquisitionError = "잘못된 요청입니다. 존재하지 않는 트로피입니다."
+        
+        static let cancelTrophyAcquisitionError = "잘못된 취소 요청입니다. 다시 시도해주세요."
     }
 }

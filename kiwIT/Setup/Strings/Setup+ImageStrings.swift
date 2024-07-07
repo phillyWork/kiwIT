@@ -39,6 +39,9 @@ extension Setup {
         
         static let bookmarkNotYet = "bookmark"
         static let bookmarked = "bookmark.fill"
+        
+        static let retryAction = "arrow.clockwise"
+        static let exclamation = "exclamationmark"
     }
     
 }

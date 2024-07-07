@@ -64,69 +64,136 @@ struct ProfileView: View {
                 .padding(.bottom, 5)
                 
                 Spacer()
-                
-                //MARK: - 학습 완료 및 북마크 컨텐츠 보여주기
-                
-                //MARK: - 학습 완료한 컨텐츠 3 ~ 5개 보여주기, 더보기 --> View 이동: 완료한 컨텐츠 보여주기, 누르면 학습 화면으로 이동
-                
-                //MARK: - 북마크 한 컨텐츠 목록 보여주고 더보기 --> View 이동: 북마크한 컨텐츠, 누르면 학습 화면으로 이동
-                //MARK: - 학습 완료되면 학습 완료한 컨텐츠 목록에도 추가하기
-                
-                GroupBox(label: Text("학습 진도율").font(.custom(Setup.FontName.phuduRegular, size: 20)), content: {
-                    VStack {
-                        
-                        
-                        Text("레벨별? 학습 진도율 나타내기 (Header 역할)")
-                    }
-                    .padding(.vertical, 8)
-                })
-                .backgroundStyle(Color.surfaceColor)
-                
-                Spacer()
-                
-                //MARK: - 완료한 퀴즈 그룹 목록 및 북마크 한 퀴즈 나타내기
-                
-                //MARK: - 완료한 퀴즈 기록 최근 5개 보여주기 --> 더보기: View 이동, 과거 기록 보여주기
-                
-                //MARK: - 북마크 한 퀴즈 목록 5개 보여주기 --> 더보기: View 이동, 퀴즈 개별 목록 답변과 같이 보여주기 (유저 답변은 보여주지 않기)
-                
-                
-                GroupBox(label: Text("퀴즈 현황"), content: {
-                    VStack {
-                        Text("기본 퀴즈 진행 상황 나타내기 (Header 역할)")
-                        
-                        
-                    }
-                })
-                .backgroundStyle(Color.surfaceColor)
-                
-                Spacer()
-                
-                GroupBox(label: Text("인터뷰 현황"), content: {
-                    VStack {
-                        Text("구독 AI 인터뷰 진행 상황 나타내기 (Header 역할)")
-                        
-
-                        
-                    }
-                })
-                .backgroundStyle(Color.surfaceColor)
-                
-                Spacer()
-                
+            
+                //MARK: - 학습 컨텐츠용
                 GroupBox(label:
                             HStack {
-                    Text("획득한 도전 과제")
+                    Text("학습 컨텐츠")
+                        .font(.custom(Setup.FontName.phuduRegular, size: 20))
+                    
                     NavigationLink {
-                        TrophyListView()
+                        UserLectureListView(profileVM: profileVM)
                     } label: {
                         Text("더 보기")
                     }
                 }, content: {
-                    HStack {
+                    VStack {
+                        if profileVM.showCompletedLectureListError {
+                            EmptyViewWithRetryButton {
+                                profileVM.requestCompletedLectureList()
+                            }
+                        } else {
+                            if profileVM.isCompleteLectureListIsEmpty {
+                                EmptyViewWithNoError(title: "아직 완료한 학습 컨텐츠가 없어요")
+                            } else {
+                                //MARK: - 가장 최근 학습완료한 컨텐츠 1개 보여주기 With 더보기 버튼
+                                Text("학습 완료한 컨텐츠 존재!!!")
+                            }
+                        }
                         
-                    Text("test")
+                        if profileVM.showBookmarkedLectureListError {
+                            EmptyViewWithRetryButton {
+                                profileVM.requestBookmarkedLectureList()
+                            }
+                        } else {
+                            if profileVM.isBookmarkedLectureListIsEmtpy {
+                                EmptyViewWithNoError(title: "보관한 학습 컨텐츠가 없어요")
+                            } else {
+                                //MARK: - 가장 보관함한 컨텐츠 1개 보여주기 with 더보기 버튼
+                                Text("보관한 학습 컨텐츠 존재!!!")
+                            }
+                        }
+                    }
+                    .padding(.vertical, 8)
+                })
+                .backgroundStyle(Color.backgroundColor)
+                
+                Spacer()
+                
+                //MARK: - 퀴즈 용
+                GroupBox(label: HStack {
+                    Text("퀴즈")
+                        .font(.custom(Setup.FontName.phuduRegular, size: 20))
+                    NavigationLink {
+                        UserQuizListView(profileVM: profileVM)
+                    } label: {
+                        //MARK: - 더보기: 화면 이동, 전체 문제 풀이 완료한 퀴즈 목록 보여주기 with 점수 (Scroll)
                         
+                        //MARK: - 더보기: 화면 이동, 전체 추가한 퀴즈 문항들 목록 보여주기 with 답안
+                        //MARK: - 보관함 버튼 추가: 보관 Request, 성공 시, 앱단 목록에서 삭제하기
+                        Text("더 보기")
+                    }
+                }, content: {
+                    VStack {
+                        if profileVM.showTakenQuizListError {
+                            EmptyViewWithRetryButton {
+                                profileVM.requestTakenQuizList()
+                            }
+                        } else {
+                            if profileVM.isTakenQuizListIsEmpty {
+                                EmptyViewWithNoError(title: "아직 푼 퀴즈가 있지 않아요")
+                            } else {
+                                //MARK: - 가장 완료한 퀴즈 목록 1개 보여주기 With 더보기 버튼
+                               
+                                Text("기본 퀴즈 진행 상황 나타내기 (Header 역할)")
+                            }
+                        }
+                        
+                        if profileVM.showBookmarkedQuizListError {
+                            EmptyViewWithRetryButton {
+                                profileVM.requestBookmarkedQuizList()
+                            }
+                        } else {
+                            if profileVM.isBookmarkedQuizListIsEmtpy {
+                                EmptyViewWithNoError(title: "보관한 퀴즈가 없어요")
+                            } else {
+                                //MARK: - 가장 최근에 추가한 퀴즈 문항 1개 보여주기 with 더보기 버튼
+                                
+                                Text("기본 퀴즈 진행 상황 나타내기 (Header 역할)")
+                            }
+                        }
+                    }
+                })
+                .backgroundStyle(Color.surfaceColor)
+                
+                Spacer()
+                
+                //MARK: - 인터뷰용
+                GroupBox(label: Text("인터뷰 현황"), content: {
+                    VStack {
+                        Text("구독 AI 인터뷰 진행 상황 나타내기")
+                    
+                    }
+                })
+                .backgroundStyle(Color.surfaceColor)
+                
+                Spacer()
+                
+                //MARK: - 트로피용
+                GroupBox(label:
+                            HStack {
+                    Text("획득한 도전 과제")
+                    NavigationLink {
+                        TrophyListView(profileVM: profileVM)
+                    } label: {
+                        
+                        //MARK: - 더보기: 화면 이동, 전체 트로피 리스트 및 획득한 영역 구분해서 나타내기
+                        Text("더 보기")
+                    }
+                }, content: {
+                    VStack {
+                        if profileVM.showLatestAcquiredTrophyError {
+                            EmptyViewWithRetryButton {
+                                profileVM.requestLatestAcquiredTrophy()
+                            }
+                        } else {
+                            if profileVM.isLatestAcquiredTrophyEmpty {
+                                EmptyViewWithNoError(title: "아직 획득한 트로피가 없어요")
+                            } else {
+                                //MARK: - 트로피 영역 가장 최근 획득한 트로피 보여주기
+                                Text("test")
+                            }
+                        }
                     }
                 })
                 .backgroundStyle(Color.surfaceColor)
@@ -222,6 +289,7 @@ struct ProfileView: View {
             })
         }
         .refreshable {
+            
             print("Pull to Refresh Profile Data!!!")
             
         }

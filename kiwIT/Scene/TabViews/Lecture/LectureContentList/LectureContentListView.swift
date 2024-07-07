@@ -23,7 +23,7 @@ struct LectureContentListView: View {
     var body: some View {
         ScrollView {
             if lectureContentListVM.showEmptyView {
-                CustomEmptyView()
+                WholeEmptyView()
                     .frame(maxWidth: .infinity)
             } else {
                 LazyVStack(spacing: 5) {
@@ -35,7 +35,7 @@ struct LectureContentListView: View {
                                     LazyVStack(spacing: 5) {
                                         ForEach(item.contentList, id: \.self) { data in
                                             NavigationLink {
-                                                LectureView(lectureContentListVM: lectureContentListVM, contentId: data.id, isLoginAvailable: $isLoginAvailable)
+                                                LectureView(contentId: data.id, isLoginAvailable: $isLoginAvailable)
                                             } label: {
                                                 VStack {
                                                     ContentSectionItemView {
@@ -61,7 +61,7 @@ struct LectureContentListView: View {
                     case .level:
                         ForEach(lectureContentListVM.lectureContentListLevelType, id: \.self) { item in
                             NavigationLink {
-                                LectureView(lectureContentListVM: lectureContentListVM, contentId: item.id, isLoginAvailable: $isLoginAvailable)
+                                LectureView(contentId: item.id, isLoginAvailable: $isLoginAvailable)
                             } label: {
                                 ContentNotExpandableChapterItemView(title: item.title)
                             }
@@ -90,12 +90,6 @@ struct LectureContentListView: View {
         }, message: {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
-//        .onChange(of: lectureContentListVM.shouldLoginAgain) { newValue in
-//            if newValue {
-//                print("Should Login Due to session expired in LectureContentListView")
-//                isLoginAvailable = false
-//            }
-//        }
         //to disable pull to refresh
         .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)
     }

@@ -16,9 +16,6 @@ enum LectureViewActionType {
     case bookmarkLecture
 }
 
-//MARK: - API 수정 완료 시: 실제 학습 시작 및 완료, 예제 문제 처리 테스트하기
-
-
 final class LectureViewModel: ObservableObject {
     
     @Published var showProgressViewForLoadingWeb = true
@@ -26,6 +23,7 @@ final class LectureViewModel: ObservableObject {
     @Published var showLectureExampleAlert = false
     @Published var showExampleAnswerAlert = false
     
+    @Published var isThisLectureStudiedBefore = false
     @Published var isThisLectureBookmarked = false
     @Published var showBookmarkErrorAlert = false
         
@@ -34,20 +32,37 @@ final class LectureViewModel: ObservableObject {
     @Published var showStartLectureErrorAlertToDismiss = false
     @Published var showCompleteLectureErrorAlertToRetry = false
     @Published var showSubmitExerciseErrorAlertToRetry = false
+    @Published var showBookmarkThisLectureForFirstTimeAlert = false
     
     @Published var lectureStudyAllDone = false
         
+    private var requestSubject = PassthroughSubject<Void, Never>()      //debounce network call
+    
     private var userExampleAnswer = false
 
     private var cancellables = Set<AnyCancellable>()
-    
+
     var contentId: Int
     var lectureContent: StartLectureResponse?
-    var completeLecture: CompleteLectureResponse?
     
     init(contentId: Int) {
         self.contentId = contentId
+        setupDebounce()
         startLecture()
+    }
+    
+    private func setupDebounce() {
+        requestSubject
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.checkToRequestCompleteLecture()
+            }
+            .store(in: &cancellables)
+    }
+    
+    func debounceToRequestCompleteLecture() {
+        print("debounceToRequestCompleteLecture called")
+        requestSubject.send(())
     }
     
     private func startLecture() {
@@ -79,17 +94,25 @@ final class LectureViewModel: ObservableObject {
             } receiveValue: { response in
                 print("Start Lecture Right Away!!!")
                 self.lectureContent = response
-                self.showProgressViewForLoadingWeb = false
                 if let alreadyTaken = response.contentStudied {
+                    self.isThisLectureStudiedBefore = true
                     self.isThisLectureBookmarked = alreadyTaken.kept
                 }
             }
             .store(in: &self.cancellables)
     }
     
-    //MARK: - 동일 콘텐츠 두 번째 요청부터 400 에러 발생
+    private func checkToRequestCompleteLecture() {
+        if isThisLectureStudiedBefore {
+            print("lecture studied before, showing example alert")
+            self.showLectureExampleAlert = true
+        } else {
+            print("Requesting complete lecture content")
+            requestCompleteLectureContent()
+        }
+    }
     
-    func requestCompleteLectureContent() {
+    private func requestCompleteLectureContent() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
             shouldLoginAgain = true
@@ -113,7 +136,6 @@ final class LectureViewModel: ObservableObject {
                 }
             } receiveValue: { response in
                 print("completed this lecture: \(response)")
-                self.completeLecture = response
                 self.showLectureExampleAlert = true
             }
             .store(in: &self.cancellables)
@@ -160,7 +182,11 @@ final class LectureViewModel: ObservableObject {
                 }
             } receiveValue: { response in
                 print("Submit Exercise Complete! - \(response)")
-                self.lectureStudyAllDone = true
+                if self.isThisLectureStudiedBefore {
+                    self.lectureStudyAllDone = true
+                } else {
+                    self.showBookmarkThisLectureForFirstTimeAlert = true
+                }
             }
             .store(in: &self.cancellables)
 

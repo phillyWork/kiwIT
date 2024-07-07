@@ -13,7 +13,7 @@ struct BookmarkedLectureCheckRequest {
     var limit: Int?
 }
 
-struct BookmarkLectureResponse {
+struct BookmarkLectureResponse: Decodable {
     var userId: Int
     var contentId: Int
     var myAnswer: Bool

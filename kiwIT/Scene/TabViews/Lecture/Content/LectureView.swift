@@ -10,14 +10,12 @@ import SwiftUI
 struct LectureView: View {
     
     @StateObject var lectureVM: LectureViewModel
-    @ObservedObject var lectureContentListVM: LectureContentListViewModel
     
     @Binding var isLoginAvailable: Bool
     
     @Environment(\.dismiss) private var dismiss
-    
-    init(lectureContentListVM: LectureContentListViewModel, contentId: Int, isLoginAvailable: Binding<Bool>) {
-        self.lectureContentListVM = lectureContentListVM
+        
+    init(contentId: Int, isLoginAvailable: Binding<Bool>) {
         _lectureVM = StateObject(wrappedValue: LectureViewModel(contentId: contentId))
         self._isLoginAvailable = isLoginAvailable
     }
@@ -25,12 +23,11 @@ struct LectureView: View {
     var body: some View {
         VStack {
             ZStack {
-                if let url = lectureVM.lectureContent?.payloadUrl {
-                    WebViewSetup(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: url)
-                        .opacity(lectureVM.showProgressViewForLoadingWeb ? 0 : 1)
+                if let lectureContent = lectureVM.lectureContent {
+                    CustomWebView(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: lectureContent.payloadUrl)
                     if lectureVM.showProgressViewForLoadingWeb {
                         ProgressView {
-                            Text("컨텐츠 가져오는 중")
+                            Text("컨텐츠 불러오는 중...")
                         }
                         .scaleEffect(1.5, anchor: .center)
                     }
@@ -40,6 +37,13 @@ struct LectureView: View {
         }
         .background(Color.backgroundColor)
         .navigationBarBackButtonHidden()
+        .onAppear {
+            print("Lecture View Appeared")
+        }
+        .onDisappear {
+            print("value of lectureStudyAllDone: \(lectureVM.lectureStudyAllDone)")
+            print("Lecture View Disappeared")
+        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -50,15 +54,13 @@ struct LectureView: View {
                 .tint(Color.textColor)
             }
             ToolbarItemGroup(placement: .primaryAction) {
-                
-                //MARK: - 여러번 눌리지 않도록 처리?
-                
                 Button {
-                    lectureVM.requestCompleteLectureContent()
+                    print("Complete Lecture Button tapped")
+                    lectureVM.debounceToRequestCompleteLecture()
                 } label: {
-                    Text("학습 완료")
+                    Text(lectureVM.isThisLectureStudiedBefore ? "예제 보기" : "학습 완료")
                 }
-                .alert("학습 확인 문제", isPresented: $lectureVM.showLectureExampleAlert) {
+                .alert("예제 문제", isPresented: $lectureVM.showLectureExampleAlert) {
                     Button(role: .cancel) {
                         lectureVM.updateAnswerAsTrue()
                     } label: {
@@ -70,9 +72,9 @@ struct LectureView: View {
                         Text("X")
                     }
                 } message: {
-                        Text(lectureVM.lectureContent?.exercise ?? "예시 문제입니다")
+                    Text(lectureVM.lectureContent?.exercise ?? "본문 예제 문제입니다")
                 }
-                .alert(lectureVM.checkExampleAnswer() ? "정답입니다!" : "오답입니다!", isPresented: $lectureVM.showExampleAnswerAlert){
+                .alert(lectureVM.checkExampleAnswer() ? "정답입니다!" : "오답입니다!", isPresented: $lectureVM.showExampleAnswerAlert) {
                     Button(role: .cancel) {
                         lectureVM.requestSubmitExerciseAnswer()
                     } label: {
@@ -81,12 +83,30 @@ struct LectureView: View {
                 } message: {
                     Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent?.answer)입니다.")
                 }
-                
-                Button {
-                    lectureVM.requestBookmarkThisLecture()
-                } label: {
-                    Image(systemName: lectureVM.isThisLectureBookmarked ? Setup.ImageStrings.bookmarked : Setup.ImageStrings.bookmarkNotYet)
+                .alert("북마크", isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
+                    Button(role: .cancel) {
+                        lectureVM.requestBookmarkThisLecture()
+                        lectureVM.lectureStudyAllDone = true
+                    } label: {
+                        Text("네")
+                    }
+                    Button {
+                        lectureVM.lectureStudyAllDone = true
+                    } label: {
+                        Text("아니요")
+                    }
+                } message: {
+                    Text("학습 자료를 보관함에 넣을까요?")
                 }
+                
+                if lectureVM.isThisLectureStudiedBefore {
+                    Button {
+                        lectureVM.requestBookmarkThisLecture()
+                    } label: {
+                        Image(systemName: lectureVM.isThisLectureBookmarked ? Setup.ImageStrings.bookmarked : Setup.ImageStrings.bookmarkNotYet)
+                    }
+                }
+
             }
         }
         .alert("학습 시작 오류!!!", isPresented: $lectureVM.showStartLectureErrorAlertToDismiss, actions: {
@@ -123,6 +143,7 @@ struct LectureView: View {
             Text("보관함 처리에 실패했습니다. 다시 시도해주세요.")
         })
         .onChange(of: lectureVM.lectureStudyAllDone) { newValue in
+            print("lectureStudyAllDone is set to \(newValue)")
             if newValue {
                 dismiss()
             }
