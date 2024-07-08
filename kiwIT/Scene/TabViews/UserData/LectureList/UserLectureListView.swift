@@ -23,6 +23,11 @@ struct UserLectureListView: View {
         //MARK: - 보관함 버튼 추가: 보관 Request, 성공 시, 앱단 목록에서 삭제하기
         
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        Grid {
+            <#code#>
+        }
+        
     }
 }
 
