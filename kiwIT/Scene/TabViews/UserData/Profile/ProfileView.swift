@@ -70,9 +70,8 @@ struct ProfileView: View {
                             HStack {
                     Text("학습 컨텐츠")
                         .font(.custom(Setup.FontName.phuduRegular, size: 20))
-                    
                     NavigationLink {
-                        UserLectureListView(profileVM: profileVM)
+                        UserLectureListView(profileVM: profileVM, isLoginAvailable: $tabViewsVM.isLoginAvailable)
                     } label: {
                         Text("더 보기")
                     }
@@ -86,7 +85,7 @@ struct ProfileView: View {
                             if profileVM.isCompleteLectureListIsEmpty {
                                 EmptyViewWithNoError(title: "아직 완료한 학습 컨텐츠가 없어요")
                             } else {
-                                //MARK: - 가장 최근 학습완료한 컨텐츠 1개 보여주기 With 더보기 버튼
+                                //MARK: - 가장 최근 학습완료한 컨텐츠 1개 보여주기
                                 Text("학습 완료한 컨텐츠 존재!!!")
                             }
                         }
@@ -99,7 +98,7 @@ struct ProfileView: View {
                             if profileVM.isBookmarkedLectureListIsEmtpy {
                                 EmptyViewWithNoError(title: "보관한 학습 컨텐츠가 없어요")
                             } else {
-                                //MARK: - 가장 보관함한 컨텐츠 1개 보여주기 with 더보기 버튼
+                                //MARK: - 가장 보관함한 컨텐츠 1개 보여주기
                                 Text("보관한 학습 컨텐츠 존재!!!")
                             }
                         }

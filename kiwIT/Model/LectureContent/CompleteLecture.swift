@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct CompleteLectureResponse: Decodable {
+struct CompleteLectureResponse: Decodable, Hashable {
     var userId: Int
     var contentId: Int
     var myAnswer: Bool?     //null: 예제 답안 미제출

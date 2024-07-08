@@ -68,7 +68,7 @@ final class ProfileViewModel: ObservableObject {
     @Published var latestAcquiredTrophy: [AcquiredTrophy] = []
     
     private let currentPageForPaginationRequest = 0
-    private let dataPerRequest = 3
+    private let dataPerRequest = 1
     
     private var debouncedNickname = ""
     private var debouncedEmail = ""
@@ -83,7 +83,6 @@ final class ProfileViewModel: ObservableObject {
         self.updateProfileClosure = updateProfileClosure
         setupDebounce()
         requestUserData()
-//        requestData()
     }
     
     private func setupDebounce() {
@@ -422,7 +421,6 @@ final class ProfileViewModel: ObservableObject {
             } receiveValue: { response in
                 print("Update Token!!!")
                 KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                //MARK: - 수정 필요
                 switch actionType {
                 case .profileEdit:
                     self.requestProfileEdit(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), nickname: nickname!, userId: userId)
@@ -443,6 +441,13 @@ final class ProfileViewModel: ObservableObject {
                 }
             }
             .store(in: &self.cancellables)
+    }
+    
+    func removeThisBookmarkedLecture(_ id: Int) {
+        if bookmarkedLectureList.map({ $0.id }).contains(id) {
+            bookmarkedLectureList.removeAll()
+            isBookmarkedLectureListIsEmtpy = true
+        }
     }
     
 }

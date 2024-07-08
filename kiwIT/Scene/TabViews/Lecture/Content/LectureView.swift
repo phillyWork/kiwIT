@@ -73,7 +73,7 @@ struct LectureView: View {
                         Text(Setup.ContentStrings.confirm)
                     }
                 } message: {
-                    Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent!.answer)입니다.")
+                    Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent?.answer)입니다.")
                 }
                 .alert("북마크", isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
                     Button(role: .cancel) {
@@ -99,6 +99,10 @@ struct LectureView: View {
                     }
                 }
             }
+        }
+        .onDisappear {
+            lectureVM.cleanUpCancellables()
+            print("Dismiss Lecture View!!!")
         }
         .alert("네트워크 오류!", isPresented: $lectureVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }

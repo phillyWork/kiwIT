@@ -38,6 +38,8 @@ final class LectureViewModel: ObservableObject {
     
     @Published var lectureStudyAllDone = false
         
+    @Published var lectureContent: StartLectureResponse?
+    
     private var requestSubject = PassthroughSubject<Void, Never>()
     private var requestBookmarkSubject = PassthroughSubject<Void, Never>()
     
@@ -46,7 +48,6 @@ final class LectureViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     var contentId: Int
-    var lectureContent: StartLectureResponse?
     
     init(contentId: Int) {
         self.contentId = contentId
@@ -218,14 +219,10 @@ final class LectureViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Refresh Token Error for network reason: \(refreshError.description)")
-//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                            self.shouldLoginAgain = true
                             self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Category Content Error for other reason: \(error.localizedDescription)")
-//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                        self.shouldLoginAgain = true
                         self.showUnknownNetworkErrorAlert = true
                     }
                 }
@@ -280,7 +277,15 @@ final class LectureViewModel: ObservableObject {
             }
             .store(in: &self.cancellables)
     }
+
+    func cleanUpCancellables() {
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        print("Cancellables count: \(cancellables.count)")
+    }
     
-    
+    deinit {
+        print("LectureViewModel DEINIT")
+    }
     
 }
