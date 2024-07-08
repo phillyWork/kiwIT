@@ -8,9 +8,7 @@
 import Foundation
 
 extension Setup {
-    
     enum FontName {
-        
         static let notoSansRegular = "NotoSansKR-Regular"
         static let notoSansExLight = "NotoSansKR-ExtraLight"
         static let notoSansThin = "NotoSansKR-Thin"
@@ -34,8 +32,5 @@ extension Setup {
         static let phuduBold = "Phudu-Bold"
         static let phuduExtraBold = "Phudu-ExtraBold"
         static let phuduBlack = "Phudu-Black"
-        
-        
     }
-    
 }

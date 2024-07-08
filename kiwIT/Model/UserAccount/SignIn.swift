@@ -8,11 +8,46 @@
 import Foundation
 
 struct SignInRequest: Encodable {
-    let token: String
-    let provider: SocialLoginProvider
+    var token: String
+    var provider: SocialLoginProvider
 }
 
-struct SignInResponse: Decodable {
-    let accessToken: String
-    let refreshToken: String
+struct SignInResponseSuccess: Decodable {
+    var accessToken: String
+    var refreshToken: String
+}
+
+struct SignInResponseSignUpRequired: Decodable {
+    var email: String
+    var nickname: String
+    var provider: String
+}
+
+enum SignInResponse: Decodable {
+    case signInSuccess(SignInResponseSuccess)
+    case signUpRequired(SignInResponseSignUpRequired)
+
+    enum CodingKeys: String, CodingKey {
+        case accessToken
+        case refreshToken
+        case email
+        case nickname
+        case provider
+    }
+        
+    init(from decoder: any Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        if let accessToken = try? container.decode(String.self, forKey: .accessToken), let refreshToken = try? container.decode(String.self, forKey: .refreshToken) {
+            let signInSuccess = SignInResponseSuccess(accessToken: accessToken, refreshToken: refreshToken)
+            print("SignInSuccess data: \(signInSuccess)")
+            self = .signInSuccess(signInSuccess)
+        } else if let email = try? container.decode(String.self, forKey: .email), let nickname = try? container.decode(String.self, forKey: .nickname), let provider = try? container.decode(String.self, forKey: .provider) {
+            let signUpRequired = SignInResponseSignUpRequired(email: email, nickname: nickname, provider: provider)
+            print("SignUpRequired data: \(signUpRequired)")
+            self = .signUpRequired(signUpRequired)
+        } else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Data does not match any SignInResponse type"))
+        }
+    }
 }

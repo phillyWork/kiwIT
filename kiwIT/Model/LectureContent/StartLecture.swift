@@ -7,16 +7,19 @@
 
 import Foundation
 
-struct StartLectureRequest: Encodable {
-   
+struct HandleLectureRequest {
+    var contentId: Int
+    var access: String
 }
 
 struct StartLectureResponse: Decodable {
-    let paylod: [StartLecturePayload]
-}
-
-struct StartLecturePayload: Codable {
-    let id: Int
-    let title: String
-    let contentList: [LectureContent]
+    var id: Int
+    var title: String
+    var point: Int
+    var exercise: String
+    var answer: Bool
+    var levelNum: Int
+    var categoryChapterId: Int
+    var payloadUrl: String
+    var contentStudied: CompleteLectureResponse?    //학습한 적 없다면 null
 }

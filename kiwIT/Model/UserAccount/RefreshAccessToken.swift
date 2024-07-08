@@ -8,10 +8,10 @@
 import Foundation
 
 struct RefreshAccessTokenRequest: Encodable {
-    let refreshToken: String
+    var refreshToken: String
 }
 
 struct RefreshAccessTokenResponse: Decodable {
-    let accessToken: String
-    let refreshToken: String
+    var accessToken: String
+    var refreshToken: String
 }

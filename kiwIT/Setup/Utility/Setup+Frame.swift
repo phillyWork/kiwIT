@@ -14,17 +14,20 @@ extension Setup {
         static let devicePortraitWidth = UIScreen.main.bounds.width
         static let devicePortraitHeight = UIScreen.main.bounds.height
         
-        static let nextContentButtonWidth = devicePortraitWidth * 0.85
-        static let nextContentButtonHeight = nextContentButtonWidth * 0.4
+        static let shrinkAnimationButtonWidth = devicePortraitWidth * 0.85
+        static let shrinkAnimationButtonHeight = shrinkAnimationButtonWidth * 0.2
         
         static let socialLoginButtonWidth = devicePortraitWidth * 0.8
         static let socialLoginButtonStackHeight = socialLoginButtonWidth * 0.3
         
+        static let signUpContentWidth = devicePortraitWidth * 0.9
+        static let signUpConfirmScrollViewHeight = devicePortraitHeight * 0.45
+        
         //컨텐츠 리스트 개별 Item 크기
         static let contentListItemWidth = devicePortraitWidth * 0.9
-        static let contentListCategoryItemHeight = contentListItemWidth * 0.55
+        static let contentListCategoryItemHeight = contentListItemWidth * 0.4
         static let contentListChapterItemHeight = contentListItemWidth * 0.3
-        static let contentListSectionItemHeight = contentListItemWidth * 0.2
+        static let contentListNotExpandableHeight = contentListItemWidth * 0.35
         
         static let contentListCategoryImageWidth = contentListItemWidth * 0.65
         static let contentListCategoryImageHeight = contentListCategoryImageWidth * 0.75
@@ -35,7 +38,6 @@ extension Setup {
         static let contentListShadowWidthOffset = 5.0
         static let contentListShadowHeightOffset = 4.0
         
-        
         static let contentCategoryTrapezoidWidthOffset = -7.0
         static let contentCategoryTrapezoidHeightOffset = -7.0
         
@@ -44,7 +46,6 @@ extension Setup {
         
         static let contentCategoryTrapezoidCompleteWidthOffset = 80
         static let contentCategoryTrapezoidCompleteHeightOffset = 80
-        
         
         
         //컨텐츠 완료 표시용 이미지 크기
@@ -86,10 +87,20 @@ extension Setup {
         static let quizContentShortAnswerTextFieldWidth = quizContentItemWidth * 0.78
         static let quizContentShortAnswerTextFieldHeight = quizContentShortAnswerTextFieldWidth * 0.2
                 
-        static let quizContentAnswerWidth = devicePortraitWidth * 0.8
-        static let quizContentAnswerHeight = quizContentAnswerWidth * 0.33
+        static let quizContentAnswerHeight = quizContentItemWidth * 1.2
+        static let quizContentAnswerButtonWidth = quizContentItemWidth * 0.4
+        static let quizContentAnswerButtonHeight = quizContentAnswerButtonWidth * 0.75
+        
+        static let quizContentAnswerDetailHeight = quizContentItemWidth * 0.35
+        static let quizContentAnswerResultImageWidth = quizContentItemWidth * 0.15
         
         
+        //트로피 이미지 크기
+        static let trophyContentWidth = devicePortraitWidth * 0.93
+        static let trophyContentHeight = trophyContentWidth * 0.33
+        
+        static let recentlyAcquiredTrophyContentWidth = devicePortraitWidth * 0.17
+        static let recentlyAcquiredTrophyContentHeight = recentlyAcquiredTrophyContentWidth * 1.33
         
     }
     

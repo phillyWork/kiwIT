@@ -1,0 +1,96 @@
+//
+//  LectureCategoryListView.swift
+//  kiwIT
+//
+//  Created by Heedon on 3/19/24.
+//
+
+import SwiftUI
+
+struct LectureListView: View {
+    
+    @StateObject var lectureListVM = LectureListViewModel()
+    @ObservedObject var tabViewsVM: TabViewsViewModel
+    
+    var body: some View {
+        NavigationStack {
+            VStack {
+                Picker("Pick", selection: $lectureListVM.lectureType) {
+                    ForEach(LectureListType.allCases, id: \.self) {
+                        Text($0.rawValue)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .padding(.horizontal, 8)
+                .onChange(of: lectureListVM.lectureType) { _ in
+                    lectureListVM.updateViewByPickerSelection()
+                }
+                
+                ScrollView {
+                    VStack {
+                        Image(systemName: Setup.ImageStrings.downDirection)
+                            .scaledToFit()
+                        Text("당겨서 새로고침")
+                            .font(.custom(Setup.FontName.lineThin, size: 12))
+                            .foregroundStyle(Color.textColor)
+                    }
+                    if (lectureListVM.showLectureList) {
+                        LazyVStack(spacing: 4) {
+                            switch lectureListVM.lectureType {
+                            case .category:
+                                ForEach(lectureListVM.lectureCategoryListData, id: \.self) { data in
+                                    NavigationLink {
+                                        LectureContentListView(lectureListVM: lectureListVM, typeId: data.id, navTitle: data.title, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+                                    } label: {
+                                        LectureCategoryItemView(title: data.title, ratio: 0.75, imageUrl: data.thumbnailUrl)
+                                    }
+                                }
+                                .frame(maxHeight: .infinity)
+                            case .level:
+                                ForEach(lectureListVM.lectureLevelListData, id: \.self) { data in
+                                    NavigationLink {
+                                        LectureContentListView(lectureListVM: lectureListVM, typeId: data.num, navTitle: data.title, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+                                    } label: {
+                                        LectureCategoryItemView(title: data.title, ratio: 0.75)
+                                    }
+                                }
+                                .frame(maxHeight: .infinity)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
+                    } else {
+                        WholeEmptyView()
+                            .frame(maxWidth: .infinity)
+                            .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
+                    }
+                }
+                .scrollIndicators(.hidden)
+                .navigationTitle(Setup.ContentStrings.lectureContentTitle)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
+            }
+            .background(Color.backgroundColor)
+        }
+        .alert("네트워크 오류!", isPresented: $lectureListVM.showUnknownNetworkErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+        })
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureListVM.shouldLoginAgain, actions: {
+            ErrorAlertConfirmButton {
+                tabViewsVM.isLoginAvailable = false
+            }
+        }, message: {
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
+        })
+        .refreshable {
+            print("Pull to Refresh Lecture List in \(lectureListVM.lectureType)!!!")
+            lectureListVM.requestLectureList()
+        }
+    }
+}
+
+#Preview {
+    LectureListView(tabViewsVM: TabViewsViewModel())
+}

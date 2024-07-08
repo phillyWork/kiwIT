@@ -22,6 +22,8 @@ extension Setup {
         static let defaultQuiz2 = "pencil.and.list.clipboard"
         static let defaultAiInterview2 = "server.rack"
         
+        static let defaultCheckMark = "checkmark"
+        static let defaultCircle = "circle"
         static let defaultXMark = "xmark"
         static let defaultXMark2 = "xmark.square"
         
@@ -30,6 +32,16 @@ extension Setup {
         
         static let textSize = "textformat.size"
         
+        static let toggleButtonUnchecked = "square"
+        static let toggleButtonChecked = "checkmark.square.fill"
+        
+        static let downDirection = "arrow.down"
+        
+        static let bookmarkNotYet = "bookmark"
+        static let bookmarked = "bookmark.fill"
+        
+        static let retryAction = "arrow.clockwise"
+        static let exclamation = "exclamationmark"
     }
     
 }

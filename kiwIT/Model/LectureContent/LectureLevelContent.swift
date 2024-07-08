@@ -2,25 +2,25 @@
 //  LectureLevelContent.swift
 //  kiwIT
 //
-//  Created by Heedon on 5/8/24.
+//  Created by Heedon on 6/21/24.
 //
 
 import Foundation
 
-struct LectureLevelContentRequest: Encodable {
-    let access: String
+struct LectureLevelContentRequest {
+    var levelId: Int
+    var access: String
+    var next: Int?
+    var limit: Int?
 }
 
-struct LectureLevelContentResponse: Decodable {
-    let payload: [LectureContent]
-}
-
-struct LectureContent: Codable {
-    let id: Int
-    let title: String
-    let point: Int
-    let exercise: String
-    let answer: Bool
-    let levelNum: Int
-    let categoryChapterId: Int
+struct LectureContentListPayload: Decodable, Hashable {
+    var id: Int
+    var title: String
+    var point: Int
+    var exercise: String
+    var answer: Bool
+    var levelNum: Int
+    var categoryChapterId: Int
+    var payloadUrl: String
 }

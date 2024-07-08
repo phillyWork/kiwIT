@@ -8,12 +8,12 @@
 import Foundation
 
 struct SignUpRequest: Encodable {
-    let email: String
-    let nickname: String
-    let provider: SocialLoginProvider
+    var email: String
+    var nickname: String
+    var provider: SocialLoginProvider
 }
 
 struct SignUpResponse: Decodable {
-    let accessToken: String
-    let refreshToken: String
+    var accessToken: String
+    var refreshToken: String
 }

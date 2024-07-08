@@ -16,8 +16,6 @@ enum NetworkErrorCase {
     case withdraw
     case profileCheck
     case profileEdit
-    case acquiredTrophyList
-    case mostRecentAcquiredTrophy
     
     //case summaryStat
         
@@ -36,12 +34,19 @@ enum NetworkErrorCase {
     case quizListCheck
     case startTakingQuiz
     case submitQuizAnswers
-    case submitQuizAnswersNTimes
-    case mostRecentTakenQuiz
+    case latestTakenQuiz
     case takenQuizListCheck
     case bookmarkedQuizCheck
     case bookmarkQuiz
     
+    case wholeTrophyList
+    case trophyDetail
+    case acquiredTrophyList
+    case latestAcquiredTrophy
+    
+    //개발 중...
+    case confirmTrophyAcquisition
+    case cancelTrophyAcquisition
 }
 
 struct NetworkErrorMessage {
@@ -50,19 +55,12 @@ struct NetworkErrorMessage {
     
     var message: String {
         switch status {
-        case 202:
-            switch errorCase {
-            case .signIn:
-                return Setup.NetworkErrorMessage.signInError202
-            default:
-                return "Error Code 202"
-            }
         case 204:
             switch errorCase {
-            case .mostRecentAcquiredTrophy:
-                return Setup.NetworkErrorMessage.mostRecentTakenQuizError204
-            case .mostRecentTakenQuiz:
-                return Setup.NetworkErrorMessage.mostRecentTakenQuizError204
+            case .latestTakenQuiz:
+                return Setup.NetworkErrorMessage.latestTakenQuizError204
+            case .latestAcquiredTrophy:
+                return Setup.NetworkErrorMessage.latestAcquiredTrophyError204
             default:
                 return "Error Code 204"
             }
@@ -78,10 +76,6 @@ struct NetworkErrorMessage {
                 return Setup.NetworkErrorMessage.profileCheckError400
             case .profileEdit:
                 return Setup.NetworkErrorMessage.profileEditError400
-            case .acquiredTrophyList:
-                return Setup.NetworkErrorMessage.acquiredTrophyListError400
-            case .mostRecentAcquiredTrophy:
-                return Setup.NetworkErrorMessage.mostRecentAcquiredTrophyError400
             case .exerciseForLecture:
                 return Setup.NetworkErrorMessage.exerciseForLectureError400
             case .lectureNextStudyProgress:
@@ -90,41 +84,29 @@ struct NetworkErrorMessage {
                 return Setup.NetworkErrorMessage.bookmarkLectureError400
             case .quizListCheck:
                 return Setup.NetworkErrorMessage.quizListCheckError400
+            case .startTakingQuiz:
+                return Setup.NetworkErrorMessage.startTakingQuizError400
             case .submitQuizAnswers:
                 return Setup.NetworkErrorMessage.submitQuizAnswersError400
-            case .submitQuizAnswersNTimes:
-                return Setup.NetworkErrorMessage.submitQuizAnswersNTimesError400
             case .bookmarkQuiz:
                 return Setup.NetworkErrorMessage.bookmarkQuizError
+            case .wholeTrophyList:
+                return Setup.NetworkErrorMessage.wholeTrophyListError
+            case .trophyDetail:
+                return Setup.NetworkErrorMessage.trophyDetailError
+            case .acquiredTrophyList:
+                return Setup.NetworkErrorMessage.acquiredTrophyListError400
+            case .latestAcquiredTrophy:
+                return Setup.NetworkErrorMessage.latestAcquiredTrophyError400
+            case .confirmTrophyAcquisition:
+                return Setup.NetworkErrorMessage.confirmTrophyAcquisitionError
+            case .cancelTrophyAcquisition:
+                return Setup.NetworkErrorMessage.cancelTrophyAcquisitionError
             default:
                 return "Error Code 400"
             }
         case 401:
-            //case별로 다른 메시지가 필요할 지, 혹은 내부적으로 어차피 access token refresh이므로 그냥 넘어가도 될 지 고민
             return Setup.NetworkErrorMessage.invalidAccessToken
-        case 410:
-            switch errorCase {
-            case .lectureLevelListContentCheck:
-                return Setup.NetworkErrorMessage.lectureLevelListContentCheckError410
-            case .startOfLecture:
-                return Setup.NetworkErrorMessage.startOfLectureError410
-            case .completionOfLecture:
-                return Setup.NetworkErrorMessage.completionOfLectureError410
-            case .exerciseForLecture:
-                return Setup.NetworkErrorMessage.exerciseForLectureError410
-            case .lectureCategoryListContentCheck:
-                return Setup.NetworkErrorMessage.lectureCategoryListContentCheckError410
-            case .bookmarkLecture:
-                return Setup.NetworkErrorMessage.bookmarkLectureError410
-            case .startTakingQuiz:
-                return Setup.NetworkErrorMessage.startTakingQuizError410
-            case .submitQuizAnswers:
-                return Setup.NetworkErrorMessage.submitQuizAnswersError410
-            case .submitQuizAnswersNTimes:
-                return Setup.NetworkErrorMessage.submitQuizAnswersNTimesError410
-            default:
-                return "Error Code 410"
-            }
         case 500:
             switch errorCase {
             case .profileEdit:
@@ -134,6 +116,36 @@ struct NetworkErrorMessage {
             }
         default:
             return "Network Error: Invalid Case Error Messages"
+        }
+    }
+}
+
+enum NetworkError: Error {
+    case invalidRequestBody(message: String)
+    case emptyBody(message: String)
+    case invalidToken(message: String)
+    case invalidContent(message: String)
+    
+    init?(statusCode: Int, message: String) {
+        switch statusCode {
+        case 204: self = .emptyBody(message: message)
+        case 400: self = .invalidRequestBody(message: message)
+        case 401: self = .invalidToken(message: message)
+        case 500: self = .invalidContent(message: message)
+        default: return nil
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .emptyBody(let message):
+            return message
+        case .invalidRequestBody(let message):
+            return message
+        case .invalidToken(let message):
+            return message
+        case .invalidContent(let message):
+            return message
         }
     }
 }

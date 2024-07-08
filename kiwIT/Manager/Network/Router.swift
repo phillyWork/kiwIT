@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 import Alamofire
 
 enum Router: URLRequestConvertible {
@@ -18,35 +19,41 @@ enum Router: URLRequestConvertible {
     case withdraw(request: AuthorizationRequest)
     case profileCheck(request: AuthorizationRequest)
     case profileEdit(request: ProfileEditRequest)
-    case acquiredTrophyList(request: TrophyRequest)
-    case mostRecentAcquiredTrophy(request: TrophyRequest)
 
+    //MARK: - 누적 통계 필요???
     case summaryStat
-    
+        
     //MARK: - Lecture Contents
-    
-    case lectureLevelListCheck
-    case lectureLevelListContentCheck
-    case startOfLecture
-    case completionOfLecture
-    case exerciseForLecture
-    case lectureCategoryListCheck
-    case lectureCategoryListContentCheck
-    case lectureNextStudyProgress
-    case completedLectureListCheck
-    case bookmarkedLectureCheck
-    case bookmarkLecture
+    case lectureLevelListCheck(request: AuthorizationRequest)
+    case lectureLevelListContentCheck(request: LectureLevelContentRequest)
+    case startOfLecture(request: HandleLectureRequest)
+    case completionOfLecture(request: HandleLectureRequest)
+    case exerciseForLecture(request: ExerciseForLectureRequest)
+    case lectureCategoryListCheck(request: AuthorizationRequest)
+    case lectureCategoryListContentCheck(request: LectureCategoryContentRequest)
+    case lectureNextStudyProgress(request: AuthorizationRequest)
+    case completedLectureListCheck(request: CompletedLectureListCheckRequest)
+    case bookmarkedLectureCheck(request: BookmarkedLectureCheckRequest)
+    case bookmarkLecture(request: HandleLectureRequest)
     
     //MARK: - Quiz
+    case quizListCheck(request: QuizGroupListRequest)
+    case startTakingQuiz(request: StartQuizRequest)
+    case submitQuizAnswers(request: SubmitQuizRequest)
+    case mostRecentlyTakenQuiz(request: AuthorizationRequest)
+    case takenQuizListCheck(request: CheckCompletedOrBookmarkedQuizRequest)
+    case bookmarkedQuizCheck(request: CheckCompletedOrBookmarkedQuizRequest)
+    case bookmarkQuiz(request: BookmarkQuizRequest)
     
-    case quizListCheck
-    case startTakingQuiz
-    case submitQuizAnswers
-    case submitQuizAnswersNTimes
-    case mostRecentTakenQuiz
-    case takenQuizListCheck
-    case bookmarkedQuizCheck
-    case bookmarkQuiz
+    //MARK: - Trophy
+    case wholeTrophyList(request: TrophyListRequest)
+    case trophyDetail(request: TrophyRequest)
+    case acquiredTrophyList(request: TrophyListRequest)
+    case latestAcquiredTrophy(request: AuthorizationRequest)
+    
+    //개발 중...
+    case confirmTrophyAcquisition(request: TrophyRequest)
+    case cancelTrophyAcquisition(request: TrophyRequest)
     
     //MARK: - RequestSetup
     
@@ -68,65 +75,100 @@ enum Router: URLRequestConvertible {
             return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userRefreshAccessToken
         case .withdraw, .profileCheck, .profileEdit:
             return Setup.NetworkEndpointStrings.user
-        case .acquiredTrophyList:
-            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userAcquiredTrophyList
-        case .mostRecentAcquiredTrophy:
-            return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userAcquiredTrophyList + Setup.NetworkEndpointStrings.userRecentAcquiredTrophy
+
         case .summaryStat:
             return Setup.NetworkEndpointStrings.user + Setup.NetworkEndpointStrings.userSummaryStat
+
         case .lectureLevelListCheck:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureLevel
-        case .lectureLevelListContentCheck:
-            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureLevel + "/:id"
-        case .startOfLecture, .completionOfLecture:
-            return Setup.NetworkEndpointStrings.lectureContent + "/:id"
-        case .exerciseForLecture:
-            return Setup.NetworkEndpointStrings.lectureContent + "/:id" + Setup.NetworkEndpointStrings.exerciseForLecture
+        case .lectureLevelListContentCheck(let request):
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureLevel + "/\(request.levelId)"
+        case .startOfLecture(let request), .completionOfLecture(let request):
+            return Setup.NetworkEndpointStrings.lectureContent + "/\(request.contentId)"
+        case .exerciseForLecture(let request):
+            return Setup.NetworkEndpointStrings.lectureContent + "/\(request.contentId)" + Setup.NetworkEndpointStrings.exerciseForLecture
         case .lectureCategoryListCheck:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureCategory
-        case .lectureCategoryListContentCheck:
-            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureCategory + "/:id"
+        case .lectureCategoryListContentCheck(let request):
+            return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureCategory + "/\(request.categoryId)"
         case .lectureNextStudyProgress:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.lectureNextStudyProgress
         case .completedLectureListCheck:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.completedLecture
         case .bookmarkedLectureCheck:
             return Setup.NetworkEndpointStrings.lectureContent + Setup.NetworkEndpointStrings.bookmark
-        case .bookmarkLecture:
-            return Setup.NetworkEndpointStrings.lectureContent + "/:id" + Setup.NetworkEndpointStrings.bookmark
+        case .bookmarkLecture(let request):
+            return Setup.NetworkEndpointStrings.lectureContent + "/\(request.contentId)" + Setup.NetworkEndpointStrings.bookmark
         case .quizListCheck:
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList
-        case .startTakingQuiz, .submitQuizAnswers, .submitQuizAnswersNTimes:
-            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/:id"
-        case .mostRecentTakenQuiz:
+        case .startTakingQuiz(let request):
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/\(request.quizGroupId)"
+        case .submitQuizAnswers(let request):
+            return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + "/\(request.quizGroupId)"
+        case .mostRecentlyTakenQuiz:
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + Setup.NetworkEndpointStrings.quizMostRecentTaken
         case .takenQuizListCheck:
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.quizList + Setup.NetworkEndpointStrings.quizTakenList
         case .bookmarkedQuizCheck:
             return Setup.NetworkEndpointStrings.quiz + Setup.NetworkEndpointStrings.bookmark
-        case .bookmarkQuiz:
-            return Setup.NetworkEndpointStrings.quiz + "/:id" + Setup.NetworkEndpointStrings.bookmark
+        case .bookmarkQuiz(let request):
+            return Setup.NetworkEndpointStrings.quiz + "/\(request.quizId)" + Setup.NetworkEndpointStrings.bookmark
+        case .wholeTrophyList:
+            return Setup.NetworkEndpointStrings.trophy
+        case .trophyDetail(let request):
+            return Setup.NetworkEndpointStrings.trophy + "/\(request.trophyId)"
+        case .acquiredTrophyList:
+            return Setup.NetworkEndpointStrings.trophy + Setup.NetworkEndpointStrings.acquiredTrophyList
+        case .latestAcquiredTrophy:
+            return Setup.NetworkEndpointStrings.trophy + Setup.NetworkEndpointStrings.acquiredTrophyList + Setup.NetworkEndpointStrings.latestAcquiredTrophy
+        
+        //개발 중...
+        case .confirmTrophyAcquisition(let request), .cancelTrophyAcquisition(let request):
+            return Setup.NetworkEndpointStrings.trophy + Setup.NetworkEndpointStrings.acquiredTrophyList + "/\(request.trophyId)"
         }
     }
-    
+        
     private var header: HTTPHeaders {
         switch self {
         case .signUp, .signIn, .refreshToken:
             return []
-        case .signOut(let request), .withdraw(let request), .profileCheck(let request):
+        case .signOut(let request), .withdraw(let request), .profileCheck(let request), .lectureLevelListCheck(let request), .lectureCategoryListCheck(let request), .lectureNextStudyProgress(let request), .mostRecentlyTakenQuiz(let request), .latestAcquiredTrophy(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
-        case .acquiredTrophyList(let request), .mostRecentAcquiredTrophy(let request):
-            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        
         case .profileEdit(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .summaryStat:
             return []
-
-
-
-
-
-
+        
+        case .lectureLevelListContentCheck(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .startOfLecture(let request), .completionOfLecture(let request), .bookmarkLecture(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .exerciseForLecture(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .lectureCategoryListContentCheck(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .completedLectureListCheck(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .bookmarkedLectureCheck(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .quizListCheck(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .startTakingQuiz(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .submitQuizAnswers(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .takenQuizListCheck(let request), .bookmarkedQuizCheck(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .bookmarkQuiz(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+            
+        case .wholeTrophyList(let request), .acquiredTrophyList(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+            //개발 중...
+        case .trophyDetail(let request), .confirmTrophyAcquisition(let request), .cancelTrophyAcquisition(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+            
         default:
             return []
         }
@@ -134,23 +176,22 @@ enum Router: URLRequestConvertible {
     
     private var method: HTTPMethod {
         switch self {
-        case .signUp, .signIn:
+        case .signUp, .signIn, .completionOfLecture, .submitQuizAnswers, .bookmarkQuiz, .confirmTrophyAcquisition:
             return .post
-        case .signOut, .refreshToken, .profileEdit:
+        case .signOut, .refreshToken, .profileEdit, .exerciseForLecture, .bookmarkLecture:
             return .patch
-        case .withdraw:
+        case .withdraw, .cancelTrophyAcquisition:
             return .delete
-        case .profileCheck, .acquiredTrophyList, .mostRecentAcquiredTrophy, .summaryStat:
+        case .profileCheck, .summaryStat, .lectureLevelListCheck, .lectureLevelListContentCheck, .startOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .lectureNextStudyProgress, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .startTakingQuiz, .mostRecentlyTakenQuiz, .takenQuizListCheck, .bookmarkedQuizCheck, .wholeTrophyList, .trophyDetail, .acquiredTrophyList, .latestAcquiredTrophy:
             return .get
-
-
-
         default:
             return .get
         }
     }
+
+    //MARK: - element들 String화하기
     
-    private var body: [String: String] {
+    private var query: [String: String]? {
         switch self {
         case .signUp(let request):
             return [
@@ -167,27 +208,59 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.refreshTokenTitle: request.refreshToken]
         case .profileEdit(let request):
             return [Setup.NetworkStrings.nicknameTitle: request.nickname]
-        case .signOut, .withdraw, .profileCheck, .acquiredTrophyList, .mostRecentAcquiredTrophy:
-            return ["": ""]
-
-            
+        case .exerciseForLecture(let request):
+            return [Setup.NetworkStrings.lectureExerciseAnswerTitle: "\(request.answer)"]
+        case .submitQuizAnswers(let request):
+            return [Setup.NetworkStrings.submitQuizAnswerListTitle: "\(request.answerList)"]
+        case .signOut, .withdraw, .profileCheck, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .lectureNextStudyProgress, .bookmarkLecture, .startTakingQuiz, .mostRecentlyTakenQuiz, .bookmarkQuiz, .trophyDetail, .latestAcquiredTrophy, .confirmTrophyAcquisition, .cancelTrophyAcquisition:
+            return nil
         case .summaryStat:
-            return ["": ""]
-            
-            
-        default:
-            return ["": ""]
-        }
-    }
-    
-    private var parameters: Parameters? {
-        switch self {
-        case .acquiredTrophyList(let request), .mostRecentAcquiredTrophy(let request):
+            return nil
+        case .lectureLevelListContentCheck(let request):
+            guard let next = request.next, let limit = request.limit else { return nil }
             return [
-                Setup.NetworkStrings.trophyNextPageQueryTitle: request.next,
-                Setup.NetworkStrings.trophyLimitPageQueryTitle: request.limit
+                Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
+                Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)"
             ]
-        default: 
+        case .completedLectureListCheck(let request):
+            guard let next = request.next, let limit = request.limit, let byLevel = request.byLevel else { return nil }
+            return [
+                Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
+                Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)",
+                Setup.NetworkStrings.queryStringByLevelTitle: "\(byLevel)"
+            ]
+        case .bookmarkedLectureCheck(let request):
+            guard let next = request.next, let limit = request.limit else { return nil }
+            return [
+                Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
+                Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)"
+            ]
+        case .quizListCheck(let request):
+            guard let next = request.next, let limit = request.limit, let tag = request.tag else { return nil }
+            return [
+                Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
+                Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)",
+                Setup.NetworkStrings.queryStringTagTitle: "\(tag)"
+            ]
+        case .takenQuizListCheck(let request):
+            guard let next = request.next, let limit = request.limit else { return nil }
+            return [
+                Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
+                Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)"
+            ]
+        case .bookmarkedQuizCheck(let request):
+            guard let next = request.next, let limit = request.limit else { return nil }
+            return [
+                Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
+                Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)"
+            ]
+        case .wholeTrophyList(let request), .acquiredTrophyList(let request):
+            guard let next = request.next, let limit = request.limit else { return nil }
+            return [
+                Setup.NetworkStrings.queryStringNextPageTitle: "\(next)",
+                Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)"
+            ]
+        default:
             return nil
         }
     }
@@ -197,21 +270,16 @@ enum Router: URLRequestConvertible {
         var request = URLRequest(url: url)
         request.headers = header
         request.method = method
-        
-        //Build 목적
-        request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
+                
+        switch self {
+        //header에 json 없거나 multipart/data-form과 같은 경우
+        case .acquiredTrophyList, .lectureLevelListContentCheck, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .takenQuizListCheck, .bookmarkedQuizCheck:
+            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
+        default:
+            //json인 경우
+            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(query, into: request)
+        }
         return request
-        
-//        if let parameter = parameters {
-//            //그 외 header에 json 없거나 multipart/data-form과 같은 경우
-//            request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(parameter, into: request)
-//            return request
-//        } else {
-//            //json인 경우
-//            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(body, into: request)
-//            return request
-//        }
-
     }
     
 }

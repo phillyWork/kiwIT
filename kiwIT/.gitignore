@@ -1,7 +1,7 @@
 
 # Server & API
 APIKey.swift
-GoogleService-Info.plist
+Config.xcconfig
 
 # Xcode
 #
