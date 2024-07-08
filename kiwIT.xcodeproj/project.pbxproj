@@ -118,6 +118,7 @@
 		2177B3642C3988AF00BEB3BE /* SimpleWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3632C3988AF00BEB3BE /* SimpleWebView.swift */; };
 		2177B3672C3AB84100BEB3BE /* TrophyDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3662C3AB84100BEB3BE /* TrophyDetail.swift */; };
 		2177B36B2C3AB94100BEB3BE /* AcquireTrophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B36A2C3AB94100BEB3BE /* AcquireTrophy.swift */; };
+		2177B36C2C3AEF6C00BEB3BE /* TrophyDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3662C3AB84100BEB3BE /* TrophyDetail.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -1290,6 +1291,7 @@
 				2173F9472C15EF9B00CDF116 /* Authorization.swift in Sources */,
 				2173F9512C15F05600CDF116 /* Setup+Frame.swift in Sources */,
 				2173F9552C15F06700CDF116 /* Setup+ContentStrings.swift in Sources */,
+				2177B36C2C3AEF6C00BEB3BE /* TrophyDetail.swift in Sources */,
 				2173F9462C15EF9900CDF116 /* SignUp.swift in Sources */,
 				2177B33C2C29BA6200BEB3BE /* BookmarkQuiz.swift in Sources */,
 				2173F94C2C15EFAC00CDF116 /* Error+Network.swift in Sources */,

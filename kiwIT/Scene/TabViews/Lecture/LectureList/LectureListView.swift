@@ -72,6 +72,11 @@ struct LectureListView: View {
             }
             .background(Color.backgroundColor)
         }
+        .alert("네트워크 오류!", isPresented: $lectureListVM.showUnknownNetworkErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+        })
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureListVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
                 tabViewsVM.isLoginAvailable = false

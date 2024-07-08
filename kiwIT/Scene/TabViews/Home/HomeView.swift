@@ -59,6 +59,11 @@ struct HomeView: View {
             .background(Color.backgroundColor)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
         }
+        .alert("네트워크 오류!", isPresented: $homeVM.showUnknownNetworkErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+        })
         .onAppear {
             homeVM.checkProfile(with: tabViewsVM.profileData)
         }

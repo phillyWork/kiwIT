@@ -37,13 +37,6 @@ struct LectureView: View {
         }
         .background(Color.backgroundColor)
         .navigationBarBackButtonHidden()
-        .onAppear {
-            print("Lecture View Appeared")
-        }
-        .onDisappear {
-            print("value of lectureStudyAllDone: \(lectureVM.lectureStudyAllDone)")
-            print("Lecture View Disappeared")
-        }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
@@ -55,7 +48,6 @@ struct LectureView: View {
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
-                    print("Complete Lecture Button tapped")
                     lectureVM.debounceToRequestCompleteLecture()
                 } label: {
                     Text(lectureVM.isThisLectureStudiedBefore ? "예제 보기" : "학습 완료")
@@ -81,11 +73,11 @@ struct LectureView: View {
                         Text(Setup.ContentStrings.confirm)
                     }
                 } message: {
-                    Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent?.answer)입니다.")
+                    Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent!.answer)입니다.")
                 }
                 .alert("북마크", isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
                     Button(role: .cancel) {
-                        lectureVM.requestBookmarkThisLecture()
+                        lectureVM.debounceToRequestBookmarkLecture()
                         lectureVM.lectureStudyAllDone = true
                     } label: {
                         Text("네")
@@ -101,14 +93,18 @@ struct LectureView: View {
                 
                 if lectureVM.isThisLectureStudiedBefore {
                     Button {
-                        lectureVM.requestBookmarkThisLecture()
+                        lectureVM.debounceToRequestBookmarkLecture()
                     } label: {
                         Image(systemName: lectureVM.isThisLectureBookmarked ? Setup.ImageStrings.bookmarked : Setup.ImageStrings.bookmarkNotYet)
                     }
                 }
-
             }
         }
+        .alert("네트워크 오류!", isPresented: $lectureVM.showUnknownNetworkErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+        })
         .alert("학습 시작 오류!!!", isPresented: $lectureVM.showStartLectureErrorAlertToDismiss, actions: {
             ErrorAlertConfirmButton {
                 dismiss()
@@ -117,9 +113,7 @@ struct LectureView: View {
             Text("컨텐츠를 불러오는 데 오류가 발생했습니다. 다시 시도해주세요.")
         })
         .alert("학습 완료 오류!!!", isPresented: $lectureVM.showCompleteLectureErrorAlertToRetry, actions: {
-            ErrorAlertConfirmButton {
-//                lectureVM.showCompleteLectureErrorAlertToRetry = false
-            }
+            ErrorAlertConfirmButton { }
         }, message: {
             Text("학습 완료 처리에 실패했습니다. 다시 시도해주세요.")
         })

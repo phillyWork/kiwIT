@@ -13,6 +13,8 @@ final class LectureListViewModel: ObservableObject {
     
     @Published var shouldLoginAgain = false
     @Published var showLectureList = false
+    
+    @Published var showUnknownNetworkErrorAlert = false
 
     @Published var lectureType = LectureListType.category
     
@@ -129,13 +131,15 @@ final class LectureListViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Other Network Error for getting refreshed token in lecture categorylistviewmodel: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
+//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                            self.shouldLoginAgain = true
+                            self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Other Error for getting refreshed token in lecture categorylistviewmodel: \(error.localizedDescription)")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        self.shouldLoginAgain = true
+//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                        self.shouldLoginAgain = true
+                        self.showUnknownNetworkErrorAlert = true
                     }
                 }
             } receiveValue: { response in

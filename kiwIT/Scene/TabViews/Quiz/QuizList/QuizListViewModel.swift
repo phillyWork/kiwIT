@@ -21,6 +21,8 @@ final class QuizListViewModel: ObservableObject {
     
     @Published var isCompletedQuizListLoading = true
     
+    @Published var showUnknownNetworkErrorAlert = false
+    
     @Published var quizListData: [QuizGroupPayload] = []
     private var alreadyTakenQuizList: [TakenQuizResponse] = []
     
@@ -152,13 +154,15 @@ final class QuizListViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Refresh Token Error for network reason: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
+//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                            self.shouldLoginAgain = true
+                            self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Category Content Error for other reason: \(error.localizedDescription)")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        self.shouldLoginAgain = true
+//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                        self.shouldLoginAgain = true
+                        self.showUnknownNetworkErrorAlert = true
                     }
                 }
             } receiveValue: { response in

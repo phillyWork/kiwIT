@@ -11,7 +11,7 @@ import Combine
 
 final class HomeViewModel: ObservableObject {
     
-    
+    @Published var showUnknownNetworkErrorAlert = false
     
     func checkProfile(with profile: ProfileResponse?) {
         if let profile = profile {

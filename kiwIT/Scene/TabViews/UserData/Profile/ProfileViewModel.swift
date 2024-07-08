@@ -22,8 +22,6 @@ private enum ProfileAction {
     case latestAcquiredTrophy
 }
 
-//MARK: - 함수 구조 변경 필요
-
 final class ProfileViewModel: ObservableObject {
     
     @Published var showSessionExpiredAlert = false
@@ -58,6 +56,8 @@ final class ProfileViewModel: ObservableObject {
     @Published var showLatestAcquiredTrophyError = false
     @Published var isLatestAcquiredTrophyEmpty = true
     
+    @Published var showUnknownNetworkErrorAlert = false
+    
     //nil로 판단하지 않기함, 어차피 1개
     @Published var completedLectureList: [CompletedOrBookmarkedLecture] = []
     @Published var bookmarkedLectureList: [CompletedOrBookmarkedLecture] = []
@@ -73,6 +73,8 @@ final class ProfileViewModel: ObservableObject {
     private var debouncedNickname = ""
     private var debouncedEmail = ""
     
+    private var requestSubject = PassthroughSubject<Void, Never>()      //debounce network call
+
     private var cancellables = Set<AnyCancellable>()
     
     var updateProfileClosure: ((ProfileResponse) -> Void)?
@@ -80,7 +82,8 @@ final class ProfileViewModel: ObservableObject {
     init(updateProfileClosure: @escaping (ProfileResponse) -> Void) {
         self.updateProfileClosure = updateProfileClosure
         setupDebounce()
-        requestData()
+        requestUserData()
+//        requestData()
     }
     
     private func setupDebounce() {
@@ -97,9 +100,20 @@ final class ProfileViewModel: ObservableObject {
                 self?.debouncedEmail = debouncedValue
             }
             .store(in: &self.cancellables)
+        
+        requestSubject
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.requestData()
+            }
+            .store(in: &cancellables)
     }
     
-    func requestData() {
+    func requestUserData() {
+        requestSubject.send(())
+    }
+    
+    private func requestData() {
         requestCompletedLectureList()
         requestBookmarkedLectureList()
         requestTakenQuizList()
@@ -339,7 +353,6 @@ final class ProfileViewModel: ObservableObject {
             return
         }
         
-        //MARK: - 이메일 정보와 입력한 이메일 정보 다를 경우 에러 보내기?
         guard tokenData.1 == debouncedEmail else {
             print("Email is Not Same To Withdraw")
             showWithdrawAlert = true
@@ -373,6 +386,15 @@ final class ProfileViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
+    func pullToRefresh() {
+        completedLectureList.removeAll()
+        bookmarkedLectureList.removeAll()
+        takenQuizList.removeAll()
+        bookmarkedQuizList.removeAll()
+        latestAcquiredTrophy.removeAll()
+        requestUserData()
+    }
+    
     private func requestRefreshToken(_ current: UserTokenValue, nickname: String?, userId: String, actionType: ProfileAction) {
         NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: current.refresh)), errorCase: .refreshToken)
             .sink { completion in
@@ -382,17 +404,19 @@ final class ProfileViewModel: ObservableObject {
                         case .invalidToken(_):
                             print("Invalid For Both Access and Refresh. Needs to Sign In Again")
                             AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+                            //로그인 화면 이동하기
+                            self.showSessionExpiredAlert = true
                         default:
                             print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+                            self.showUnknownNetworkErrorAlert = true
                         }
-                        //로그인 화면 이동하기
-                        self.showSessionExpiredAlert = true
                     } else {
                         print("Refresh Token Error for other eason: \(error.localizedDescription) -- Needs to Sign In Again")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
                         //로그인 화면 이동하기
-                        self.showSessionExpiredAlert = true
+//                        self.showSessionExpiredAlert = true
+                        self.showUnknownNetworkErrorAlert = true
                     }
                 }
             } receiveValue: { response in

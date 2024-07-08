@@ -23,6 +23,8 @@ final class LectureViewModel: ObservableObject {
     @Published var showLectureExampleAlert = false
     @Published var showExampleAnswerAlert = false
     
+    @Published var showUnknownNetworkErrorAlert = false
+    
     @Published var isThisLectureStudiedBefore = false
     @Published var isThisLectureBookmarked = false
     @Published var showBookmarkErrorAlert = false
@@ -36,7 +38,8 @@ final class LectureViewModel: ObservableObject {
     
     @Published var lectureStudyAllDone = false
         
-    private var requestSubject = PassthroughSubject<Void, Never>()      //debounce network call
+    private var requestSubject = PassthroughSubject<Void, Never>()
+    private var requestBookmarkSubject = PassthroughSubject<Void, Never>()
     
     private var userExampleAnswer = false
 
@@ -58,11 +61,23 @@ final class LectureViewModel: ObservableObject {
                 self?.checkToRequestCompleteLecture()
             }
             .store(in: &cancellables)
+        
+        requestBookmarkSubject
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.requestBookmarkThisLecture()
+            }
+            .store(in: &cancellables)
     }
     
     func debounceToRequestCompleteLecture() {
         print("debounceToRequestCompleteLecture called")
         requestSubject.send(())
+    }
+    
+    func debounceToRequestBookmarkLecture() {
+        print("debounceToRequestBookmarkLecture called")
+        requestBookmarkSubject.send(())
     }
     
     private func startLecture() {
@@ -192,7 +207,7 @@ final class LectureViewModel: ObservableObject {
 
     }
     
-    func requestRefreshToken(_ type: LectureViewActionType, token: UserTokenValue, userId: String) {
+    private func requestRefreshToken(_ type: LectureViewActionType, token: UserTokenValue, userId: String) {
         NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
             .sink { completion in
                 if case .failure(let error) = completion {
@@ -203,13 +218,15 @@ final class LectureViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Refresh Token Error for network reason: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
+//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                            self.shouldLoginAgain = true
+                            self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Category Content Error for other reason: \(error.localizedDescription)")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        self.shouldLoginAgain = true
+//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                        self.shouldLoginAgain = true
+                        self.showUnknownNetworkErrorAlert = true
                     }
                 }
             } receiveValue: { response in
@@ -229,9 +246,7 @@ final class LectureViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
 
-    //MARK: - 버튼 누를 때마다 bookmark 처리 함수 호출 --> Debounce 혹은 throttle 활용 방안?
-    
-    func requestBookmarkThisLecture() {
+    private func requestBookmarkThisLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
             shouldLoginAgain = true

@@ -15,5 +15,5 @@ struct BookmarkQuizRequest {
 struct BookmarkQuizResponse: Decodable {
     var userId: Int
     var quizId: Int
-    var kept: Bool      //Bookmark Request: 200 --> kept의 값에서 toggle된 값 Return
+    var quizSolved: BookmarkQuiz?   //답안 제출 여부에 따라 Null 올 수도
 }

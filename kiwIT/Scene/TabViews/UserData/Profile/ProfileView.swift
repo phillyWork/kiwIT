@@ -280,6 +280,11 @@ struct ProfileView: View {
             .navigationTitle(Setup.ContentStrings.profileTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
+            .alert("네트워크 오류!", isPresented: $profileVM.showUnknownNetworkErrorAlert, actions: {
+                ErrorAlertConfirmButton { }
+            }, message: {
+                Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            })
             .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $profileVM.showSessionExpiredAlert, actions: {
                 ErrorAlertConfirmButton {
                     tabViewsVM.isLoginAvailable = false
@@ -289,9 +294,7 @@ struct ProfileView: View {
             })
         }
         .refreshable {
-            
-            print("Pull to Refresh Profile Data!!!")
-            
+            profileVM.pullToRefresh()
         }
     }
 }

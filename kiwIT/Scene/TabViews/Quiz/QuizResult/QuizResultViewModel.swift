@@ -14,6 +14,7 @@ final class QuizResultViewModel: ObservableObject {
     
     @Published var shouldLoginAgain = false
 
+    @Published var showUnknownNetworkErrorAlert = false
     
     @Published var didFinishSubmittingAnswer = false
     
@@ -86,13 +87,15 @@ final class QuizResultViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Refresh Token Error for network reason: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
+//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                            self.shouldLoginAgain = true
+                            self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Refresh Error: \(error.localizedDescription)")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        self.shouldLoginAgain = true
+//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                        self.shouldLoginAgain = true
+                        self.showUnknownNetworkErrorAlert = true
                     }
                 }
             } receiveValue: { response in

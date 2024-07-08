@@ -14,6 +14,8 @@ struct LectureContentListView: View {
     
     @Binding var isLoginAvailable: Bool
     
+    //MARK: - LectureListVM 사용 안함: 굳이 전달하지 않아도 됨
+    
     init(lectureListVM: LectureListViewModel, typeId: Int, navTitle: String, isLoginAvailable: Binding<Bool>) {
         self.lectureListVM = lectureListVM
         _lectureContentListVM = StateObject(wrappedValue: LectureContentListViewModel(typeId: typeId, navTitle: navTitle, lectureType: lectureListVM.lectureType))
@@ -83,6 +85,11 @@ struct LectureContentListView: View {
         .navigationTitle("\(lectureContentListVM.navTitle)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
+        .alert("네트워크 오류!", isPresented: $lectureContentListVM.showUnknownNetworkErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+        })
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureContentListVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
                 isLoginAvailable = false

@@ -15,6 +15,8 @@ final class LectureContentListViewModel: ObservableObject {
     
     @Published var shouldLoginAgain = false
     
+    @Published var showUnknownNetworkErrorAlert = false
+    
     @Published var showEmptyView = true
     
     private let dataCountPerRequestForLevelContentRequest = 15
@@ -115,9 +117,6 @@ final class LectureContentListViewModel: ObservableObject {
         requestContentData(.level, typeId: typeId)
     }
     
-    //MARK: - Refresh Token 어디서나 동일 작업 But 후속 조치가 viewmodel마다 달라짐...
-    //MARK: - 공통 함수로 처리, 결과물 publish 하도록 처리?
-    
     private func requestRefreshToken(_ token: UserTokenValue, userId: String, contentType: LectureListType, typeId: Int) {
         NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
             .sink { completion in
@@ -129,13 +128,15 @@ final class LectureContentListViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Refresh Token Error for network reason: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
+//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                            self.shouldLoginAgain = true
+                            self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Category Content Error for other reason: \(error.localizedDescription)")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        self.shouldLoginAgain = true
+//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                        self.shouldLoginAgain = true
+                        self.showUnknownNetworkErrorAlert = true
                     }
                 }
             } receiveValue: { response in

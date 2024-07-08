@@ -99,6 +99,11 @@ struct QuizView: View {
                 quizVM.resetQuiz()
             }
         }
+        .alert("네트워크 오류!", isPresented: $quizVM.showUnknownNetworkErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+        })
         .alert("로그인 오류!", isPresented: $quizVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
                 isLoginAvailable = false

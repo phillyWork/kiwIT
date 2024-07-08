@@ -57,6 +57,11 @@ struct QuizResultView: View {
             .frame(maxHeight: .infinity)
             .background(Color.backgroundColor)
             .navigationBarBackButtonHidden()
+            .alert("네트워크 오류!", isPresented: $quizResultVM.showUnknownNetworkErrorAlert, actions: {
+                ErrorAlertConfirmButton { }
+            }, message: {
+                Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            })
             .alert("로그인 오류!", isPresented: $quizResultVM.shouldLoginAgain) {
                 ErrorAlertConfirmButton {
                     isLoginAvailable = false

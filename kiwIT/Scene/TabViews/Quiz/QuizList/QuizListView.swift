@@ -63,6 +63,11 @@ struct QuizListView: View {
             .navigationTitle(Setup.ContentStrings.quizContentTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
+            .alert("네트워크 오류!", isPresented: $quizListVM.showUnknownNetworkErrorAlert, actions: {
+                ErrorAlertConfirmButton { }
+            }, message: {
+                Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            })
             .alert("로그인 오류!", isPresented: $quizListVM.shouldLoginAgain, actions: {
                 ErrorAlertConfirmButton {
                     tabViewsVM.isLoginAvailable = false
@@ -70,11 +75,6 @@ struct QuizListView: View {
             }, message: {
                 Text("세션 만료입니다. 다시 로그인해주세요!")
             })
-//            .onChange(of: quizListVM.shouldLoginAgain) { newValue in
-//                if newValue {
-//                    tabViewsVM.isLoginAvailable = false
-//                }
-//            }
             .navigationDestination(for: String.self) { id in
                 if id.hasPrefix("Quiz-") {
                     if let quizGroupId = quizListVM.getSelectedQuizGroupId() {

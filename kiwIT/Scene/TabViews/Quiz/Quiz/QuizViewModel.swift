@@ -23,6 +23,8 @@ final class QuizViewModel: ObservableObject {
     @Published var showBookmarkQuizErrorAlert = false
     @Published var showThisIsFirstQuestionAlert = false
     
+    @Published var showUnknownNetworkErrorAlert = false
+    
     @Published var shouldLoginAgain = false
     
     var pathString: String
@@ -96,13 +98,15 @@ final class QuizViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Refresh Token Error for network reason: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
+//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                            self.shouldLoginAgain = true
+                            self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Category Content Error for other reason: \(error.localizedDescription)")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        self.shouldLoginAgain = true
+//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+//                        self.shouldLoginAgain = true
+                        self.showUnknownNetworkErrorAlert = true
                     }
                 }
             } receiveValue: { response in
