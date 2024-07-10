@@ -24,6 +24,8 @@ final class UserLectureListViewModel: ObservableObject {
     @Published var showBookmarkedLectureError = false
     @Published var showRemoveBookmarkedLectureError = false
     
+    @Published var showRemoveBookmarkedLectureAlert = false
+    
     @Published var showSheetWebView = false
     
     @Published var completedLectureList: [CompletedOrBookmarkedLecture] = []
@@ -40,12 +42,12 @@ final class UserLectureListViewModel: ObservableObject {
     
     private var requestReloadCompletedLecture = PassthroughSubject<Void, Never>()
     private var requestReloadBookmarkedLecture = PassthroughSubject<Void, Never>()
-    private var requestBookmarkButtonTapped = PassthroughSubject<Int, Never>()
+    private var requestBookmarkButtonTapped = PassthroughSubject<Void, Never>()
     
     private var cancellables = Set<AnyCancellable>()
     
     var urlForSheetWebView = ""
-    var idForRemovedLecture = -1
+    var idForToBeRemovedLecture = -1
     
     init() {
         setupDebounce()
@@ -70,8 +72,8 @@ final class UserLectureListViewModel: ObservableObject {
         
         requestBookmarkButtonTapped
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
-            .sink { [weak self] id in
-                self?.requestUnbookmarkLecture(id)
+            .sink { [weak self] in
+                self?.requestUnbookmarkLecture()
             }
             .store(in: &self.cancellables)
     }
@@ -84,13 +86,18 @@ final class UserLectureListViewModel: ObservableObject {
         requestReloadBookmarkedLecture.send(())
     }
     
-    func debouncedUnbookmarkLecture(_ id: Int) {
-        requestBookmarkButtonTapped.send(id)
+    func debouncedUnbookmarkLecture() {
+        requestBookmarkButtonTapped.send()
     }
 
     func showWebView(_ lecture: CompletedOrBookmarkedLecture) {
         urlForSheetWebView = lecture.payloadUrl
         showSheetWebView = true
+    }
+    
+    func checkToRemoveBookmarkedLecture(_ id: Int) {
+        idForToBeRemovedLecture = id
+        showRemoveBookmarkedLectureAlert = true
     }
     
     private func requestCompletedLecture() {
@@ -177,13 +184,13 @@ final class UserLectureListViewModel: ObservableObject {
         requestBookmarkedLecture()
     }
     
-    private func requestUnbookmarkLecture(_ id: Int) {
+    private func requestUnbookmarkLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
-        NetworkManager.shared.request(type: BookmarkLectureResponse.self, api: .bookmarkLecture(request: HandleLectureRequest(contentId: id, access: tokenData.0.access)), errorCase: .bookmarkLecture)
+        NetworkManager.shared.request(type: BookmarkLectureResponse.self, api: .bookmarkLecture(request: HandleLectureRequest(contentId: idForToBeRemovedLecture, access: tokenData.0.access)), errorCase: .bookmarkLecture)
             .sink { completion in
                 if case .failure(let error) = completion {
                     if let bookmarkLectureError = error as? NetworkError {
@@ -204,13 +211,12 @@ final class UserLectureListViewModel: ObservableObject {
                 }
             } receiveValue: { response in
                 self.bookmarkedLectureList = self.bookmarkedLectureList.filter { $0.id != response.contentId }
-                self.idForRemovedLecture = response.contentId
                 self.shouldUpdateProfileVM = true
             }
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String, type: LectureActionType, id: Int? = nil) {
+    private func requestRefreshToken(_ token: UserTokenValue, userId: String, type: LectureActionType) {
         NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
             .sink { completion in
                 if case .failure(let error) = completion {
@@ -226,7 +232,7 @@ final class UserLectureListViewModel: ObservableObject {
                             self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
-                        print("Refresh Token Error for other eason: \(error.localizedDescription) -- Needs to Sign In Again")
+                        print("Refresh Token Error for other eason: \(error.localizedDescription)")
                         self.showUnknownNetworkErrorAlert = true
                     }
                 }
@@ -238,7 +244,7 @@ final class UserLectureListViewModel: ObservableObject {
                 case .bookmarkedList:
                     self.requestBookmarkedLecture()
                 case .unbookmark:
-                    self.requestUnbookmarkLecture(id!)
+                    self.requestUnbookmarkLecture()
                 }
             }
             .store(in: &self.cancellables)

@@ -148,4 +148,15 @@ final class LectureListViewModel: ObservableObject {
             }
             .store(in: &self.cancellables)
     }
+    
+    func cleanUpCancellables() {
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        print("Cancellables count: \(cancellables.count)")
+    }
+    
+    deinit {
+        print("LectureListViewModel DEINIT")
+    }
+    
 }

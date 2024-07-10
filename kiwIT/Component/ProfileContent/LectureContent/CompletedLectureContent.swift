@@ -12,8 +12,6 @@ struct CompletedLectureContent: View {
     var lecture: CompletedOrBookmarkedLecture
     var action: () -> Void
     
-    @State private var tapped = false
-    
     init(_ lecture: CompletedOrBookmarkedLecture, tapAction: @escaping () -> Void) {
         self.lecture = lecture
         self.action = tapAction
@@ -26,24 +24,16 @@ struct CompletedLectureContent: View {
                 .frame(width: Setup.Frame.profileLectureContentWidth, height: Setup.Frame.profileLectureContentHeight)
                 .offset(CGSize(width: 4.0, height: 4.0))
             Button {
-                withAnimation {
-                    self.tapped.toggle()
-                }
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.0001) {
-                    withAnimation {
-                        self.tapped.toggle()
-                    }
-                    self.action()
-                }
+                self.action()
             } label: {
                 Text(lecture.title)
-                    .font(.custom(Setup.FontName.notoSansThin, size: 20))
-                    .foregroundStyle(Color.textColor)
+                    .font(.custom(Setup.FontName.galMuri11Bold, size: 20))
+                    .foregroundStyle(Color.brandColor)
                     .frame(width: Setup.Frame.profileLectureContentWidth, height: Setup.Frame.profileLectureContentHeight)
                     .overlay {
                         HStack {
                             Text("LV. \(lecture.levelNum)")
-                                .font(.custom(Setup.FontName.lineRegular, size: 12))
+                                .font(.custom(Setup.FontName.lineBold, size: 12))
                                 .foregroundStyle(Color.textColor)
                             Spacer()
                         }
@@ -53,9 +43,8 @@ struct CompletedLectureContent: View {
             }
             .frame(width: Setup.Frame.profileLectureContentWidth, height: Setup.Frame.profileLectureContentHeight)
             .offset(CGSize(width: -4.0, height: -4.0))
-            .background(Color.brandBlandColor)
+            .background(Color.surfaceColor)
         }
-        .scaleEffect(tapped ? 0.85 : 1.0)
     }
 }
 

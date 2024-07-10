@@ -9,8 +9,6 @@ import SwiftUI
 
 struct RecentlyAcquiredTrophy: View {
     
-    //MARK: - 빈칸 역할의 트로피 이미지 필요
-    
     var tempImageUrlString: String
     
     var body: some View {

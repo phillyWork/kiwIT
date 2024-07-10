@@ -95,7 +95,8 @@ extension Setup {
         static let quizContentAnswerResultImageWidth = quizContentItemWidth * 0.15
         
         
-        
+        static let profileContentHeight = contentListItemWidth * 0.3
+                
         static let profileLectureContentWidth = devicePortraitWidth * 0.95
         static let profileLectureContentHeight = profileLectureContentWidth * 0.28
         
@@ -104,13 +105,14 @@ extension Setup {
         
         static let profileLectureContentHGridHeight = profileLectureContentHeight * 2.3
         
-        static let profileQuizGroupContentWidth = devicePortraitWidth * 0.95
-        static let profileQuizGroupContentHeight = profileQuizGroupContentWidth * 0.33
+        static let profileQuizContentWidth = devicePortraitWidth * 0.95
+        static let profileQuizContentHeight = profileQuizContentWidth * 0.33
         
-        static let profileQuizGroupContentOverlayTextWidthOffset = -(profileQuizGroupContentWidth/2.5)
-        static let profileQuizGroupContentOVerlayTextHeightOffset = -(profileQuizGroupContentHeight/3)
+        static let profileQuizContentOverlayTextWidthOffset = -(profileQuizContentWidth/2.5)
+        static let profileQuizContentOverlayTextHeightOffset = -(profileQuizContentHeight/2.5)
+        static let profileQuizContentAnswerExplanationOverlayHeightOffset = profileQuizContentHeight/2.5
         
-        static let profileQuizContentHGridHeight = profileQuizGroupContentHeight * 2.3
+        static let profileQuizContentHGridHeight = profileQuizContentHeight * 2.3
         
         
         //트로피 이미지 크기

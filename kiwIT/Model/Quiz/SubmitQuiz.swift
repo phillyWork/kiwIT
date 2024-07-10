@@ -21,7 +21,7 @@ struct QuizAnswer: Encodable {
     //TF 문제의 경우 “True”, “False”의 문자열로
 }
 
-struct SubmitQuizResponse: Decodable {
+struct SubmitQuizResponse: Decodable, Hashable {
     var userId: Int
     var quizGroupId: Int
     var latestScore: Int

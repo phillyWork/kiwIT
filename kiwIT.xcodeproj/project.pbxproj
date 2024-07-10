@@ -120,8 +120,9 @@
 		2177B36B2C3AB94100BEB3BE /* AcquireTrophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B36A2C3AB94100BEB3BE /* AcquireTrophy.swift */; };
 		2177B36C2C3AEF6C00BEB3BE /* TrophyDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3662C3AB84100BEB3BE /* TrophyDetail.swift */; };
 		2177B36E2C3C22FC00BEB3BE /* BookmarkedLectureContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B36D2C3C22FC00BEB3BE /* BookmarkedLectureContent.swift */; };
-		2177B3702C3C23E500BEB3BE /* CompletedQuizContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B36F2C3C23E500BEB3BE /* CompletedQuizContent.swift */; };
+		2177B3702C3C23E500BEB3BE /* TakenQuizContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B36F2C3C23E500BEB3BE /* TakenQuizContent.swift */; };
 		2177B3732C3C23FA00BEB3BE /* BookmarkedQuizContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3722C3C23F900BEB3BE /* BookmarkedQuizContent.swift */; };
+		2177B3752C3ED02500BEB3BE /* ProfileContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3742C3ED02500BEB3BE /* ProfileContent.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -282,8 +283,9 @@
 		2177B3662C3AB84100BEB3BE /* TrophyDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyDetail.swift; sourceTree = "<group>"; };
 		2177B36A2C3AB94100BEB3BE /* AcquireTrophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcquireTrophy.swift; sourceTree = "<group>"; };
 		2177B36D2C3C22FC00BEB3BE /* BookmarkedLectureContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkedLectureContent.swift; sourceTree = "<group>"; };
-		2177B36F2C3C23E500BEB3BE /* CompletedQuizContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedQuizContent.swift; sourceTree = "<group>"; };
+		2177B36F2C3C23E500BEB3BE /* TakenQuizContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenQuizContent.swift; sourceTree = "<group>"; };
 		2177B3722C3C23F900BEB3BE /* BookmarkedQuizContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkedQuizContent.swift; sourceTree = "<group>"; };
+		2177B3742C3ED02500BEB3BE /* ProfileContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileContent.swift; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -624,6 +626,7 @@
 		2177B35D2C383BB100BEB3BE /* ProfileContent */ = {
 			isa = PBXGroup;
 			children = (
+				2177B3742C3ED02500BEB3BE /* ProfileContent.swift */,
 				2177B35E2C383BD700BEB3BE /* LectureContent */,
 				2177B3712C3C23E900BEB3BE /* QuizContent */,
 				2173F93A2C108A1C00CDF116 /* TrophyContent */,
@@ -653,7 +656,7 @@
 		2177B3712C3C23E900BEB3BE /* QuizContent */ = {
 			isa = PBXGroup;
 			children = (
-				2177B36F2C3C23E500BEB3BE /* CompletedQuizContent.swift */,
+				2177B36F2C3C23E500BEB3BE /* TakenQuizContent.swift */,
 				2177B3722C3C23F900BEB3BE /* BookmarkedQuizContent.swift */,
 			);
 			path = QuizContent;
@@ -1251,6 +1254,7 @@
 				2173C04A2BA0901600FDD3D9 /* SocialLoginView.swift in Sources */,
 				2177B3272C259E0B00BEB3BE /* SubmitQuiz.swift in Sources */,
 				2177B36B2C3AB94100BEB3BE /* AcquireTrophy.swift in Sources */,
+				2177B3752C3ED02500BEB3BE /* ProfileContent.swift in Sources */,
 				2170E7552BBC6873002A1DA6 /* Setup+Color.swift in Sources */,
 				2177B3192C25959D00BEB3BE /* CheckCompletedLecture.swift in Sources */,
 				2177B3252C2598CB00BEB3BE /* BookmarkQuiz.swift in Sources */,
@@ -1286,7 +1290,7 @@
 				2177B3592C3839AA00BEB3BE /* UserLectureListViewModel.swift in Sources */,
 				2182676C2BE6831C00D8C17C /* QuizListItemView.swift in Sources */,
 				2177B30F2C243B7B00BEB3BE /* Setup+Time.swift in Sources */,
-				2177B3702C3C23E500BEB3BE /* CompletedQuizContent.swift in Sources */,
+				2177B3702C3C23E500BEB3BE /* TakenQuizContent.swift in Sources */,
 				2177B2C02C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

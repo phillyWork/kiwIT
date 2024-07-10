@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TrophyListView: View {
     
+    //MARK: - 더보기: 화면 이동, 전체 트로피 리스트 및 획득한 영역 구분해서 나타내기
+    
     @StateObject var trophyListVM = TrophyListViewModel()
     @ObservedObject var profileVM: ProfileViewModel
     

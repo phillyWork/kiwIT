@@ -48,7 +48,7 @@ enum LectureListType: String, CaseIterable {
     case level = "레벨"
 }
 
-enum QuizType: String, Codable {
+enum QuizType: String, Codable, Hashable {
     case multipleChoice = "multiple"
     case trueOrFalse = "tf"
     case shortAnswer = "short"

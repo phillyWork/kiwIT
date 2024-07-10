@@ -48,12 +48,16 @@ struct UserLectureListView: View {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         }
         .onChange(of: lectureListVM.shouldUpdateProfileVM) { newValue in
-            profileVM.removeThisBookmarkedLecture(lectureListVM.idForRemovedLecture)
+            profileVM.removeThisBookmarkedLecture(lectureListVM.idForToBeRemovedLecture)
+        }
+        .onDisappear {
+            lectureListVM.cleanUpCancellables()
         }
     }
 }
 
 struct CompletedLectureSection: View {
+    
     @ObservedObject var lectureListVM: UserLectureListViewModel
     let gridItemLayout: [GridItem]
     
@@ -123,7 +127,7 @@ struct BookmarkedLectureSection: View {
                     lectureListVM.debouncedResetBookmarkedLecture()
                 }
             } else if lectureListVM.bookmarkedLectureList.isEmpty {
-                EmptyViewWithNoError(title: "보관한 퀴즈가 없어요")
+                EmptyViewWithNoError(title: "보관한 학습 컨텐츠가 없어요")
             } else {
                 ScrollView(.horizontal) {
                     LazyHGrid(rows: gridItemLayout) {
@@ -131,7 +135,7 @@ struct BookmarkedLectureSection: View {
                             BookmarkedLectureContent(lecture) {
                                 lectureListVM.showWebView(lecture)
                             } bookmarkAction: {
-                                lectureListVM.debouncedUnbookmarkLecture(lecture.id)
+                                lectureListVM.checkToRemoveBookmarkedLecture(lecture.id)
                             }
                             .padding(.horizontal, 8)
                             .onAppear {
@@ -151,5 +155,13 @@ struct BookmarkedLectureSection: View {
             }
         }
         .background(Color.green)
+        .alert("보관함 제거?", isPresented: $lectureListVM.showRemoveBookmarkedLectureAlert) {
+            Button(Setup.ContentStrings.confirm, role: .cancel) {
+                lectureListVM.debouncedUnbookmarkLecture()
+            }
+            Button(Setup.ContentStrings.cancel, role: .destructive) { }
+        } message: {
+            Text("정말로 보관함에서 제거하실 건가요?")
+        }
     }
 }

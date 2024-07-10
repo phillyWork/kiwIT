@@ -386,10 +386,15 @@ final class ProfileViewModel: ObservableObject {
     }
     
     func pullToRefresh() {
+        isCompleteLectureListIsEmpty = true
         completedLectureList.removeAll()
+        isBookmarkedLectureListIsEmtpy = true
         bookmarkedLectureList.removeAll()
+        isTakenQuizListIsEmpty = true
         takenQuizList.removeAll()
+        isBookmarkedQuizListIsEmtpy = true
         bookmarkedQuizList.removeAll()
+        isLatestAcquiredTrophyEmpty = true
         latestAcquiredTrophy.removeAll()
         requestUserData()
     }
@@ -447,6 +452,13 @@ final class ProfileViewModel: ObservableObject {
         if bookmarkedLectureList.map({ $0.id }).contains(id) {
             bookmarkedLectureList.removeAll()
             isBookmarkedLectureListIsEmtpy = true
+        }
+    }
+    
+    func removeThisBookmarkedQuiz(_ id: Int) {
+        if bookmarkedQuizList.map({ $0.id }).contains(id) {
+            bookmarkedQuizList.removeAll()
+            isBookmarkedQuizListIsEmtpy = true
         }
     }
     
