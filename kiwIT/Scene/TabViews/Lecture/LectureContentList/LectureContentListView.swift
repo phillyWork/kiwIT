@@ -97,6 +97,9 @@ struct LectureContentListView: View {
         }, message: {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
+        .onDisappear {
+            lectureContentListVM.cleanUpCancellables()
+        }
         //to disable pull to refresh
         .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)
     }

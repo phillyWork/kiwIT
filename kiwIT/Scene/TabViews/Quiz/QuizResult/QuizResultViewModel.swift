@@ -11,70 +11,82 @@ import Combine
 
 final class QuizResultViewModel: ObservableObject {
     
+    @Published var userResult: SubmitQuizResponse?
     
     @Published var shouldLoginAgain = false
-
+    
     @Published var showUnknownNetworkErrorAlert = false
+    @Published var showSubmitAnswerErrorAlert = false
+    @Published var showRetakeQuizErrorAlert = false
     
     @Published var didFinishSubmittingAnswer = false
     
-
-    private var alreadyTakenQuizList = [TakenQuizResponse]()
-    private var currentPageCompletedQuizListRequest = 0
-    private var canRequestMoreCompletedQuizList = true
-        
-    private let dataPerQuizListRequest = 30
-    
     private var cancellables = Set<AnyCancellable>()
     
-//    var groupId: String
-//    var quizPayload: StartQuizResponse
-//    var userAnwer: [String]
-//    
-//    var userAnswer = [Int: String]()
+    private var userAnswerListForRequest: [QuizAnswer] = []
+    
+    var quizGroupId: Int
+    var passedUserAnswer: UserAnswerType
+    var quizList: [QuizPayload] = []
+    
+    var takeQuizAgainClosure: (Bool) -> Void
 
-    init() {
-        requestAlreadySubmittedQuiz()
+    init(_ id: Int, userAnswer: UserAnswerType, quizList: [QuizPayload], closure: @escaping (Bool) -> Void) {
+        self.quizGroupId = id
+        self.passedUserAnswer = userAnswer
+        self.quizList = quizList
+        self.takeQuizAgainClosure = closure
+        setupUserAnswer()
+        requestSubmitAnswer()
+    }
+        
+    private func setupUserAnswer() {
+        for i in 0..<quizList.count {
+            switch passedUserAnswer {
+            case .ox(let array):
+                let userAnswer = QuizAnswer(quizId: quizList[i].id, answer: "\(array[i])")
+                userAnswerListForRequest.append(userAnswer)
+            case .multiple(let array):
+                let userAnswer = QuizAnswer(quizId: quizList[i].id, answer: "\(array[i])")
+                userAnswerListForRequest.append(userAnswer)
+            case .short(let array):
+                let userAnswer = QuizAnswer(quizId: quizList[i].id, answer: array[i])
+                userAnswerListForRequest.append(userAnswer)
+            }
+        }
     }
     
-    //MARK: - 첫 제출인지 n번째 제출인지 확인 필요
-    private func requestAlreadySubmittedQuiz() {
+    private func requestSubmitAnswer() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
-        NetworkManager.shared.request(type: [TakenQuizResponse].self, api: .takenQuizListCheck(request: CheckCompletedOrBookmarkedQuizRequest(access: tokenData.0.access, next: currentPageCompletedQuizListRequest, limit: dataPerQuizListRequest)), errorCase: .takenQuizListCheck)
+        NetworkManager.shared.request(type: SubmitQuizResponse.self, api: .submitQuizAnswers(request: SubmitQuizRequest(quizGroupId: quizGroupId, access: tokenData.0.access, answerList: userAnswerListForRequest)), errorCase: .submitQuizAnswers)
             .sink { completion in
                 if case .failure(let error) = completion {
-                    
-                    
-                    
+                    if let submitAnswerError = error as? NetworkError {
+                        switch submitAnswerError {
+                        case .invalidRequestBody(_):
+                            print("Invalid Answer Body: \(submitAnswerError.description)")
+                            self.showSubmitAnswerErrorAlert = true
+                        case .invalidToken(_):
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1)
+                        default:
+                            print("Submit Answer Error for network reason: \(submitAnswerError.description)")
+                            self.showSubmitAnswerErrorAlert = true
+                        }
+                    } else {
+                        print("Submit Answer Error for other reason: \(error.localizedDescription)")
+                        self.showSubmitAnswerErrorAlert = true
+                    }
                 }
             } receiveValue: { response in
-                self.alreadyTakenQuizList.append(contentsOf: response)
-                self.canRequestMoreCompletedQuizList = response.count >= self.dataPerQuizListRequest
-                self.loadMoreData()
+                self.userResult = response
+                self.didFinishSubmittingAnswer = true
             }
             .store(in: &self.cancellables)
     }
-    
-    private func loadMoreData() {
-        guard canRequestMoreCompletedQuizList else {
-            requestSubmitAnswer()
-            return
-        }
-        currentPageCompletedQuizListRequest += 1
-        requestAlreadySubmittedQuiz()
-    }
-    
-    
-    private func requestSubmitAnswer() {
-        
-        
-        
-    }
-    
     
     private func requestRefreshToken(_ token: UserTokenValue, userId: String) {
         NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
@@ -87,21 +99,29 @@ final class QuizResultViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Refresh Token Error for network reason: \(refreshError.description)")
-//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                            self.shouldLoginAgain = true
                             self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Refresh Error: \(error.localizedDescription)")
-//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                        self.shouldLoginAgain = true
                         self.showUnknownNetworkErrorAlert = true
                     }
                 }
             } receiveValue: { response in
                 KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
                 self.requestSubmitAnswer()
+                self.requestSubmitAnswer()
             }
             .store(in: &self.cancellables)
     }
+    
+    func cleanUpCancellables() {
+        cancellables.forEach { $0.cancel() }
+        cancellables.removeAll()
+        print("Cancellables count: \(cancellables.count)")
+    }
+    
+    deinit {
+        print("UserLectureListViewModel DEINIT")
+    }
+    
 }

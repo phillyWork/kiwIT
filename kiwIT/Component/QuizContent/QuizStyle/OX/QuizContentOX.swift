@@ -15,68 +15,65 @@ enum UserOXAnswerState {
 
 struct QuizContentOX: View {
     
+    @State var chosenState: UserOXAnswerState
+    @State private var showAnswerNotChosenAlert = false
+    
     var quizPayload: QuizPayload
-    
-    @State private var chosenState: UserOXAnswerState = .unchosen
-    
     var quizIndex: Int
     var quizCount: Int
     
     var completion: (Result<Bool, QuizError>) -> Void
+    var bookmarkAction: (Int) -> Void
     
     var body: some View {
         VStack {
-            
             withAnimation(.easeInOut) {
                 ZStack(alignment: .center) {
-                
-                Rectangle()
-                    .fill(Color.shadowColor)
-                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
-                    .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
-                
-                VStack {
-                    Spacer()
-                    
-                    Text(quizPayload.question)
-                        .multilineTextAlignment(.leading)
-                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
-                        .minimumScaleFactor(1.0)
-                    
-                    Spacer()
-                    
-                    HStack {
-                        
-                        //MARK: - 이전 답변 가져온 것 적용되지 않는 문제 존재
-                        
-                        Button {
-                            //O 표시 확인 및 다음 문제로 넘어가기
-                            chosenState = chosenState == .chosenTrue ? .unchosen : .chosenTrue
-                        } label: {
-                            QuizOXButtonLabel(buttonLabel: "O")
+                    Rectangle()
+                        .fill(Color.shadowColor)
+                        .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
+                        .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
+                    VStack {
+                        Spacer()
+                        Text(quizPayload.question)
+                            .multilineTextAlignment(.leading)
+                            .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                            .foregroundStyle(Color.textColor)
+                        Spacer()
+                        HStack {
+                            Button {
+                                //O 표시 확인 및 다음 문제로 넘어가기
+                                chosenState = chosenState == .chosenTrue ? .unchosen : .chosenTrue
+                            } label: {
+                                QuizOXButtonLabel(buttonLabel: "O")
+                            }
+                            .background(chosenState == .chosenTrue ? Color.brandColor : Color.surfaceColor)
+                            
+                            Button {
+                                //X 표시 확인 및 다음 문제로 넘어가기
+                                chosenState = chosenState == .chosenFalse ? .unchosen : .chosenFalse
+                            } label: {
+                                QuizOXButtonLabel(buttonLabel: "X")
+                            }
+                            .background(chosenState == .chosenFalse ? Color.brandColor : Color.surfaceColor)
                         }
-                        .background(chosenState == .chosenTrue ? Color.brandColor : Color.surfaceColor)
-                        
-                        Button {
-                            //X 표시 확인 및 다음 문제로 넘어가기
-                            chosenState = chosenState == .chosenFalse ? .unchosen : .chosenFalse
-                        } label: {
-                            QuizOXButtonLabel(buttonLabel: "X")
-                        }
-                        .background(chosenState == .chosenFalse ? Color.brandColor : Color.surfaceColor)
-                        
+                        Spacer()
                     }
-                    
-                    Spacer()
-                    
+                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
+                    .background(Color.surfaceColor)
+                    .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
+                    .overlay {
+                        Button {
+                            bookmarkAction(quizPayload.id)
+                        } label: {
+                            Image(systemName: quizPayload.kept ? Setup.ImageStrings.bookmarked : Setup.ImageStrings.bookmarkNotYet)
+                        }
+                        .offset(CGSize(width: Setup.Frame.quizContentItemWidth/2.5, height: -Setup.Frame.quizContentOXItemHeight/2.5))
+                    }
                 }
-                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
-                .background(Color.surfaceColor)
-                .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
+                .padding(.vertical, 8)
+                .padding(.horizontal, 5)
             }
-            .padding(.vertical, 8)
-            .padding(.horizontal, 5)
-        }
             HStack {
                 if (quizIndex != 0) {
                     Spacer()
@@ -92,8 +89,7 @@ struct QuizContentOX: View {
                 Button {
                     print("Tap this button to move to next question")
                     if chosenState == .unchosen {
-                        //Alert 띄우기
-                        print("O, X 중 하나는 선택해야 합니다!!!")
+                        showAnswerNotChosenAlert = true
                     } else {
                         chosenState == .chosenTrue ? self.completion(.success(true)) : self.completion(.success(false))
                         chosenState = .unchosen
@@ -103,8 +99,20 @@ struct QuizContentOX: View {
                 }
                 Spacer()
             }
-            
+            .alert("답안 오류!", isPresented: $showAnswerNotChosenAlert) {
+                ErrorAlertConfirmButton { }
+            } message: {
+                Text("정답을 선택해야 다음 문제로 넘어갈 수 있어요!")
+            }
+
         }
     }
-    
+}
+
+#Preview {
+    QuizContentOX(chosenState: .unchosen, quizPayload: QuizPayload(id: 2, type: .trueOrFalse, title: "단답형 질문 1", question: "질문 2", answer: "true", explanation: "정답 설명", score: 2, kept: false), quizIndex: 2, quizCount: 4) { result in
+        print("OX Quiz!!!")
+    } bookmarkAction: { id in
+        print("Bookmark action wit hid: \(id)!!!")
+    }
 }

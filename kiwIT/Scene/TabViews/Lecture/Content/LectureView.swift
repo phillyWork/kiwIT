@@ -100,10 +100,6 @@ struct LectureView: View {
                 }
             }
         }
-        .onDisappear {
-            lectureVM.cleanUpCancellables()
-            print("Dismiss Lecture View!!!")
-        }
         .alert("네트워크 오류!", isPresented: $lectureVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
@@ -145,6 +141,9 @@ struct LectureView: View {
             if newValue {
                 dismiss()
             }
+        }
+        .onDisappear {
+            lectureVM.cleanUpCancellables()
         }
     }
 }

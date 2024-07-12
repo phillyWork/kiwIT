@@ -25,15 +25,11 @@ struct QuizView: View {
     }
 
     var body: some View {
-        
         ScrollView {
-            
             if let quizData = quizVM.quizData {
-                
                 switch quizVM.quizType {
                 case .multipleChoice:
-                    
-                    QuizMultipleChoice(quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
+                    QuizMultipleChoice(userChoiceNumber: quizVM.recentSelectedMultipleChoice, quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
                         switch result {
                         case .success(let selectedChoice):
                             quizVM.updateMultipleChoice(selectedChoice)
@@ -43,10 +39,11 @@ struct QuizView: View {
                         case .failure(.backToPreviousQuestion):
                             quizVM.checkToRemoveSelected()
                         }
+                    } bookmarkAction: { id in
+                        quizVM.updateBookmarkedStatus(id)
                     }
                 case .shortAnswer:
-                    
-                    QuizContentShortAnswer(quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
+                    QuizContentShortAnswer(textFieldInput: quizVM.isThisPreviousQuestion ? quizVM.recentSelectedShortAnswer : "", quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
                         switch result {
                         case .success(let userAnswer):
                             quizVM.updateShortAnswer(userAnswer)
@@ -56,10 +53,11 @@ struct QuizView: View {
                         case .failure(.backToPreviousQuestion):
                             quizVM.checkToRemoveSelected()
                         }
+                    } bookmarkAction: { id in
+                        quizVM.updateBookmarkedStatus(id)
                     }
                 case .trueOrFalse:
-                    
-                    QuizContentOX(quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
+                    QuizContentOX(chosenState: quizVM.isThisPreviousQuestion ? quizVM.recentSelectedBoolAnswer : .unchosen, quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
                         switch result {
                         case .success(let userAnswer):
                             quizVM.updateOXAnswer(userAnswer)
@@ -69,11 +67,13 @@ struct QuizView: View {
                         case .failure(.backToPreviousQuestion):
                             quizVM.checkToRemoveSelected()
                         }
+                    } bookmarkAction: { id in
+                        quizVM.updateBookmarkedStatus(id)
                     }
-                    
                 }
+            } else {
+                WholeEmptyView()
             }
-            
         }
         .frame(maxWidth: .infinity)
         .background(Color.backgroundColor)
@@ -92,13 +92,15 @@ struct QuizView: View {
                 .tint(Color.textColor)
             }
         }
-        .onAppear {
-            print("user takes quiz again??")
-            if quizVM.checkRetakeQuiz() {
-                print("user takes quiz again")
-                quizVM.resetQuiz()
-            }
-        }
+        
+//        .onAppear {
+//            print("user takes quiz again??")
+//            if quizVM.checkRetakeQuiz() {
+//                print("user takes quiz again")
+//                quizVM.resetQuiz()
+//            }
+//        }
+        
         .alert("네트워크 오류!", isPresented: $quizVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
@@ -111,14 +113,11 @@ struct QuizView: View {
         }, message: {
             Text("세션 만료입니다. 다시 로그인해주세요!")
         })
-//        .onChange(of: quizVM.shouldLoginAgain) { newValue in
-//            if newValue {
-//                isLoginAvailable = false
-//            }
-//        }
         .navigationDestination(isPresented: $quizVM.isQuizCompleted) {
-            let _ = print("Moving to Quiz Result View with path: \(path)")
-//            QuizResultView(path: $path, testDataForQuestion: testDataForQuestion, userOXAnswer: userOXAnswer, answers: answerForOXExample)
+            if let quizData = quizVM.quizData {
+                let _ = print("Moving to Quiz Result View with path: \(path)")
+                QuizResultView(quizVM, id: quizVM.quizGroupId, userAnswer: quizVM.getUserAnswer(), quizList: quizData.quizList, path: $path, isLoginAvailable: $isLoginAvailable)
+            }
         }
         .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)        //to disable pull to refresh
     }

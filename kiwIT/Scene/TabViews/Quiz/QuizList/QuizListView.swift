@@ -52,7 +52,6 @@ struct QuizListView: View {
                             }
                         }
                         .frame(maxHeight: .infinity)
-                        
                     }
                     .frame(maxWidth: .infinity)
                     .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
@@ -84,6 +83,7 @@ struct QuizListView: View {
             }
             .onAppear {
                 //MARK: - 퀴즈 완료 후 되돌아 올 경우, 어떻게 처리?
+                
                 
             }
         }

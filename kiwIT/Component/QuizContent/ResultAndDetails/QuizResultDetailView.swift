@@ -7,13 +7,33 @@
 
 import SwiftUI
 
+struct DetailedEachQuestionResult: Hashable {
+    var question: String
+    var userSubmit: String
+    var answer: String
+}
+
 struct QuizResultDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    //var quizResult: QuizResultModel (viewModel 공유하기)
+    var eachQuestionResult: [DetailedEachQuestionResult] = []
     
-    var quizOXResultExample: [QuizOXResultModel]
+    init(_ quizList: [QuizPayload], userAnswer: UserAnswerType) {
+        for i in 0..<quizList.count {
+            switch userAnswer {
+            case .ox(let array):
+                let result = DetailedEachQuestionResult(question: quizList[i].question, userSubmit: "\(array[i])", answer: quizList[i].answer)
+                eachQuestionResult.append(result)
+            case .multiple(let array):
+                let result = DetailedEachQuestionResult(question: quizList[i].question, userSubmit: "\(array[i])", answer: quizList[i].answer)
+                eachQuestionResult.append(result)
+            case .short(let array):
+                let result = DetailedEachQuestionResult(question: quizList[i].question, userSubmit: "\(array[i])", answer: quizList[i].answer)
+                eachQuestionResult.append(result)
+            }
+        }
+    }
     
     var body: some View {
         ScrollView {
@@ -21,15 +41,12 @@ struct QuizResultDetailView: View {
                 .font(.custom(Setup.FontName.phuduBold, size: 20))
                 .padding()
             
-            //문제 With 오답 여부 사각형 색으로 구분, 제출 답안, 실제 정답)
-            //이유도 같이 제공할 수 있다면 같이 제공
-           
-            ForEach(quizOXResultExample) { example in
-                    QuizResultDetailEachQuestion(question: example.question, submittedAnswer: example.submittedAnswer, answer: example.answer)
-                        .padding(.vertical, 3)
-//                        .background(Color.backgroundColor)
+            ForEach(eachQuestionResult, id: \.self) { eachQuestion in
+                QuizResultDetailEachQuestion(eachQuestionWithAnswer: eachQuestion)
+                    .padding(.vertical, 3)
+                    .background(Color.backgroundColor)
             }
-            
+                        
             Button {
                 dismiss()
             } label: {
