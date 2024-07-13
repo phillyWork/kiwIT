@@ -9,7 +9,7 @@ import SwiftUI
 
 struct QuizContentShortAnswer: View {
     
-    @State var textFieldInput: String
+    @State private var textFieldInput: String
     
     @FocusState private var isTextFieldFocused: Bool
     
@@ -20,6 +20,15 @@ struct QuizContentShortAnswer: View {
     var completion: (Result<String, QuizError>) -> Void
     var bookmarkAction: (Int) -> Void
         
+    init(textFieldInput: String, quizPayload: QuizPayload, quizIndex: Int, quizCount: Int, completion: @escaping (Result<String, QuizError>) -> Void, bookmarkAction: @escaping (Int) -> Void) {
+        self._textFieldInput = State(initialValue: textFieldInput)
+        self.quizPayload = quizPayload
+        self.quizIndex = quizIndex
+        self.quizCount = quizCount
+        self.completion = completion
+        self.bookmarkAction = bookmarkAction
+    }
+    
     var body: some View {
         VStack {
             ZStack(alignment: .center) {
@@ -72,7 +81,6 @@ struct QuizContentShortAnswer: View {
                     Button {
                         print("Tap this button to go back to previous question")
                         self.completion(.failure(.backToPreviousQuestion))
-                        textFieldInput = ""
                     } label: {
                         Text("이전으로")
                     }
@@ -81,7 +89,6 @@ struct QuizContentShortAnswer: View {
                 Button {
                     print("Tap this button to move to next question")
                     self.completion(.success(textFieldInput))
-                    textFieldInput = ""
                 } label: {
                     Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
                 }

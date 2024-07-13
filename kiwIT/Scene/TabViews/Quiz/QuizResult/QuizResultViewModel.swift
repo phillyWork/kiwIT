@@ -11,8 +11,6 @@ import Combine
 
 final class QuizResultViewModel: ObservableObject {
     
-    @Published var userResult: SubmitQuizResponse?
-    
     @Published var shouldLoginAgain = false
     
     @Published var showUnknownNetworkErrorAlert = false
@@ -22,38 +20,23 @@ final class QuizResultViewModel: ObservableObject {
     @Published var didFinishSubmittingAnswer = false
     
     private var cancellables = Set<AnyCancellable>()
-    
-    private var userAnswerListForRequest: [QuizAnswer] = []
+
+    var userResult: SubmitQuizResponse?
     
     var quizGroupId: Int
-    var passedUserAnswer: UserAnswerType
-    var quizList: [QuizPayload] = []
+    var userAnswerListForRequest: [QuizAnswer]
+    var quizList: [QuizPayload]
     
-    var takeQuizAgainClosure: (Bool) -> Void
-
-    init(_ id: Int, userAnswer: UserAnswerType, quizList: [QuizPayload], closure: @escaping (Bool) -> Void) {
+    init(_ id: Int, userAnswer: [QuizAnswer], quizList: [QuizPayload]) {
         self.quizGroupId = id
-        self.passedUserAnswer = userAnswer
+        self.userAnswerListForRequest = userAnswer
         self.quizList = quizList
-        self.takeQuizAgainClosure = closure
-        setupUserAnswer()
         requestSubmitAnswer()
     }
-        
-    private func setupUserAnswer() {
-        for i in 0..<quizList.count {
-            switch passedUserAnswer {
-            case .ox(let array):
-                let userAnswer = QuizAnswer(quizId: quizList[i].id, answer: "\(array[i])")
-                userAnswerListForRequest.append(userAnswer)
-            case .multiple(let array):
-                let userAnswer = QuizAnswer(quizId: quizList[i].id, answer: "\(array[i])")
-                userAnswerListForRequest.append(userAnswer)
-            case .short(let array):
-                let userAnswer = QuizAnswer(quizId: quizList[i].id, answer: array[i])
-                userAnswerListForRequest.append(userAnswer)
-            }
-        }
+    
+    func retrySubmitAnswer() {
+        cancellables.removeAll()
+        requestSubmitAnswer()
     }
     
     private func requestSubmitAnswer() {
@@ -121,7 +104,7 @@ final class QuizResultViewModel: ObservableObject {
     }
     
     deinit {
-        print("UserLectureListViewModel DEINIT")
+        print("QuizResultViewModel DEINIT")
     }
     
 }

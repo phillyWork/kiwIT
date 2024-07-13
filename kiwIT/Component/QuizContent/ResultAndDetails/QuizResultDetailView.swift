@@ -18,20 +18,11 @@ struct QuizResultDetailView: View {
     @Environment(\.dismiss) var dismiss
     
     var eachQuestionResult: [DetailedEachQuestionResult] = []
-    
-    init(_ quizList: [QuizPayload], userAnswer: UserAnswerType) {
+        
+    init(_ quizList: [QuizPayload], userAnswer: [QuizAnswer]) {
         for i in 0..<quizList.count {
-            switch userAnswer {
-            case .ox(let array):
-                let result = DetailedEachQuestionResult(question: quizList[i].question, userSubmit: "\(array[i])", answer: quizList[i].answer)
-                eachQuestionResult.append(result)
-            case .multiple(let array):
-                let result = DetailedEachQuestionResult(question: quizList[i].question, userSubmit: "\(array[i])", answer: quizList[i].answer)
-                eachQuestionResult.append(result)
-            case .short(let array):
-                let result = DetailedEachQuestionResult(question: quizList[i].question, userSubmit: "\(array[i])", answer: quizList[i].answer)
-                eachQuestionResult.append(result)
-            }
+            let result = DetailedEachQuestionResult(question: quizList[i].question, userSubmit: userAnswer[i].answer, answer: quizList[i].answer)
+            eachQuestionResult.append(result)
         }
     }
     

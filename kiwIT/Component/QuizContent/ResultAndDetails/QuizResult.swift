@@ -16,7 +16,7 @@ enum CompleteQuizButtonType {
 struct QuizResult: View {
     
     var quizList: [QuizPayload]
-    var userAnswerList: UserAnswerType
+    var userAnswerList: [QuizAnswer]
     var result: SubmitQuizResponse
     var completion: (CompleteQuizButtonType) -> Void
     
@@ -88,8 +88,8 @@ struct QuizResult: View {
             }
             .fullScreenCover(isPresented: $isDetailButtonTapped, content: {
                 //상세 결과 보여주기 위한 View 및 데이터 전달하기
-//                QuizResultDetailView(quizOXResultExample: createDetailQuizResultModel(questions: questions, submitted: submittedAnswers, answers: answers))
-//                    .presentationBackground(.thickMaterial)
+                QuizResultDetailView(quizList, userAnswer: userAnswerList)
+                    .presentationBackground(.thickMaterial)
             })
         }
     }

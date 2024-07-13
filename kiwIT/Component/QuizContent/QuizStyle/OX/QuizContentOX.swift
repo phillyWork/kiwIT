@@ -15,7 +15,7 @@ enum UserOXAnswerState {
 
 struct QuizContentOX: View {
     
-    @State var chosenState: UserOXAnswerState
+    @State private var chosenState: UserOXAnswerState
     @State private var showAnswerNotChosenAlert = false
     
     var quizPayload: QuizPayload
@@ -24,6 +24,16 @@ struct QuizContentOX: View {
     
     var completion: (Result<Bool, QuizError>) -> Void
     var bookmarkAction: (Int) -> Void
+    
+    init(chosenState: UserOXAnswerState, showAnswerNotChosenAlert: Bool = false, quizPayload: QuizPayload, quizIndex: Int, quizCount: Int, completion: @escaping (Result<Bool, QuizError>) -> Void, bookmarkAction: @escaping (Int) -> Void) {
+        self._chosenState = State(initialValue: chosenState)
+        self.showAnswerNotChosenAlert = showAnswerNotChosenAlert
+        self.quizPayload = quizPayload
+        self.quizIndex = quizIndex
+        self.quizCount = quizCount
+        self.completion = completion
+        self.bookmarkAction = bookmarkAction
+    }
     
     var body: some View {
         VStack {
@@ -80,7 +90,6 @@ struct QuizContentOX: View {
                     Button {
                         print("Tap this button to go back to previous question")
                         self.completion(.failure(.backToPreviousQuestion))
-                        chosenState = .unchosen
                     } label: {
                         Text("이전으로")
                     }
@@ -92,7 +101,6 @@ struct QuizContentOX: View {
                         showAnswerNotChosenAlert = true
                     } else {
                         chosenState == .chosenTrue ? self.completion(.success(true)) : self.completion(.success(false))
-                        chosenState = .unchosen
                     }
                 } label: {
                     Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
@@ -104,7 +112,6 @@ struct QuizContentOX: View {
             } message: {
                 Text("정답을 선택해야 다음 문제로 넘어갈 수 있어요!")
             }
-
         }
     }
 }

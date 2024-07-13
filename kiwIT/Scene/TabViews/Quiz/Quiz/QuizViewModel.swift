@@ -14,18 +14,8 @@ enum QuizRequestType {
     case bookmark
 }
 
-enum UserAnswerType {
-    case ox([Bool])
-    case multiple([Int])
-    case short([String])
-}
-
 final class QuizViewModel: ObservableObject {
-    
-    @Published var userOXAnswer = [Bool]()
-    @Published var userMultipleAnswer = [Int]()
-    @Published var userShortAnswer = [String]()
-        
+            
     @Published var isQuizCompleted = false
     
     @Published var quizData: StartQuizResponse?
@@ -39,19 +29,22 @@ final class QuizViewModel: ObservableObject {
     @Published var shouldLoginAgain = false
     
     @Published var quizIndex = 0
-    @Published var quizCount = 0
     
     @Published var isThisPreviousQuestion = false
+  
+    @Published var quizType: QuizType = .multipleChoice
     
     var pathString: String
     var quizGroupId: Int
-
-    var quizType: QuizType = .multipleChoice
     
     var recentSelectedShortAnswer = ""
     var recentSelectedMultipleChoice = 0
     var recentSelectedBoolAnswer: UserOXAnswerState = .unchosen
     
+    var quizCount = 0
+    var userAnswerListForRequest: [QuizAnswer] = []
+    
+    private var userRecentAnswer: QuizAnswer = QuizAnswer(quizId: -1, answer: "")
     private var quizIdToBookmark = -1
     private var requestBookmarkSubject = PassthroughSubject<Void, Never>()
     
@@ -66,24 +59,13 @@ final class QuizViewModel: ObservableObject {
     
     private func setupDebounce() {
         requestBookmarkSubject
-            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
                 self?.requestBookmarkQuiz()
             }
             .store(in: &cancellables)
     }
-    
-    func getUserAnswer() -> UserAnswerType {
-        switch quizType {
-        case .multipleChoice:
-            return .multiple(userMultipleAnswer)
-        case .trueOrFalse:
-            return .ox(userOXAnswer)
-        case .shortAnswer:
-            return .short(userShortAnswer)
-        }
-    }
-    
+        
     func updateBookmarkedStatus(_ id: Int) {
         quizIdToBookmark = id
         debouncedBookmarkThisQuiz()
@@ -194,40 +176,110 @@ final class QuizViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    func updateMultipleChoice(_ selectedChoice: Int) {
-        //0인 경우, 선택하지 않았음으로 틀린 답 처리
-        userMultipleAnswer.append(selectedChoice)
-        isThisPreviousQuestion = false
-        if userMultipleAnswer.count == quizCount {
-            isQuizCompleted = true
-//            quizIndex = 0
-//            userMultipleAnswer.removeAll()
-        } else {
-            quizIndex += 1
+    func updateMultipleChoice(_ userAnswer: Int) {
+        //0인 경우, 선택하지 않았음으로 서버에서 틀린 답 처리
+        if let quizData = quizData {
+            let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: "\(userAnswer)")
+        
+            if userAnswerListForRequest.count > quizIndex {
+                print("Update to new answer!!")
+                userAnswerListForRequest[quizIndex].answer = String(userAnswer)
+            } else {
+                print("New answer!!")
+                userAnswerListForRequest.append(answer)
+            }
+            
+            isThisPreviousQuestion = false
+            if userAnswerListForRequest.count == quizCount {
+                print("Quiz is all done!!!")
+                isQuizCompleted = true
+            } else {
+                isQuizCompleted = false
+                quizIndex += 1
+                quizType = quizData.quizList[quizIndex].type
+                if userAnswerListForRequest.count >= quizIndex+1 {
+                    print("There's already answered answer!")
+                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
+                    print("quizIndex: \(quizIndex)")
+                    userRecentAnswer = userAnswerListForRequest[quizIndex]
+                    getPreviousAnswer(userRecentAnswer, quizType: quizType)
+                } else {
+                    print("There's no answer. Should Get New Answer from user!")
+                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
+                    print("quizIndex: \(quizIndex)")
+                }
+            }
         }
     }
     
     func updateShortAnswer(_ userAnswer: String) {
-        userShortAnswer.append(userAnswer)
-        isThisPreviousQuestion = false
-        if userShortAnswer.count == quizCount {
-            isQuizCompleted = true
-//            quizIndex = 0
-//            userShortAnswer.removeAll()
-        } else {
-            quizIndex += 1
+        
+        if let quizData = quizData {
+            let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: userAnswer)
+            
+            if userAnswerListForRequest.count > quizIndex {
+                print("Update to new answer!!")
+                userAnswerListForRequest[quizIndex].answer = userAnswer
+            } else {
+                print("New answer!!")
+                userAnswerListForRequest.append(answer)
+            }
+            
+            isThisPreviousQuestion = false
+            if userAnswerListForRequest.count == quizCount {
+                print("Quiz is all done!!!")
+                isQuizCompleted = true
+            } else {
+                isQuizCompleted = false
+                quizIndex += 1
+                quizType = quizData.quizList[quizIndex].type
+                if userAnswerListForRequest.count >= quizIndex+1 {
+                    print("There's already answered answer!")
+                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
+                    print("quizIndex: \(quizIndex)")
+                    userRecentAnswer = userAnswerListForRequest[quizIndex]
+                    getPreviousAnswer(userRecentAnswer, quizType: quizType)
+                } else {
+                    print("There's no answer. Should Get New Answer from user!")
+                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
+                    print("quizIndex: \(quizIndex)")
+                }
+            }
         }
     }
     
     func updateOXAnswer(_ userAnswer: Bool) {
-        userOXAnswer.append(userAnswer)
-        isThisPreviousQuestion = false
-        if userOXAnswer.count == quizCount {
-            isQuizCompleted = true
-//            quizIndex = 0
-//            userOXAnswer.removeAll()
-        } else {
-            quizIndex += 1
+        if let quizData = quizData {
+            let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: "\(userAnswer)")
+            
+            if userAnswerListForRequest.count > quizIndex {
+                print("Update to new answer!!")
+                userAnswerListForRequest[quizIndex].answer = "\(userAnswer)"
+            } else {
+                print("New answer!!")
+                userAnswerListForRequest.append(answer)
+            }
+            
+            isThisPreviousQuestion = false
+            if userAnswerListForRequest.count == quizCount {
+                print("Quiz is all done!!!")
+                isQuizCompleted = true
+            } else {
+                isQuizCompleted = false
+                quizIndex += 1
+                quizType = quizData.quizList[quizIndex].type
+                if userAnswerListForRequest.count >= quizIndex+1 {
+                    print("There's already answered answer!")
+                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
+                    print("quizIndex: \(quizIndex)")
+                    userRecentAnswer = userAnswerListForRequest[quizIndex]
+                    getPreviousAnswer(userRecentAnswer, quizType: quizType)
+                } else {
+                    print("There's no answer. Should Get New Answer from user!")
+                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
+                    print("quizIndex: \(quizIndex)")
+                }
+            }
         }
     }
     
@@ -240,17 +292,30 @@ final class QuizViewModel: ObservableObject {
     }
     
     private func removeLatestUserAnswer() {
-        quizIndex -= 1
+        if let quizData = quizData {
+            quizIndex -= 1
+            
+            userRecentAnswer = userAnswerListForRequest[quizIndex]
+            print("Previous Answer: \(userRecentAnswer)")
+            
+            quizType = quizData.quizList[quizIndex].type
+            print("Previous Quiz Type: \(quizType)")
+
+            getPreviousAnswer(userRecentAnswer, quizType: quizType)
+        }
+    }
+    
+    private func getPreviousAnswer(_ userAnswer: QuizAnswer, quizType: QuizType) {
         switch quizType {
         case .multipleChoice:
-            recentSelectedMultipleChoice = userMultipleAnswer.remove(at: userMultipleAnswer.count - 1)
-            print("After Removal in Multiple: \(recentSelectedMultipleChoice)")
+            recentSelectedMultipleChoice = Int(userAnswer.answer)!
+            print("Previous Answer in Multiple: \(recentSelectedMultipleChoice)")
         case .trueOrFalse:
-            recentSelectedBoolAnswer = userOXAnswer.remove(at: userOXAnswer.count - 1) ? .chosenTrue : .chosenFalse
-            print("After Removal in OX: \(recentSelectedBoolAnswer)")
+            recentSelectedBoolAnswer = userAnswer.answer == "true" ? .chosenTrue : .chosenFalse
+            print("Previous Answer in OX: \(recentSelectedBoolAnswer)")
         case .shortAnswer:
-            recentSelectedShortAnswer = userShortAnswer.remove(at: userShortAnswer.count - 1)
-            print("After Removal in Short Answer: \(recentSelectedShortAnswer)")
+            recentSelectedShortAnswer = userAnswer.answer
+            print("Previous Answer in Short Answer: \(recentSelectedShortAnswer)")
         }
         isThisPreviousQuestion = true
     }
@@ -261,17 +326,11 @@ final class QuizViewModel: ObservableObject {
     
     func resetQuiz() {
         quizIndex = 0
-        switch quizType {
-        case .multipleChoice:
-            userMultipleAnswer.removeAll()
-        case .trueOrFalse:
-            userOXAnswer.removeAll()
-        case .shortAnswer:
-            userShortAnswer.removeAll()
-        }
+        userRecentAnswer = QuizAnswer(quizId: -1, answer: "")
+        userAnswerListForRequest.removeAll()
+        print("Quiz Reset done!!")
         isQuizCompleted = false
     }
-    
     
     func cleanUpCancellables() {
         cancellables.forEach { $0.cancel() }
@@ -280,7 +339,7 @@ final class QuizViewModel: ObservableObject {
     }
     
     deinit {
-        print("UserLectureListViewModel DEINIT")
+        print("QuizViewModel DEINIT")
     }
     
 }

@@ -7,6 +7,20 @@
 
 import SwiftUI
 
+//Custom Environment Key & Value
+struct QuizNavigationNotificationKey: EnvironmentKey {
+    //default value: 해당 key에 기본값 및 타입 지정
+    static let defaultValue: () -> Void = {}
+}
+
+extension EnvironmentValues {
+    //EnvironmentValues 추가: 직접 접근 가능한 computed property 선언
+    var quizNavigationNotification: () -> Void {
+        get { self[QuizNavigationNotificationKey.self] }
+        set { self[QuizNavigationNotificationKey.self] = newValue }
+    }
+}
+
 struct QuizListView: View {
     
     @StateObject var quizListVM = QuizListViewModel()
@@ -74,17 +88,16 @@ struct QuizListView: View {
             }, message: {
                 Text("세션 만료입니다. 다시 로그인해주세요!")
             })
-            .navigationDestination(for: String.self) { id in
-                if id.hasPrefix("Quiz-") {
+            .navigationDestination(for: String.self) { pathString in
+                if pathString.hasPrefix("Quiz-") {
                     if let quizGroupId = quizListVM.getSelectedQuizGroupId() {
-                        QuizView(quizListVM: quizListVM, quizGroupId: quizGroupId, pathString: id, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+                        QuizView(quizListVM: quizListVM, quizGroupId: quizGroupId, pathString: pathString, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+                            .environment(\.quizNavigationNotification) {
+                                print("Confirmed to Come back to Quiz List!!! Should Refresh to update view")
+                                quizListVM.resetPaginationToRefreshQuizList()
+                            }
                     }
                 }
-            }
-            .onAppear {
-                //MARK: - 퀴즈 완료 후 되돌아 올 경우, 어떻게 처리?
-                
-                
             }
         }
         .refreshable {

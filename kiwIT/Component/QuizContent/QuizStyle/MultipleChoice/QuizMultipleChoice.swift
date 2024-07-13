@@ -10,7 +10,7 @@ import SwiftUI
 struct QuizMultipleChoice: View {
     
     //0: 선택하지 않음
-    @State var userChoiceNumber: Int
+    @State private var internalUserChoiceNumber: Int
     
     var quizPayload: QuizPayload
     var quizIndex: Int
@@ -19,54 +19,61 @@ struct QuizMultipleChoice: View {
     var completion: (Result<Int, QuizError>) -> Void
     var bookmarkAction: (Int) -> Void
     
+    init(userChoiceNumber: Int, quizPayload: QuizPayload, quizIndex: Int, quizCount: Int, completion: @escaping (Result<Int, QuizError>) -> Void, bookmarkAction: @escaping (Int) -> Void) {
+        self._internalUserChoiceNumber = State(initialValue: userChoiceNumber)
+        self.quizPayload = quizPayload
+        self.quizIndex = quizIndex
+        self.quizCount = quizCount
+        self.completion = completion
+        self.bookmarkAction = bookmarkAction
+    }
+    
     var body: some View {
         VStack {
-            withAnimation {
-                ZStack(alignment: .center) {
-                    Rectangle()
-                        .fill(Color.shadowColor)
-                        .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
-                        .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
+            ZStack(alignment: .center) {
+                Rectangle()
+                    .fill(Color.shadowColor)
+                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
+                    .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
+                VStack {
+                    Text(quizPayload.question)
+                        .multilineTextAlignment(.leading)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        .foregroundStyle(Color.textColor)
                     VStack {
-                        Text(quizPayload.question)
-                            .multilineTextAlignment(.leading)
-                            .font(.custom(Setup.FontName.notoSansBold, size: 20))
-                            .foregroundStyle(Color.textColor)
-                        VStack {
-                            if let choiceList = quizPayload.choiceList {
-                                ForEach(choiceList, id: \.self) { eachChoice in
-                                    Button {
-                                        userChoiceNumber = userChoiceNumber == eachChoice.number ? 0 : eachChoice.number
-                                    } label: {
-                                        QuizMultipleChoiceButtonLabel(choiceLabel: eachChoice.payload)
-                                    }
-                                    .background(userChoiceNumber == eachChoice.number ? Color.brandColor : Color.surfaceColor)
+                        if let choiceList = quizPayload.choiceList {
+                            ForEach(choiceList, id: \.self) { eachChoice in
+                                Button {
+                                    internalUserChoiceNumber = internalUserChoiceNumber == eachChoice.number ? 0 : eachChoice.number
+                                    print("button tapped, internalUserChoiceNumber: \(internalUserChoiceNumber)")
+                                } label: {
+                                    QuizMultipleChoiceButtonLabel(choiceLabel: eachChoice.payload)
                                 }
+                                .background(internalUserChoiceNumber == eachChoice.number ? Color.brandColor : Color.surfaceColor)
                             }
                         }
                     }
-                    .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
-                    .background(Color.surfaceColor)
-                    .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
-                    .overlay {
-                        Button {
-                            bookmarkAction(quizPayload.id)
-                        } label: {
-                            Image(systemName: quizPayload.kept ? Setup.ImageStrings.bookmarked : Setup.ImageStrings.bookmarkNotYet)
-                        }
-                        .offset(CGSize(width: Setup.Frame.quizContentItemWidth/2.5, height: -Setup.Frame.quizContentMultipleChoiceItemHeight/2.3))
-                    }
                 }
-                .padding(.vertical, 8)
-                .padding(.horizontal, 5)
+                .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentMultipleChoiceItemHeight)
+                .background(Color.surfaceColor)
+                .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
+                .overlay {
+                    Button {
+                        bookmarkAction(quizPayload.id)
+                    } label: {
+                        Image(systemName: quizPayload.kept ? Setup.ImageStrings.bookmarked : Setup.ImageStrings.bookmarkNotYet)
+                    }
+                    .offset(CGSize(width: Setup.Frame.quizContentItemWidth/2.5, height: -Setup.Frame.quizContentMultipleChoiceItemHeight/2.3))
+                }
             }
+            .padding(.vertical, 8)
+            .padding(.horizontal, 5)
             HStack {
                 if (quizIndex != 0) {
                     Spacer()
                     Button {
                         print("Tap this button to go back to previous question")
                         self.completion(.failure(.backToPreviousQuestion))
-                        userChoiceNumber = 0
                     } label: {
                         Text("이전으로")
                     }
@@ -74,8 +81,7 @@ struct QuizMultipleChoice: View {
                 Spacer()
                 Button {
                     print("Tap this button to move to next question")
-                    self.completion(.success(userChoiceNumber))
-                    userChoiceNumber = 0
+                    self.completion(.success(internalUserChoiceNumber))
                 } label: {
                     Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
                 }

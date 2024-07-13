@@ -61,7 +61,6 @@ final class LectureListViewModel: ObservableObject {
             shouldLoginAgain = true
             return
         }
-        
         switch lectureType {
         case .category:
             requestLectureListBasedOnCategory(tokenData.0, userId: tokenData.1)

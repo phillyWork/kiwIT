@@ -28,7 +28,7 @@ final class TrophyListViewModel: ObservableObject {
     }
     
     deinit {
-        print("UserLectureListViewModel DEINIT")
+        print("TrophyListViewModel DEINIT")
     }
     
 }

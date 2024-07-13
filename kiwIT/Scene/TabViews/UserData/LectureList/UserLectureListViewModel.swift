@@ -71,7 +71,7 @@ final class UserLectureListViewModel: ObservableObject {
             .store(in: &self.cancellables)
         
         requestBookmarkButtonTapped
-            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
                 self?.requestUnbookmarkLecture()
             }

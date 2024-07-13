@@ -38,20 +38,15 @@ enum UserStatus: String, Codable {
     }
 }
 
-//enum LectureContentPayloadType: String, Codable {
-//    case textContent = "text"
-//    case imageFile = "image"
-//}
-
 enum LectureListType: String, CaseIterable {
     case category = "과목"
     case level = "레벨"
 }
 
 enum QuizType: String, Codable, Hashable {
-    case multipleChoice = "multiple"
-    case trueOrFalse = "tf"
-    case shortAnswer = "short"
+    case multipleChoice = "MULTIPLE"
+    case trueOrFalse = "TF"
+    case shortAnswer = "SHORT"
 }
 
 //MARK: - 퀴즈 사용처 구분 필요시? (HomeView, QuizListView 구분용?)
