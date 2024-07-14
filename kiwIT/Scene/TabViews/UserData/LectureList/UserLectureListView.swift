@@ -18,18 +18,19 @@ struct UserLectureListView: View {
                                   GridItem(.flexible())]
     
     var body: some View {
-        VStack {
+        ScrollView {
             CompletedLectureSection(lectureListVM: lectureListVM, gridItemLayout: gridItemLayout)
             BookmarkedLectureSection(lectureListVM: lectureListVM, gridItemLayout: gridItemLayout)
         }
         .sheet(isPresented: $lectureListVM.showSheetWebView, content: {
             SimpleWebView(url: lectureListVM.urlForSheetWebView)
                 .padding(.top, 15)
-                .presentationDetents([.large, .medium])
+                .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         })
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
         .background(Color.backgroundColor)
+        .scrollIndicators(.hidden)
         .alert("네트워크 오류!", isPresented: $lectureListVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
@@ -48,11 +49,12 @@ struct UserLectureListView: View {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         }
         .onChange(of: lectureListVM.shouldUpdateProfileVM) { newValue in
-            profileVM.removeThisBookmarkedLecture(lectureListVM.idForToBeRemovedLecture)
+            if newValue {
+                profileVM.removeThisBookmarkedLecture(lectureListVM.idForToBeRemovedLecture)
+            }
         }
-        .onDisappear {
-            lectureListVM.cleanUpCancellables()
-        }
+        //to disable pull to refresh
+        .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)
     }
 }
 
@@ -65,12 +67,15 @@ struct CompletedLectureSection: View {
         VStack {
             HStack {
                 Text("학습 완료 콘텐츠")
-                Spacer()
+                    .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 10)
                 Button {
                     lectureListVM.debouncedResetCompletedLecture()
                 } label: {
                     Image(systemName: Setup.ImageStrings.retryAction)
                 }
+                .padding(.trailing, 10)
             }
             if lectureListVM.showCompletedLectureError {
                 EmptyViewWithRetryButton {
@@ -88,21 +93,20 @@ struct CompletedLectureSection: View {
                             .padding(.horizontal, 8)
                             .onAppear {
                                 if lectureListVM.completedLectureList.last == eachLecture {
-                                    print("Last data for list: should call more!!!")
                                     lectureListVM.loadMoreCompletedLecture()
                                 }
                             }
                         }
                     }
                     .frame(height: Setup.Frame.profileLectureContentHGridHeight)
-                    .background(Color.red)
+                    .scrollTargetLayout()
                 }
+                .frame(height: Setup.Frame.profileLectureContentHScrollHeight)
+                .scrollTargetBehavior(.viewAligned)
                 .scrollIndicators(.visible)
-                .frame(height: Setup.Frame.profileLectureContentHeight * 2.5)
-                .background(Color.orange)
             }
         }
-        .background(Color.blue)
+        .frame(height: Setup.Frame.profileContentEquallyDivide)
     }
 }
 
@@ -115,12 +119,15 @@ struct BookmarkedLectureSection: View {
         VStack {
             HStack {
                 Text("보관한 콘텐츠")
-                Spacer()
+                    .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 10)
                 Button {
                     lectureListVM.debouncedResetBookmarkedLecture()
                 } label: {
                     Image(systemName: Setup.ImageStrings.retryAction)
                 }
+                .padding(.horizontal, 8)
             }
             if lectureListVM.showBookmarkedLectureError {
                 EmptyViewWithRetryButton {
@@ -140,21 +147,20 @@ struct BookmarkedLectureSection: View {
                             .padding(.horizontal, 8)
                             .onAppear {
                                 if lectureListVM.bookmarkedLectureList.last == lecture {
-                                    print("Last data for list: should call more!!!")
                                     lectureListVM.loadMoreBookmarkedLecture()
                                 }
                             }
                         }
                     }
                     .frame(height: Setup.Frame.profileLectureContentHGridHeight)
-                    .background(Color.purple)
+                    .scrollTargetLayout()
                 }
+                .frame(height: Setup.Frame.profileLectureContentHScrollHeight)
+                .scrollTargetBehavior(.viewAligned)
                 .scrollIndicators(.visible)
-                .frame(height: Setup.Frame.profileLectureContentHeight * 2.5)
-                .background(Color.orange)
             }
         }
-        .background(Color.green)
+        .frame(height: Setup.Frame.profileContentEquallyDivide)
         .alert("보관함 제거?", isPresented: $lectureListVM.showRemoveBookmarkedLectureAlert) {
             Button(Setup.ContentStrings.confirm, role: .cancel) {
                 lectureListVM.debouncedUnbookmarkLecture()

@@ -15,6 +15,7 @@ enum CompleteQuizButtonType {
 
 struct QuizResult: View {
     
+    var quizTitle: String
     var quizList: [QuizPayload]
     var userAnswerList: [QuizAnswer]
     var result: SubmitQuizResponse
@@ -30,28 +31,29 @@ struct QuizResult: View {
                     .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerHeight)
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                 VStack {
-                    Spacer()
-                    
-                    Text("Test 결과입니다")
-                        .multilineTextAlignment(.leading)
-                        .font(.custom(Setup.FontName.notoSansBold, size: 12))
-                    
-                    Spacer()
-                    
-                    Text("성취도: \(result.latestScore)")
-                    Text("최고 점수: \(result.highestScore)")
-                    
-                    Spacer()
+                    Text("\(quizTitle) 결과")
+                        .multilineTextAlignment(.center)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 25))
+                        .frame(height: Setup.Frame.quizContentAnswerHeight * 0.3)
                     
                     //MARK: - 성취도 따른 이미지 추가? (앱단에서 나타내기)
-//                    AsyncImage(url: URL(string: "https://t3.ftcdn.net/jpg/01/75/28/30/360_F_175283093_kkRke2YnpL6HhNRUNPmRm4pFTV2OyLzY.jpg")) { image in
-//                        image.resizable()
-//                    } placeholder: {
-//                        ProgressView()
-//                    }
-//                    .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
-//                    
-                    Spacer()
+                    AsyncImage(url: URL(string: "https://t3.ftcdn.net/jpg/01/75/28/30/360_F_175283093_kkRke2YnpL6HhNRUNPmRm4pFTV2OyLzY.jpg")) { image in
+                        image.resizable()
+                    } placeholder: {
+                        ProgressView()
+                    }
+                    .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
+                    .padding(8)
+                    
+                    VStack {
+                        Text("성취도: \(result.latestScore)")
+                            .multilineTextAlignment(.center)
+                            .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        Text("최고 점수: \(result.highestScore)")
+                            .multilineTextAlignment(.center)
+                            .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                    }
+                    .frame(maxHeight: .infinity)
                 }
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerHeight)
                 .background(Color.surfaceColor)

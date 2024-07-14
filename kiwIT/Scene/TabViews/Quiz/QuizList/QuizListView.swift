@@ -88,14 +88,14 @@ struct QuizListView: View {
             }, message: {
                 Text("세션 만료입니다. 다시 로그인해주세요!")
             })
+            .environment(\.quizNavigationNotification) {
+                print("Confirmed to Come back to Quiz List!!! Should Refresh to update view")
+                quizListVM.resetPaginationToRefreshQuizList()
+            }
             .navigationDestination(for: String.self) { pathString in
                 if pathString.hasPrefix("Quiz-") {
                     if let quizGroupId = quizListVM.getSelectedQuizGroupId() {
                         QuizView(quizListVM: quizListVM, quizGroupId: quizGroupId, pathString: pathString, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
-                            .environment(\.quizNavigationNotification) {
-                                print("Confirmed to Come back to Quiz List!!! Should Refresh to update view")
-                                quizListVM.resetPaginationToRefreshQuizList()
-                            }
                     }
                 }
             }

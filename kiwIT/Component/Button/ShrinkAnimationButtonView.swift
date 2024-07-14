@@ -12,13 +12,15 @@ struct ShrinkAnimationButtonView: View {
     var action: () -> Void
     var buttonTitle: String
     var buttonColor: Color
+    var buttonTitleFont: String
     
     @State private var tapped = false
     
-    init(title: String, color: Color, tapAction: @escaping () -> Void) {
+    init(title: String, font: String, color: Color, tapAction: @escaping () -> Void) {
         self.buttonTitle = title
         self.action = tapAction
         self.buttonColor = color
+        self.buttonTitleFont = font
     }
     
     var body: some View {
@@ -39,6 +41,7 @@ struct ShrinkAnimationButtonView: View {
             } label: {
                 Text(buttonTitle)
                     .foregroundStyle(Color.textColor)
+                    .font(.custom(buttonTitleFont, size: 13))
                     .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
             }
             .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
@@ -50,7 +53,7 @@ struct ShrinkAnimationButtonView: View {
 }
 
 #Preview {
-    ShrinkAnimationButtonView(title: "확인", color: Color.brandColor) {
+    ShrinkAnimationButtonView(title: "확인", font: Setup.FontName.galMuri11Bold, color: Color.brandColor) {
         print("Active Button Pressed")
     }
 }

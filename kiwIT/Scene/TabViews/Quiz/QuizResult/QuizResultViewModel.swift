@@ -23,12 +23,14 @@ final class QuizResultViewModel: ObservableObject {
 
     var userResult: SubmitQuizResponse?
     
+    var quizTitle: String
     var quizGroupId: Int
     var userAnswerListForRequest: [QuizAnswer]
     var quizList: [QuizPayload]
     
-    init(_ id: Int, userAnswer: [QuizAnswer], quizList: [QuizPayload]) {
+    init(_ id: Int, title: String, userAnswer: [QuizAnswer], quizList: [QuizPayload]) {
         self.quizGroupId = id
+        self.quizTitle = title
         self.userAnswerListForRequest = userAnswer
         self.quizList = quizList
         requestSubmitAnswer()
@@ -91,7 +93,6 @@ final class QuizResultViewModel: ObservableObject {
                 }
             } receiveValue: { response in
                 KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                self.requestSubmitAnswer()
                 self.requestSubmitAnswer()
             }
             .store(in: &self.cancellables)

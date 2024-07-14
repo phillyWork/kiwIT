@@ -28,7 +28,7 @@ struct TakenQuizContent: View {
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 20))
                     .foregroundStyle(Color.brandColor)
                 Text(quiz.subtitle)
-                    .font(.custom(Setup.FontName.notoSansBold, size: 15))
+                    .font(.custom(Setup.FontName.notoSansBold, size: 14))
                     .foregroundStyle(Color.textColor)
             }
             .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizContentHeight)
@@ -41,7 +41,19 @@ struct TakenQuizContent: View {
                     Spacer()
                 }
                 .padding(.horizontal, 8)
-                .offset(CGSize(width: 0, height: Setup.Frame.profileQuizContentOverlayTextHeightOffset))
+                .offset(CGSize(width: 0, height: Setup.Frame.profileQuizContentOverlayTakenQuizTextHeightOffset))
+            }
+            .overlay {
+                HStack {
+                    Text("최고 기록: \(quiz.result.highestScore)")
+                        .font(.custom(Setup.FontName.notoSansMedium, size: 12))
+                        .foregroundStyle(Color.textColor)
+                    Text("최근 기록: \(quiz.result.latestScore)")
+                        .font(.custom(Setup.FontName.notoSansMedium, size: 12))
+                        .foregroundStyle(Color.textColor)
+                }
+                .padding(.horizontal, 8)
+                .offset(CGSize(width: 0, height: Setup.Frame.profileQuizContentOverlayTakenQuizScoreOffset))
             }
             .offset(CGSize(width: -4.0, height: -4.0))
         }

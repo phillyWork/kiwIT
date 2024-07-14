@@ -57,14 +57,14 @@ final class UserLectureListViewModel: ObservableObject {
     
     private func setupDebounce() {
         requestReloadCompletedLecture
-            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
                 self?.resetCompletedLecture()
             }
             .store(in: &self.cancellables)
         
         requestReloadBookmarkedLecture
-            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
                 self?.resetBookmarkedLecture()
             }

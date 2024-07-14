@@ -54,14 +54,14 @@ final class UserQuizListViewModel: ObservableObject {
     
     private func setupDebounce() {
         requestReloadTakenQuiz
-            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
                 self?.resetTakenQuiz()
             }
             .store(in: &self.cancellables)
         
         requestReloadBookmarkedQuiz
-            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
                 self?.resetBookmarkedQuiz()
             }

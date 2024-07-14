@@ -83,7 +83,7 @@ struct SignUpInfoView: View {
             
             Spacer()
             
-            ShrinkAnimationButtonView(title: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Setup.ContentStrings.SignUp.signUpText : Setup.ContentStrings.SignUp.cannotSignUpText, color: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Color.brandColor : Color.errorHighlightColor) {
+            ShrinkAnimationButtonView(title: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Setup.ContentStrings.SignUp.signUpText : Setup.ContentStrings.SignUp.cannotSignUpText, font: Setup.FontName.galMuri11Bold, color: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Color.brandColor : Color.errorHighlightColor) {
                 
                 if signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty {
                     signUpInfoVM.requestSignUp()

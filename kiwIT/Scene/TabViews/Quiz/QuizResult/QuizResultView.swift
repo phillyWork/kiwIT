@@ -20,13 +20,13 @@ struct QuizResultView: View {
     init(_ quizVM: QuizViewModel, path: Binding<NavigationPath>, isLoginAvailable: Binding<Bool>) {
         self._path = path
         self._isLoginAvailable = isLoginAvailable
-        self._quizResultVM = StateObject(wrappedValue: QuizResultViewModel(quizVM.quizGroupId, userAnswer: quizVM.userAnswerListForRequest, quizList: quizVM.quizData!.quizList))
+        self._quizResultVM = StateObject(wrappedValue: QuizResultViewModel(quizVM.quizGroupId, title: quizVM.quizData!.title, userAnswer: quizVM.userAnswerListForRequest, quizList: quizVM.quizData!.quizList))
     }
     
     var body: some View {
         VStack {
             if quizResultVM.didFinishSubmittingAnswer {
-                QuizResult(quizList: quizResultVM.quizList, userAnswerList: quizResultVM.userAnswerListForRequest, result: quizResultVM.userResult!) { result in
+                QuizResult(quizTitle: quizResultVM.quizTitle, quizList: quizResultVM.quizList, userAnswerList: quizResultVM.userAnswerListForRequest, result: quizResultVM.userResult!) { result in
                     switch result {
                     case .confirmToMoveToQuizList:
                         path = NavigationPath()
@@ -55,7 +55,7 @@ struct QuizResultView: View {
                 }
             }
         }
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.backgroundColor)
         .navigationBarBackButtonHidden()
         .alert("답안 제출 오류!", isPresented: $quizResultVM.showSubmitAnswerErrorAlert, actions: {

@@ -21,47 +21,43 @@ struct BookmarkedQuizContent: View {
         ZStack {
             Rectangle()
                 .fill(Color.shadowColor)
-                .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizContentHeight)
+                .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizBookmarkedContentHeight)
                 .offset(CGSize(width: 4.0, height: 4.0))
-            
-            Text(quiz.question)
-                .lineLimit(3)
-                .multilineTextAlignment(.leading)
-                .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
-                .foregroundStyle(Color.brandColor)
-                .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizContentHeight)
-                .background(Color.surfaceColor)
-                .overlay {
-                    HStack(alignment: .center) {
-                        Text("정답: \(quiz.answer)")
-                            .font(.custom(Setup.FontName.notoSansBold, size: 12))
-                            .foregroundStyle(Color.textColor)
-                        Divider()
-                            .frame(minWidth: 1, maxHeight: 20)
-                            .background(Color.textColor)
-                        Text("해설: \(quiz.answer)")
-                            .font(.custom(Setup.FontName.notoSansBold, size: 12))
-                            .foregroundStyle(Color.textColor)
-                    }
+            VStack(spacing: 10) {
+                Text(quiz.question)
+                    .multilineTextAlignment(.leading)
+                    .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
+                    .foregroundStyle(Color.brandColor)
+                Text("정답: \(quiz.answer)")
+                    .font(.custom(Setup.FontName.notoSansBold, size: 15))
+                    .foregroundStyle(Color.textColor)
+            }
+            .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizBookmarkedContentHeight)
+            .background(Color.surfaceColor)
+            .overlay {
+                Text("해설: \(quiz.answer)")
+                    .multilineTextAlignment(.leading)
+                    .font(.custom(Setup.FontName.notoSansBold, size: 13))
+                    .foregroundStyle(Color.textColor)
                     .offset(CGSize(width: 0, height: Setup.Frame.profileQuizContentAnswerExplanationOverlayHeightOffset))
-                }
-                .overlay {
-                    HStack {
-                        Text("점수: \(quiz.score)")
-                            .font(.custom(Setup.FontName.lineBold, size: 12))
-                            .foregroundStyle(Color.textColor)
-                        Spacer()
-                        Button {
-                            bookmarkAction()
-                        } label: {
-                            Image(systemName: Setup.ImageStrings.bookmarked)
-                                .foregroundStyle(Color.errorHighlightColor)
-                        }
+            }
+            .overlay {
+                HStack {
+                    Text("점수: \(quiz.score)")
+                        .font(.custom(Setup.FontName.lineBold, size: 12))
+                        .foregroundStyle(Color.textColor)
+                    Spacer()
+                    Button {
+                        bookmarkAction()
+                    } label: {
+                        Image(systemName: Setup.ImageStrings.bookmarked)
+                            .foregroundStyle(Color.errorHighlightColor)
                     }
-                    .padding(.horizontal, 8)
-                    .offset(CGSize(width: 0, height: Setup.Frame.profileQuizContentOverlayTextHeightOffset))
                 }
-                .offset(CGSize(width: -4.0, height: -4.0))
+                .padding(.horizontal, 8)
+                .offset(CGSize(width: 0, height: Setup.Frame.profileQuizContentOverlayTextHeightOffset))
+            }
+            .offset(CGSize(width: -4.0, height: -4.0))
         }
     }
 }

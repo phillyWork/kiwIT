@@ -41,9 +41,10 @@ struct CompletedLectureContent: View {
                         .offset(CGSize(width: 0, height: Setup.Frame.profileLectureContentOverlayTextHeightOffset))
                     }
             }
+            .background(Color.surfaceColor)
             .frame(width: Setup.Frame.profileLectureContentWidth, height: Setup.Frame.profileLectureContentHeight)
             .offset(CGSize(width: -4.0, height: -4.0))
-            .background(Color.surfaceColor)
+            
         }
     }
 }

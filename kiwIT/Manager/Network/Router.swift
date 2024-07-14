@@ -190,7 +190,6 @@ enum Router: URLRequestConvertible {
     }
 
     //MARK: - element들 String화하기
-    
     private var query: [String: String]? {
         switch self {
         case .signUp(let request):
@@ -210,9 +209,7 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.nicknameTitle: request.nickname]
         case .exerciseForLecture(let request):
             return [Setup.NetworkStrings.lectureExerciseAnswerTitle: "\(request.answer)"]
-        case .submitQuizAnswers(let request):
-            return [Setup.NetworkStrings.submitQuizAnswerListTitle: "\(request.answerList)"]
-        case .signOut, .withdraw, .profileCheck, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .lectureNextStudyProgress, .bookmarkLecture, .startTakingQuiz, .mostRecentlyTakenQuiz, .bookmarkQuiz, .trophyDetail, .latestAcquiredTrophy, .confirmTrophyAcquisition, .cancelTrophyAcquisition:
+        case .signOut, .withdraw, .profileCheck, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .lectureNextStudyProgress, .bookmarkLecture, .startTakingQuiz, .submitQuizAnswers, .mostRecentlyTakenQuiz, .bookmarkQuiz, .trophyDetail, .latestAcquiredTrophy, .confirmTrophyAcquisition, .cancelTrophyAcquisition:
             return nil
         case .summaryStat:
             return nil
@@ -275,6 +272,10 @@ enum Router: URLRequestConvertible {
         //header에 json 없거나 multipart/data-form과 같은 경우
         case .acquiredTrophyList, .lectureLevelListContentCheck, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .takenQuizListCheck, .bookmarkedQuizCheck:
             request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
+        case .submitQuizAnswers(let submitRequest):
+            //request body: answerList Object 자체로 필요
+            let parameters = [Setup.NetworkStrings.submitQuizAnswerListTitle: submitRequest.answerList]
+            request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(parameters, into: request)
         default:
             //json인 경우
             request = try JSONParameterEncoder(encoder: JSONEncoder()).encode(query, into: request)

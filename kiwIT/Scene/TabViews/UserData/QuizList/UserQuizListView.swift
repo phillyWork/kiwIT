@@ -20,12 +20,13 @@ struct UserQuizListView: View {
     private let gridItemLayoutForBookmarkedQuiz = [GridItem(.flexible())]
     
     var body: some View {
-        VStack {
+        ScrollView {
             TakenQuizSection(quizListVM: quizListVM, gridItemLayout: gridItemLayoutForTakenQuiz)
             BookmarkedQuizSection(quizListVM: quizListVM, gridItemLayout: gridItemLayoutForBookmarkedQuiz)
         }
-        .frame(maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
         .background(Color.backgroundColor)
+        .scrollIndicators(.hidden)
         .alert("네트워크 오류!", isPresented: $quizListVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
@@ -44,11 +45,12 @@ struct UserQuizListView: View {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         }
         .onChange(of: quizListVM.shouldUpdateProfileVM) { newValue in
-            profileVM.removeThisBookmarkedQuiz(quizListVM.idForToBeRemovedQuiz)
+            if newValue {
+                profileVM.removeThisBookmarkedQuiz(quizListVM.idForToBeRemovedQuiz)
+            }
         }
-        .onDisappear {
-            quizListVM.cleanUpCancellables()
-        }
+        //to disable pull to refresh
+        .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)
     }
 }
 
@@ -61,12 +63,15 @@ struct TakenQuizSection: View {
         VStack {
             HStack {
                 Text("문제 풀이 완료 콘텐츠")
-                Spacer()
+                    .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 10)
                 Button {
                     quizListVM.debouncedResetTakenQuiz()
                 } label: {
                     Image(systemName: Setup.ImageStrings.retryAction)
                 }
+                .padding(.trailing, 10)
             }
             if quizListVM.showTakenQuizError {
                 EmptyViewWithRetryButton {
@@ -89,14 +94,14 @@ struct TakenQuizSection: View {
                         }
                     }
                     .frame(height: Setup.Frame.profileQuizContentHGridHeight)
-                    .background(Color.red)
+                    .scrollTargetLayout()
                 }
+                .frame(height: Setup.Frame.profileQuizContentHScrollHeight)
+                .scrollTargetBehavior(.viewAligned)
                 .scrollIndicators(.visible)
-                .frame(height: Setup.Frame.profileQuizContentHeight * 2.5)
-                .background(Color.orange)
             }
         }
-        .background(Color.blue)
+        .frame(height: Setup.Frame.profileContentEquallyDivide)
     }
 }
 
@@ -109,12 +114,15 @@ struct BookmarkedQuizSection: View {
         VStack {
             HStack {
                 Text("보관한 콘텐츠")
-                Spacer()
+                    .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 10)
                 Button {
                     quizListVM.debouncedResetBookmarkedQuiz()
                 } label: {
                     Image(systemName: Setup.ImageStrings.retryAction)
                 }
+                .padding(.trailing, 10)
             }
             if quizListVM.showBookmarkedQuizError {
                 EmptyViewWithRetryButton {
@@ -139,14 +147,14 @@ struct BookmarkedQuizSection: View {
                         }
                     }
                     .frame(height: Setup.Frame.profileQuizContentHGridHeight)
-                    .background(Color.purple)
+                    .scrollTargetLayout()
                 }
+                .frame(height: Setup.Frame.profileQuizContentHScrollHeight)
+                .scrollTargetBehavior(.viewAligned)
                 .scrollIndicators(.visible)
-                .frame(height: Setup.Frame.profileQuizContentHeight * 2.5)
-                .background(Color.orange)
             }
         }
-        .background(Color.green)
+        .frame(height: Setup.Frame.profileContentEquallyDivide)
         .alert("보관함 제거?", isPresented: $quizListVM.showRemoveBookmarkedQuizAlert) {
             Button(Setup.ContentStrings.confirm, role: .cancel) {
                 quizListVM.debouncedUnbookmarkQuiz()

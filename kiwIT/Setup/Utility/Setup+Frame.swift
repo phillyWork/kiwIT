@@ -96,7 +96,9 @@ extension Setup {
         
         
         static let profileContentHeight = contentListItemWidth * 0.3
-                
+        
+        static let profileContentEquallyDivide = devicePortraitHeight/2
+        
         static let profileLectureContentWidth = devicePortraitWidth * 0.95
         static let profileLectureContentHeight = profileLectureContentWidth * 0.28
         
@@ -104,16 +106,22 @@ extension Setup {
         static let profileLectureContentOverlayTextHeightOffset = -(profileLectureContentHeight/3)
         
         static let profileLectureContentHGridHeight = profileLectureContentHeight * 2.3
+        static let profileLectureContentHScrollHeight = profileLectureContentHeight * 2.45
         
         static let profileQuizContentWidth = devicePortraitWidth * 0.95
         static let profileQuizContentHeight = profileQuizContentWidth * 0.33
         
+        static let profileQuizBookmarkedContentHeight = profileQuizContentWidth * 0.7
+        
         static let profileQuizContentOverlayTextWidthOffset = -(profileQuizContentWidth/2.5)
-        static let profileQuizContentOverlayTextHeightOffset = -(profileQuizContentHeight/2.5)
-        static let profileQuizContentAnswerExplanationOverlayHeightOffset = profileQuizContentHeight/2.5
+        static let profileQuizContentOverlayTakenQuizTextHeightOffset = -(profileQuizContentHeight/2.5)
+        static let profileQuizContentOverlayTakenQuizScoreOffset = profileQuizContentHeight/2.5
+        
+        static let profileQuizContentOverlayTextHeightOffset = -(profileQuizBookmarkedContentHeight/2.5)
+        static let profileQuizContentAnswerExplanationOverlayHeightOffset = profileQuizBookmarkedContentHeight/3.0
         
         static let profileQuizContentHGridHeight = profileQuizContentHeight * 2.3
-        
+        static let profileQuizContentHScrollHeight = profileQuizContentHeight * 2.45
         
         //트로피 이미지 크기
         static let trophyContentWidth = devicePortraitWidth * 0.93
