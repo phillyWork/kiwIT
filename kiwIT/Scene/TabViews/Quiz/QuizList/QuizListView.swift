@@ -7,20 +7,6 @@
 
 import SwiftUI
 
-//Custom Environment Key & Value
-struct QuizNavigationNotificationKey: EnvironmentKey {
-    //default value: 해당 key에 기본값 및 타입 지정
-    static let defaultValue: () -> Void = {}
-}
-
-extension EnvironmentValues {
-    //EnvironmentValues 추가: 직접 접근 가능한 computed property 선언
-    var quizNavigationNotification: () -> Void {
-        get { self[QuizNavigationNotificationKey.self] }
-        set { self[QuizNavigationNotificationKey.self] = newValue }
-    }
-}
-
 struct QuizListView: View {
     
     @StateObject var quizListVM = QuizListViewModel()
@@ -47,6 +33,7 @@ struct QuizListView: View {
                         ForEach(quizListVM.quizListData, id: \.self) { eachQuizGroup in
                             Button {
                                 path.append("Quiz-\(eachQuizGroup.id)")
+                                quizListVM.isQuizGroupSelected = true
                                 quizListVM.updateSelectedQuizGroupId(eachQuizGroup.id)
                             } label: {
                                 if quizListVM.isCompletedQuizListLoading {
@@ -58,7 +45,6 @@ struct QuizListView: View {
                                 }
                             }
                             .onAppear {
-                                print("Check data for pagination!!!")
                                 if quizListVM.quizListData.last == eachQuizGroup {
                                     print("Last data for list: should call more!!!")
                                     quizListVM.loadMoreQuizList()
@@ -88,15 +74,19 @@ struct QuizListView: View {
             }, message: {
                 Text("세션 만료입니다. 다시 로그인해주세요!")
             })
-            .environment(\.quizNavigationNotification) {
-                print("Confirmed to Come back to Quiz List!!! Should Refresh to update view")
-                quizListVM.resetPaginationToRefreshQuizList()
-            }
             .navigationDestination(for: String.self) { pathString in
                 if pathString.hasPrefix("Quiz-") {
                     if let quizGroupId = quizListVM.getSelectedQuizGroupId() {
                         QuizView(quizListVM: quizListVM, quizGroupId: quizGroupId, pathString: pathString, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
                     }
+                }
+            }
+            .onAppear {
+                if quizListVM.isQuizGroupSelected {
+                    print("Getting back from QuizResultView!!!")
+                    quizListVM.resetPaginationToRefreshQuizList()
+                } else {
+                    print("First View Load!!!")
                 }
             }
         }

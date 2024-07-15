@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-//MARK: - Home: 유저 닉네임, 최근 진도 및 퀴즈 결과, 다음 진도...
 struct HomeView: View {
     
     @StateObject var homeVM = HomeViewModel()

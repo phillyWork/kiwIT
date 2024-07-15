@@ -14,9 +14,6 @@ struct QuizResultView: View {
     @Binding var path: NavigationPath
     @Binding var isLoginAvailable: Bool
     
-    //to notify it's coming from QuizResultView to QuizListView via confirmToMoveToQuizList
-    @Environment(\.quizNavigationNotification) var quizNavigationNotification: () -> Void
-    
     init(_ quizVM: QuizViewModel, path: Binding<NavigationPath>, isLoginAvailable: Binding<Bool>) {
         self._path = path
         self._isLoginAvailable = isLoginAvailable
@@ -30,21 +27,12 @@ struct QuizResultView: View {
                     switch result {
                     case .confirmToMoveToQuizList:
                         path = NavigationPath()
-                        quizNavigationNotification()
                         print("Go back to Quiz List")
                     case .takeQuizAgain:
                         if (path.count > 0) {
-                            print("back to take quiz again")
-                            
-//                            quizResultVM.takeQuizAgainClosure(true)
-                            
                             //notify QuizView
                             path.removeLast()
-                            
-//                            path = NavigationPath()
-                            
                         } else {
-                            print("cannot move back to take quiz")
                             quizResultVM.showRetakeQuizErrorAlert = true
                         }
                     }
@@ -88,9 +76,6 @@ struct QuizResultView: View {
             }
         } message: {
             Text("오류로 인해 해당 퀴즈의 다시 풀기가 불가합니다. 퀴즈 목록으로 돌아갑니다.")
-        }
-        .onDisappear {
-            quizResultVM.cleanUpCancellables()
         }
     }
 }

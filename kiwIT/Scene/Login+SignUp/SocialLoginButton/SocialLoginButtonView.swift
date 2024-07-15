@@ -40,8 +40,12 @@ struct SocialLoginButtonView: View {
         switch service {
         case .apple:
             SignInWithAppleButton { request in
+                
+                //MARK: - Sign in Apple 설정하기
+                
                 //Sign in Apple Action with request (요청할 정보)
                 request.requestedScopes = [.email, .fullName]
+                
             } onCompletion: { result in
                 switch result {
                 case .success(let authResult):
@@ -50,6 +54,7 @@ struct SocialLoginButtonView: View {
                 case .failure(let error):
                     //실패: 유저 허가하지 않음
                     print("Failed in Sign in Apple: \(error.localizedDescription)")
+                    
                 }
             }
         case .kakao:
@@ -57,6 +62,7 @@ struct SocialLoginButtonView: View {
                 socialLoginButtonVM.requestKakaoUserLogin()
             } label: {
                 //MARK: - 카카오 로그인 버튼 이미지 필요
+                
                 Text("Kakao Login Button")
             }
         }

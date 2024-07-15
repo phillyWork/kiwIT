@@ -44,8 +44,8 @@ struct SocialLoginView: View {
                     .font(.title)
                 Spacer(minLength: 50)
                 VStack(alignment: .center, spacing: 10) {
-                    SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .apple)
-                    SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .kakao)
+                    LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .apple))
+                    LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .kakao))
                 }
                 .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
             }
@@ -62,6 +62,7 @@ struct SocialLoginView: View {
                     mainTabBarVM.isUserLoggedIn = true
                 } else {
                     print("Not Succeeding in Login. Should show error message: \(socialLoginVM.errorMessage)")
+                    
                 }
             }
             .navigationDestination(isPresented: $socialLoginVM.shouldMoveToSignUp) {

@@ -22,7 +22,6 @@ final class QuizViewModel: ObservableObject {
     
     @Published var showStartQuizErrorAlert = false
     @Published var showBookmarkQuizErrorAlert = false
-    @Published var showThisIsFirstQuestionAlert = false
     
     @Published var showUnknownNetworkErrorAlert = false
     
@@ -31,9 +30,7 @@ final class QuizViewModel: ObservableObject {
     @Published var quizIndex = 0
     
     @Published var isThisPreviousQuestion = false
-  
-    @Published var quizType: QuizType = .multipleChoice
-    
+      
     var pathString: String
     var quizGroupId: Int
     
@@ -42,6 +39,7 @@ final class QuizViewModel: ObservableObject {
     var recentSelectedBoolAnswer: UserOXAnswerState = .unchosen
     
     var quizCount = 0
+    var quizTypeArray: [QuizType] = []
     var userAnswerListForRequest: [QuizAnswer] = []
     
     private var userRecentAnswer: QuizAnswer = QuizAnswer(quizId: -1, answer: "")
@@ -51,6 +49,7 @@ final class QuizViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init(quizGroupId: Int, pathString: String) {
+        print("QuizViewModel INIT")
         self.quizGroupId = quizGroupId
         self.pathString = pathString
         setupDebounce()
@@ -100,12 +99,6 @@ final class QuizViewModel: ObservableObject {
             } receiveValue: { response in
                 self.quizData = response
                 self.quizCount = response.quizList.count
-                switch response.quizList.first?.type {
-                case .multipleChoice: self.quizType = .multipleChoice
-                case .trueOrFalse: self.quizType = .trueOrFalse
-                case .shortAnswer: self.quizType = .shortAnswer
-                default: self.quizType = .multipleChoice
-                }
             }
             .store(in: &self.cancellables)
     }
@@ -196,13 +189,12 @@ final class QuizViewModel: ObservableObject {
             } else {
                 isQuizCompleted = false
                 quizIndex += 1
-                quizType = quizData.quizList[quizIndex].type
                 if userAnswerListForRequest.count >= quizIndex+1 {
                     print("There's already answered answer!")
                     print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
                     print("quizIndex: \(quizIndex)")
                     userRecentAnswer = userAnswerListForRequest[quizIndex]
-                    getPreviousAnswer(userRecentAnswer, quizType: quizType)
+                    getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
                 } else {
                     print("There's no answer. Should Get New Answer from user!")
                     print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
@@ -232,13 +224,12 @@ final class QuizViewModel: ObservableObject {
             } else {
                 isQuizCompleted = false
                 quizIndex += 1
-                quizType = quizData.quizList[quizIndex].type
                 if userAnswerListForRequest.count >= quizIndex+1 {
                     print("There's already answered answer!")
                     print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
                     print("quizIndex: \(quizIndex)")
                     userRecentAnswer = userAnswerListForRequest[quizIndex]
-                    getPreviousAnswer(userRecentAnswer, quizType: quizType)
+                    getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
                 } else {
                     print("There's no answer. Should Get New Answer from user!")
                     print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
@@ -267,13 +258,12 @@ final class QuizViewModel: ObservableObject {
             } else {
                 isQuizCompleted = false
                 quizIndex += 1
-                quizType = quizData.quizList[quizIndex].type
                 if userAnswerListForRequest.count >= quizIndex+1 {
                     print("There's already answered answer!")
                     print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
                     print("quizIndex: \(quizIndex)")
                     userRecentAnswer = userAnswerListForRequest[quizIndex]
-                    getPreviousAnswer(userRecentAnswer, quizType: quizType)
+                    getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
                 } else {
                     print("There's no answer. Should Get New Answer from user!")
                     print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
@@ -284,9 +274,7 @@ final class QuizViewModel: ObservableObject {
     }
     
     func checkToRemoveSelected() {
-        if quizIndex == 0 {
-            showThisIsFirstQuestionAlert = true
-        } else {
+        if quizIndex != 0 {
             removeLatestUserAnswer()
         }
     }
@@ -298,10 +286,7 @@ final class QuizViewModel: ObservableObject {
             userRecentAnswer = userAnswerListForRequest[quizIndex]
             print("Previous Answer: \(userRecentAnswer)")
             
-            quizType = quizData.quizList[quizIndex].type
-            print("Previous Quiz Type: \(quizType)")
-
-            getPreviousAnswer(userRecentAnswer, quizType: quizType)
+            getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
         }
     }
     
@@ -320,22 +305,28 @@ final class QuizViewModel: ObservableObject {
         isThisPreviousQuestion = true
     }
     
-    func checkRetakeQuiz() -> Bool {
-        return pathString.hasPrefix("RetakeQuiz-")
+    func checkRetakeQuiz() {
+        if quizIndex != 0 {
+            print("It's about to take Quiz Again!!!")
+            resetQuiz()
+        } else {
+            print("First Time For Quiz!!!")
+        }
     }
     
-    func resetQuiz() {
+    private func resetQuiz() {
         quizIndex = 0
         userRecentAnswer = QuizAnswer(quizId: -1, answer: "")
+        recentSelectedBoolAnswer = .unchosen
+        recentSelectedMultipleChoice = 0
+        recentSelectedShortAnswer = ""
         userAnswerListForRequest.removeAll()
+        
+        //MARK: - 퀴즈 자체도 지우고 아예 퀴즈 시작 Request를 다시 보내야 할 지?
+        
+        
         print("Quiz Reset done!!")
         isQuizCompleted = false
-    }
-    
-    func cleanUpCancellables() {
-        cancellables.forEach { $0.cancel() }
-        cancellables.removeAll()
-        print("Cancellables count: \(cancellables.count)")
     }
     
     deinit {

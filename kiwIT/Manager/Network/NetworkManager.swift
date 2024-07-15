@@ -26,7 +26,6 @@ final class NetworkManager {
                     
                     switch response.result {
                     case .success(let payload):
-                        print("payload: \(payload)")
                         promise(.success(payload))
                     case .failure(let error):
                         print("error description: \(error.localizedDescription)")

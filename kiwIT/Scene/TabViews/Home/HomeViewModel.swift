@@ -13,6 +13,10 @@ final class HomeViewModel: ObservableObject {
     
     @Published var showUnknownNetworkErrorAlert = false
     
+    init() {
+        print("HomeViewModel INIT")
+    }
+    
     func checkProfile(with profile: ProfileResponse?) {
         if let profile = profile {
             

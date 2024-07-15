@@ -20,7 +20,7 @@ final class QuizResultViewModel: ObservableObject {
     @Published var didFinishSubmittingAnswer = false
     
     private var cancellables = Set<AnyCancellable>()
-
+    
     var userResult: SubmitQuizResponse?
     
     var quizTitle: String
@@ -29,6 +29,7 @@ final class QuizResultViewModel: ObservableObject {
     var quizList: [QuizPayload]
     
     init(_ id: Int, title: String, userAnswer: [QuizAnswer], quizList: [QuizPayload]) {
+        print("QuizResultViewModel INIT")
         self.quizGroupId = id
         self.quizTitle = title
         self.userAnswerListForRequest = userAnswer
@@ -96,12 +97,6 @@ final class QuizResultViewModel: ObservableObject {
                 self.requestSubmitAnswer()
             }
             .store(in: &self.cancellables)
-    }
-    
-    func cleanUpCancellables() {
-        cancellables.forEach { $0.cancel() }
-        cancellables.removeAll()
-        print("Cancellables count: \(cancellables.count)")
     }
     
     deinit {

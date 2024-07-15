@@ -37,6 +37,7 @@ struct QuizResult: View {
                         .frame(height: Setup.Frame.quizContentAnswerHeight * 0.3)
                     
                     //MARK: - 성취도 따른 이미지 추가? (앱단에서 나타내기)
+                    
                     AsyncImage(url: URL(string: "https://t3.ftcdn.net/jpg/01/75/28/30/360_F_175283093_kkRke2YnpL6HhNRUNPmRm4pFTV2OyLzY.jpg")) { image in
                         image.resizable()
                     } placeholder: {

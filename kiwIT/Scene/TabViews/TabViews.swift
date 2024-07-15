@@ -19,6 +19,24 @@ enum TabType: Int, Hashable, CaseIterable, Identifiable {
     }
 }
 
+//MARK: - Do not initialize view until its actually selected
+
+struct LazyView<Content: View>: View {
+    //get real view as function
+    let build: () -> Content
+    
+    //init: not calling build function, save in property
+    init(_ build: @autoclosure @escaping () -> Content) {
+        self.build = build
+    }
+    
+    //when actually shows on screen: calls build function, which initializes view
+    var body: Content {
+        build()
+    }
+}
+
+
 struct TabViews: View {
     
     @StateObject var tabViewsVM = TabViewsViewModel()
@@ -28,27 +46,27 @@ struct TabViews: View {
     
     var body: some View {
         TabView(selection: $selectedTab) {
-            HomeView(tabViewsVM: tabViewsVM)
+            LazyView(HomeView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("홈", systemImage: Setup.ImageStrings.defaultHome)
                 }
                 .tag(TabType.home)
-            LectureListView(tabViewsVM: tabViewsVM)
+            LazyView(LectureListView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("학습", systemImage: Setup.ImageStrings.defaultLecture)
                 }
                 .tag(TabType.home)
-            QuizListView(tabViewsVM: tabViewsVM)
+            LazyView(QuizListView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
                 }
                 .tag(TabType.home)
-            AIInterviewView(tabViewsVM: tabViewsVM)
+            LazyView(AIInterviewView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
                 }
                 .tag(TabType.home)
-            ProfileView(tabViewsVM: tabViewsVM)
+            LazyView(ProfileView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("나", systemImage: Setup.ImageStrings.defaultProfile)
                 }

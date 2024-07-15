@@ -9,8 +9,6 @@ import Foundation
 
 import Combine
 
-//모든 Network 요청: access token 기반 --> KeyChain에서 불러와서 Network 요청하기
-
 final class TabViewsViewModel: ObservableObject {
 
     @Published var profileData: ProfileResponse?
@@ -18,7 +16,11 @@ final class TabViewsViewModel: ObservableObject {
     @Published var didUpdateProfileFromOtherView = false
     
     private var cancellables = Set<AnyCancellable>()
-            
+    
+    init() {
+        print("TabViewsViewModel INIT")
+    }
+    
     func checkProfile(with profile: ProfileResponse?) {
         if let profile = profile {
             self.profileData = profile

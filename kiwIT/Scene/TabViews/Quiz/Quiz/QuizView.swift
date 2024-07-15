@@ -27,7 +27,8 @@ struct QuizView: View {
     var body: some View {
         ScrollView {
             if let quizData = quizVM.quizData {
-                switch quizVM.quizType {
+                switch quizData.quizList[quizVM.quizIndex].type {
+//                switch quizVM.quizType {
                 case .multipleChoice:
                     QuizMultipleChoice(userChoiceNumber: quizVM.isThisPreviousQuestion ?  quizVM.recentSelectedMultipleChoice : 0, quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
                         switch result {
@@ -80,6 +81,9 @@ struct QuizView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color.backgroundColor)
+        .onAppear {
+            quizVM.checkRetakeQuiz()
+        }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .principal) {
@@ -88,6 +92,7 @@ struct QuizView: View {
             }
             ToolbarItem(placement: .topBarLeading) {
                 Button {
+                    quizListVM.isQuizGroupSelected = false
                     dismiss()
                 } label: {
                     Image(systemName: Setup.ImageStrings.defaultXMark2)

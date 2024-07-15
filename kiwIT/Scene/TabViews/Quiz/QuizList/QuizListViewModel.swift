@@ -23,7 +23,10 @@ final class QuizListViewModel: ObservableObject {
     
     @Published var showUnknownNetworkErrorAlert = false
     
+    @Published var isQuizGroupSelected = false
+
     @Published var quizListData: [QuizGroupPayload] = []
+        
     private var alreadyTakenQuizList: [TakenQuizResponse] = []
     
     private var currentPageQuizListRequest = 0
@@ -40,6 +43,7 @@ final class QuizListViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     
     init() {
+        print("QuizListViewModel INIT")
         setupDebounce()
         requestQuizList()
     }
@@ -192,7 +196,9 @@ final class QuizListViewModel: ObservableObject {
         alreadyTakenQuizList.removeAll()
         canRequestMoreQuizList = true
         canRequestMoreCompletedQuizList = true
+        isQuizGroupSelected = false
         isCompletedQuizListLoading = true
+        showEmptyView = true
         requestSubject.send()
     }
     
