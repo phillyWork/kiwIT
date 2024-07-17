@@ -26,10 +26,10 @@ struct TakenQuizContent: View {
             VStack(alignment: .center, spacing: 8) {
                 Text(quiz.title)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 20))
-                    .foregroundStyle(Color.brandColor)
+                    .foregroundStyle(Color.brandTintColor)
                 Text(quiz.subtitle)
                     .font(.custom(Setup.FontName.notoSansBold, size: 14))
-                    .foregroundStyle(Color.textColor)
+                    .foregroundStyle(Color.brandColor)
             }
             .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizContentHeight)
             .background(Color.surfaceColor)
@@ -47,11 +47,12 @@ struct TakenQuizContent: View {
                 HStack {
                     Text("최고 기록: \(quiz.result.highestScore)")
                         .font(.custom(Setup.FontName.notoSansMedium, size: 12))
-                        .foregroundStyle(Color.textColor)
+                    Text("/")
+                        .font(.custom(Setup.FontName.notoSansMedium, size: 12))
                     Text("최근 기록: \(quiz.result.latestScore)")
                         .font(.custom(Setup.FontName.notoSansMedium, size: 12))
-                        .foregroundStyle(Color.textColor)
                 }
+                .foregroundStyle(Color.textColor)
                 .padding(.horizontal, 8)
                 .offset(CGSize(width: 0, height: Setup.Frame.profileQuizContentOverlayTakenQuizScoreOffset))
             }

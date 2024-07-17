@@ -205,7 +205,6 @@ final class QuizViewModel: ObservableObject {
     }
     
     func updateShortAnswer(_ userAnswer: String) {
-        
         if let quizData = quizData {
             let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: userAnswer)
             
@@ -321,10 +320,6 @@ final class QuizViewModel: ObservableObject {
         recentSelectedMultipleChoice = 0
         recentSelectedShortAnswer = ""
         userAnswerListForRequest.removeAll()
-        
-        //MARK: - 퀴즈 자체도 지우고 아예 퀴즈 시작 Request를 다시 보내야 할 지?
-        
-        
         print("Quiz Reset done!!")
         isQuizCompleted = false
     }

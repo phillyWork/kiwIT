@@ -27,7 +27,6 @@ struct QuizResultView: View {
                     switch result {
                     case .confirmToMoveToQuizList:
                         path = NavigationPath()
-                        print("Go back to Quiz List")
                     case .takeQuizAgain:
                         if (path.count > 0) {
                             //notify QuizView

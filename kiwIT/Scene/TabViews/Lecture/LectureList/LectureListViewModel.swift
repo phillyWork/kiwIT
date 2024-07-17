@@ -130,14 +130,10 @@ final class LectureListViewModel: ObservableObject {
                             self.shouldLoginAgain = true
                         default:
                             print("Other Network Error for getting refreshed token in lecture categorylistviewmodel: \(refreshError.description)")
-//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                            self.shouldLoginAgain = true
                             self.showUnknownNetworkErrorAlert = true
                         }
                     } else {
                         print("Other Error for getting refreshed token in lecture categorylistviewmodel: \(error.localizedDescription)")
-//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                        self.shouldLoginAgain = true
                         self.showUnknownNetworkErrorAlert = true
                     }
                 }

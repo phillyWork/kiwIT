@@ -26,7 +26,7 @@ enum NetworkErrorCase {
     case exerciseForLecture
     case lectureCategoryListCheck
     case lectureCategoryListContentCheck
-    case lectureNextStudyProgress
+    case nextLectureToStudyCheck
     case completedLectureListCheck
     case bookmarkedLectureCheck
     case bookmarkLecture
@@ -78,7 +78,7 @@ struct NetworkErrorMessage {
                 return Setup.NetworkErrorMessage.profileEditError400
             case .exerciseForLecture:
                 return Setup.NetworkErrorMessage.exerciseForLectureError400
-            case .lectureNextStudyProgress:
+            case .nextLectureToStudyCheck:
                 return Setup.NetworkErrorMessage.lectureNextStudyProgressError400
             case .bookmarkLecture:
                 return Setup.NetworkErrorMessage.bookmarkLectureError400

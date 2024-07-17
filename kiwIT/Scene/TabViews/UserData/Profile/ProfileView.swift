@@ -60,7 +60,7 @@ struct ProfileView: View {
                                     if profileVM.nicknameInputFromUser.isEmpty {
                                         profileVM.showNicknameErrorAlert = true
                                     } else {
-                                        profileVM.updateNickname()
+                                        profileVM.debouncedRequestProfileEdit()
                                     }
                                 }
                             }
@@ -93,7 +93,7 @@ struct ProfileView: View {
                     VStack {
                         if profileVM.showCompletedLectureListError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestCompletedLectureList()
+                                profileVM.debouncedRequestCompletedLectureList()
                             }
                         } else {
                             if profileVM.isCompleteLectureListIsEmpty {
@@ -105,7 +105,7 @@ struct ProfileView: View {
                         
                         if profileVM.showBookmarkedLectureListError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestBookmarkedLectureList()
+                                profileVM.debouncedRequestBookmarkedLectureList()
                             }
                         } else {
                             if profileVM.isBookmarkedLectureListIsEmtpy {
@@ -135,7 +135,7 @@ struct ProfileView: View {
                     VStack {
                         if profileVM.showTakenQuizListError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestTakenQuizList()
+                                profileVM.debouncedRequestTakenQuizList()
                             }
                         } else {
                             if profileVM.isTakenQuizListIsEmpty {
@@ -146,7 +146,7 @@ struct ProfileView: View {
                         }
                         if profileVM.showBookmarkedQuizListError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestBookmarkedQuizList()
+                                profileVM.debouncedRequestBookmarkedQuizList()
                             }
                         } else {
                             if profileVM.isBookmarkedQuizListIsEmtpy {
@@ -186,7 +186,7 @@ struct ProfileView: View {
                     VStack {
                         if profileVM.showLatestAcquiredTrophyError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestLatestAcquiredTrophy()
+                                profileVM.debouncedRequestLatestAcquiredTrophy()
                             }
                         } else {
                             if profileVM.isLatestAcquiredTrophyEmpty {
@@ -208,7 +208,7 @@ struct ProfileView: View {
                     }
                     .alert(Setup.ContentStrings.Profile.signOutTitle, isPresented: $profileVM.showLogoutAlert, actions: {
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
-                            profileVM.signOut()
+                            profileVM.debouncedSignOut()
                         }
                         Button(Setup.ContentStrings.cancel, role: .destructive) { }
                     }, message: {
@@ -247,7 +247,7 @@ struct ProfileView: View {
                             if profileVM.emailToBeWithdrawn.isEmpty {
                                 profileVM.showEmailWithdrawalErrorAlert = true
                             } else {
-                                profileVM.withdraw()
+                                profileVM.debouncedWithdraw()
                             }
                         }
                         Button(Setup.ContentStrings.cancel, role: .destructive) {

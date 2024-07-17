@@ -7,18 +7,6 @@
 
 import SwiftUI
 
-enum TabType: Int, Hashable, CaseIterable, Identifiable {
-    case home
-    case lecture
-    case quiz
-    case interview
-    case profile
-    
-    var id: Int {
-        rawValue
-    }
-}
-
 //MARK: - Do not initialize view until its actually selected
 
 struct LazyView<Content: View>: View {
@@ -42,10 +30,8 @@ struct TabViews: View {
     @StateObject var tabViewsVM = TabViewsViewModel()
     @ObservedObject var mainTabBarVM: MainTabBarViewModel
     
-    @State private var selectedTab: TabType = .home
-    
     var body: some View {
-        TabView(selection: $selectedTab) {
+        TabView(selection: $tabViewsVM.selectedTab) {
             LazyView(HomeView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("홈", systemImage: Setup.ImageStrings.defaultHome)
@@ -55,22 +41,22 @@ struct TabViews: View {
                 .tabItem {
                     Label("학습", systemImage: Setup.ImageStrings.defaultLecture)
                 }
-                .tag(TabType.home)
+                .tag(TabType.lecture)
             LazyView(QuizListView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
                 }
-                .tag(TabType.home)
+                .tag(TabType.quiz)
             LazyView(AIInterviewView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
                 }
-                .tag(TabType.home)
+                .tag(TabType.interview)
             LazyView(ProfileView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("나", systemImage: Setup.ImageStrings.defaultProfile)
                 }
-                .tag(TabType.home)
+                .tag(TabType.profile)
         }
         .tint(Color.brandColor)
         .onAppear {

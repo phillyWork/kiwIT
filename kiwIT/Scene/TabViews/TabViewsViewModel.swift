@@ -9,8 +9,21 @@ import Foundation
 
 import Combine
 
+enum TabType: Int, Hashable, Identifiable {
+    case home
+    case lecture
+    case quiz
+    case interview
+    case profile
+    
+    var id: Int {
+        rawValue
+    }
+}
+
 final class TabViewsViewModel: ObservableObject {
 
+    @Published var selectedTab: TabType = .home
     @Published var profileData: ProfileResponse?
     @Published var isLoginAvailable = true
     @Published var didUpdateProfileFromOtherView = false
@@ -20,7 +33,7 @@ final class TabViewsViewModel: ObservableObject {
     init() {
         print("TabViewsViewModel INIT")
     }
-    
+        
     func checkProfile(with profile: ProfileResponse?) {
         if let profile = profile {
             self.profileData = profile
@@ -55,6 +68,7 @@ final class TabViewsViewModel: ObservableObject {
                         switch profileError {
                         case .invalidRequestBody(_):
                             print("Profile Check Error in TabViewsViewModel: \(profileError.description)")
+                            self.isLoginAvailable = false
                         case .invalidToken(_):
                             print("Invalid Access token in TabViewsViewModel: \(profileError.description)")
                             self.requestRefreshToken(token, userId: userId)

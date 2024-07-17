@@ -28,7 +28,7 @@ extension Setup {
         static let lectureLevel = "/level"
         static let exerciseForLecture = "/exercise"
         static let lectureCategory = "/category"
-        static let lectureNextStudyProgress = "/progress"
+        static let lectureNextToStudy = "/latest"
         static let completedLecture = "/studied"
         
         //MARK: - Quiz

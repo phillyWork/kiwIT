@@ -23,8 +23,14 @@ extension Setup {
         static let signUpContentWidth = devicePortraitWidth * 0.9
         static let signUpConfirmScrollViewHeight = devicePortraitHeight * 0.45
         
+        static let homeViewContentWidth = devicePortraitWidth * 0.88
+        static let homeViewNextLectureHeight = homeViewContentWidth * 0.35
+        static let homeViewNextLectureLevelOffsetHeight = -(homeViewNextLectureHeight/3)
+        static let homeViewNextLectureButtonOffsetHeight = (homeViewNextLectureHeight/3)
+        
         //컨텐츠 리스트 개별 Item 크기
         static let contentListItemWidth = devicePortraitWidth * 0.9
+        
         static let contentListCategoryItemHeight = contentListItemWidth * 0.4
         static let contentListChapterItemHeight = contentListItemWidth * 0.3
         static let contentListNotExpandableHeight = contentListItemWidth * 0.35

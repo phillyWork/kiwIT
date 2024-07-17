@@ -9,6 +9,8 @@ import Foundation
 
 import Combine
 
+//MARK: - 구독 여부 판단 필요
+
 final class AIInterviewViewModel: ObservableObject {
     
     

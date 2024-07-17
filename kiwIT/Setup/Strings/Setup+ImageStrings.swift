@@ -36,6 +36,7 @@ extension Setup {
         static let toggleButtonChecked = "checkmark.square.fill"
         
         static let downDirection = "arrow.down"
+        static let rightDirection = "arrow.right"
         
         static let bookmarkNotYet = "bookmark"
         static let bookmarked = "bookmark.fill"
