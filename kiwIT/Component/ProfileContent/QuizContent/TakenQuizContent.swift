@@ -26,10 +26,10 @@ struct TakenQuizContent: View {
             VStack(alignment: .center, spacing: 8) {
                 Text(quiz.title)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 20))
-                    .foregroundStyle(Color.brandTintColor)
+                    .foregroundStyle(Color.brandColor)
                 Text(quiz.subtitle)
                     .font(.custom(Setup.FontName.notoSansBold, size: 14))
-                    .foregroundStyle(Color.brandColor)
+                    .foregroundStyle(Color.brandTintColor2)
             }
             .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizContentHeight)
             .background(Color.surfaceColor)

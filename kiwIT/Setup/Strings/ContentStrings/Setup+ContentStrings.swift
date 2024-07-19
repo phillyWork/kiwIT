@@ -23,8 +23,12 @@ extension Setup {
         static let loginErrorAlertTitle = "로그인 오류!"
         static let loginErrorAlertMessage = "세션이 만료되었어요. 다시 로그인해주세요."
         
-        static let homeViewNavTitle = ["오늘은 어떤 걸 알아볼까요?",
-                                       "Ready, Set, Study!",
-                                       "Get Ready for the next Study!",]
+        static let homeViewNavTitle = ["자, 이제 시작이야!",
+                                       "CS, 갑니다!",
+                                       "Get Ready for the next Study!",
+                                       "응. 공부해야해.",
+                                       "한계를 뚫을 드릴이다!",
+                                       "까짓거 한번 해보죠",
+        ]
     }
 }

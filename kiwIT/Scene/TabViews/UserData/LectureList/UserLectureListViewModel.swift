@@ -9,13 +9,15 @@ import Foundation
 
 import Combine
 
-enum LectureActionType {
+enum DetailedLectureActionType {
     case completedList
     case bookmarkedList
     case unbookmark
 }
 
-final class UserLectureListViewModel: ObservableObject {
+final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
+
+    typealias ActionType = DetailedLectureActionType
     
     @Published var shouldLoginAgain = false
     
@@ -44,7 +46,7 @@ final class UserLectureListViewModel: ObservableObject {
     private var requestReloadBookmarkedLecture = PassthroughSubject<Void, Never>()
     private var requestBookmarkButtonTapped = PassthroughSubject<Void, Never>()
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     var urlForSheetWebView = ""
     var idForToBeRemovedLecture = -1
@@ -112,7 +114,7 @@ final class UserLectureListViewModel: ObservableObject {
                     if let completedLectureError = error as? NetworkError {
                         switch completedLectureError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .completedList)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completedList)
                         default:
                             print("Completed Lecture List Error for Network Reason: \(completedLectureError.description)")
                             self.showCompletedLectureError = true
@@ -148,7 +150,7 @@ final class UserLectureListViewModel: ObservableObject {
                     if let bookmarkedLectureError = error as? NetworkError {
                         switch bookmarkedLectureError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .bookmarkedList)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedList)
                         default:
                             print("Bookmarked Lecture List Error for network reason: \(bookmarkedLectureError.description)")
                             self.showBookmarkedLectureError = true
@@ -199,7 +201,7 @@ final class UserLectureListViewModel: ObservableObject {
                             print("Can't find lecture content: \(bookmarkLectureError.description)")
                             self.showRemoveBookmarkedLectureError = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .unbookmark)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .unbookmark)
                         default:
                             print("Un-Bookmark Lecture Error for network reason: \(bookmarkLectureError.description)")
                             self.showRemoveBookmarkedLectureError = true
@@ -216,38 +218,25 @@ final class UserLectureListViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String, type: LectureActionType) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            print("Invalid For Both Access and Refresh. Needs to Sign In Again")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            //로그인 화면 이동하기
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Refresh Token Error for other eason: \(error.localizedDescription)")
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                switch type {
-                case .completedList:
-                    self.requestCompletedLecture()
-                case .bookmarkedList:
-                    self.requestBookmarkedLecture()
-                case .unbookmark:
-                    self.requestUnbookmarkLecture()
-                }
-            }
-            .store(in: &self.cancellables)
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: DetailedLectureActionType) {
+        switch action {
+        case .completedList:
+            self.requestCompletedLecture()
+        case .bookmarkedList:
+            self.requestBookmarkedLecture()
+        case .unbookmark:
+            self.requestUnbookmarkLecture()
+        }
+    }
+    
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            //로그인 화면 이동하기
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
     }
 
     func cleanUpCancellables() {

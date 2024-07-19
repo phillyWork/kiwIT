@@ -9,13 +9,15 @@ import Foundation
 
 import Combine
 
-enum QuizActionType {
+enum DetailedQuizActionType {
     case takenQuiz
     case bookmarkedQuiz
     case unbookmark
 }
 
-final class UserQuizListViewModel: ObservableObject {
+final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
+    
+    typealias ActionType = DetailedQuizActionType
     
     @Published var shouldLoginAgain = false
     
@@ -42,7 +44,7 @@ final class UserQuizListViewModel: ObservableObject {
     private var requestReloadBookmarkedQuiz = PassthroughSubject<Void, Never>()
     private var requestBookmarkButtonTapped = PassthroughSubject<Void, Never>()
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     var idForToBeRemovedQuiz = -1
     
@@ -116,7 +118,7 @@ final class UserQuizListViewModel: ObservableObject {
                     if let takenQuizError = error as? NetworkError {
                         switch takenQuizError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .takenQuiz)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .takenQuiz)
                         default:
                             print("Taken Quiz Group Error for Network Reason: \(takenQuizError.description)")
                             self.showTakenQuizError = true
@@ -152,7 +154,7 @@ final class UserQuizListViewModel: ObservableObject {
                     if let bookmarkedQuizError = error as? NetworkError {
                         switch bookmarkedQuizError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .bookmarkedQuiz)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedQuiz)
                         default:
                             print("Bookmarked Quiz List Error for network reason: \(bookmarkedQuizError.description)")
                             self.showBookmarkedQuizError = true
@@ -191,7 +193,7 @@ final class UserQuizListViewModel: ObservableObject {
                             print("Can't find quiz content: \(bookmarkQuizError.description)")
                             self.showRemoveBookmarkedQuizError = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .unbookmark)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .unbookmark)
                         default:
                             print("Un-Bookmark Quiz Error for network reason: \(bookmarkQuizError.description)")
                             self.showRemoveBookmarkedQuizError = true
@@ -208,38 +210,25 @@ final class UserQuizListViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String, type: QuizActionType) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            print("Invalid For Both Access and Refresh. Needs to Sign In Again")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            //로그인 화면 이동하기
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Refresh Token Error for other eason: \(error.localizedDescription)")
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                switch type {
-                case .takenQuiz:
-                    self.requestTakenQuiz()
-                case .bookmarkedQuiz:
-                    self.requestBookmarkedQuiz()
-                case .unbookmark:
-                    self.requestUnbookmarkQuiz()
-                }
-            }
-            .store(in: &self.cancellables)
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: DetailedQuizActionType) {
+        switch action {
+        case .takenQuiz:
+            self.requestTakenQuiz()
+        case .bookmarkedQuiz:
+            self.requestBookmarkedQuiz()
+        case .unbookmark:
+            self.requestUnbookmarkQuiz()
+        }
+    }
+    
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            //로그인 화면 이동하기
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
     }
     
     func cleanUpCancellables() {

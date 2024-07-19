@@ -9,8 +9,14 @@ import Foundation
 
 import Combine
 
-final class LectureListViewModel: ObservableObject {
+enum LectureListActionType {
+    case lectureList
+}
+
+final class LectureListViewModel: ObservableObject, RefreshTokenHandler {
     
+    typealias ActionType = LectureListActionType
+        
     @Published var shouldLoginAgain = false
     @Published var showLectureList = false
     
@@ -22,7 +28,8 @@ final class LectureListViewModel: ObservableObject {
     @Published var lectureCategoryListData: [LectureCategoryListPayload] = []
     
     private var requestSubject = PassthroughSubject<Void, Never>()      //debounce network call
-    private var cancellables = Set<AnyCancellable>()
+    
+    var cancellables = Set<AnyCancellable>()
     
     init() {
         setupDebounce()
@@ -76,7 +83,7 @@ final class LectureListViewModel: ObservableObject {
                     if let lectureCategoryListError = error as? NetworkError {
                         switch lectureCategoryListError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(token, userId: userId)
+                            self.requestRefreshToken(token, userId: userId, action: .lectureList)
                         default:
                             print("Getting Lecture Category List Error in Lecture Category ViewModel: \(lectureCategoryListError.description)")
                             self.showLectureList = false
@@ -101,7 +108,7 @@ final class LectureListViewModel: ObservableObject {
                     if let lectureLevelListError = error as? NetworkError {
                         switch lectureLevelListError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(token, userId: userId)
+                            self.requestRefreshToken(token, userId: userId, action: .lectureList)
                         default:
                             print("Getting Lecture List Error in Lecture Category ViewModel: \(lectureLevelListError.description)")
                             self.showLectureList = false
@@ -119,35 +126,17 @@ final class LectureListViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Other Network Error for getting refreshed token in lecture categorylistviewmodel: \(refreshError.description)")
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Other Error for getting refreshed token in lecture categorylistviewmodel: \(error.localizedDescription)")
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                print("Getting Refreshed Token")
-                self.requestLectureList()
-            }
-            .store(in: &self.cancellables)
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: LectureListActionType) {
+        requestLectureList()
     }
     
-    func cleanUpCancellables() {
-        cancellables.forEach { $0.cancel() }
-        cancellables.removeAll()
-        print("Cancellables count: \(cancellables.count)")
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
     }
     
     deinit {

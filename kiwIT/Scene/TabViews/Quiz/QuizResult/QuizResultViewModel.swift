@@ -9,7 +9,13 @@ import Foundation
 
 import Combine
 
-final class QuizResultViewModel: ObservableObject {
+enum QuizResultActionType {
+    case submit
+}
+
+final class QuizResultViewModel: ObservableObject, RefreshTokenHandler {
+    
+    typealias ActionType = QuizResultActionType
     
     @Published var shouldLoginAgain = false
     
@@ -19,7 +25,7 @@ final class QuizResultViewModel: ObservableObject {
     
     @Published var didFinishSubmittingAnswer = false
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     var userResult: SubmitQuizResponse?
     
@@ -57,7 +63,7 @@ final class QuizResultViewModel: ObservableObject {
                             print("Invalid Answer Body: \(submitAnswerError.description)")
                             self.showSubmitAnswerErrorAlert = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .submit)
                         default:
                             print("Submit Answer Error for network reason: \(submitAnswerError.description)")
                             self.showSubmitAnswerErrorAlert = true
@@ -74,31 +80,19 @@ final class QuizResultViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Refresh Token Error for network reason: \(refreshError.description)")
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Refresh Error: \(error.localizedDescription)")
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                self.requestSubmitAnswer()
-            }
-            .store(in: &self.cancellables)
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: QuizResultActionType) {
+        requestSubmitAnswer()
     }
     
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
+    }
+        
     deinit {
         print("QuizResultViewModel DEINIT")
     }

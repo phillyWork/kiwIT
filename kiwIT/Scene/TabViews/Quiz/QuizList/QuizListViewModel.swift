@@ -14,7 +14,9 @@ enum QuizListAction {
     case requestCompletedQuizList
 }
 
-final class QuizListViewModel: ObservableObject {
+final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
+    
+    typealias ActionType = QuizListAction
     
     @Published var shouldLoginAgain = false
     @Published var showEmptyView = true
@@ -40,7 +42,8 @@ final class QuizListViewModel: ObservableObject {
     private var selectedQuizId = -1
     
     private var requestSubject = PassthroughSubject<Void, Never>()
-    private var cancellables = Set<AnyCancellable>()
+    
+    var cancellables = Set<AnyCancellable>()
     
     init() {
         print("QuizListViewModel INIT")
@@ -72,7 +75,7 @@ final class QuizListViewModel: ObservableObject {
                             print("quiz list error by Query String Error: \(quizListError.description)")
                             self.showEmptyView = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .requestQuizList)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .requestQuizList)
                         default:
                             print("quiz list error by Network Error: \(quizListError.description)")
                             self.showEmptyView = true
@@ -115,7 +118,7 @@ final class QuizListViewModel: ObservableObject {
                     if let completedQuizListError = error as? NetworkError {
                         switch completedQuizListError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .requestCompletedQuizList)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .requestCompletedQuizList)
                         default:
                             print("Completed Quiz List Error by Network: \(completedQuizListError.description)")
                             
@@ -147,42 +150,30 @@ final class QuizListViewModel: ObservableObject {
         return alreadyTakenQuizList.filter { $0.id == id }.last
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String, type: QuizListAction) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Refresh Token Error for network reason: \(refreshError.description)")
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Category Content Error for other reason: \(error.localizedDescription)")
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                switch type {
-                case .requestQuizList:
-                    self.requestQuizList()
-                case .requestCompletedQuizList:
-                    self.requestCompletedQuizList()
-                }
-            }
-            .store(in: &self.cancellables)
-    }
-    
     func updateSelectedQuizGroupId(_ id: Int) {
         selectedQuizId = id
     }
     
     func getSelectedQuizGroupId() -> Int? {
         return selectedQuizId != -1 ? selectedQuizId : nil
+    }
+    
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: QuizListAction) {
+        switch action {
+        case .requestQuizList:
+            requestQuizList()
+        case .requestCompletedQuizList:
+            requestCompletedQuizList()
+        }
+    }
+    
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
     }
     
     func resetPaginationToRefreshQuizList() {

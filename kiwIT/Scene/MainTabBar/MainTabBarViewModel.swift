@@ -9,6 +9,10 @@ import Foundation
 
 import Combine
 
+enum BasicViewModelAction {
+    case profile
+}
+
 //MARK: - 1. Keychain에 Token 존재 여부 확인
 //MARK: - 1-a. 존재 O --> Request Refresh Token으로 Token Availability 파악
 //MARK: - 1-a-1. Updated Token: 새로운 Token으로 update, 원하는 작업 Request
@@ -19,12 +23,14 @@ import Combine
 //MARK: - Invalid Access Token --> Refresh Token request: 성공하면 다시 프로필 요청, 성공하면 로그인 성공
 //MARK: - Invalid Refresh Token --> 저장된 token 삭제, 저장된 userdefaults id 삭제, 로그인 화면 이동하기
 
-final class MainTabBarViewModel: ObservableObject {
+final class MainTabBarViewModel: ObservableObject, RefreshTokenHandler {
+    
+    typealias ActionType = BasicViewModelAction
     
     @Published var userProfileData: ProfileResponse?
     @Published var isUserLoggedIn = false
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     init() {
         print("DEBUG - MainTabBarViewModel initialized")
@@ -52,7 +58,7 @@ final class MainTabBarViewModel: ObservableObject {
                             self.isUserLoggedIn = false
                         case .invalidToken(_):
                             print("Access Token is not available in MainTabsViewModel Initiailzation: \(profileError.description)")
-                            self.requestRefreshToken(current, userId: userId)
+                            self.requestRefreshToken(current, userId: userId, action: .profile)
                         default:
                             print("Profile Check Error in MainTabsViewModel Initiailzation: \(profileError.description)")
                             self.isUserLoggedIn = false
@@ -70,37 +76,14 @@ final class MainTabBarViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ current: UserTokenValue, userId: String) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: current.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            print("Invalid For Both Access and Refresh. Needs to Sign In Again")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            //로그인 화면 이동하기
-                            self.isUserLoggedIn = false
-                        default:
-                            print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            //로그인 화면 이동하기
-                            self.isUserLoggedIn = false
-                        }
-                    } else {
-                        print("Refresh Token Error for other eason: \(error.localizedDescription) -- Needs to Sign In Again")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        //로그인 화면 이동하기
-                        self.isUserLoggedIn = false
-                    }
-                }
-            } receiveValue: { response in
-                print("Update Token!!!")
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                
-                print("Call ProfileRequest Again!!!")
-                self.requestProfile(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), userId: userId)
-            }
-            .store(in: &self.cancellables)
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: ActionType) {
+        print("Call ProfileRequest Again!!!")
+        requestProfile(response, userId: userId)
+    }
+    
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        //로그인 화면 이동하기
+        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+        isUserLoggedIn = false
     }
 }

@@ -21,10 +21,10 @@ struct LatestTakenQuizView: View {
             VStack {
                 Text(latestTakenQuiz.title)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 25))
-                    .foregroundStyle(Color.brandTintColor)
+                    .foregroundStyle(Color.brandColor)
                 Text(latestTakenQuiz.subtitle)
                     .font(.custom(Setup.FontName.notoSansBold, size: 15))
-                    .foregroundStyle(Color.brandColor)
+                    .foregroundStyle(Color.brandTintColor2)
             }
             .frame(width: Setup.Frame.homeViewContentWidth, height: Setup.Frame.homeViewNextLectureHeight)
             .background(Color.surfaceColor)

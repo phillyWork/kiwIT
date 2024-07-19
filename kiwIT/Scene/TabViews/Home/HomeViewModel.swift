@@ -14,7 +14,9 @@ enum HomeViewActionType {
     case latestQuiz
 }
 
-final class HomeViewModel: ObservableObject {
+final class HomeViewModel: ObservableObject, RefreshTokenHandler {
+    
+    typealias ActionType = HomeViewActionType
     
     @Published var shouldLoginAgain = false
     @Published var showUnknownNetworkErrorAlert = false
@@ -26,10 +28,12 @@ final class HomeViewModel: ObservableObject {
     
     private let dispatchGroup = DispatchGroup()
     
+    private var actionType: HomeViewActionType = .nextLecture
+    
     private var subjectNextLecture = PassthroughSubject<Void, Never>()
     private var subjectLatestTakenQuiz = PassthroughSubject<Void, Never>()
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     init() {
         print("HomeViewModel INIT")
@@ -85,7 +89,7 @@ final class HomeViewModel: ObservableObject {
                             self.showNextLectureError = true
                             self.dispatchGroup.leave()
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .nextLecture)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .nextLecture)
                         default:
                             print("Getting next lecture error by network reason: \(nextLectureToStudyError.description)")
                             self.showNextLectureError = true
@@ -120,7 +124,7 @@ final class HomeViewModel: ObservableObject {
                             print("No Quiz Taken")
                             self.showLatestTakenQuizError = false
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, type: .latestQuiz)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .latestQuiz)
                         default:
                             print("Getting latest taken quiz error by network reason: \(latestTakenQuizError.description)")
                             self.showNextLectureError = true
@@ -139,36 +143,24 @@ final class HomeViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String, type: HomeViewActionType) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Other Network Error for getting refreshed token in lecture categorylistviewmodel: \(refreshError.description)")
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Other Error for getting refreshed token in lecture categorylistviewmodel: \(error.localizedDescription)")
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                switch type {
-                case .nextLecture:
-                    self.requestNextLecture()
-                case .latestQuiz:
-                    self.requestLatestQuizResult()
-                }
-            }
-            .store(in: &self.cancellables)
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: HomeViewActionType) {
+        switch action {
+        case .nextLecture:
+            requestNextLecture()
+        case .latestQuiz:
+            requestLatestQuizResult()
+        }
     }
-    
+        
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
+    }
+        
     deinit {
         print("HomeViewModel DEINIT")
     }

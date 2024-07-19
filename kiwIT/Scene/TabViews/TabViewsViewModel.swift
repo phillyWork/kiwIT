@@ -9,7 +9,7 @@ import Foundation
 
 import Combine
 
-enum TabType: Int, Hashable, Identifiable {
+enum TabType: Int, CaseIterable, Hashable, Identifiable {
     case home
     case lecture
     case quiz
@@ -21,14 +21,16 @@ enum TabType: Int, Hashable, Identifiable {
     }
 }
 
-final class TabViewsViewModel: ObservableObject {
+final class TabViewsViewModel: ObservableObject, RefreshTokenHandler {
 
+    typealias ActionType = BasicViewModelAction
+        
     @Published var selectedTab: TabType = .home
     @Published var profileData: ProfileResponse?
     @Published var isLoginAvailable = true
     @Published var didUpdateProfileFromOtherView = false
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     init() {
         print("TabViewsViewModel INIT")
@@ -46,18 +48,11 @@ final class TabViewsViewModel: ObservableObject {
     
     //Profile 전달되지 않음 혹은 업데이트된 프로필 필요한 경우
     private func retrieveUserProfile() {
-        do {
-            let userId = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String
-            if let token = KeyChainManager.shared.read(userId) {
-                self.requestProfile(token, userId: userId)
-            } else {
-                print("No Token Saved in KeyChain in TabsViewModel!!!")
-                isLoginAvailable = false
-            }
-        } catch {
-            print("No Saved Id to check Token!!!")
+        guard let tokenData = AuthManager.shared.checkTokenData() else {
             isLoginAvailable = false
+            return
         }
+        requestProfile(tokenData.0, userId: tokenData.1)
     }
     
     private func requestProfile(_ token: UserTokenValue, userId: String) {
@@ -71,7 +66,7 @@ final class TabViewsViewModel: ObservableObject {
                             self.isLoginAvailable = false
                         case .invalidToken(_):
                             print("Invalid Access token in TabViewsViewModel: \(profileError.description)")
-                            self.requestRefreshToken(token, userId: userId)
+                            self.requestRefreshToken(token, userId: userId, action: .profile)
                         default:
                             print("Profile Check Error in TabViewsViewModel: \(profileError.description)")
                             self.isLoginAvailable = false
@@ -88,43 +83,15 @@ final class TabViewsViewModel: ObservableObject {
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            print("Invalid For Both Access and Refresh. Needs to Sign In Again")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            //로그인 화면 이동하기
-                            self.isLoginAvailable = false
-                        default:
-                            print("Refresh Token Error in MainTabsViewModel Initiailzation: \(refreshError.description)")
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            //로그인 화면 이동하기
-                            self.isLoginAvailable = false
-                        }
-                    } else {
-                        print("Refresh Token Error for other eason: \(error.localizedDescription) -- Needs to Sign In Again")
-                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                        //로그인 화면 이동하기
-                        self.isLoginAvailable = false
-                    }
-                }
-            } receiveValue: { response in
-                print("Update Token!!!")
-                self.updateToken(response, userId: userId)
-            }
-            .store(in: &self.cancellables)
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: ActionType) {
+        requestProfile(response, userId: userId)
     }
     
-    private func updateToken(_ token: RefreshAccessTokenResponse, userId: String) {
-        KeyChainManager.shared.update(UserTokenValue(access: token.accessToken, refresh: token.refreshToken), id: userId)
-        print("Call ProfileRequest Again!!!")
-        self.requestProfile(UserTokenValue(access: token.accessToken, refresh: token.refreshToken), userId: userId)
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+        isLoginAvailable = false
     }
-    
+        
     func updateProfileFromProfileView(_ newProfile: ProfileResponse) {
         print("Updated Profile: \(newProfile)")
         self.profileData = newProfile

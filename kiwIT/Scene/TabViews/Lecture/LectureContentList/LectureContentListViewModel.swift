@@ -8,7 +8,13 @@
 import Foundation
 import Combine
 
-final class LectureContentListViewModel: ObservableObject {
+enum LectureContentListActionType {
+    case contentList
+}
+
+final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
+
+    typealias ActionType = LectureContentListActionType
     
     @Published var lectureContentListLevelType: [LectureContentListPayload] = []
     @Published var lectureContentListCategoryType: [LectureCategoryContentResponse] = []
@@ -23,14 +29,16 @@ final class LectureContentListViewModel: ObservableObject {
     private var currentDataForLevelContentRequest = 0
     private var canLoadMoreData = true
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     var typeId: Int
     var navTitle: String
+    var lectureListType: LectureListType
     
     init(typeId: Int, navTitle: String, lectureType: LectureListType) {
         self.typeId = typeId
         self.navTitle = navTitle
+        self.lectureListType = lectureType
         print("About to call request content data!!!")
         requestContentData(lectureType, typeId: typeId)
     }
@@ -61,7 +69,7 @@ final class LectureContentListViewModel: ObservableObject {
                     if let categoryContentError = error as? NetworkError {
                         switch categoryContentError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(token, userId: userId, contentType: .category, typeId: categoryId)
+                            self.requestRefreshToken(token, userId: userId, action: .contentList)
                         default:
                             print("Category Content Error: \(categoryContentError.description)")
                             self.showEmptyView = true
@@ -86,7 +94,7 @@ final class LectureContentListViewModel: ObservableObject {
                     if let levelContentError = error as? NetworkError {
                         switch levelContentError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(token, userId: userId, contentType: .category, typeId: levelNum)
+                            self.requestRefreshToken(token, userId: userId, action: .contentList)
                         default:
                             print("Category Content Error: \(levelContentError.description)")
                             if self.lectureContentListLevelType.isEmpty {
@@ -117,36 +125,19 @@ final class LectureContentListViewModel: ObservableObject {
         requestContentData(.level, typeId: typeId)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String, contentType: LectureListType, typeId: Int) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Refresh Token Error for network reason: \(refreshError.description)")
-//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                            self.shouldLoginAgain = true
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Category Content Error for other reason: \(error.localizedDescription)")
-//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                        self.shouldLoginAgain = true
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                print("Update Token!!!")
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                self.requestContentLayer(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), userId: userId, type: contentType, typeId: typeId)
-            }
-            .store(in: &self.cancellables)
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: LectureContentListActionType) {
+        requestContentLayer(response, userId: userId, type: lectureListType, typeId: typeId)
     }
     
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
+    }
+        
     func cleanUpCancellables() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()

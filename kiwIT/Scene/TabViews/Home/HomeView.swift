@@ -18,15 +18,16 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 GroupBox(label: Text("\(Setup.ContentStrings.homeViewNavTitle.randomElement()!)")
-                    .font(.custom(Setup.FontName.galMuri11Bold, size: 25))
+                    .font(.custom(Setup.FontName.galMuri11Bold, size: 35))
                     .multilineTextAlignment(.leading)
                     .padding(.vertical, 8), content: {
                     HStack {
                         Text("오늘도 화이팅이에요!")
                         Text(tabViewsVM.profileData?.nickname ?? "닉네임")
+                            .lineLimit(1)
                     }
-                    .frame(maxWidth: .infinity)
-                    .background(Color.green)
+                    .font(.custom(Setup.FontName.notoSansMedium, size: 12))
+                    .frame(maxWidth: .infinity, alignment: Alignment.leading)
                 })
                 .backgroundStyle(Color.backgroundColor)
                 

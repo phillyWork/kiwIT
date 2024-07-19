@@ -45,6 +45,8 @@ struct SocialLoginButtonView: View {
                 
                 
                 
+                
+                
                 //Sign in Apple Action with request (요청할 정보)
                 request.requestedScopes = [.email, .fullName]
                 

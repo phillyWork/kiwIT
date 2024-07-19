@@ -16,8 +16,10 @@ enum LectureViewActionType {
     case bookmarkLecture
 }
 
-final class LectureViewModel: ObservableObject {
-    
+final class LectureViewModel: ObservableObject, RefreshTokenHandler {
+   
+    typealias ActionType = LectureViewActionType
+        
     @Published var showProgressViewForLoadingWeb = true
     
     @Published var showLectureExampleAlert = false
@@ -45,7 +47,7 @@ final class LectureViewModel: ObservableObject {
     
     private var userExampleAnswer = false
 
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
 
     var contentId: Int
     
@@ -97,7 +99,7 @@ final class LectureViewModel: ObservableObject {
                     if let startLectureError = error as? NetworkError {
                         switch startLectureError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(.startLecture, token: token, userId: userId)
+                            self.requestRefreshToken(token, userId: userId, action: .startLecture)
                         default:
                             print("Start Lecture Error for network reason: \(startLectureError.description)")
                             self.showStartLectureErrorAlertToDismiss = true
@@ -140,7 +142,7 @@ final class LectureViewModel: ObservableObject {
                     if let completeLectureError = error as? NetworkError {
                         switch completeLectureError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(.completeLecture, token: tokenData.0, userId: tokenData.1)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completeLecture)
                         default:
                             print("Complete Lecture Error for network reason: \(completeLectureError.description)")
                             self.showCompleteLectureErrorAlertToRetry = true
@@ -186,7 +188,7 @@ final class LectureViewModel: ObservableObject {
                             print("Need User Answer for submit exercise: \(submitExerciseError.description)")
                             self.showSubmitExerciseErrorAlertToRetry = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(.exerciseQuestion, token: tokenData.0, userId: tokenData.1)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .exerciseQuestion)
                         default:
                             print("Submit Exercise Error for network reason: \(submitExerciseError.description)")
                             self.showSubmitExerciseErrorAlertToRetry = true
@@ -208,41 +210,6 @@ final class LectureViewModel: ObservableObject {
 
     }
     
-    private func requestRefreshToken(_ type: LectureViewActionType, token: UserTokenValue, userId: String) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Refresh Token Error for network reason: \(refreshError.description)")
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Category Content Error for other reason: \(error.localizedDescription)")
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                print("Update Token!!!")
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                switch type {
-                case .startLecture:
-                    self.requestLectureContent(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), userId: userId)
-                case .completeLecture:
-                    self.requestCompleteLectureContent()
-                case .exerciseQuestion:
-                    self.requestSubmitExerciseAnswer()
-                case .bookmarkLecture:
-                    self.requestBookmarkThisLecture()
-                }
-            }
-            .store(in: &self.cancellables)
-    }
-
     private func requestBookmarkThisLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
@@ -259,7 +226,7 @@ final class LectureViewModel: ObservableObject {
                             self.showBookmarkErrorAlert = true
                             self.isThisLectureBookmarked = false
                         case .invalidToken(_):
-                            self.requestRefreshToken(.bookmarkLecture, token: tokenData.0, userId: tokenData.1)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkLecture)
                         default:
                             print("Bookmark Lecture Error for Network Reason: \(bookmarkLectureError.description)")
                             self.showBookmarkErrorAlert = true
@@ -277,7 +244,29 @@ final class LectureViewModel: ObservableObject {
             }
             .store(in: &self.cancellables)
     }
-
+    
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: LectureViewActionType) {
+        switch action {
+        case .startLecture:
+            self.requestLectureContent(response, userId: userId)
+        case .completeLecture:
+            self.requestCompleteLectureContent()
+        case .exerciseQuestion:
+            self.requestSubmitExerciseAnswer()
+        case .bookmarkLecture:
+            self.requestBookmarkThisLecture()
+        }
+    }
+    
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
+    }
+    
     func cleanUpCancellables() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()

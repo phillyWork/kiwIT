@@ -14,7 +14,9 @@ enum QuizRequestType {
     case bookmark
 }
 
-final class QuizViewModel: ObservableObject {
+final class QuizViewModel: ObservableObject, RefreshTokenHandler {
+    
+    typealias ActionType = QuizRequestType
             
     @Published var isQuizCompleted = false
     
@@ -46,7 +48,7 @@ final class QuizViewModel: ObservableObject {
     private var quizIdToBookmark = -1
     private var requestBookmarkSubject = PassthroughSubject<Void, Never>()
     
-    private var cancellables = Set<AnyCancellable>()
+    var cancellables = Set<AnyCancellable>()
     
     init(quizGroupId: Int, pathString: String) {
         print("QuizViewModel INIT")
@@ -86,7 +88,7 @@ final class QuizViewModel: ObservableObject {
                     if let startQuizError = error as? NetworkError {
                         switch startQuizError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, actionType: .startQuiz)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .startQuiz)
                         default:
                             print("Start Taking Quiz Error for network reason: \(startQuizError.description)")
                             self.showStartQuizErrorAlert = true
@@ -118,7 +120,7 @@ final class QuizViewModel: ObservableObject {
                             print("Wrong Quiz Id error: \(bookmarkQuizError.description)")
                             self.showBookmarkQuizErrorAlert = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, actionType: .bookmark)
+                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmark)
                         default:
                             print("Bookmark Quiz Error by network reason: \(bookmarkQuizError.description)")
                             self.showBookmarkQuizErrorAlert = true
@@ -134,36 +136,6 @@ final class QuizViewModel: ObservableObject {
                 } else {
                     print("No Quiz Data to update bookmark data!!!")
                     self.showBookmarkQuizErrorAlert = true
-                }
-            }
-            .store(in: &self.cancellables)
-    }
-    
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String, actionType: QuizRequestType) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
-                if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
-                        case .invalidToken(_):
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
-                        default:
-                            print("Refresh Token Error for network reason: \(refreshError.description)")
-                            self.showUnknownNetworkErrorAlert = true
-                        }
-                    } else {
-                        print("Category Content Error for other reason: \(error.localizedDescription)")
-                        self.showUnknownNetworkErrorAlert = true
-                    }
-                }
-            } receiveValue: { response in
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                switch actionType {
-                case .startQuiz:
-                    self.requestStartQuiz()
-                case .bookmark:
-                    self.debouncedBookmarkThisQuiz()
                 }
             }
             .store(in: &self.cancellables)
@@ -322,6 +294,24 @@ final class QuizViewModel: ObservableObject {
         userAnswerListForRequest.removeAll()
         print("Quiz Reset done!!")
         isQuizCompleted = false
+    }
+    
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: QuizRequestType) {
+        switch action {
+        case .startQuiz:
+            requestStartQuiz()
+        case .bookmark:
+            debouncedBookmarkThisQuiz()
+        }
+    }
+    
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
     }
     
     deinit {

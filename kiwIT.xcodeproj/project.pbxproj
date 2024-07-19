@@ -126,6 +126,7 @@
 		2177B37A2C46E26300BEB3BE /* Setup+Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B30E2C243B7B00BEB3BE /* Setup+Time.swift */; };
 		2177B37D2C46EFED00BEB3BE /* NextLectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B37C2C46EFED00BEB3BE /* NextLectureView.swift */; };
 		2177B37F2C46EFF600BEB3BE /* LatestTakenQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B37E2C46EFF600BEB3BE /* LatestTakenQuizView.swift */; };
+		2177B3812C483BD300BEB3BE /* RefreshTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3802C483BD300BEB3BE /* RefreshTokenHandler.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -291,6 +292,7 @@
 		2177B3742C3ED02500BEB3BE /* ProfileContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileContent.swift; sourceTree = "<group>"; };
 		2177B37C2C46EFED00BEB3BE /* NextLectureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextLectureView.swift; sourceTree = "<group>"; };
 		2177B37E2C46EFF600BEB3BE /* LatestTakenQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTakenQuizView.swift; sourceTree = "<group>"; };
+		2177B3802C483BD300BEB3BE /* RefreshTokenHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenHandler.swift; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 		2173C05A2BA0918800FDD3D9 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
+				2177B3802C483BD300BEB3BE /* RefreshTokenHandler.swift */,
 				2123399D2C19F31B00B397F8 /* MainTabBar */,
 				2173C04D2BA0904900FDD3D9 /* Login+SignUp */,
 				2123399E2C19F3D800B397F8 /* TabViews */,
@@ -1207,6 +1210,7 @@
 				2177B2CD2C2076D700BEB3BE /* ProfileViewModel.swift in Sources */,
 				219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */,
 				217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */,
+				2177B3812C483BD300BEB3BE /* RefreshTokenHandler.swift in Sources */,
 				2177B3642C3988AF00BEB3BE /* SimpleWebView.swift in Sources */,
 				21816ADC2BC83BBE007E6FD6 /* ContentExpandableChapterItemView.swift in Sources */,
 				2177B3312C29B02B00BEB3BE /* CustomWebView.swift in Sources */,
