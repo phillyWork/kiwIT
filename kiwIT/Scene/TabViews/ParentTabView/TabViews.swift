@@ -47,7 +47,7 @@ struct TabViews: View {
                     Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
                 }
                 .tag(TabType.quiz)
-            LazyView(AIInterviewView(tabViewsVM: tabViewsVM))
+            LazyView(InterviewView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
                 }
