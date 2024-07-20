@@ -28,7 +28,6 @@ struct QuizView: View {
         ScrollView {
             if let quizData = quizVM.quizData {
                 switch quizData.quizList[quizVM.quizIndex].type {
-//                switch quizVM.quizType {
                 case .multipleChoice:
                     QuizMultipleChoice(userChoiceNumber: quizVM.isThisPreviousQuestion ?  quizVM.recentSelectedMultipleChoice : 0, quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
                         switch result {

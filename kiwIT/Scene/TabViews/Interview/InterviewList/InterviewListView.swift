@@ -12,6 +12,8 @@ struct InterviewListView: View {
     @StateObject var interviewListVM: InterviewListViewModel
     @ObservedObject var tabViewsVM: TabViewsViewModel
     
+    @State private var path = NavigationPath()
+    
     init(tabViewsVM: TabViewsViewModel) {
         self.tabViewsVM = tabViewsVM
         self._interviewListVM = StateObject(wrappedValue: InterviewListViewModel(tabViewsVM.profileData))
@@ -20,11 +22,15 @@ struct InterviewListView: View {
     @State var names = ["Jack", "Simon", "Sam", "Trinity", "Hello"]
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $path) {
             List {
                 ForEach(names, id: \.self) { name in
-                    InterviewListContent()
-                        .listRowBackground(Color.backgroundColor)
+                    Button {
+                        path.append(name)
+                    } label: {
+                        InterviewListContent()
+                    }
+                    .listRowBackground(Color.backgroundColor)
                 }
                 .onDelete(perform: interviewListVM.deleteItems)
                 .listRowSeparator(.hidden)
@@ -46,9 +52,13 @@ struct InterviewListView: View {
                 }
             }
             .sheet(isPresented: $interviewListVM.showCreateNewInterviewSheet) {
-                Text("Hi")
-                    .presentationDragIndicator(.visible)
-                    
+                CreateInterviewSheet { content in
+                    interviewListVM.debouncedCreateInterview(content)
+                }
+                .presentationDragIndicator(.visible)
+            }
+            .navigationDestination(for: String.self) { name in
+                InterviewView()
             }
             .refreshable {
                 interviewListVM.debouncedRefreshInterview()

@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+struct CreateInterviewRequest {
+    
+}
+
+struct CreateInterviewContent: Codable {
+    var topic: String
+    var numOfQuestions: Int
+    var expectedTotalAnswerTime: Int
+    var shouldBeIncludedString: String
+}

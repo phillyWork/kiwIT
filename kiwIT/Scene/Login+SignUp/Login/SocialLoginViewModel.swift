@@ -13,7 +13,7 @@ final class SocialLoginViewModel: ObservableObject {
     
     @Published var didLoginSucceed = false
     @Published var shouldMoveToSignUp = false
-    @Published var errorMessage: String?
+    @Published var showLoginErrorAlert = false
    
     var profileData: ProfileResponse?
     var userDataForSignUp: SignUpRequest?
@@ -41,7 +41,7 @@ final class SocialLoginViewModel: ObservableObject {
                 self.shouldMoveToSignUp = true
             } else {
                 print("Sign In failed with error message: \(errorMessage)")
-                self.errorMessage = errorMessage
+                self.showLoginErrorAlert = true
             }
         }
     }

@@ -32,6 +32,8 @@ extension Setup {
         
         static let textSize = "textformat.size"
         
+        static let plusSquare = "plus.app"
+        
         static let toggleButtonUnchecked = "square"
         static let toggleButtonChecked = "checkmark.square.fill"
         
@@ -43,6 +45,8 @@ extension Setup {
         
         static let retryAction = "arrow.clockwise"
         static let exclamation = "exclamationmark"
+        
+        static let kakaoButtonImage = "kakao_login_large_wide"
     }
     
 }

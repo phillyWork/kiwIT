@@ -32,13 +32,15 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
     
     @Published var showCreateNewInterviewSheet = false
     
-    private var checkUserStatus = PassthroughSubject<Void, Never>()
+    private var checkUserStatusSubject = PassthroughSubject<Void, Never>()
     private var loadInterviewSubject = PassthroughSubject<Void, Never>()
+    private var createInterviewSubject = PassthroughSubject<CreateInterviewContent, Never>()
     
-    private var currentOffsetToDelete: IndexSet?
-    
-    
+    private var debouncedCreateInterviewContent = CreateInterviewContent(topic: "", numOfQuestions: 0, expectedTotalAnswerTime: 0, shouldBeIncludedString: "")
+   
     private var userProfile: ProfileResponse?
+
+    private var currentOffsetToDelete: IndexSet?
     
     var cancellables = Set<AnyCancellable>()
     
@@ -49,7 +51,7 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
     }
     
     private func setupDebounce() {
-        checkUserStatus
+        checkUserStatusSubject
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] _ in
                 self?.checkUserStatusToCreateInterview()
@@ -62,14 +64,27 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
                 self?.resetDataToRefresh()
             }
             .store(in: &self.cancellables)
+        
+        createInterviewSubject
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
+            .sink { [weak self] content in
+                self?.requestCreateInterview(content)
+            }
+            .store(in: &self.cancellables)
     }
     
     func debouncedCheckStatus() {
-        checkUserStatus.send(())
+        checkUserStatusSubject.send(())
     }
     
     func debouncedRefreshInterview() {
         loadInterviewSubject.send(())
+    }
+    
+    func debouncedCreateInterview(_ content: CreateInterviewContent) {
+        showCreateNewInterviewSheet = false
+        debouncedCreateInterviewContent = content
+        createInterviewSubject.send(content)
     }
     
     private func requestInterviewList() {
@@ -89,8 +104,11 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
         
     }
     
-    private func requestCreateInterview() {
-        //MARK: - 서버에서 유저
+    private func requestCreateInterview(_ content: CreateInterviewContent) {
+        //MARK: - 인터뷰 생성 요청
+        
+        //MARK: - 고려할 점: 실제로 데이터 만들어질 시, 0번 Index에 넣을 것: 유저가 처음 알아보도록
+        
     }
     
     
@@ -128,7 +146,7 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
         case .loadCreatedInterviews:
             requestInterviewList()
         case .createNewInterview:
-            requestCreateInterview()
+            requestCreateInterview(debouncedCreateInterviewContent)
         case .deleteInterview:
             if let offset = currentOffsetToDelete {
                 deleteItems(at: offset)

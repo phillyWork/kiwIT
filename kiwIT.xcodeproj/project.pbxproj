@@ -71,7 +71,7 @@
 		2177B2C62C1B455000BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */; };
 		2177B2C72C1B455200BEB3BE /* Setup+KeyChainKeyStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2C12C1B1E3600BEB3BE /* Setup+KeyChainKeyStrings.swift */; };
 		2177B2C92C1B4A2C00BEB3BE /* KeyChainManagerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2C82C1B4A2C00BEB3BE /* KeyChainManagerTest.swift */; };
-		2177B2CB2C20750700BEB3BE /* AIInterviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2CA2C20750700BEB3BE /* AIInterviewViewModel.swift */; };
+		2177B2CB2C20750700BEB3BE /* InterviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2CA2C20750700BEB3BE /* InterviewListViewModel.swift */; };
 		2177B2CD2C2076D700BEB3BE /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2CC2C2076D700BEB3BE /* ProfileViewModel.swift */; };
 		2177B2D02C20A84100BEB3BE /* TrophyListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2CF2C20A84100BEB3BE /* TrophyListViewModel.swift */; };
 		2177B30F2C243B7B00BEB3BE /* Setup+Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B30E2C243B7B00BEB3BE /* Setup+Time.swift */; };
@@ -127,6 +127,15 @@
 		2177B37D2C46EFED00BEB3BE /* NextLectureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B37C2C46EFED00BEB3BE /* NextLectureView.swift */; };
 		2177B37F2C46EFF600BEB3BE /* LatestTakenQuizView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B37E2C46EFF600BEB3BE /* LatestTakenQuizView.swift */; };
 		2177B3812C483BD300BEB3BE /* RefreshTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3802C483BD300BEB3BE /* RefreshTokenHandler.swift */; };
+		2177B3822C4AB57D00BEB3BE /* RefreshTokenHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3802C483BD300BEB3BE /* RefreshTokenHandler.swift */; };
+		2177B3842C4C0DB000BEB3BE /* InterviewListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B2CA2C20750700BEB3BE /* InterviewListViewModel.swift */; };
+		2177B3862C4C0FF000BEB3BE /* InterviewListContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3852C4C0FF000BEB3BE /* InterviewListContent.swift */; };
+		2177B3892C4C103F00BEB3BE /* CreateInterview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3882C4C103F00BEB3BE /* CreateInterview.swift */; };
+		2177B38D2C4C1F6400BEB3BE /* CreateInterviewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B38C2C4C1F6400BEB3BE /* CreateInterviewSheet.swift */; };
+		2177B38F2C4C1F7900BEB3BE /* EachInterviewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B38E2C4C1F7900BEB3BE /* EachInterviewContent.swift */; };
+		2177B3922C4C2C1200BEB3BE /* InterviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3912C4C2C1200BEB3BE /* InterviewView.swift */; };
+		2177B3952C4C2C4E00BEB3BE /* InterviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3942C4C2C4E00BEB3BE /* InterviewViewModel.swift */; };
+		2177B3962C4C433300BEB3BE /* CreateInterview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3882C4C103F00BEB3BE /* CreateInterview.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -197,7 +206,7 @@
 		219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBA2B9F068200FBEBE0 /* HomeView.swift */; };
 		219EFBBD2B9F068E00FBEBE0 /* LectureContentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBC2B9F068E00FBEBE0 /* LectureContentListView.swift */; };
 		219EFBBF2B9F069600FBEBE0 /* QuizListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBBE2B9F069600FBEBE0 /* QuizListView.swift */; };
-		219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */; };
+		219EFBC12B9F069F00FBEBE0 /* InterviewListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC02B9F069F00FBEBE0 /* InterviewListView.swift */; };
 		219EFBC32B9F06C300FBEBE0 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */; };
 		219EFBC52B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBC42B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift */; };
 		219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */; };
@@ -253,7 +262,7 @@
 		2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+UserDefaultsKeyStrings.swift"; sourceTree = "<group>"; };
 		2177B2C12C1B1E3600BEB3BE /* Setup+KeyChainKeyStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+KeyChainKeyStrings.swift"; sourceTree = "<group>"; };
 		2177B2C82C1B4A2C00BEB3BE /* KeyChainManagerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManagerTest.swift; sourceTree = "<group>"; };
-		2177B2CA2C20750700BEB3BE /* AIInterviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInterviewViewModel.swift; sourceTree = "<group>"; };
+		2177B2CA2C20750700BEB3BE /* InterviewListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewListViewModel.swift; sourceTree = "<group>"; };
 		2177B2CC2C2076D700BEB3BE /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		2177B2CF2C20A84100BEB3BE /* TrophyListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListViewModel.swift; sourceTree = "<group>"; };
 		2177B30E2C243B7B00BEB3BE /* Setup+Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+Time.swift"; sourceTree = "<group>"; };
@@ -293,6 +302,13 @@
 		2177B37C2C46EFED00BEB3BE /* NextLectureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextLectureView.swift; sourceTree = "<group>"; };
 		2177B37E2C46EFF600BEB3BE /* LatestTakenQuizView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LatestTakenQuizView.swift; sourceTree = "<group>"; };
 		2177B3802C483BD300BEB3BE /* RefreshTokenHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshTokenHandler.swift; sourceTree = "<group>"; };
+		2177B3832C4AB65900BEB3BE /* kiwIT.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = kiwIT.entitlements; sourceTree = "<group>"; };
+		2177B3852C4C0FF000BEB3BE /* InterviewListContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewListContent.swift; sourceTree = "<group>"; };
+		2177B3882C4C103F00BEB3BE /* CreateInterview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterview.swift; sourceTree = "<group>"; };
+		2177B38C2C4C1F6400BEB3BE /* CreateInterviewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterviewSheet.swift; sourceTree = "<group>"; };
+		2177B38E2C4C1F7900BEB3BE /* EachInterviewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EachInterviewContent.swift; sourceTree = "<group>"; };
+		2177B3912C4C2C1200BEB3BE /* InterviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewView.swift; sourceTree = "<group>"; };
+		2177B3942C4C2C4E00BEB3BE /* InterviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewViewModel.swift; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -365,7 +381,7 @@
 		219EFBBA2B9F068200FBEBE0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		219EFBBC2B9F068E00FBEBE0 /* LectureContentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureContentListView.swift; sourceTree = "<group>"; };
 		219EFBBE2B9F069600FBEBE0 /* QuizListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizListView.swift; sourceTree = "<group>"; };
-		219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIInterviewView.swift; sourceTree = "<group>"; };
+		219EFBC02B9F069F00FBEBE0 /* InterviewListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewListView.swift; sourceTree = "<group>"; };
 		219EFBC22B9F06C300FBEBE0 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		219EFBC42B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ImageStrings.swift"; sourceTree = "<group>"; };
 		219EFBCF2B9F145900FBEBE0 /* Setup+Frame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+Frame.swift"; sourceTree = "<group>"; };
@@ -417,12 +433,11 @@
 		2123399E2C19F3D800B397F8 /* TabViews */ = {
 			isa = PBXGroup;
 			children = (
-				212339A12C19F66E00B397F8 /* TabViewsViewModel.swift */,
-				2123399F2C19F40700B397F8 /* TabViews.swift */,
+				2177B38B2C4C183900BEB3BE /* ParentTabView */,
 				219EFBCA2B9F127400FBEBE0 /* Home */,
 				219EFBCB2B9F127B00FBEBE0 /* Lecture */,
 				219EFBCC2B9F128000FBEBE0 /* Quiz */,
-				219EFBCD2B9F128500FBEBE0 /* AIInterview */,
+				219EFBCD2B9F128500FBEBE0 /* Interview */,
 				219EFBCE2B9F128B00FBEBE0 /* UserData */,
 			);
 			path = TabViews;
@@ -679,6 +694,51 @@
 			path = Home;
 			sourceTree = "<group>";
 		};
+		2177B3872C4C0FF500BEB3BE /* InterviewContent */ = {
+			isa = PBXGroup;
+			children = (
+				2177B3852C4C0FF000BEB3BE /* InterviewListContent.swift */,
+				2177B38C2C4C1F6400BEB3BE /* CreateInterviewSheet.swift */,
+				2177B38E2C4C1F7900BEB3BE /* EachInterviewContent.swift */,
+			);
+			path = InterviewContent;
+			sourceTree = "<group>";
+		};
+		2177B38A2C4C104300BEB3BE /* Interview */ = {
+			isa = PBXGroup;
+			children = (
+				2177B3882C4C103F00BEB3BE /* CreateInterview.swift */,
+			);
+			path = Interview;
+			sourceTree = "<group>";
+		};
+		2177B38B2C4C183900BEB3BE /* ParentTabView */ = {
+			isa = PBXGroup;
+			children = (
+				212339A12C19F66E00B397F8 /* TabViewsViewModel.swift */,
+				2123399F2C19F40700B397F8 /* TabViews.swift */,
+			);
+			path = ParentTabView;
+			sourceTree = "<group>";
+		};
+		2177B3902C4C2C0300BEB3BE /* InterviewList */ = {
+			isa = PBXGroup;
+			children = (
+				2177B2CA2C20750700BEB3BE /* InterviewListViewModel.swift */,
+				219EFBC02B9F069F00FBEBE0 /* InterviewListView.swift */,
+			);
+			path = InterviewList;
+			sourceTree = "<group>";
+		};
+		2177B3932C4C2C1600BEB3BE /* Interview */ = {
+			isa = PBXGroup;
+			children = (
+				2177B3942C4C2C4E00BEB3BE /* InterviewViewModel.swift */,
+				2177B3912C4C2C1200BEB3BE /* InterviewView.swift */,
+			);
+			path = Interview;
+			sourceTree = "<group>";
+		};
 		217A51402BAECD380052A07E /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -686,6 +746,7 @@
 				217A51412BAECD450052A07E /* UserAccount */,
 				217E55A72BB1C3900014B46E /* LectureContent */,
 				217E55A82BB1C39C0014B46E /* Quiz */,
+				2177B38A2C4C104300BEB3BE /* Interview */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -711,6 +772,7 @@
 				21816ADA2BC83B92007E6FD6 /* LectureContent */,
 				2182676D2BE6833800D8C17C /* QuizContent */,
 				216F5F8C2BAB2F19008817B0 /* LectureContentPayload */,
+				2177B3872C4C0FF500BEB3BE /* InterviewContent */,
 				2177B35D2C383BB100BEB3BE /* ProfileContent */,
 				2177B35A2C383B4000BEB3BE /* EmptyView */,
 			);
@@ -751,6 +813,7 @@
 		217BCCB22B9DE5C300B5461B /* kiwIT */ = {
 			isa = PBXGroup;
 			children = (
+				2177B3832C4AB65900BEB3BE /* kiwIT.entitlements */,
 				2167FD4A2BC04FDF00A45F2B /* Info.plist */,
 				2173F9332C0A13DB00CDF116 /* Config.xcconfig */,
 				217BCCDF2B9DE84100B5461B /* APIKey.swift */,
@@ -1001,13 +1064,13 @@
 			path = Quiz;
 			sourceTree = "<group>";
 		};
-		219EFBCD2B9F128500FBEBE0 /* AIInterview */ = {
+		219EFBCD2B9F128500FBEBE0 /* Interview */ = {
 			isa = PBXGroup;
 			children = (
-				2177B2CA2C20750700BEB3BE /* AIInterviewViewModel.swift */,
-				219EFBC02B9F069F00FBEBE0 /* AIInterviewView.swift */,
+				2177B3902C4C2C0300BEB3BE /* InterviewList */,
+				2177B3932C4C2C1600BEB3BE /* Interview */,
 			);
-			path = AIInterview;
+			path = Interview;
 			sourceTree = "<group>";
 		};
 		219EFBCE2B9F128B00FBEBE0 /* UserData */ = {
@@ -1202,6 +1265,7 @@
 			files = (
 				216F5F8F2BAB302C008817B0 /* NetworkManager.swift in Sources */,
 				2177B3622C3974BC00BEB3BE /* EmptyViewWithNoError.swift in Sources */,
+				2177B3892C4C103F00BEB3BE /* CreateInterview.swift in Sources */,
 				2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */,
 				2177B3502C358B1200BEB3BE /* Setup+ContentStrings+Profile.swift in Sources */,
 				2177B3172C25932900BEB3BE /* LectureCategoryList.swift in Sources */,
@@ -1217,6 +1281,7 @@
 				2177B3572C38399C00BEB3BE /* UserQuizListViewModel.swift in Sources */,
 				2175BE862BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift in Sources */,
 				217BA3BB2BF7903500919AEE /* QuizSetup.swift in Sources */,
+				2177B3862C4C0FF000BEB3BE /* InterviewListContent.swift in Sources */,
 				2177B3732C3C23FA00BEB3BE /* BookmarkedQuizContent.swift in Sources */,
 				217D59472BA9C713005AE418 /* LectureListViewModel.swift in Sources */,
 				217BAADC2BFB826C00ADAC6B /* QuizResult.swift in Sources */,
@@ -1245,7 +1310,8 @@
 				2177B37F2C46EFF600BEB3BE /* LatestTakenQuizView.swift in Sources */,
 				217E55A42BB16CB00014B46E /* Profile.swift in Sources */,
 				2177B36E2C3C22FC00BEB3BE /* BookmarkedLectureContent.swift in Sources */,
-				219EFBC12B9F069F00FBEBE0 /* AIInterviewView.swift in Sources */,
+				219EFBC12B9F069F00FBEBE0 /* InterviewListView.swift in Sources */,
+				2177B3952C4C2C4E00BEB3BE /* InterviewViewModel.swift in Sources */,
 				2189BC402BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift in Sources */,
 				2177B3232C2598C400BEB3BE /* CheckCompletedOrBookmarkedQuizList.swift in Sources */,
 				2173F93F2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift in Sources */,
@@ -1253,14 +1319,16 @@
 				2177B37D2C46EFED00BEB3BE /* NextLectureView.swift in Sources */,
 				218267762BE68A8500D8C17C /* QuizResultDetailView.swift in Sources */,
 				2189BC3D2BF250AD007CC766 /* QuizOXButtonLabel.swift in Sources */,
+				2177B38D2C4C1F6400BEB3BE /* CreateInterviewSheet.swift in Sources */,
 				219EFBBD2B9F068E00FBEBE0 /* LectureContentListView.swift in Sources */,
 				2177B3552C38393B00BEB3BE /* UserQuizListView.swift in Sources */,
 				219EFBC52B9F0A4C00FBEBE0 /* Setup+ImageStrings.swift in Sources */,
 				217E55A02BB162000014B46E /* TrophyList.swift in Sources */,
+				2177B3922C4C2C1200BEB3BE /* InterviewView.swift in Sources */,
 				2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */,
 				2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				2177B3212C2598AE00BEB3BE /* StartQuiz.swift in Sources */,
-				2177B2CB2C20750700BEB3BE /* AIInterviewViewModel.swift in Sources */,
+				2177B2CB2C20750700BEB3BE /* InterviewListViewModel.swift in Sources */,
 				217A513F2BAECD350052A07E /* SignUp.swift in Sources */,
 				2177B3602C383BF900BEB3BE /* CompletedLectureContent.swift in Sources */,
 				217A51462BAECDE50052A07E /* Type.swift in Sources */,
@@ -1288,6 +1356,7 @@
 				2189BC3A2BF24D30007CC766 /* QuizMultipleChoice.swift in Sources */,
 				217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */,
 				2177B3292C25A11100BEB3BE /* LectureLevelContent.swift in Sources */,
+				2177B38F2C4C1F7900BEB3BE /* EachInterviewContent.swift in Sources */,
 				2173C06B2BA0A1BA00FDD3D9 /* LectureContentListViewModel.swift in Sources */,
 				217A514A2BAED0800052A07E /* RefreshAccessToken.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
@@ -1327,6 +1396,7 @@
 				2173C0632BA0953B00FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
 				2177B2C72C1B455200BEB3BE /* Setup+KeyChainKeyStrings.swift in Sources */,
 				2177B33D2C29BA9100BEB3BE /* CompleteLecture.swift in Sources */,
+				2177B3962C4C433300BEB3BE /* CreateInterview.swift in Sources */,
 				2173F9582C15F06E00CDF116 /* Setup+NetworkEndPointStrings.swift in Sources */,
 				2173F9482C15EF9D00CDF116 /* SignIn.swift in Sources */,
 				2173C08B2BA0A55C00FDD3D9 /* HomeViewModel.swift in Sources */,
@@ -1338,6 +1408,7 @@
 				2173F9512C15F05600CDF116 /* Setup+Frame.swift in Sources */,
 				2173F9552C15F06700CDF116 /* Setup+ContentStrings.swift in Sources */,
 				2177B36C2C3AEF6C00BEB3BE /* TrophyDetail.swift in Sources */,
+				2177B3822C4AB57D00BEB3BE /* RefreshTokenHandler.swift in Sources */,
 				2173F9462C15EF9900CDF116 /* SignUp.swift in Sources */,
 				2177B33C2C29BA6200BEB3BE /* BookmarkQuiz.swift in Sources */,
 				2173F94C2C15EFAC00CDF116 /* Error+Network.swift in Sources */,
@@ -1346,6 +1417,7 @@
 				2177B2C52C1B280F00BEB3BE /* KeyChainManager.swift in Sources */,
 				2177B3392C29BA5600BEB3BE /* StartQuiz.swift in Sources */,
 				2173C05B2BA0921200FDD3D9 /* UserDefaultsManager.swift in Sources */,
+				2177B3842C4C0DB000BEB3BE /* InterviewListViewModel.swift in Sources */,
 				2177B33B2C29BA5E00BEB3BE /* CheckCompletedOrBookmarkedQuizList.swift in Sources */,
 				2173C08C2BA0A56500FDD3D9 /* LectureContentListViewModel.swift in Sources */,
 				2177B2C62C1B455000BEB3BE /* Setup+UserDefaultsKeyStrings.swift in Sources */,
@@ -1522,6 +1594,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = kiwIT/kiwIT.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"kiwIT/Preview Content\"";
@@ -1558,6 +1631,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = kiwIT/kiwIT.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"kiwIT/Preview Content\"";

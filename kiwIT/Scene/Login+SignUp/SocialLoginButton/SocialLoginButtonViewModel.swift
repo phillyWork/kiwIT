@@ -26,19 +26,45 @@ final class SocialLoginButtonViewModel: ObservableObject {
     
     //MARK: - Apple Login
     
-    func requestAppleUserLogin(_ credential: ASAuthorizationCredential) {
-        switch credential {
-        case let appleIDCredential as ASAuthorizationAppleIDCredential: break
-            //Network 모델로 로그인 요청
+    func requestAppleUserLogin(_ authResult: ASAuthorization) {
+        
+        print("authResult: \(authResult)")
+       
+        switch authResult.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            guard appleIDCredential.authorizedScopes.contains(.fullName), appleIDCredential.authorizedScopes.contains(.email) else {
+                print("user did not allow both names and email")
+                serverLoginResultPublisher.send((false, ServiceProviderError.appleError.message, nil, nil))
+                return
+            }
             
-                //성공 시, access 및 refresh token response
+            let userIdentifier = appleIDCredential.user
+            print("user identifier: \(userIdentifier)")
             
-                //self.didLoginSucceed = true
+            let fullName = appleIDCredential.fullName
+            print("full name: \(fullName)")
             
-                //실패 시, 가입 화면으로 이동 요청 (by HTTP response code)
+            let email = appleIDCredential.email
+            print("email: \(email)")
             
-                //self.shouldMoveToSignUp = true
+            guard let identityToken = appleIDCredential.identityToken, let identityTokenInString = String(data: identityToken, encoding: .utf8) else {
+                print("No Token in apple credential")
+                return
+            }
+            
+            print("identity token in string: \(String(data: identityToken, encoding: .utf8))")
+            
+            guard let authorizationCode = appleIDCredential.authorizationCode else {
+                print("No authorization code in apple credential")
+                return
+            }
+            print("authorization code in string: \(String(data: authorizationCode, encoding: .utf8))")
+            
+            handleToken(identityTokenInString, service: .apple)
+            
         default:
+            print("other than appleIDCredential case: false case!!!")
+            serverLoginResultPublisher.send((false, ServiceProviderError.appleError.message, nil, nil))
             break
         }
     }
@@ -63,7 +89,8 @@ final class SocialLoginButtonViewModel: ObservableObject {
             }
             if let oAuthToken = oAuthToken {
                 print("token for kakao user with kakaoTalk: \(oAuthToken)")
-                self.handleKakaoToken(oAuthToken)
+//                self.handleKakaoToken(oAuthToken)
+                self.handleToken(oAuthToken.accessToken, service: .kakao)
             }
         }
     }
@@ -77,13 +104,51 @@ final class SocialLoginButtonViewModel: ObservableObject {
             }
             if let oAuthToken = oAuthToken {
                 print("token for kakao user with kakao account: \(oAuthToken)")
-                self.handleKakaoToken(oAuthToken)
+//                self.handleKakaoToken(oAuthToken)
+                self.handleToken(oAuthToken.accessToken, service: .kakao)
             }
         }
     }
     
-    private func handleKakaoToken(_ token: OAuthToken) {
-        NetworkManager.shared.request(type: SignInResponse.self, api: .signIn(request: SignInRequest(token: token.accessToken, provider: .kakao)), errorCase: .signIn)
+//    private func handleKakaoToken(_ token: OAuthToken) {
+//        NetworkManager.shared.request(type: SignInResponse.self, api: .signIn(request: SignInRequest(token: token.accessToken, provider: .kakao)), errorCase: .signIn)
+//            .sink { completion in
+//                if case .failure(let error) = completion {
+//                    if let signInError = error as? NetworkError {
+//                        print("SignInError as Network: \(signInError.description)")
+//                        self.serverLoginResultPublisher.send((false, signInError.description, nil, nil))
+//                    } else {
+//                        print("SignInError as other reason")
+//                        self.serverLoginResultPublisher.send((false, error.localizedDescription, nil, nil))
+//                    }
+//                }
+//            } receiveValue: { response in
+//                print("response from signIn: \(response)")
+//                switch response {
+//                case .signInSuccess(let tokenResponse):
+//                    //로그인 성공: Token 활용해서 profile 요청, 이메일 받아오기
+//                    self.requestProfile(tokenResponse) { profile in
+//                        print("Profile Passed From RequestProfile!!!")
+//                        guard let profile = profile else {
+//                            //프로필 얻어오기 에러: 현재 로그인한 계정 정보 모름
+//                            print("Error for Profile Request!!!")
+//                            self.serverLoginResultPublisher.send((true, nil, nil, nil))
+//                            return
+//                        }
+//                        self.updateToken(token: tokenResponse, profile: profile)
+//                    }
+//                case .signUpRequired(let userData):
+//                    self.serverLoginResultPublisher.send((false, nil, nil, SignUpRequest(email: userData.email, nickname: userData.nickname, provider: .kakao)))
+//                }
+//            }
+//            .store(in: &self.cancellables)
+//    }
+    
+    
+    //MARK: - Common
+    
+    private func handleToken(_ accessToken: String, service: SocialLoginProvider) {
+        NetworkManager.shared.request(type: SignInResponse.self, api: .signIn(request: SignInRequest(token: accessToken, provider: service)), errorCase: .signIn)
             .sink { completion in
                 if case .failure(let error) = completion {
                     if let signInError = error as? NetworkError {
@@ -95,7 +160,6 @@ final class SocialLoginButtonViewModel: ObservableObject {
                     }
                 }
             } receiveValue: { response in
-                print("response from signIn: \(response)")
                 switch response {
                 case .signInSuccess(let tokenResponse):
                     //로그인 성공: Token 활용해서 profile 요청, 이메일 받아오기
@@ -110,11 +174,12 @@ final class SocialLoginButtonViewModel: ObservableObject {
                         self.updateToken(token: tokenResponse, profile: profile)
                     }
                 case .signUpRequired(let userData):
-                    self.serverLoginResultPublisher.send((false, nil, nil, SignUpRequest(email: userData.email, nickname: userData.nickname, provider: .kakao)))
+                    self.serverLoginResultPublisher.send((false, nil, nil, SignUpRequest(email: userData.email, nickname: userData.nickname, provider: service)))
                 }
             }
             .store(in: &self.cancellables)
     }
+    
     
     private func requestProfile(_ token: SignInResponseSuccess, returnCompletion: @escaping (ProfileResponse?) -> Void) {
         print("Request for Profile Id to update Token Data")
