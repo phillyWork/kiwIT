@@ -15,7 +15,7 @@ struct QuizView: View {
     @Binding var path: NavigationPath
     @Binding var isLoginAvailable: Bool
     
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     
     init(quizListVM: QuizListViewModel, quizGroupId: Int, pathString: String, path: Binding<NavigationPath>, isLoginAvailable: Binding<Bool>) {
         self.quizListVM = quizListVM

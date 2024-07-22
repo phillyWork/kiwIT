@@ -45,20 +45,31 @@ struct InterviewListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        interviewListVM.debouncedCheckStatus()
+//                        interviewListVM.debouncedCheckStatus()
+                        interviewListVM.showCreateNewInterviewSheet = true
                     } label: {
                         Image(systemName: Setup.ImageStrings.plusSquare)
                     }
                 }
             }
+//            .fullScreenCover(isPresented: $interviewListVM.showUserSubscriptionViewSheet, content: {
+//                UserSubscriptionView(interviewListVM)
+//            })
             .sheet(isPresented: $interviewListVM.showCreateNewInterviewSheet) {
                 CreateInterviewSheet { content in
                     interviewListVM.debouncedCreateInterview(content)
                 }
                 .presentationDragIndicator(.visible)
             }
+            .alert("로그인 오류!", isPresented: $interviewListVM.shouldLoginAgain, actions: {
+                ErrorAlertConfirmButton {
+                    tabViewsVM.isLoginAvailable = false
+                }
+            }, message: {
+                Text("세션 만료입니다. 다시 로그인해주세요!")
+            })
             .navigationDestination(for: String.self) { name in
-                InterviewView()
+                InterviewView(interviewListVM: interviewListVM)
             }
             .refreshable {
                 interviewListVM.debouncedRefreshInterview()

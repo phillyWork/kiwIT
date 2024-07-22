@@ -79,6 +79,8 @@ struct CreateInterviewSheet: View {
                 }
             })
             .backgroundStyle(Color.backgroundColor)
+            
+            //MARK: - 3~5분 설정하기 (polling 활용, 타이머 설정 필요)
             GroupBox(label: Text("총 예상 답변 시간").font(.custom(Setup.FontName.notoSansBold, size: 20)), content: {
                 Picker(selection: $expectedTotalTime) {
                     ForEach(0..<12) { index in
@@ -93,6 +95,8 @@ struct CreateInterviewSheet: View {
                 .pickerStyle(.menu)
             })
             .backgroundStyle(Color.backgroundColor)
+            
+            //MARK: - 3~5문항 설정 (polling 활용, 타이머 설정 필요)
             GroupBox(label: Text("문항 수").font(.custom(Setup.FontName.notoSansBold, size: 20)), content: {
                 Picker(selection: $numOfQuestions) {
                     ForEach(0..<6) { index in

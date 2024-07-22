@@ -15,7 +15,7 @@ struct DetailedEachQuestionResult: Hashable {
 
 struct QuizResultDetailView: View {
     
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     
     var eachQuestionResult: [DetailedEachQuestionResult] = []
         

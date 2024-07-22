@@ -9,8 +9,8 @@ import Foundation
 
 import Combine
 
-enum InterviewActionType {
-    case checkUserSubscriptionStatus
+enum InterviewListActionType {
+//    case checkUserSubscriptionStatus
     case loadCreatedInterviews
     case createNewInterview
     case deleteInterview
@@ -20,26 +20,27 @@ enum InterviewActionType {
 
 final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
     
-    typealias ActionType = InterviewActionType
+    typealias ActionType = InterviewListActionType
     
     @Published var shouldLoginAgain = false
 
-    @Published var showUserNotSubcribedErrorAlert = false
     @Published var showLoadingInterviewListErrorAlert = false
     @Published var showCreateNewInterviewErrorAlert = false
     @Published var showDeleteInterviewErrorAlert = false
     @Published var showUnknownNetworkErrorAlert = false
     
+//    @Published var showUserSubscriptionViewSheet = false
+    
     @Published var showCreateNewInterviewSheet = false
     
-    private var checkUserStatusSubject = PassthroughSubject<Void, Never>()
+//    private var checkUserStatusSubject = PassthroughSubject<Void, Never>()
+
     private var loadInterviewSubject = PassthroughSubject<Void, Never>()
     private var createInterviewSubject = PassthroughSubject<CreateInterviewContent, Never>()
     
     private var debouncedCreateInterviewContent = CreateInterviewContent(topic: "", numOfQuestions: 0, expectedTotalAnswerTime: 0, shouldBeIncludedString: "")
-   
-    private var userProfile: ProfileResponse?
 
+    private var userProfile: ProfileResponse?
     private var currentOffsetToDelete: IndexSet?
     
     var cancellables = Set<AnyCancellable>()
@@ -51,12 +52,12 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
     }
     
     private func setupDebounce() {
-        checkUserStatusSubject
-            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
-            .sink { [weak self] _ in
-                self?.checkUserStatusToCreateInterview()
-            }
-            .store(in: &self.cancellables)
+//        checkUserStatusSubject
+//            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
+//            .sink { [weak self] _ in
+//                self?.checkUserStatusToCreateInterview()
+//            }
+//            .store(in: &self.cancellables)
         
         loadInterviewSubject
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
@@ -73,9 +74,9 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
             .store(in: &self.cancellables)
     }
     
-    func debouncedCheckStatus() {
-        checkUserStatusSubject.send(())
-    }
+//    func debouncedCheckStatus() {
+//        checkUserStatusSubject.send(())
+//    }
     
     func debouncedRefreshInterview() {
         loadInterviewSubject.send(())
@@ -92,17 +93,13 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
         
     }
     
-    private func checkUserStatusToCreateInterview() {
-        
-        //MARK: - 유저 구독 여부 판단
-
-        if true {
-            showCreateNewInterviewSheet = true
-        } else {
-            showUserNotSubcribedErrorAlert = true
-        }
-        
-    }
+//    private func checkUserStatusToCreateInterview() {
+//        if true {
+//            showCreateNewInterviewSheet = true
+//        } else {
+//            showUserSubscriptionViewSheet = true
+//        }
+//    }
     
     private func requestCreateInterview(_ content: CreateInterviewContent) {
         //MARK: - 인터뷰 생성 요청
@@ -136,13 +133,10 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
         
     }
     
-    
-    
-    
-    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: InterviewActionType) {
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: InterviewListActionType) {
         switch action {
-        case .checkUserSubscriptionStatus:
-            checkUserStatusToCreateInterview()
+//        case .checkUserSubscriptionStatus:
+//            checkUserStatusToCreateInterview()
         case .loadCreatedInterviews:
             requestInterviewList()
         case .createNewInterview:
