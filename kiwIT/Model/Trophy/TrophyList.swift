@@ -27,8 +27,32 @@ struct AcquiredTrophy: Decodable, Identifiable {
     }
 }
 
-struct TrophyEntity: Decodable, Identifiable {
+enum TrophyType: String, Decodable {
+    case totalContentStudied = "TOTAL_CONTENT_STUDIED"
+    case totalQuizGroupSolved = "TOTAL_QUIZ_GROUP_SOLVED"
+    case chapterClear = "CHAPTER_CLEAR"
+    case categoryClear = "CATEGORY_CLEAR"
+    
+    var description: String {
+        switch self {
+        case .totalContentStudied:
+            return "누적 학습량"
+        case .totalQuizGroupSolved:
+            return "누적 퀴즈 풀이량"
+        case .chapterClear:
+            return "챕터 수료"
+        case .categoryClear:
+            return "카테고리 수료"
+        }
+    }
+}
+
+struct TrophyEntity: Decodable, Identifiable, Hashable {
     var id: Int
     var title: String
     var imageUrl: String
+    var type: TrophyType
+    var threshold: Int
 }
+
+

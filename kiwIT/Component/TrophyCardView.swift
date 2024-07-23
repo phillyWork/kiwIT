@@ -8,11 +8,22 @@
 import SwiftUI
 
 struct TrophyCardView: View {
+    
+    var trophy: TrophyEntity
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Text(trophy.title)
+            HStack {
+                Text(trophy.type.description)
+                Text(": \(trophy.threshold)")
+            }
+        }
+        .frame(width: 300, height: 300)
+        .background(Color.surfaceColor)
     }
 }
 
 #Preview {
-    TrophyCardView()
+    TrophyCardView(trophy: TrophyEntity(id: 1, title: "mocktest", imageUrl: "https://", type: .chapterClear, threshold: 300))
 }

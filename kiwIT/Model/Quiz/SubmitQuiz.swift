@@ -26,4 +26,5 @@ struct SubmitQuizResponse: Decodable, Hashable {
     var quizGroupId: Int
     var latestScore: Int
     var highestScore: Int
+    var trophyAwardedList: [TrophyEntity]
 }

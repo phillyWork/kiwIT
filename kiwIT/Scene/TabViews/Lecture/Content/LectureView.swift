@@ -23,17 +23,41 @@ struct LectureView: View {
     var body: some View {
         VStack {
             ZStack {
-                if let lectureContent = lectureVM.lectureContent {
-                    CustomWebView(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: lectureContent.payloadUrl)
-                    if lectureVM.showProgressViewForLoadingWeb {
-                        ProgressView {
-                            Text("컨텐츠 불러오는 중...")
+                ZStack {
+                    if let lectureContent = lectureVM.lectureContent {
+                        CustomWebView(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: lectureContent.payloadUrl)
+                        if lectureVM.showProgressViewForLoadingWeb {
+                            ProgressView {
+                                Text("컨텐츠 불러오는 중...")
+                            }
+                            .scaleEffect(1.5, anchor: .center)
                         }
-                        .scaleEffect(1.5, anchor: .center)
                     }
                 }
+                .animation(.easeInOut, value: lectureVM.showProgressViewForLoadingWeb)
+                
+                //MARK: - Place to show cardview
+                
+                VStack {
+                    Spacer()
+                    TabView {
+                        ForEach(lectureVM.acquiredTrophyList, id: \.self) { trophy in
+                            TrophyCardView(trophy: trophy)
+                        }
+                    }
+                    .tabViewStyle(PageTabViewStyle())
+                    Spacer()
+                    Button {
+                        lectureVM.handleAfterCloseNewAcquiredTrophyCard()
+                    } label: {
+                        Text("닫기")
+                    }
+                    Spacer()
+                }
+                .background(Color.black.opacity(0.3).ignoresSafeArea(edges: .all))
+                .opacity(lectureVM.acquiredTrophyList.isEmpty ? 0 : 1)
+                
             }
-            .animation(.easeInOut, value: lectureVM.showProgressViewForLoadingWeb)
         }
         .background(Color.backgroundColor)
         .navigationBarBackButtonHidden()

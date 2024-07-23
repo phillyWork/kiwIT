@@ -61,6 +61,6 @@ struct TakenQuizContent: View {
     }
 }
 
-#Preview {
-    TakenQuizContent(TakenQuizResponse(id: 1, title: "Test Quiz Group 1", subtitle: "부제입니다", levelNum: 2, totalScore: 30, result: SubmitQuizResponse(userId: 1, quizGroupId: 1, latestScore: 10, highestScore: 20)))
-}
+//#Preview {
+//    TakenQuizContent(TakenQuizResponse(id: 1, title: "Test Quiz Group 1", subtitle: "부제입니다", levelNum: 2, totalScore: 30, result: SubmitQuizResponse(userId: 1, quizGroupId: 1, latestScore: 10, highestScore: 20)))
+//}

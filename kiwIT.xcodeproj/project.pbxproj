@@ -138,6 +138,7 @@
 		2177B3962C4C433300BEB3BE /* CreateInterview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3882C4C103F00BEB3BE /* CreateInterview.swift */; };
 		2177B3982C4C4A2C00BEB3BE /* UserSubscriptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3972C4C4A2C00BEB3BE /* UserSubscriptionView.swift */; };
 		2177B39B2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B39A2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift */; };
+		2177B39D2C5012A500BEB3BE /* TrophyCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B39C2C5012A500BEB3BE /* TrophyCardView.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -313,6 +314,7 @@
 		2177B3942C4C2C4E00BEB3BE /* InterviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewViewModel.swift; sourceTree = "<group>"; };
 		2177B3972C4C4A2C00BEB3BE /* UserSubscriptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionView.swift; sourceTree = "<group>"; };
 		2177B39A2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionViewModel.swift; sourceTree = "<group>"; };
+		2177B39C2C5012A500BEB3BE /* TrophyCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyCardView.swift; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -779,6 +781,7 @@
 		217B53162BA2EDEB0081D418 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				2177B39C2C5012A500BEB3BE /* TrophyCardView.swift */,
 				214282D12BD0FDE900EA3CC1 /* Style */,
 				21816ABC2BC595FC007E6FD6 /* Button */,
 				2177B37B2C46EFD800BEB3BE /* Home */,
@@ -1379,6 +1382,7 @@
 				218267712BE68A5C00D8C17C /* QuizResultView.swift in Sources */,
 				218323862BEA6E1600FB79B5 /* QuizContentOX.swift in Sources */,
 				214282D02BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift in Sources */,
+				2177B39D2C5012A500BEB3BE /* TrophyCardView.swift in Sources */,
 				2177B31B2C25972C00BEB3BE /* BookmarkLecture.swift in Sources */,
 				2123399C2C19F31600B397F8 /* MainTabBarViewModel.swift in Sources */,
 				219EFBBF2B9F069600FBEBE0 /* QuizListView.swift in Sources */,

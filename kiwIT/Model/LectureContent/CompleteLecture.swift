@@ -14,4 +14,5 @@ struct CompleteLectureResponse: Decodable, Hashable {
     var kept: Bool
     var createdAt: String
     var updatedAt: String
+    var trophyAwardedList: [TrophyEntity]
 }

@@ -49,8 +49,8 @@ struct CompletedLectureContent: View {
     }
 }
 
-#Preview {
-    CompletedLectureContent(CompletedOrBookmarkedLecture(id: 1, title: "Lecture Title", point: 100, exercise: "Exercise Quiz", answer: true, levelNum: 1, categoryChapterId: 2, payloadUrl: "https://", contentStudied: CompleteLectureResponse(userId: 22, contentId: 1, kept: false, createdAt: "2222", updatedAt: "2222"))) {
-        print("TEst")
-    }
-}
+//#Preview {
+//    CompletedLectureContent(CompletedOrBookmarkedLecture(id: 1, title: "Lecture Title", point: 100, exercise: "Exercise Quiz", answer: true, levelNum: 1, categoryChapterId: 2, payloadUrl: "https://", contentStudied: CompleteLectureResponse(userId: 22, contentId: 1, kept: false, createdAt: "2222", updatedAt: "2222"))) {
+//        print("TEst")
+//    }
+//}

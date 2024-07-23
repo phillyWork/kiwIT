@@ -42,6 +42,8 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
         
     @Published var lectureContent: StartLectureResponse?
     
+    @Published var acquiredTrophyList: [TrophyEntity] = []
+    
     private var requestSubject = PassthroughSubject<Void, Never>()
     private var requestBookmarkSubject = PassthroughSubject<Void, Never>()
     
@@ -154,9 +156,26 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
                 }
             } receiveValue: { response in
                 print("completed this lecture: \(response)")
-                self.showLectureExampleAlert = true
+//                if !response.trophyAwardedList.isEmpty {
+//                    self.acquiredTrophyList = response.trophyAwardedList
+//                } else {
+//                    self.showLectureExampleAlert = true
+//                }
+                
+                //MARK: - mock to show trophy
+                let mockTrophyList = [
+                    TrophyEntity(id: 1, title: "mock1", imageUrl: "https://1", type: .totalContentStudied, threshold: 300),
+                    TrophyEntity(id: 2, title: "mock2", imageUrl: "https://2", type: .chapterClear, threshold: 15)
+                ]
+                self.acquiredTrophyList = mockTrophyList
+                
             }
             .store(in: &self.cancellables)
+    }
+    
+    func handleAfterCloseNewAcquiredTrophyCard() {
+        acquiredTrophyList.removeAll()
+        showLectureExampleAlert = true
     }
     
     func updateAnswerAsTrue() {

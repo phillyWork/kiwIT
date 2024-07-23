@@ -72,8 +72,8 @@ struct LatestTakenQuizView: View {
     }
 }
 
-#Preview {
-    LatestTakenQuizView(latestTakenQuiz: TakenQuizResponse(id: 2, title: "quiz title 1", subtitle: "sub title 2", levelNum: 3, totalScore: 30, result: SubmitQuizResponse(userId: 33, quizGroupId: 2, latestScore: 30, highestScore: 30))) {
-        print("HIHI")
-    }
-}
+//#Preview {
+//    LatestTakenQuizView(latestTakenQuiz: TakenQuizResponse(id: 2, title: "quiz title 1", subtitle: "sub title 2", levelNum: 3, totalScore: 30, result: SubmitQuizResponse(userId: 33, quizGroupId: 2, latestScore: 30, highestScore: 30))) {
+//        print("HIHI")
+//    }
+//}
