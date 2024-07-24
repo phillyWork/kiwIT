@@ -38,6 +38,8 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     @Published var showSubmitExerciseErrorAlertToRetry = false
     @Published var showBookmarkThisLectureForFirstTimeAlert = false
     
+    @Published var isCompleteStudyButtonDisabled = false
+    
     @Published var lectureStudyAllDone = false
         
     @Published var lectureContent: StartLectureResponse?
@@ -128,6 +130,7 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
             self.showLectureExampleAlert = true
         } else {
             print("Requesting complete lecture content")
+            isCompleteStudyButtonDisabled = true
             requestCompleteLectureContent()
         }
     }
@@ -156,25 +159,18 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
                 }
             } receiveValue: { response in
                 print("completed this lecture: \(response)")
-//                if !response.trophyAwardedList.isEmpty {
-//                    self.acquiredTrophyList = response.trophyAwardedList
-//                } else {
-//                    self.showLectureExampleAlert = true
-//                }
-                
-                //MARK: - mock to show trophy
-                let mockTrophyList = [
-                    TrophyEntity(id: 1, title: "mock1", imageUrl: "https://1", type: .totalContentStudied, threshold: 300),
-                    TrophyEntity(id: 2, title: "mock2", imageUrl: "https://2", type: .chapterClear, threshold: 15)
-                ]
-                self.acquiredTrophyList = mockTrophyList
-                
+                if !response.trophyAwardedList.isEmpty {
+                    self.acquiredTrophyList = response.trophyAwardedList
+                } else {
+                    self.showLectureExampleAlert = true
+                }
             }
             .store(in: &self.cancellables)
     }
     
     func handleAfterCloseNewAcquiredTrophyCard() {
         acquiredTrophyList.removeAll()
+        isCompleteStudyButtonDisabled = false
         showLectureExampleAlert = true
     }
     
@@ -198,7 +194,7 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
             shouldLoginAgain = true
             return
         }
-        NetworkManager.shared.request(type: CompleteLectureResponse.self, api: .exerciseForLecture(request: ExerciseForLectureRequest(contentId: contentId, access: tokenData.0.access, answer: userExampleAnswer)), errorCase: .exerciseForLecture)
+        NetworkManager.shared.request(type: BasicCompleteLectureContentPayload.self, api: .exerciseForLecture(request: ExerciseForLectureRequest(contentId: contentId, access: tokenData.0.access, answer: userExampleAnswer)), errorCase: .exerciseForLecture)
             .sink { completion in
                 if case .failure(let error) = completion {
                     if let submitExerciseError = error as? NetworkError {

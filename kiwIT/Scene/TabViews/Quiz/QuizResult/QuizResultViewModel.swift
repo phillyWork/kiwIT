@@ -25,19 +25,23 @@ final class QuizResultViewModel: ObservableObject, RefreshTokenHandler {
     
     @Published var didFinishSubmittingAnswer = false
     
+    @Published var acquiredTrophyList: [TrophyEntity] = []
+    
     var cancellables = Set<AnyCancellable>()
     
     var userResult: SubmitQuizResponse?
     
     var quizTitle: String
     var quizGroupId: Int
+    var totalScore: Int
     var userAnswerListForRequest: [QuizAnswer]
     var quizList: [QuizPayload]
     
-    init(_ id: Int, title: String, userAnswer: [QuizAnswer], quizList: [QuizPayload]) {
+    init(_ id: Int, title: String, score: Int, userAnswer: [QuizAnswer], quizList: [QuizPayload]) {
         print("QuizResultViewModel INIT")
         self.quizGroupId = id
         self.quizTitle = title
+        self.totalScore = score
         self.userAnswerListForRequest = userAnswer
         self.quizList = quizList
         requestSubmitAnswer()
@@ -75,9 +79,22 @@ final class QuizResultViewModel: ObservableObject, RefreshTokenHandler {
                 }
             } receiveValue: { response in
                 self.userResult = response
-                self.didFinishSubmittingAnswer = true
+                
+                //MARK: - Quiz should be tested after finishing in lecture test
+                
+                if !response.trophyAwardedList.isEmpty {
+                    self.acquiredTrophyList = response.trophyAwardedList
+                } else {
+                    self.didFinishSubmittingAnswer = true
+                }
+                
             }
             .store(in: &self.cancellables)
+    }
+    
+    func handleAfterCloseTrophyCardView() {
+        acquiredTrophyList.removeAll()
+        didFinishSubmittingAnswer = true
     }
     
     func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: QuizResultActionType) {

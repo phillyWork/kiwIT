@@ -21,5 +21,5 @@ struct StartLectureResponse: Decodable {
     var levelNum: Int
     var categoryChapterId: Int
     var payloadUrl: String
-    var contentStudied: CompleteLectureResponse?    //학습한 적 없다면 null
+    var contentStudied: BasicCompleteLectureContentPayload?    //학습한 적 없다면 null
 }

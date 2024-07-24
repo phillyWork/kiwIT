@@ -84,7 +84,6 @@ struct SignUpInfoView: View {
             Spacer()
             
             ShrinkAnimationButtonView(title: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Setup.ContentStrings.SignUp.signUpText : Setup.ContentStrings.SignUp.cannotSignUpText, font: Setup.FontName.galMuri11Bold, color: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Color.brandColor : Color.errorHighlightColor) {
-                
                 if signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty {
                     signUpInfoVM.requestSignUp()
                 } else {
@@ -92,7 +91,9 @@ struct SignUpInfoView: View {
                 }
             }
             .padding(.vertical, 12)
-            .alert(Setup.ContentStrings.SignUp.notReadyToSignUpErrorAlertTitle, isPresented: $signUpInfoVM.showSignUpRequestIsNotSetAlert, actions: { }, message: {
+            .alert(Setup.ContentStrings.SignUp.notReadyToSignUpErrorAlertTitle, isPresented: $signUpInfoVM.showSignUpRequestIsNotSetAlert, actions: {
+                Button(Setup.ContentStrings.confirm, role: .cancel) { }
+            }, message: {
                 Text(Setup.ContentStrings.SignUp.notReadyToSignUpErrorAlertMessage)
             })
         }
@@ -116,5 +117,5 @@ struct SignUpInfoView: View {
 }
 
 #Preview {
-    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: SignUpRequest(email: "aaa@bbb.com", nickname: "abcabc123123", provider: SocialLoginProvider.apple)), mainTabBarVM: MainTabBarViewModel())
+    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: SignUpRequest(email: "aaa@bbb.com", nickname: "", provider: SocialLoginProvider.apple)), mainTabBarVM: MainTabBarViewModel())
 }

@@ -13,5 +13,5 @@ struct TakenQuizResponse: Decodable, Hashable {
     var subtitle: String
     var levelNum: Int
     var totalScore: Int
-    var result: SubmitQuizResponse
+    var result: BasicSubmittedQuizResponse
 }

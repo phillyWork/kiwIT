@@ -28,3 +28,10 @@ struct SubmitQuizResponse: Decodable, Hashable {
     var highestScore: Int
     var trophyAwardedList: [TrophyEntity]
 }
+
+struct BasicSubmittedQuizResponse: Decodable, Hashable {
+    var userId: Int
+    var quizGroupId: Int
+    var latestScore: Int
+    var highestScore: Int
+}

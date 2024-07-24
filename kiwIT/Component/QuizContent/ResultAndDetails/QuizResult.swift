@@ -18,6 +18,7 @@ struct QuizResult: View {
     var quizTitle: String
     var quizList: [QuizPayload]
     var userAnswerList: [QuizAnswer]
+    var totalScore: Int
     var result: SubmitQuizResponse
     var completion: (CompleteQuizButtonType) -> Void
     
@@ -36,15 +37,15 @@ struct QuizResult: View {
                         .font(.custom(Setup.FontName.notoSansBold, size: 25))
                         .frame(height: Setup.Frame.quizContentAnswerHeight * 0.3)
                     
-                    //MARK: - 성취도 따른 이미지 추가? (앱단에서 나타내기)
-                    
-                    AsyncImage(url: URL(string: "https://t3.ftcdn.net/jpg/01/75/28/30/360_F_175283093_kkRke2YnpL6HhNRUNPmRm4pFTV2OyLzY.jpg")) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
-                    }
-                    .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
-                    .padding(8)
+//                    AsyncImage(url: URL(string: showAchievementImageUrl())) { image in
+//                        image.resizable()
+//                    } placeholder: {
+//                        ProgressView()
+//                    }
+                    Image(showAchievementImage())
+                        .resizable()
+                        .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
+                        .padding(8)
                     
                     VStack {
                         Text("성취도: \(result.latestScore)")
@@ -96,6 +97,18 @@ struct QuizResult: View {
             })
         }
     }
+    
+    func showAchievementImage() -> String {
+        switch 100 * Double(result.latestScore)/Double(totalScore) {
+        case 0..<20: return Setup.ImageStrings.fRankImage
+        case 20..<50: return Setup.ImageStrings.dRankImage
+        case 50..<60: return Setup.ImageStrings.cRankImage
+        case 60..<80: return Setup.ImageStrings.bRankImage
+        case 80..<90: return Setup.ImageStrings.aRankImage
+        default: return Setup.ImageStrings.sRankImage
+        }
+    }
+    
 }
 
 //#Preview {

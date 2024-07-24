@@ -10,9 +10,7 @@ import SwiftUI
 struct LectureView: View {
     
     @StateObject var lectureVM: LectureViewModel
-    
     @Binding var isLoginAvailable: Bool
-    
     @Environment(\.dismiss) private var dismiss
         
     init(contentId: Int, isLoginAvailable: Binding<Bool>) {
@@ -36,25 +34,9 @@ struct LectureView: View {
                 }
                 .animation(.easeInOut, value: lectureVM.showProgressViewForLoadingWeb)
                 
-                //MARK: - Place to show cardview
-                
-                VStack {
-                    Spacer()
-                    TabView {
-                        ForEach(lectureVM.acquiredTrophyList, id: \.self) { trophy in
-                            TrophyCardView(trophy: trophy)
-                        }
-                    }
-                    .tabViewStyle(PageTabViewStyle())
-                    Spacer()
-                    Button {
-                        lectureVM.handleAfterCloseNewAcquiredTrophyCard()
-                    } label: {
-                        Text("닫기")
-                    }
-                    Spacer()
-                }
-                .background(Color.black.opacity(0.3).ignoresSafeArea(edges: .all))
+                TrophyPageTabView(trophyList: lectureVM.acquiredTrophyList, buttonAction: {
+                    lectureVM.handleAfterCloseNewAcquiredTrophyCard()
+                })
                 .opacity(lectureVM.acquiredTrophyList.isEmpty ? 0 : 1)
                 
             }
@@ -76,6 +58,7 @@ struct LectureView: View {
                 } label: {
                     Text(lectureVM.isThisLectureStudiedBefore ? "예제 보기" : "학습 완료")
                 }
+                .disabled(lectureVM.isCompleteStudyButtonDisabled)
                 .alert("예제 문제", isPresented: $lectureVM.showLectureExampleAlert) {
                     Button(role: .cancel) {
                         lectureVM.updateAnswerAsTrue()

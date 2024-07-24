@@ -17,29 +17,36 @@ struct QuizResultView: View {
     init(_ quizVM: QuizViewModel, path: Binding<NavigationPath>, isLoginAvailable: Binding<Bool>) {
         self._path = path
         self._isLoginAvailable = isLoginAvailable
-        self._quizResultVM = StateObject(wrappedValue: QuizResultViewModel(quizVM.quizGroupId, title: quizVM.quizData!.title, userAnswer: quizVM.userAnswerListForRequest, quizList: quizVM.quizData!.quizList))
+        self._quizResultVM = StateObject(wrappedValue: QuizResultViewModel(quizVM.quizGroupId, title: quizVM.quizData!.title, score: quizVM.quizData!.totalScore, userAnswer: quizVM.userAnswerListForRequest, quizList: quizVM.quizData!.quizList))
     }
     
     var body: some View {
         VStack {
-            if quizResultVM.didFinishSubmittingAnswer {
-                QuizResult(quizTitle: quizResultVM.quizTitle, quizList: quizResultVM.quizList, userAnswerList: quizResultVM.userAnswerListForRequest, result: quizResultVM.userResult!) { result in
-                    switch result {
-                    case .confirmToMoveToQuizList:
-                        path = NavigationPath()
-                    case .takeQuizAgain:
-                        if (path.count > 0) {
-                            //notify QuizView
-                            path.removeLast()
-                        } else {
-                            quizResultVM.showRetakeQuizErrorAlert = true
+            ZStack {
+                if quizResultVM.didFinishSubmittingAnswer {
+                    QuizResult(quizTitle: quizResultVM.quizTitle, quizList: quizResultVM.quizList, userAnswerList: quizResultVM.userAnswerListForRequest, totalScore: quizResultVM.totalScore, result: quizResultVM.userResult!) { result in
+                        switch result {
+                        case .confirmToMoveToQuizList:
+                            path = NavigationPath()
+                        case .takeQuizAgain:
+                            if (path.count > 0) {
+                                path.removeLast()
+                            } else {
+                                quizResultVM.showRetakeQuizErrorAlert = true
+                            }
                         }
                     }
+                } else {
+                    ProgressView {
+                        Text("답안 제출 중...")
+                    }
                 }
-            } else {
-                ProgressView {
-                    Text("답안 제출 중...")
-                }
+            
+                TrophyPageTabView(trophyList: quizResultVM.acquiredTrophyList, buttonAction: {
+                    quizResultVM.handleAfterCloseTrophyCardView()
+                })
+                .opacity(quizResultVM.acquiredTrophyList.isEmpty ? 0 : 1)
+                
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

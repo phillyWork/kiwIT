@@ -47,6 +47,14 @@ extension Setup {
         static let exclamation = "exclamationmark"
         
         static let kakaoButtonImage = "kakao_login_large_wide"
+        
+        static let sRankImage = "sRank"
+        static let aRankImage = "aRank"
+        static let bRankImage = "bRank"
+        static let cRankImage = "cRank"
+        static let dRankImage = "dRank"
+        static let fRankImage = "fRank"
+        
     }
     
 }

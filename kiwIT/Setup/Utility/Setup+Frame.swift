@@ -63,17 +63,10 @@ extension Setup {
         
         static let contentListSectionCompleteImageWidth = contentListItemWidth * 0.05
         static let contentListSectionCompleteImageHeight = contentListItemWidth * 0.05
-        
-
-        //컨텐츠 Image 비율 4:3 고정
+    
         static let contentImageWidth = devicePortraitWidth * 0.9
         static let contentImageHeight = contentImageWidth * 0.75
-        
-        //확대 시의 Image 크기
-        static let expandedContentImageWidth = devicePortraitHeight * 0.85
-        static let expandedContentImageHeight = devicePortraitWidth * 0.9
-        
-        
+    
         //퀴즈용 크기 개별 Item 크기
         static let quizContentListItemWidth = devicePortraitWidth * 0.85
         static let quizContentListItemHeight = quizContentListItemWidth * 0.35
@@ -99,7 +92,6 @@ extension Setup {
         
         static let quizContentAnswerDetailHeight = quizContentItemWidth * 0.35
         static let quizContentAnswerResultImageWidth = quizContentItemWidth * 0.15
-        
         
         static let profileContentHeight = contentListItemWidth * 0.3
         
@@ -136,7 +128,12 @@ extension Setup {
         static let recentlyAcquiredTrophyContentWidth = devicePortraitWidth * 0.17
         static let recentlyAcquiredTrophyContentHeight = recentlyAcquiredTrophyContentWidth * 1.33
         
+        static let recentlyAcquiredTrophyCardViewHeight = devicePortraitHeight * 0.45
         
+        static let recentlyAcquiredTrophyNotifyViewHeight = devicePortraitHeight * 0.05
+        
+        static let recentlyAcquiredTrophyImageWidth = contentImageWidth * 0.7
+        static let recentlyAcquiredTrophyImageHeight = recentlyAcquiredTrophyCardViewHeight * 0.5
         
     }
     

@@ -16,3 +16,12 @@ struct CompleteLectureResponse: Decodable, Hashable {
     var updatedAt: String
     var trophyAwardedList: [TrophyEntity]
 }
+
+struct BasicCompleteLectureContentPayload: Decodable, Hashable {
+    var userId: Int
+    var contentId: Int
+    var myAnswer: Bool?     //null: 예제 답안 미제출
+    var kept: Bool
+    var createdAt: String
+    var updatedAt: String
+}

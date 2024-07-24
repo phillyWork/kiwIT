@@ -23,5 +23,5 @@ struct CompletedOrBookmarkedLecture: Decodable, Hashable {
     var levelNum: Int
     var categoryChapterId: Int
     var payloadUrl: String
-    var contentStudied: CompleteLectureResponse
+    var contentStudied: BasicCompleteLectureContentPayload
 }

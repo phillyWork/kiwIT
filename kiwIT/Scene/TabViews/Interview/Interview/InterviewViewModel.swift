@@ -22,6 +22,10 @@ enum InterviewActionType {
 //MARK: - when app is on background: Background mode and background fetch
 
 
+
+//MARK: - 백그라운드 혹은 다른 뷰에서도 계속해서 request & response를 받아야 하는지 확인 필요
+
+
 final class InterviewViewModel: ObservableObject, RefreshTokenHandler {
    
     typealias ActionType = InterviewActionType
@@ -35,9 +39,13 @@ final class InterviewViewModel: ObservableObject, RefreshTokenHandler {
         
     }
     
+    
+    
     private func startPolling() {
         
     }
+    
+    
     
     func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: InterviewActionType) {
         switch action {
