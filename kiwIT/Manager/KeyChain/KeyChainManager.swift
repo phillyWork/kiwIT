@@ -41,14 +41,13 @@ final class KeyChainManager {
                 print("Keychain Create Data Error: \(SecCopyErrorMessageString(status, nil))")
                 return
             }
-            
             print("Keychain Create Succeed!")
         } catch {
             print("KEYCHAIN CREATE Error with JSONEncoder")
         }
     }
     
-    func read (_ id: String) -> UserTokenValue? {
+    func read(_ id: String) -> UserTokenValue? {
         let serviceName = Setup.KeyChainKeyStrings.serviceName
         
         let query = [
@@ -115,7 +114,6 @@ final class KeyChainManager {
                 print("Keychain Update Data Error: \(SecCopyErrorMessageString(status, nil))")
                 return false
             }
-            
             print("Keychain Update Succeed!")
             return true
         } catch {

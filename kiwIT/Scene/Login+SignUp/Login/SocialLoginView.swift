@@ -45,9 +45,11 @@ struct SocialLoginView: View {
                 Spacer(minLength: 50)
                 VStack(alignment: .center, spacing: 10) {
                     LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .apple))
-                    LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .kakao))
+                        .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonHeight)
+                    LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .kakao)).frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonHeight)
                 }
-                .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
+//                .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
+                .padding(.vertical, 8)
             }
             .frame(maxWidth: .infinity)
             .background(Color.backgroundColor)

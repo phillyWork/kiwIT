@@ -140,6 +140,9 @@
 		2177B39B2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B39A2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift */; };
 		2177B39D2C5012A500BEB3BE /* NewlyAcquiredTrophyCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B39C2C5012A500BEB3BE /* NewlyAcquiredTrophyCardView.swift */; };
 		2177B3A12C501CDD00BEB3BE /* TrophyPageTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A02C501CDD00BEB3BE /* TrophyPageTabView.swift */; };
+		2177B3A42C52995900BEB3BE /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A32C52995900BEB3BE /* NotificationManager.swift */; };
+		2177B3A62C529D9900BEB3BE /* Setup+NotificationStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A52C529D9900BEB3BE /* Setup+NotificationStrings.swift */; };
+		2177B3AA2C52ACD600BEB3BE /* InterviewStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -317,6 +320,9 @@
 		2177B39A2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionViewModel.swift; sourceTree = "<group>"; };
 		2177B39C2C5012A500BEB3BE /* NewlyAcquiredTrophyCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewlyAcquiredTrophyCardView.swift; sourceTree = "<group>"; };
 		2177B3A02C501CDD00BEB3BE /* TrophyPageTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyPageTabView.swift; sourceTree = "<group>"; };
+		2177B3A32C52995900BEB3BE /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		2177B3A52C529D9900BEB3BE /* Setup+NotificationStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NotificationStrings.swift"; sourceTree = "<group>"; };
+		2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewStatusManager.swift; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -545,6 +551,8 @@
 			isa = PBXGroup;
 			children = (
 				2177B3452C2DA4BA00BEB3BE /* AuthManager.swift */,
+				2177B3A32C52995900BEB3BE /* NotificationManager.swift */,
+				2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */,
 				2177B2BE2C1B1D1400BEB3BE /* KeyChain */,
 				2177B2BB2C1B1D0000BEB3BE /* UserDefaults */,
 				216F5F8D2BAB3018008817B0 /* Network */,
@@ -1058,6 +1066,7 @@
 				2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */,
 				2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */,
 				2177B2C12C1B1E3600BEB3BE /* Setup+KeyChainKeyStrings.swift */,
+				2177B3A52C529D9900BEB3BE /* Setup+NotificationStrings.swift */,
 			);
 			path = Strings;
 			sourceTree = "<group>";
@@ -1095,8 +1104,8 @@
 			isa = PBXGroup;
 			children = (
 				2177B3902C4C2C0300BEB3BE /* InterviewList */,
-				2177B3992C4C4A3300BEB3BE /* Subscription */,
 				2177B3932C4C2C1600BEB3BE /* Interview */,
+				2177B3992C4C4A3300BEB3BE /* Subscription */,
 			);
 			path = Interview;
 			sourceTree = "<group>";
@@ -1313,6 +1322,7 @@
 				2177B3732C3C23FA00BEB3BE /* BookmarkedQuizContent.swift in Sources */,
 				2177B3982C4C4A2C00BEB3BE /* UserSubscriptionView.swift in Sources */,
 				217D59472BA9C713005AE418 /* LectureListViewModel.swift in Sources */,
+				2177B3A42C52995900BEB3BE /* NotificationManager.swift in Sources */,
 				217BAADC2BFB826C00ADAC6B /* QuizResult.swift in Sources */,
 				218267742BE68A6F00D8C17C /* QuizResultViewModel.swift in Sources */,
 				212339A02C19F40700B397F8 /* TabViews.swift in Sources */,
@@ -1323,6 +1333,7 @@
 				2173C0622BA093A100FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
 				217A513D2BAECBB70052A07E /* Error+Network.swift in Sources */,
 				219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */,
+				2177B3AA2C52ACD600BEB3BE /* InterviewStatusManager.swift in Sources */,
 				2177B32F2C25A67D00BEB3BE /* LatestTakenQuiz.swift in Sources */,
 				217D59452BA9C700005AE418 /* LectureListView.swift in Sources */,
 				2177B2D02C20A84100BEB3BE /* TrophyListViewModel.swift in Sources */,
@@ -1357,6 +1368,7 @@
 				2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */,
 				2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				2177B3212C2598AE00BEB3BE /* StartQuiz.swift in Sources */,
+				2177B3A62C529D9900BEB3BE /* Setup+NotificationStrings.swift in Sources */,
 				2177B2CB2C20750700BEB3BE /* InterviewListViewModel.swift in Sources */,
 				217A513F2BAECD350052A07E /* SignUp.swift in Sources */,
 				2177B3602C383BF900BEB3BE /* CompletedLectureContent.swift in Sources */,

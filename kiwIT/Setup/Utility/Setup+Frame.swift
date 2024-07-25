@@ -18,7 +18,7 @@ extension Setup {
         static let shrinkAnimationButtonHeight = shrinkAnimationButtonWidth * 0.2
         
         static let socialLoginButtonWidth = devicePortraitWidth * 0.8
-        static let socialLoginButtonStackHeight = socialLoginButtonWidth * 0.3
+        static let socialLoginButtonHeight = socialLoginButtonWidth * 0.15
         
         static let signUpContentWidth = devicePortraitWidth * 0.9
         static let signUpConfirmScrollViewHeight = devicePortraitHeight * 0.45

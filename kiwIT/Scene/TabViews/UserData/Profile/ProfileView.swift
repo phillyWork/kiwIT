@@ -30,49 +30,59 @@ struct ProfileView: View {
                         .font(.custom(Setup.FontName.lineThin, size: 12))
                         .foregroundStyle(Color.textColor)
                 }
-                GroupBox(label: Text("닉네임")
+                GroupBox(label: Text("유저 정보")
                     .font(.custom(Setup.FontName.notoSansBold, size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading), content: {
-                        HStack {
-                            Text(tabViewsVM.profileData?.nickname ?? "Anonymous User")
-                                .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, 10)
-                            Button {
-                                profileVM.showEditNicknameAlert.toggle()
-                            } label: {
-                                Text("변경하기")
-                                    .font(.custom(Setup.FontName.notoSansRegular, size: 15))
-                            }
-                            .padding(.trailing, 10)
-                            .alert("닉네임 수정", isPresented: $profileVM.showEditNicknameAlert) {
-                                TextField("타이틀",
-                                          text: $profileVM.nicknameInputFromUser,
-                                          prompt: Text("새로운 닉네임을 입력해주세요.")
-                                )
-                                .textInputAutocapitalization(.never)
-                                .autocorrectionDisabled()
-                                .foregroundStyle(Color.black)
-                                Button(Setup.ContentStrings.cancel, role: .destructive) {
-                                    profileVM.nicknameInputFromUser.removeAll()
+                        VStack {
+                            HStack {
+                                Text(tabViewsVM.profileData?.nickname ?? "Anonymous User")
+                                    .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.leading, 10)
+                                Button {
+                                    profileVM.showEditNicknameAlert.toggle()
+                                } label: {
+                                    Text("변경하기")
+                                        .font(.custom(Setup.FontName.notoSansRegular, size: 15))
                                 }
-                                Button(Setup.ContentStrings.confirm, role: .cancel) {
-                                    if profileVM.nicknameInputFromUser.isEmpty {
-                                        profileVM.showNicknameErrorAlert = true
-                                    } else {
-                                        profileVM.debouncedRequestProfileEdit()
+                                .padding(.trailing, 10)
+                                .alert("닉네임 수정", isPresented: $profileVM.showEditNicknameAlert) {
+                                    TextField("타이틀",
+                                              text: $profileVM.nicknameInputFromUser,
+                                              prompt: Text("새로운 닉네임을 입력해주세요.")
+                                    )
+                                    .textInputAutocapitalization(.never)
+                                    .autocorrectionDisabled()
+                                    .foregroundStyle(Color.black)
+                                    Button(Setup.ContentStrings.cancel, role: .destructive) {
+                                        profileVM.nicknameInputFromUser.removeAll()
+                                    }
+                                    Button(Setup.ContentStrings.confirm, role: .cancel) {
+                                        if profileVM.nicknameInputFromUser.isEmpty {
+                                            profileVM.showNicknameErrorAlert = true
+                                        } else {
+                                            profileVM.debouncedRequestProfileEdit()
+                                        }
                                     }
                                 }
+                                .alert("오류", isPresented: $profileVM.showNicknameErrorAlert, actions: {
+                                    Button(Setup.ContentStrings.confirm, role: .cancel) {
+                                        profileVM.showEditNicknameAlert = true
+                                    }
+                                }, message: {
+                                    Text("오류 발생! 다시 시도해주세요.")
+                                })
                             }
-                            .alert("오류", isPresented: $profileVM.showNicknameErrorAlert, actions: {
-                                Button(Setup.ContentStrings.confirm, role: .cancel) {
-                                    profileVM.showEditNicknameAlert = true
-                                }
-                            }, message: {
-                                Text("오류 발생! 다시 시도해주세요.")
-                            })
+                            .padding(.vertical, 5)
+                            HStack {
+                                Text("Email:")
+                                Text(tabViewsVM.profileData?.email ?? "Example Email")
+                            }
+                            .font(.custom(Setup.FontName.notoSansBold, size: 12))
+                            .foregroundStyle(Color.textColor)
+                            .padding(.leading, 10)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
-                        .padding(.vertical, 5)
                 })
                 .backgroundStyle(Color.backgroundColor)
                 
@@ -241,7 +251,7 @@ struct ProfileView: View {
                         Text("정말로 탈퇴하실 건가요?")
                     })
                     .alert("회원 탈퇴 확인", isPresented: $profileVM.showWithdrawWithEmailTextfieldAlert, actions: {
-                        TextField("가입한 이메일", text: $profileVM.emailToBeWithdrawn)
+                        TextField("가입한 이메일", text: $profileVM.emailToBeWithdrawn, prompt: Text(tabViewsVM.profileData?.email ?? "Email"))
                             .foregroundStyle(Color.black)
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
                             if profileVM.emailToBeWithdrawn.isEmpty {

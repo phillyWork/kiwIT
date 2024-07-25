@@ -86,7 +86,6 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
                         switch nextLectureToStudyError {
                         case .invalidRequestBody(_):
                             print("No content to study: \(nextLectureToStudyError.description)")
-                            self.showNextLectureError = true
                             self.dispatchGroup.leave()
                         case .invalidToken(_):
                             self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .nextLecture)

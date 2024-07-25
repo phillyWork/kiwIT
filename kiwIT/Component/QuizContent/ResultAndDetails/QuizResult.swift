@@ -44,7 +44,9 @@ struct QuizResult: View {
 //                    }
                     Image(showAchievementImage())
                         .resizable()
+                        .aspectRatio(contentMode: .fill)
                         .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
+                        .clipped()
                         .padding(8)
                     
                     VStack {

@@ -51,6 +51,7 @@ struct LectureView: View {
                     Image(systemName: Setup.ImageStrings.defaultXMark2)
                 }
                 .tint(Color.textColor)
+                .disabled(lectureVM.isCompleteStudyButtonDisabled)
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
