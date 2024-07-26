@@ -40,15 +40,14 @@ struct SocialLoginView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text(Setup.ContentStrings.appTitle)
-                    .font(.title)
-                Spacer(minLength: 50)
+                Spacer()
+                SignInMainImageView()
+                Spacer()
                 VStack(alignment: .center, spacing: 10) {
                     LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .apple))
                         .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonHeight)
                     LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .kakao)).frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonHeight)
                 }
-//                .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
                 .padding(.vertical, 8)
             }
             .frame(maxWidth: .infinity)
@@ -58,8 +57,6 @@ struct SocialLoginView: View {
                     print("Login Succeed. Move to HomeView")
                     if let profile = socialLoginVM.profileData {
                         mainTabBarVM.userProfileData = profile
-                    } else {
-                        print("Can't get profile data from SignIn!!!")
                     }
                     mainTabBarVM.isUserLoggedIn = true
                 }

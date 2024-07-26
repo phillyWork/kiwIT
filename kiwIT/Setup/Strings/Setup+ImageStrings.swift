@@ -46,6 +46,7 @@ extension Setup {
         static let retryAction = "arrow.clockwise"
         static let exclamation = "exclamationmark"
         
+        static let signInImage = "kiwITSignInImage"
         static let kakaoButtonImage = "kakao_login_large_wide"
         
         static let sRankImage = "sRank"

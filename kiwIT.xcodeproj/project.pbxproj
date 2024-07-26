@@ -143,6 +143,7 @@
 		2177B3A42C52995900BEB3BE /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A32C52995900BEB3BE /* NotificationManager.swift */; };
 		2177B3A62C529D9900BEB3BE /* Setup+NotificationStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A52C529D9900BEB3BE /* Setup+NotificationStrings.swift */; };
 		2177B3AA2C52ACD600BEB3BE /* InterviewStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */; };
+		2177B3AC2C53EB9900BEB3BE /* SignInMainImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -323,6 +324,7 @@
 		2177B3A32C52995900BEB3BE /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		2177B3A52C529D9900BEB3BE /* Setup+NotificationStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NotificationStrings.swift"; sourceTree = "<group>"; };
 		2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewStatusManager.swift; sourceTree = "<group>"; };
+		2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInMainImageView.swift; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -800,6 +802,7 @@
 		217B53162BA2EDEB0081D418 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */,
 				214282D12BD0FDE900EA3CC1 /* Style */,
 				21816ABC2BC595FC007E6FD6 /* Button */,
 				2177B37B2C46EFD800BEB3BE /* Home */,
@@ -1402,6 +1405,7 @@
 				2173C06B2BA0A1BA00FDD3D9 /* LectureContentListViewModel.swift in Sources */,
 				217A514A2BAED0800052A07E /* RefreshAccessToken.swift in Sources */,
 				217BCCB42B9DE5C300B5461B /* kiwITApp.swift in Sources */,
+				2177B3AC2C53EB9900BEB3BE /* SignInMainImageView.swift in Sources */,
 				218267712BE68A5C00D8C17C /* QuizResultView.swift in Sources */,
 				218323862BEA6E1600FB79B5 /* QuizContentOX.swift in Sources */,
 				214282D02BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift in Sources */,
