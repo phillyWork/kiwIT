@@ -33,14 +33,14 @@ final class SocialLoginButtonViewModel: ObservableObject {
     
     private func bind() {
         appleLoginRequest
-            .debounce(for: Setup.Time.debounceInterval, scheduler: RunLoop.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] result in
                 self?.handleAppleSignIn(result)
             }
             .store(in: &self.cancellables)
         
         kakaoLoginRequest
-            .debounce(for: Setup.Time.debounceInterval, scheduler: RunLoop.main)
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
                 self?.requestKakaoUserLogin()
             }
