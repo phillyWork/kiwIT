@@ -22,8 +22,6 @@ final class SocialLoginViewModel: ObservableObject {
         print("DEBUG: SocialLoginViewModel initialized")
     }
     
-    //Social Login Button ViewModel에서 서버 로그인 성공 시,
-    //Token 일반화 가능하면 함수 하나로 처리, 아니라면 각자 생성
     func handleSocialLoginResult(success: Bool, errorMessage: String? = nil, profileData: ProfileResponse? = nil, userDataToSignUp: SignUpRequest? = nil) {
         if success {
             print("Login Succeed!!!")
@@ -44,6 +42,10 @@ final class SocialLoginViewModel: ObservableObject {
                 self.showLoginErrorAlert = true
             }
         }
+    }
+    
+    deinit {
+        print("SocialLoginViewModel DEINIT")
     }
     
 }

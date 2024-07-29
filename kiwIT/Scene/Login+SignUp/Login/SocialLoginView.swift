@@ -12,7 +12,6 @@ import Combine
 //버튼 누른 뒤, 이미 가입되어 있다면 로그인 화면 제거, HomeView로 이동
 //가입되어 있지 않다면 회원가입 view로
 
-
 //구조
 //1. SocialLoginView ~ SocialLoginVM
 //2. SocialLoginButton ~ SocialLoginButtonVM
@@ -21,9 +20,6 @@ import Combine
 //5-1. 로그인 성공 --> SocialLoginVM의 didSucceedLogin 변경
 //5-2. 회원가입 필요 --> SocialLoginVM의 shouldMoveToSignUp 변경
 //5-3. 실패 --> 에러 케이스 처리 필요
-
-
-
 
 //해당 view로 오는 경우
 //1. 처음 앱을 설치한 경우 (keychain에 저장된 token 없음)
