@@ -17,16 +17,50 @@ import KakaoSDKUser
 
 final class SocialLoginButtonViewModel: ObservableObject {
     
-    var cancellables = Set<AnyCancellable>()
-    var serverLoginResultPublisher = PassthroughSubject<(Bool, String?, ProfileResponse?, SignUpRequest?), Never>()
+    //Input
+    let appleLoginRequest = PassthroughSubject<Result<ASAuthorization, Error>, Never>()
+    let kakaoLoginRequest = PassthroughSubject<Void, Never>()
+    
+    //Output
+    @Published var loginResult: (success: Bool, error: String?, profileData: ProfileResponse?, userDataToSignUp: SignUpRequest?)?
 
+    var cancellables = Set<AnyCancellable>()
+        
     init() {
         print("DEBUG -- Social Login Button ViewModel init")
+        bind()
+    }
+    
+    private func bind() {
+        appleLoginRequest
+            .debounce(for: Setup.Time.debounceInterval, scheduler: RunLoop.main)
+            .sink { [weak self] result in
+                self?.handleAppleSignIn(result)
+            }
+            .store(in: &self.cancellables)
+        
+        kakaoLoginRequest
+            .debounce(for: Setup.Time.debounceInterval, scheduler: RunLoop.main)
+            .sink { [weak self] in
+                self?.requestKakaoUserLogin()
+            }
+            .store(in: &self.cancellables)
     }
     
     //MARK: - Apple Login
     
-    func requestAppleUserLogin(_ authResult: ASAuthorization) {
+    private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
+        switch result {
+        case .success(let success):
+            print("Succeed in Sign in Apple")
+            requestAppleUserLogin(success)
+        case .failure(let error):
+            print("Failed in Sign in Apple: \(error.localizedDescription)")
+            handleAppleSignInFailure()
+        }
+    }
+    
+    private func requestAppleUserLogin(_ authResult: ASAuthorization) {
         switch authResult.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             
@@ -46,18 +80,18 @@ final class SocialLoginButtonViewModel: ObservableObject {
             handleToken(identityTokenInString, service: .apple)
         default:
             print("other than appleIDCredential case: false case!!!")
-            serverLoginResultPublisher.send((false, ServiceProviderError.appleError.message, nil, nil))
+            handleAppleSignInFailure()
             break
         }
     }
     
-    func handleAppleSignInFailure() {
-        serverLoginResultPublisher.send((false, ServiceProviderError.appleError.message, nil, nil))
+    private func handleAppleSignInFailure() {
+        loginResult = (false, ServiceProviderError.appleError.message, nil, nil)
     }
     
     //MARK: - Kakao Login
 
-    func requestKakaoUserLogin() {
+    private func requestKakaoUserLogin() {
         //kakao talk 앱 여부 확인
         if (UserApi.isKakaoTalkLoginAvailable()) {
             requestLoginWithKakaoTalkApp()
@@ -68,29 +102,21 @@ final class SocialLoginButtonViewModel: ObservableObject {
     
     private func requestLoginWithKakaoTalkApp() {
         UserApi.shared.loginWithKakaoTalk { oAuthToken, error in
-            if let error = error {
-                print("Login with Kakao Talk Error: \(error)")
-                //token 받아오기 실패
-                self.serverLoginResultPublisher.send((false, ServiceProviderError.kakaoError.message, nil, nil))
-            }
-            if let oAuthToken = oAuthToken {
-                print("token for kakao user with kakaoTalk: \(oAuthToken)")
-                self.handleToken(oAuthToken.accessToken, service: .kakao)
-            }
+            self.handleKakaoLoginResult(token: oAuthToken, error: error)
         }
     }
     
     private func requestLoginWithKakaoWebAccount() {
         UserApi.shared.loginWithKakaoAccount { oAuthToken, error in
-            if let error = error {
-                print("Login with Kakao User Account Error: \(error)")
-                //token 받아오기 실패 시 처리할 방안
-                self.serverLoginResultPublisher.send((false, ServiceProviderError.kakaoError.message, nil, nil))
-            }
-            if let oAuthToken = oAuthToken {
-                print("token for kakao user with kakao account: \(oAuthToken)")
-                self.handleToken(oAuthToken.accessToken, service: .kakao)
-            }
+            self.handleKakaoLoginResult(token: oAuthToken, error: error)
+        }
+    }
+    
+    private func handleKakaoLoginResult(token: OAuthToken?, error: Error?) {
+        if let token = token {
+            handleToken(token.accessToken, service: .kakao)
+        } else {
+            loginResult = (false, ServiceProviderError.kakaoError.message, nil, nil)
         }
     }
 
@@ -102,10 +128,10 @@ final class SocialLoginButtonViewModel: ObservableObject {
                 if case .failure(let error) = completion {
                     if let signInError = error as? NetworkError {
                         print("SignInError as Network: \(signInError.description)")
-                        self.serverLoginResultPublisher.send((false, signInError.description, nil, nil))
+                        self.loginResult = (false, signInError.description, nil, nil)
                     } else {
                         print("SignInError as other reason")
-                        self.serverLoginResultPublisher.send((false, error.localizedDescription, nil, nil))
+                        self.loginResult = (false, error.localizedDescription, nil, nil)
                     }
                 }
             } receiveValue: { response in
@@ -117,13 +143,13 @@ final class SocialLoginButtonViewModel: ObservableObject {
                         guard let profile = profile else {
                             //프로필 얻어오기 에러: 현재 로그인한 계정 정보 모름
                             print("Error for Profile Request!!!")
-                            self.serverLoginResultPublisher.send((true, nil, nil, nil))
+                            self.loginResult = (true, nil, nil, nil)
                             return
                         }
                         self.updateToken(token: tokenResponse, profile: profile)
                     }
                 case .signUpRequired(let userData):
-                    self.serverLoginResultPublisher.send((false, nil, nil, SignUpRequest(email: userData.email, nickname: userData.nickname, provider: service)))
+                    self.loginResult = (false, nil, nil, SignUpRequest(email: userData.email, nickname: userData.nickname, provider: service))
                 }
             }
             .store(in: &self.cancellables)
@@ -156,7 +182,11 @@ final class SocialLoginButtonViewModel: ObservableObject {
             UserDefaultsManager.shared.saveToUserDefaults(newValue: String(profile.id), forKey: Setup.UserDefaultsKeyStrings.userIdString)
             KeyChainManager.shared.create(UserTokenValue(access: token.accessToken, refresh: token.refreshToken), id: String(profile.id))
         }
-        self.serverLoginResultPublisher.send((true, nil, profile, nil))
+        self.loginResult = (true, nil, profile, nil)
+    }
+    
+    deinit {
+        print("SocialLoginButtonViewModel DEINIT")
     }
         
 }
