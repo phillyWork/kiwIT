@@ -124,32 +124,32 @@ final class SocialLoginButtonViewModel: ObservableObject {
     
     private func handleToken(_ accessToken: String, service: SocialLoginProvider) {
         NetworkManager.shared.request(type: SignInResponse.self, api: .signIn(request: SignInRequest(token: accessToken, provider: service)), errorCase: .signIn)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let signInError = error as? NetworkError {
                         print("SignInError as Network: \(signInError.description)")
-                        self.loginResult = (false, signInError.description, nil, nil)
+                        self?.loginResult = (false, signInError.description, nil, nil)
                     } else {
                         print("SignInError as other reason")
-                        self.loginResult = (false, error.localizedDescription, nil, nil)
+                        self?.loginResult = (false, error.localizedDescription, nil, nil)
                     }
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 switch response {
                 case .signInSuccess(let tokenResponse):
                     //로그인 성공: Token 활용해서 profile 요청, 이메일 받아오기
-                    self.requestProfile(tokenResponse) { profile in
+                    self?.requestProfile(tokenResponse) { profile in
                         print("Profile Passed From RequestProfile!!!")
                         guard let profile = profile else {
                             //프로필 얻어오기 에러: 현재 로그인한 계정 정보 모름
                             print("Error for Profile Request!!!")
-                            self.loginResult = (true, nil, nil, nil)
+                            self?.loginResult = (true, nil, nil, nil)
                             return
                         }
-                        self.updateToken(token: tokenResponse, profile: profile)
+                        self?.updateToken(token: tokenResponse, profile: profile)
                     }
                 case .signUpRequired(let userData):
-                    self.loginResult = (false, nil, nil, SignUpRequest(email: userData.email, nickname: userData.nickname, provider: service))
+                    self?.loginResult = (false, nil, nil, SignUpRequest(email: userData.email, nickname: userData.nickname, provider: service))
                 }
             }
             .store(in: &self.cancellables)

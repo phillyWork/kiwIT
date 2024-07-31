@@ -104,9 +104,9 @@ struct SignUpInfoView: View {
         .onChange(of: signUpInfoVM.didSignUpSucceed) { newValue in
             if newValue {
                 if let profile = signUpInfoVM.signedUpProfile {
-                    mainTabBarVM.userProfileData = profile
+                    mainTabBarVM.userProfileInput.send(profile)
                 }
-                mainTabBarVM.isUserLoggedIn = true
+                mainTabBarVM.checkLoginStatus.send(true)
             }
         }
     }

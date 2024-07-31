@@ -27,6 +27,11 @@ final class MainTabBarViewModel: ObservableObject, RefreshTokenHandler {
     
     typealias ActionType = BasicViewModelAction
     
+    //Input
+    let checkLoginStatus = PassthroughSubject<Bool, Never>()
+    let userProfileInput = PassthroughSubject<ProfileResponse?, Never>()
+    
+    //Output
     @Published var userProfileData: ProfileResponse?
     @Published var isUserLoggedIn = false
     
@@ -34,8 +39,22 @@ final class MainTabBarViewModel: ObservableObject, RefreshTokenHandler {
     
     init() {
         print("DEBUG - MainTabBarViewModel initialized")
+        bind()
         checkSignInStatus()
-        print("DEBUG - End of MainTabBarViewModel initialization")
+    }
+    
+    private func bind() {
+        checkLoginStatus
+            .sink { [weak self] isAvailable in
+                self?.isUserLoggedIn = isAvailable
+            }
+            .store(in: &self.cancellables)
+        
+        userProfileInput
+            .sink { [weak self] profile in
+                self?.userProfileData = profile
+            }
+            .store(in: &self.cancellables)
     }
     
     private func checkSignInStatus() {
@@ -49,29 +68,29 @@ final class MainTabBarViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestProfile(_ current: UserTokenValue, userId: String) {
         NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: current.access)), errorCase: .profileCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let profileError = error as? NetworkError {
                         switch profileError {
                         case .invalidRequestBody(_):
                             print("This user doesn't exist in MainTabsViewModel Initiailzation: \(profileError.description)")
-                            self.isUserLoggedIn = false
+                            self?.isUserLoggedIn = false
                         case .invalidToken(_):
                             print("Access Token is not available in MainTabsViewModel Initiailzation: \(profileError.description)")
-                            self.requestRefreshToken(current, userId: userId, action: .profile)
+                            self?.requestRefreshToken(current, userId: userId, action: .profile)
                         default:
                             print("Profile Check Error in MainTabsViewModel Initiailzation: \(profileError.description)")
-                            self.isUserLoggedIn = false
+                            self?.isUserLoggedIn = false
                         }
                     } else {
                         print("Profile Request Error for other reason in MainTabsViewModel Initiailzation: \(error.localizedDescription)")
-                        self.isUserLoggedIn = false
+                        self?.isUserLoggedIn = false
                     }
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 print("Getting Profile Data from Server! Available Saved Token!")
-                self.userProfileData = response
-                self.isUserLoggedIn = true
+                self?.userProfileData = response
+                self?.isUserLoggedIn = true
             }
             .store(in: &self.cancellables)
     }
@@ -85,5 +104,9 @@ final class MainTabBarViewModel: ObservableObject, RefreshTokenHandler {
         //로그인 화면 이동하기
         AuthManager.shared.handleRefreshTokenExpired(userId: userId)
         isUserLoggedIn = false
+    }
+    
+    deinit {
+        print("MainTabBarViewModel DEINIT")
     }
 }

@@ -73,7 +73,7 @@ final class SignUpInfoViewModel: ObservableObject {
     
     private func requestSignUp() {
         NetworkManager.shared.request(type: SignUpResponse.self, api: .signUp(request: userDataForSignUp), errorCase: .signUp)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let signUpError = error as? NetworkError {
                         switch signUpError {
@@ -85,28 +85,28 @@ final class SignUpInfoViewModel: ObservableObject {
                     } else {
                         print("Error For Sign Up Request for other reason: \(error.localizedDescription)")
                     }
-                    self.showSignUpErrorAlert = true
+                    self?.showSignUpErrorAlert = true
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 print("SignUpRequest Response: \(response)")
-                self.requestProfile(response)
+                self?.requestProfile(response)
             }
             .store(in: &self.cancellables)
     }
     
     private func requestProfile(_ userToken: SignUpResponse) {
         NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: userToken.accessToken)), errorCase: .profileCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let profileError = error as? NetworkError {
                         print("Profile Check Error in SignUp!! -- \(profileError.description)")
                     } else {
                         print("Error For Sign Up Request for other reason: \(error.localizedDescription)")
                     }
-                    self.didSignUpSucceed = true
+                    self?.didSignUpSucceed = true
                 }
-            } receiveValue: { response in
-                self.updateToken(token: userToken, profile: response)
+            } receiveValue: { [weak self] response in
+                self?.updateToken(token: userToken, profile: response)
             }
             .store(in: &self.cancellables)
     }

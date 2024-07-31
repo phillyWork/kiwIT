@@ -37,11 +37,11 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
     
     init() {
         print("HomeViewModel INIT")
-        setupDebounce()
+        bind()
         basicRequest()
     }
     
-    private func setupDebounce() {
+    private func bind() {
         subjectNextLecture
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] _ in

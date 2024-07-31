@@ -52,9 +52,9 @@ struct SocialLoginView: View {
                 if newValue {
                     print("Login Succeed. Move to HomeView")
                     if let profile = socialLoginVM.profileData {
-                        mainTabBarVM.userProfileData = profile
+                        mainTabBarVM.userProfileInput.send(profile)
                     }
-                    mainTabBarVM.isUserLoggedIn = true
+                    mainTabBarVM.checkLoginStatus.send(true)
                 }
             }
             .alert("로그인 오류!", isPresented: $socialLoginVM.showLoginErrorAlert, actions: {

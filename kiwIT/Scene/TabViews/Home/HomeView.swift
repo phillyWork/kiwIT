@@ -48,7 +48,7 @@ struct HomeView: View {
                         EmptyViewWithNoError(title: "오른쪽 상단 버튼을 눌러 다시 시도해주세요")
                     } else if let nextLectureToStudy = homeVM.nextLectureToStudy {
                         NextLectureView(nextLecture: nextLectureToStudy) {
-                            tabViewsVM.selectedTab = .lecture
+                            tabViewsVM.selectedTabUpdate.send(.lecture)
                         }
                     } else {
                         EmptyViewWithNoError(title: "학습을 시작해주세요")
@@ -73,7 +73,7 @@ struct HomeView: View {
                         EmptyViewWithNoError(title: "오른쪽 상단 버튼을 눌러 다시 시도해주세요")
                     } else if let latestTakenQuiz = homeVM.latestTakenQuiz {
                         LatestTakenQuizView(latestTakenQuiz: latestTakenQuiz) {
-                            tabViewsVM.selectedTab = .quiz
+                            tabViewsVM.selectedTabUpdate.send(.quiz)
                         }
                     } else {
                         EmptyViewWithNoError(title: "가장 최근에 푼 퀴즈가 없어요")
@@ -93,7 +93,7 @@ struct HomeView: View {
         })
         .alert("로그인 오류", isPresented: $homeVM.shouldLoginAgain) {
             ErrorAlertConfirmButton {
-                tabViewsVM.isLoginAvailable = false
+                tabViewsVM.userLoginStatusUpdate.send(false)
             }
         } message: {
             Text("세션 만료입니다. 다시 로그인해주세요!")

@@ -226,7 +226,7 @@ struct ProfileView: View {
                     })
                     .alert("로그아웃 성공!", isPresented: $profileVM.showLogoutSucceedAlert, actions: {
                         Button {
-                            tabViewsVM.isLoginAvailable = false
+                            tabViewsVM.userLoginStatusUpdate.send(false)
                         } label: {
                             Text(Setup.ContentStrings.confirm)
                         }
@@ -277,7 +277,7 @@ struct ProfileView: View {
                     })
                     .alert("탈퇴 완료", isPresented: $profileVM.showWithdrawSucceedAlert, actions: {
                         Button {
-                            tabViewsVM.isLoginAvailable = false
+                            tabViewsVM.userLoginStatusUpdate.send(false)
                         } label: {
                             Text(Setup.ContentStrings.confirm)
                         }
@@ -299,7 +299,7 @@ struct ProfileView: View {
             })
             .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $profileVM.showSessionExpiredAlert, actions: {
                 ErrorAlertConfirmButton {
-                    tabViewsVM.isLoginAvailable = false
+                    tabViewsVM.userLoginStatusUpdate.send(false)
                 }
             }, message: {
                 Text(Setup.ContentStrings.loginErrorAlertMessage)

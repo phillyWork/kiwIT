@@ -60,11 +60,10 @@ struct TabViews: View {
         }
         .tint(Color.brandColor)
         .onAppear {
-            tabViewsVM.checkProfile(with: mainTabBarVM.userProfileData)
+            tabViewsVM.checkProfileRequest.send(mainTabBarVM.userProfileData)
         }
         .onReceive(tabViewsVM.$isLoginAvailable) { isAvailable in
-            print("is login available? -- \(isAvailable) in TabViews")
-            mainTabBarVM.isUserLoggedIn = isAvailable
+            mainTabBarVM.checkLoginStatus.send(isAvailable)
         }
     }
 }

@@ -21,22 +21,22 @@ extension RefreshTokenHandler {
     //default refresh token method
     func requestRefreshToken(_ token: UserTokenValue, userId: String, action: ActionType) {
         NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let refreshError = error as? NetworkError {
                         switch refreshError {
                         case .invalidToken(_):
-                            self.handleRefreshTokenError(isRefreshInvalid: true, userId: userId)
+                            self?.handleRefreshTokenError(isRefreshInvalid: true, userId: userId)
                         default:
-                            self.handleRefreshTokenError(isRefreshInvalid: false, userId: userId)
+                            self?.handleRefreshTokenError(isRefreshInvalid: false, userId: userId)
                         }
                     } else {
-                        self.handleRefreshTokenError(isRefreshInvalid: false, userId: userId)
+                        self?.handleRefreshTokenError(isRefreshInvalid: false, userId: userId)
                     }
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                self.handleRefreshTokenSuccess(response: UserTokenValue(access: response.accessToken, refresh: response.refreshToken), userId: userId, action: action)
+                self?.handleRefreshTokenSuccess(response: UserTokenValue(access: response.accessToken, refresh: response.refreshToken), userId: userId, action: action)
             }
             .store(in: &self.cancellables)
     }

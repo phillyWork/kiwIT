@@ -24,24 +24,49 @@ enum TabType: Int, CaseIterable, Hashable, Identifiable {
 final class TabViewsViewModel: ObservableObject, RefreshTokenHandler {
 
     typealias ActionType = BasicViewModelAction
-        
-    @Published var selectedTab: TabType = .home
+    
+    //Input
+    let checkProfileRequest = PassthroughSubject<ProfileResponse?, Never>()
+    let selectedTabUpdate = PassthroughSubject<TabType, Never>()
+    let userLoginStatusUpdate = PassthroughSubject<Bool, Never>()
+    
+    //Output
     @Published var profileData: ProfileResponse?
     @Published var isLoginAvailable = true
     @Published var didUpdateProfileFromOtherView = false
+    @Published var selectedTab: TabType = .home
     
     var cancellables = Set<AnyCancellable>()
     
     init() {
         print("TabViewsViewModel INIT")
+        bind()
     }
+    
+    private func bind() {
+        checkProfileRequest
+            .sink { [weak self] profile in
+                self?.checkProfile(with: profile)
+            }
+            .store(in: &self.cancellables)
         
-    func checkProfile(with profile: ProfileResponse?) {
+        selectedTabUpdate
+            .sink { [weak self] type in
+                self?.selectedTab = type
+            }
+            .store(in: &self.cancellables)
+        
+        userLoginStatusUpdate
+            .sink { [weak self] newStatus in
+                self?.isLoginAvailable = newStatus
+            }
+            .store(in: &self.cancellables)
+    }
+       
+    private func checkProfile(with profile: ProfileResponse?) {
         if let profile = profile {
             self.profileData = profile
-            print("Passed Profile Data: \(profileData)")
         } else {
-            print("No Profile Data Passed!!!")
             retrieveUserProfile()
         }
     }
@@ -57,28 +82,27 @@ final class TabViewsViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestProfile(_ token: UserTokenValue, userId: String) {
         NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: token.access)), errorCase: .profileCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let profileError = error as? NetworkError {
                         switch profileError {
                         case .invalidRequestBody(_):
                             print("Profile Check Error in TabViewsViewModel: \(profileError.description)")
-                            self.isLoginAvailable = false
+                            self?.isLoginAvailable = false
                         case .invalidToken(_):
                             print("Invalid Access token in TabViewsViewModel: \(profileError.description)")
-                            self.requestRefreshToken(token, userId: userId, action: .profile)
+                            self?.requestRefreshToken(token, userId: userId, action: .profile)
                         default:
                             print("Profile Check Error in TabViewsViewModel: \(profileError.description)")
-                            self.isLoginAvailable = false
+                            self?.isLoginAvailable = false
                         }
                     } else {
                         print("Profile Check Error in TabViewsViewModel for other reason: \(error.localizedDescription)")
-                        self.isLoginAvailable = false
+                        self?.isLoginAvailable = false
                     }
                 }
-            } receiveValue: { response in
-                print("Profile Response: \(response)")
-                self.profileData = response
+            } receiveValue: { [weak self] response in
+                self?.profileData = response
             }
             .store(in: &self.cancellables)
     }
@@ -96,5 +120,9 @@ final class TabViewsViewModel: ObservableObject, RefreshTokenHandler {
         print("Updated Profile: \(newProfile)")
         self.profileData = newProfile
         self.didUpdateProfileFromOtherView = true
+    }
+    
+    deinit {
+        print("TabViewsViewModel DEINIT")
     }
 }

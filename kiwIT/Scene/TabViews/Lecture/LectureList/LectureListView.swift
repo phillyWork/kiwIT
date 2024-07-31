@@ -79,7 +79,7 @@ struct LectureListView: View {
         })
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureListVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
-                tabViewsVM.isLoginAvailable = false
+                tabViewsVM.userLoginStatusUpdate.send(false)
             }
         }, message: {
             Text(Setup.ContentStrings.loginErrorAlertMessage)

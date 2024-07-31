@@ -69,7 +69,7 @@ struct QuizListView: View {
             })
             .alert("로그인 오류!", isPresented: $quizListVM.shouldLoginAgain, actions: {
                 ErrorAlertConfirmButton {
-                    tabViewsVM.isLoginAvailable = false
+                    tabViewsVM.userLoginStatusUpdate.send(false)
                 }
             }, message: {
                 Text("세션 만료입니다. 다시 로그인해주세요!")
