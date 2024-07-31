@@ -31,12 +31,12 @@ struct UserLectureListView: View {
         .frame(maxWidth: .infinity)
         .background(Color.backgroundColor)
         .scrollIndicators(.hidden)
-        .alert("네트워크 오류!", isPresented: $lectureListVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $lectureListVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .alert("보관함 오류!", isPresented: $lectureListVM.showRemoveBookmarkedLectureError) {
+        .alert(Setup.ContentStrings.removeBookmarkedContentErrorAlertTitle, isPresented: $lectureListVM.showRemoveBookmarkedLectureError) {
             ErrorAlertConfirmButton { }
         } message: {
             Text("보관함 제거에 실패했습니다. 다시 시도해주세요.")
@@ -161,7 +161,7 @@ struct BookmarkedLectureSection: View {
             }
         }
         .frame(height: Setup.Frame.profileContentEquallyDivide)
-        .alert("보관함 제거?", isPresented: $lectureListVM.showRemoveBookmarkedLectureAlert) {
+        .alert(Setup.ContentStrings.removeBookmarkedContentAlertTitle, isPresented: $lectureListVM.showRemoveBookmarkedLectureAlert) {
             Button(Setup.ContentStrings.confirm, role: .cancel) {
                 lectureListVM.debouncedUnbookmarkLecture()
             }

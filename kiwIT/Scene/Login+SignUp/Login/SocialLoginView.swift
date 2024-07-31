@@ -57,7 +57,7 @@ struct SocialLoginView: View {
                     mainTabBarVM.checkLoginStatus.send(true)
                 }
             }
-            .alert("로그인 오류!", isPresented: $socialLoginVM.showLoginErrorAlert, actions: {
+            .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $socialLoginVM.showLoginErrorAlert, actions: {
                 ErrorAlertConfirmButton { }
             }, message: {
                 Text("로그인 시도에 오류가 발생했습니다. 다시 시도해주세요.")

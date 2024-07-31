@@ -27,12 +27,12 @@ struct UserQuizListView: View {
         .frame(maxWidth: .infinity)
         .background(Color.backgroundColor)
         .scrollIndicators(.hidden)
-        .alert("네트워크 오류!", isPresented: $quizListVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $quizListVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .alert("보관함 오류!", isPresented: $quizListVM.showRemoveBookmarkedQuizError) {
+        .alert(Setup.ContentStrings.removeBookmarkedContentErrorAlertTitle, isPresented: $quizListVM.showRemoveBookmarkedQuizError) {
             ErrorAlertConfirmButton { }
         } message: {
             Text("보관함 제거에 실패했습니다. 다시 시도해주세요.")
@@ -155,7 +155,7 @@ struct BookmarkedQuizSection: View {
             }
         }
         .frame(height: Setup.Frame.profileContentEquallyDivide)
-        .alert("보관함 제거?", isPresented: $quizListVM.showRemoveBookmarkedQuizAlert) {
+        .alert(Setup.ContentStrings.removeBookmarkedContentAlertTitle, isPresented: $quizListVM.showRemoveBookmarkedQuizAlert) {
             Button(Setup.ContentStrings.confirm, role: .cancel) {
                 quizListVM.debouncedUnbookmarkQuiz()
             }

@@ -57,12 +57,12 @@ struct InterviewListView: View {
                 }
                 .presentationDragIndicator(.visible)
             }
-            .alert("로그인 오류!", isPresented: $interviewListVM.shouldLoginAgain, actions: {
+            .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $interviewListVM.shouldLoginAgain, actions: {
                 ErrorAlertConfirmButton {
                     tabViewsVM.userLoginStatusUpdate.send(false)
                 }
             }, message: {
-                Text("세션 만료입니다. 다시 로그인해주세요!")
+                Text(Setup.ContentStrings.loginErrorAlertMessage)
             })
             .navigationDestination(for: String.self) { name in
                 InterviewView(interviewListVM: interviewListVM)

@@ -107,7 +107,7 @@ struct QuizContentOX: View {
                 }
                 Spacer()
             }
-            .alert("답안 오류!", isPresented: $showAnswerNotChosenAlert) {
+            .alert(Setup.ContentStrings.submitQuizAnswerErrorAlertTitle, isPresented: $showAnswerNotChosenAlert) {
                 ErrorAlertConfirmButton { }
             } message: {
                 Text("정답을 선택해야 다음 문제로 넘어갈 수 있어요!")

@@ -85,10 +85,10 @@ struct LectureContentListView: View {
         .navigationTitle("\(lectureContentListVM.navTitle)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-        .alert("네트워크 오류!", isPresented: $lectureContentListVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $lectureContentListVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureContentListVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {

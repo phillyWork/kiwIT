@@ -51,7 +51,7 @@ struct UserSubscriptionView: View {
         } message: {
             Text("구독에 실패했습니다! 다시 시도해주세요!")
         }
-        .alert("로그인 오류!", isPresented: $subscriptionVM.shouldLoginAgain) {
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $subscriptionVM.shouldLoginAgain) {
             Button {
                 interviewListVM.shouldLoginAgain = true
                 dismiss()
@@ -59,7 +59,7 @@ struct UserSubscriptionView: View {
                 Text(Setup.ContentStrings.confirm)
             }
         } message: {
-            Text("세션이 만료되었습니다. 다시 시도해주세요!")
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
         }
 
     }

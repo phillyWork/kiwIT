@@ -52,7 +52,7 @@ struct QuizResultView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.backgroundColor)
         .navigationBarBackButtonHidden()
-        .alert("답안 제출 오류!", isPresented: $quizResultVM.showSubmitAnswerErrorAlert, actions: {
+        .alert(Setup.ContentStrings.submitQuizAnswerErrorAlertTitle, isPresented: $quizResultVM.showSubmitAnswerErrorAlert, actions: {
             ErrorAlertConfirmButton {
                 quizResultVM.retrySubmitAnswer()
             }
@@ -64,19 +64,19 @@ struct QuizResultView: View {
         }, message: {
             Text("제출에 오류가 발생했습니다. 다시 시도하려면 확인 버튼을, 나가려면 취소 버튼을 눌러주세요.")
         })
-        .alert("네트워크 오류!", isPresented: $quizResultVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $quizResultVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .alert("로그인 오류!", isPresented: $quizResultVM.shouldLoginAgain) {
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $quizResultVM.shouldLoginAgain) {
             ErrorAlertConfirmButton {
                 isLoginAvailable = false
             }
         } message: {
-            Text("세션 만료입니다. 다시 로그인해주세요!")
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
         }
-        .alert("재풀이 오류!", isPresented: $quizResultVM.showRetakeQuizErrorAlert) {
+        .alert(Setup.ContentStrings.retakeQuizErrorAlertTitle, isPresented: $quizResultVM.showRetakeQuizErrorAlert) {
             ErrorAlertConfirmButton {
                 path = NavigationPath()
             }

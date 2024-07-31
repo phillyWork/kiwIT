@@ -99,17 +99,17 @@ struct QuizView: View {
                 .tint(Color.textColor)
             }
         }
-        .alert("네트워크 오류!", isPresented: $quizVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $quizVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .alert("로그인 오류!", isPresented: $quizVM.shouldLoginAgain, actions: {
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $quizVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
                 isLoginAvailable = false
             }
         }, message: {
-            Text("세션 만료입니다. 다시 로그인해주세요!")
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
         .background {
             NavigationLink("", isActive: $quizVM.isQuizCompleted) {

@@ -60,7 +60,7 @@ struct LectureView: View {
                     Text(lectureVM.isThisLectureStudiedBefore ? "예제 보기" : "학습 완료")
                 }
                 .disabled(lectureVM.isCompleteStudyButtonDisabled)
-                .alert("예제 문제", isPresented: $lectureVM.showLectureExampleAlert) {
+                .alert(Setup.ContentStrings.exampleQuestionsAlertTitle, isPresented: $lectureVM.showLectureExampleAlert) {
                     Button(role: .cancel) {
                         lectureVM.updateAnswerAsTrue()
                     } label: {
@@ -83,7 +83,7 @@ struct LectureView: View {
                 } message: {
                     Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent?.answer)입니다.")
                 }
-                .alert("북마크", isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
+                .alert(Setup.ContentStrings.bookmarkThisLectureAlertTitle, isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
                     Button(role: .cancel) {
                         lectureVM.debounceToRequestBookmarkLecture()
                         lectureVM.lectureStudyAllDone = true
@@ -108,24 +108,24 @@ struct LectureView: View {
                 }
             }
         }
-        .alert("네트워크 오류!", isPresented: $lectureVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $lectureVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .alert("학습 시작 오류!!!", isPresented: $lectureVM.showStartLectureErrorAlertToDismiss, actions: {
+        .alert(Setup.ContentStrings.startLectureErrorAlertTitle, isPresented: $lectureVM.showStartLectureErrorAlertToDismiss, actions: {
             ErrorAlertConfirmButton {
                 dismiss()
             }
         }, message: {
             Text("컨텐츠를 불러오는 데 오류가 발생했습니다. 다시 시도해주세요.")
         })
-        .alert("학습 완료 오류!!!", isPresented: $lectureVM.showCompleteLectureErrorAlertToRetry, actions: {
+        .alert(Setup.ContentStrings.completeLectureErrorAlertTitle, isPresented: $lectureVM.showCompleteLectureErrorAlertToRetry, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
             Text("학습 완료 처리에 실패했습니다. 다시 시도해주세요.")
         })
-        .alert("예제 제출 오류!!!", isPresented: $lectureVM.showSubmitExerciseErrorAlertToRetry, actions: {
+        .alert(Setup.ContentStrings.submitLectureExampleErrorAlertTitle, isPresented: $lectureVM.showSubmitExerciseErrorAlertToRetry, actions: {
             ErrorAlertConfirmButton {
                 lectureVM.showExampleAnswerAlert = true
             }
@@ -139,7 +139,7 @@ struct LectureView: View {
         }, message: {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
-        .alert("북마크 오류!", isPresented: $lectureVM.showBookmarkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.bookmarkErrorAlertTitle, isPresented: $lectureVM.showBookmarkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
             Text("보관함 처리에 실패했습니다. 다시 시도해주세요.")

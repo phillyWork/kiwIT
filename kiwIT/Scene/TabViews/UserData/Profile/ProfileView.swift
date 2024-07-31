@@ -46,7 +46,7 @@ struct ProfileView: View {
                                         .font(.custom(Setup.FontName.notoSansRegular, size: 15))
                                 }
                                 .padding(.trailing, 10)
-                                .alert("닉네임 수정", isPresented: $profileVM.showEditNicknameAlert) {
+                                .alert(Setup.ContentStrings.editNicknameAlertTitle, isPresented: $profileVM.showEditNicknameAlert) {
                                     TextField("타이틀",
                                               text: $profileVM.nicknameInputFromUser,
                                               prompt: Text("새로운 닉네임을 입력해주세요.")
@@ -65,7 +65,7 @@ struct ProfileView: View {
                                         }
                                     }
                                 }
-                                .alert("오류", isPresented: $profileVM.showNicknameErrorAlert, actions: {
+                                .alert(Setup.ContentStrings.editNicknameErrorAlertTitle, isPresented: $profileVM.showNicknameErrorAlert, actions: {
                                     Button(Setup.ContentStrings.confirm, role: .cancel) {
                                         profileVM.showEditNicknameAlert = true
                                     }
@@ -224,7 +224,7 @@ struct ProfileView: View {
                     }, message: {
                         Text("정말로 로그아웃 하실 건가요?")
                     })
-                    .alert("로그아웃 성공!", isPresented: $profileVM.showLogoutSucceedAlert, actions: {
+                    .alert(Setup.ContentStrings.logoutSuccessAlertTitle, isPresented: $profileVM.showLogoutSucceedAlert, actions: {
                         Button {
                             tabViewsVM.userLoginStatusUpdate.send(false)
                         } label: {
@@ -233,7 +233,7 @@ struct ProfileView: View {
                     }, message: {
                         Text("로그인 화면으로 이동합니다.")
                     })
-                    .alert("로그아웃 에러!", isPresented: $profileVM.showLogoutErrorAlert) {
+                    .alert(Setup.ContentStrings.logoutErrorAlertTitle, isPresented: $profileVM.showLogoutErrorAlert) {
                         ErrorAlertConfirmButton { }
                     } message: {
                         Text("로그아웃에 실패했습니다. 다시 시도해주세요.")
@@ -250,7 +250,7 @@ struct ProfileView: View {
                     }, message: {
                         Text("정말로 탈퇴하실 건가요?")
                     })
-                    .alert("회원 탈퇴 확인", isPresented: $profileVM.showWithdrawWithEmailTextfieldAlert, actions: {
+                    .alert(Setup.ContentStrings.withdrawEmailTextfieldAlertTitle, isPresented: $profileVM.showWithdrawWithEmailTextfieldAlert, actions: {
                         TextField("가입한 이메일", text: $profileVM.emailToBeWithdrawn, prompt: Text(tabViewsVM.profileData?.email ?? "Email"))
                             .foregroundStyle(Color.black)
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
@@ -266,16 +266,16 @@ struct ProfileView: View {
                     }, message: {
                         Text("정말 탈퇴하실 의향이시라면 가입한 이메일을 입력해주세요.")
                     })
-                    .alert("잘못된 입력입니다!", isPresented: $profileVM.showEmailWithdrawalErrorAlert) {
+                    .alert(Setup.ContentStrings.withdrawEmailInputErrorAlertTitle, isPresented: $profileVM.showEmailWithdrawalErrorAlert) {
                         //탈퇴의 불편함 일부러 제공 (탈퇴 유도 막기...)
                         Button(Setup.ContentStrings.confirm, role: .cancel) { }
                     }
-                    .alert("탈퇴 실패", isPresented: $profileVM.showWithdrawErrorAlert, actions: {
+                    .alert(Setup.ContentStrings.withdrawErrorAlertTitle, isPresented: $profileVM.showWithdrawErrorAlert, actions: {
                         ErrorAlertConfirmButton { }
                     }, message: {
                         Text("회원 탈퇴에 실패했습니다. 다시 시도해주세요.")
                     })
-                    .alert("탈퇴 완료", isPresented: $profileVM.showWithdrawSucceedAlert, actions: {
+                    .alert(Setup.ContentStrings.withdrawSuccessAlertTitle, isPresented: $profileVM.showWithdrawSucceedAlert, actions: {
                         Button {
                             tabViewsVM.userLoginStatusUpdate.send(false)
                         } label: {
@@ -292,10 +292,10 @@ struct ProfileView: View {
             .navigationTitle(Setup.ContentStrings.profileTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-            .alert("네트워크 오류!", isPresented: $profileVM.showUnknownNetworkErrorAlert, actions: {
+            .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $profileVM.showUnknownNetworkErrorAlert, actions: {
                 ErrorAlertConfirmButton { }
             }, message: {
-                Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+                Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
             })
             .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $profileVM.showSessionExpiredAlert, actions: {
                 ErrorAlertConfirmButton {

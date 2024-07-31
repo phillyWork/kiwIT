@@ -86,17 +86,17 @@ struct HomeView: View {
             .background(Color.backgroundColor)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
         }
-        .alert("네트워크 오류!", isPresented: $homeVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $homeVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .alert("로그인 오류", isPresented: $homeVM.shouldLoginAgain) {
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $homeVM.shouldLoginAgain) {
             ErrorAlertConfirmButton {
                 tabViewsVM.userLoginStatusUpdate.send(false)
             }
         } message: {
-            Text("세션 만료입니다. 다시 로그인해주세요!")
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
         }
     }
 }

@@ -44,14 +44,14 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
     private func bind() {
         subjectNextLecture
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
-            .sink { [weak self] _ in
+            .sink { [weak self] in
                 self?.requestNextLecture()
             }
             .store(in: &self.cancellables)
         
         subjectLatestTakenQuiz
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
-            .sink { [weak self] _ in
+            .sink { [weak self] in
                 self?.requestLatestQuizResult()
             }
             .store(in: &self.cancellables)
@@ -80,30 +80,30 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
         }
         dispatchGroup.enter()
         NetworkManager.shared.request(type: LectureContentListPayload.self, api: .nextLectureToStudyCheck(request: AuthorizationRequest(access: tokenData.0.access)), errorCase: .nextLectureToStudyCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let nextLectureToStudyError = error as? NetworkError {
                         switch nextLectureToStudyError {
                         case .invalidRequestBody(_):
                             print("No content to study: \(nextLectureToStudyError.description)")
-                            self.dispatchGroup.leave()
+                            self?.dispatchGroup.leave()
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .nextLecture)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .nextLecture)
                         default:
                             print("Getting next lecture error by network reason: \(nextLectureToStudyError.description)")
-                            self.showNextLectureError = true
-                            self.dispatchGroup.leave()
+                            self?.showNextLectureError = true
+                            self?.dispatchGroup.leave()
                         }
                     } else {
                         print("Getting next lecture error by other reason: \(error.localizedDescription)")
-                        self.showNextLectureError = true
-                        self.dispatchGroup.leave()
+                        self?.showNextLectureError = true
+                        self?.dispatchGroup.leave()
                     }
                 }
-            } receiveValue: { response in
-                self.nextLectureToStudy = response
-                self.showNextLectureError = false
-                self.dispatchGroup.leave()
+            } receiveValue: { [weak self] response in
+                self?.nextLectureToStudy = response
+                self?.showNextLectureError = false
+                self?.dispatchGroup.leave()
             }
             .store(in: &self.cancellables)
     }
@@ -115,29 +115,29 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
         }
         dispatchGroup.enter()
         NetworkManager.shared.request(type: TakenQuizResponse.self, api: .latestTakenQuiz(request: AuthorizationRequest(access: tokenData.0.access)), errorCase: .latestTakenQuiz)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let latestTakenQuizError = error as? NetworkError {
                         switch latestTakenQuizError {
                         case .emptyBody(_):
                             print("No Quiz Taken")
-                            self.showLatestTakenQuizError = false
+                            self?.showLatestTakenQuizError = false
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .latestQuiz)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .latestQuiz)
                         default:
                             print("Getting latest taken quiz error by network reason: \(latestTakenQuizError.description)")
-                            self.showNextLectureError = true
+                            self?.showNextLectureError = true
                         }
                     } else {
                         print("Getting latest taken quiz error by other reason: \(error.localizedDescription)")
-                        self.showLatestTakenQuizError = true
+                        self?.showLatestTakenQuizError = true
                     }
-                    self.dispatchGroup.leave()
+                    self?.dispatchGroup.leave()
                 }
-            } receiveValue: { response in
-                self.latestTakenQuiz = response
-                self.showLatestTakenQuizError = false
-                self.dispatchGroup.leave()
+            } receiveValue: { [weak self] response in
+                self?.latestTakenQuiz = response
+                self?.showLatestTakenQuizError = false
+                self?.dispatchGroup.leave()
             }
             .store(in: &self.cancellables)
     }

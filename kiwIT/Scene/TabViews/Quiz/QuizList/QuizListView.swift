@@ -62,17 +62,17 @@ struct QuizListView: View {
             .navigationTitle(Setup.ContentStrings.quizContentTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-            .alert("네트워크 오류!", isPresented: $quizListVM.showUnknownNetworkErrorAlert, actions: {
+            .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $quizListVM.showUnknownNetworkErrorAlert, actions: {
                 ErrorAlertConfirmButton { }
             }, message: {
-                Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+                Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
             })
-            .alert("로그인 오류!", isPresented: $quizListVM.shouldLoginAgain, actions: {
+            .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $quizListVM.shouldLoginAgain, actions: {
                 ErrorAlertConfirmButton {
                     tabViewsVM.userLoginStatusUpdate.send(false)
                 }
             }, message: {
-                Text("세션 만료입니다. 다시 로그인해주세요!")
+                Text(Setup.ContentStrings.loginErrorAlertMessage)
             })
             .navigationDestination(for: String.self) { pathString in
                 if pathString.hasPrefix("Quiz-") {
@@ -85,8 +85,6 @@ struct QuizListView: View {
                 if quizListVM.isQuizGroupSelected {
                     print("Getting back from QuizResultView!!!")
                     quizListVM.resetPaginationToRefreshQuizList()
-                } else {
-                    print("First View Load!!!")
                 }
             }
         }
