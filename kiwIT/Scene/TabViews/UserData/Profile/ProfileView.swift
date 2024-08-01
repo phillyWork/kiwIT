@@ -40,7 +40,7 @@ struct ProfileView: View {
                                     .frame(maxWidth: .infinity, alignment: .leading)
                                     .padding(.leading, 10)
                                 Button {
-                                    profileVM.showEditNicknameAlert.toggle()
+                                    profileVM.showEditNicknameAlertInView()
                                 } label: {
                                     Text("변경하기")
                                         .font(.custom(Setup.FontName.notoSansRegular, size: 15))
@@ -55,19 +55,15 @@ struct ProfileView: View {
                                     .autocorrectionDisabled()
                                     .foregroundStyle(Color.black)
                                     Button(Setup.ContentStrings.cancel, role: .destructive) {
-                                        profileVM.nicknameInputFromUser.removeAll()
+                                        profileVM.resetNicknameInput()
                                     }
                                     Button(Setup.ContentStrings.confirm, role: .cancel) {
-                                        if profileVM.nicknameInputFromUser.isEmpty {
-                                            profileVM.showNicknameErrorAlert = true
-                                        } else {
-                                            profileVM.debouncedRequestProfileEdit()
-                                        }
+                                        profileVM.checkNicknameToUpdate()
                                     }
                                 }
                                 .alert(Setup.ContentStrings.editNicknameErrorAlertTitle, isPresented: $profileVM.showNicknameErrorAlert, actions: {
                                     Button(Setup.ContentStrings.confirm, role: .cancel) {
-                                        profileVM.showEditNicknameAlert = true
+                                        profileVM.showEditNicknameAlertInView()
                                     }
                                 }, message: {
                                     Text("오류 발생! 다시 시도해주세요.")
@@ -105,24 +101,19 @@ struct ProfileView: View {
                             EmptyViewWithRetryButton {
                                 profileVM.debouncedRequestCompletedLectureList()
                             }
+                        } else if profileVM.completedLectureList.isEmpty {
+                            EmptyViewWithNoError(title: "아직 완료한 학습 컨텐츠가 없어요")
                         } else {
-                            if profileVM.isCompleteLectureListIsEmpty {
-                                EmptyViewWithNoError(title: "아직 완료한 학습 컨텐츠가 없어요")
-                            } else {
-                                ProfileContent(profileVM.completedLectureList[0].title, overlayTitle: "학습 완료:")
-                            }
+                            ProfileContent(profileVM.completedLectureList[0].title, overlayTitle: "학습 완료:")
                         }
-                        
                         if profileVM.showBookmarkedLectureListError {
                             EmptyViewWithRetryButton {
                                 profileVM.debouncedRequestBookmarkedLectureList()
                             }
+                        } else if profileVM.bookmarkedLectureList.isEmpty {
+                            EmptyViewWithNoError(title: "보관한 학습 컨텐츠가 없어요")
                         } else {
-                            if profileVM.isBookmarkedLectureListIsEmtpy {
-                                EmptyViewWithNoError(title: "보관한 학습 컨텐츠가 없어요")
-                            } else {
-                                ProfileContent(profileVM.bookmarkedLectureList[0].title, overlayTitle: "보관 완료:")
-                            }
+                            ProfileContent(profileVM.bookmarkedLectureList[0].title, overlayTitle: "보관 완료:")
                         }
                     }
                     .padding(.vertical, 8)
@@ -147,23 +138,19 @@ struct ProfileView: View {
                             EmptyViewWithRetryButton {
                                 profileVM.debouncedRequestTakenQuizList()
                             }
+                        } else if profileVM.takenQuizList.isEmpty {
+                            EmptyViewWithNoError(title: "아직 푼 퀴즈가 있지 않아요")
                         } else {
-                            if profileVM.isTakenQuizListIsEmpty {
-                                EmptyViewWithNoError(title: "아직 푼 퀴즈가 있지 않아요")
-                            } else {
-                                ProfileContent(profileVM.takenQuizList[0].title, overlayTitle: "문제 풀이 완료:")
-                            }
+                            ProfileContent(profileVM.takenQuizList[0].title, overlayTitle: "문제 풀이 완료:")
                         }
                         if profileVM.showBookmarkedQuizListError {
                             EmptyViewWithRetryButton {
                                 profileVM.debouncedRequestBookmarkedQuizList()
                             }
+                        } else if profileVM.bookmarkedQuizList.isEmpty {
+                            EmptyViewWithNoError(title: "보관한 퀴즈가 없어요")
                         } else {
-                            if profileVM.isBookmarkedQuizListIsEmtpy {
-                                EmptyViewWithNoError(title: "보관한 퀴즈가 없어요")
-                            } else {
-                                ProfileContent(profileVM.bookmarkedQuizList[0].question, overlayTitle: "보관 완료:")
-                            }
+                            ProfileContent(profileVM.bookmarkedQuizList[0].question, overlayTitle: "보관 완료:")
                         }
                     }
                 })
@@ -198,13 +185,11 @@ struct ProfileView: View {
                             EmptyViewWithRetryButton {
                                 profileVM.debouncedRequestLatestAcquiredTrophy()
                             }
+                        } else if profileVM.latestAcquiredTrophy.isEmpty {
+                            EmptyViewWithNoError(title: "아직 획득한 트로피가 없어요")
                         } else {
-                            if profileVM.isLatestAcquiredTrophyEmpty {
-                                EmptyViewWithNoError(title: "아직 획득한 트로피가 없어요")
-                            } else {
-                                //MARK: - 트로피 영역 가장 최근 획득한 트로피 보여주기
-                                Text("test")
-                            }
+                            //MARK: - 트로피 영역 가장 최근 획득한 트로피 보여주기
+                            Text("test")
                         }
                     }
                 })
@@ -214,7 +199,7 @@ struct ProfileView: View {
                 
                 VStack(alignment: .center, spacing: 15) {
                     ShrinkAnimationButtonView(title: Setup.ContentStrings.Profile.signOutTitle, font: Setup.FontName.galMuri11Bold, color: Color.brandBlandColor) {
-                        profileVM.showLogoutAlert.toggle()
+                        profileVM.showAlertInView(.logout)
                     }
                     .alert(Setup.ContentStrings.Profile.signOutTitle, isPresented: $profileVM.showLogoutAlert, actions: {
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
@@ -240,11 +225,11 @@ struct ProfileView: View {
                     }
 
                     ShrinkAnimationButtonView(title: Setup.ContentStrings.Profile.withdrawTitle, font: Setup.FontName.galMuri11Bold, color: Color.errorHighlightColor) {
-                        profileVM.showWithdrawAlert.toggle()
+                        profileVM.showAlertInView(.checkToWithdraw)
                     }
                     .alert(Setup.ContentStrings.Profile.withdrawTitle, isPresented: $profileVM.showWithdrawAlert, actions: {
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
-                            profileVM.showWithdrawWithEmailTextfieldAlert.toggle()
+                            profileVM.showAlertInView(.withdrawTextfield)
                         }
                         Button(Setup.ContentStrings.cancel, role: .destructive) { }
                     }, message: {
@@ -255,7 +240,7 @@ struct ProfileView: View {
                             .foregroundStyle(Color.black)
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
                             if profileVM.emailToBeWithdrawn.isEmpty {
-                                profileVM.showEmailWithdrawalErrorAlert = true
+                                profileVM.showAlertInView(.withdrawEmailError)
                             } else {
                                 profileVM.debouncedWithdraw()
                             }

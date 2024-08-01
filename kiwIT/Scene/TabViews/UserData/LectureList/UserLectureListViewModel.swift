@@ -42,9 +42,9 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
     private var canLoadMoreBookmarkedLecture = true
     private var canLoadMoreCompletedLecture = true
     
-    private var requestReloadCompletedLecture = PassthroughSubject<Void, Never>()
-    private var requestReloadBookmarkedLecture = PassthroughSubject<Void, Never>()
-    private var requestBookmarkButtonTapped = PassthroughSubject<Void, Never>()
+    private let requestReloadCompletedLecture = PassthroughSubject<Void, Never>()
+    private let requestReloadBookmarkedLecture = PassthroughSubject<Void, Never>()
+    private let requestBookmarkButtonTapped = PassthroughSubject<Void, Never>()
     
     var cancellables = Set<AnyCancellable>()
     
@@ -52,12 +52,12 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
     var idForToBeRemovedLecture = -1
     
     init() {
-        setupDebounce()
+        bind()
         requestCompletedLecture()
         requestBookmarkedLecture()
     }
     
-    private func setupDebounce() {
+    private func bind() {
         requestReloadCompletedLecture
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
@@ -102,6 +102,19 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
         showRemoveBookmarkedLectureAlert = true
     }
     
+    func checkToLoadMoreCompletedLecturePagination(_ eachLecture: CompletedOrBookmarkedLecture) {
+        if completedLectureList.last == eachLecture {
+            loadMoreCompletedLecture()
+        }
+    }
+    
+    func checkToLoadMoreBookmarkedLecturePagination(_ lecture: CompletedOrBookmarkedLecture) {
+        if bookmarkedLectureList.last == lecture {
+            loadMoreBookmarkedLecture()
+        }
+
+    }
+    
     private func requestCompletedLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
@@ -132,7 +145,7 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
             .store(in: &self.cancellables)
     }
     
-    func loadMoreCompletedLecture() {
+    private func loadMoreCompletedLecture() {
         guard canLoadMoreCompletedLecture else { return }
         currentPageForCompletedLecture += 1
         requestCompletedLecture()
@@ -168,7 +181,7 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
             .store(in: &self.cancellables)
     }
     
-    func loadMoreBookmarkedLecture() {
+    private func loadMoreBookmarkedLecture() {
         guard canLoadMoreBookmarkedLecture else { return }
         currentPageForBookmarkedLecture += 1
         requestBookmarkedLecture()

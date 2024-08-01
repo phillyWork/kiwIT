@@ -30,8 +30,8 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
     
     private var actionType: HomeViewActionType = .nextLecture
     
-    private var subjectNextLecture = PassthroughSubject<Void, Never>()
-    private var subjectLatestTakenQuiz = PassthroughSubject<Void, Never>()
+    private let subjectNextLecture = PassthroughSubject<Void, Never>()
+    private let subjectLatestTakenQuiz = PassthroughSubject<Void, Never>()
     
     var cancellables = Set<AnyCancellable>()
     

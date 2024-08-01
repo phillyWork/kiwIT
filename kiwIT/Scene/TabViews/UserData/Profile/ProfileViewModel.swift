@@ -22,6 +22,13 @@ enum ProfileAction {
     case latestAcquiredTrophy
 }
 
+enum AlertType {
+    case logout
+    case checkToWithdraw
+    case withdrawTextfield
+    case withdrawEmailError
+}
+
 final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
 
     typealias ActionType = ProfileAction
@@ -44,29 +51,17 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     @Published var showWithdrawSucceedAlert = false
 
     @Published var showCompletedLectureListError = false
-    @Published var isCompleteLectureListIsEmpty = true
-    
     @Published var showBookmarkedLectureListError = false
-    @Published var isBookmarkedLectureListIsEmtpy = true
-    
     @Published var showTakenQuizListError = false
-    @Published var isTakenQuizListIsEmpty = true
-    
     @Published var showBookmarkedQuizListError = false
-    @Published var isBookmarkedQuizListIsEmtpy = true
-    
     @Published var showLatestAcquiredTrophyError = false
-    @Published var isLatestAcquiredTrophyEmpty = true
-    
     @Published var showUnknownNetworkErrorAlert = false
     
     //nil로 판단하지 않기함, 어차피 1개
     @Published var completedLectureList: [CompletedOrBookmarkedLecture] = []
     @Published var bookmarkedLectureList: [CompletedOrBookmarkedLecture] = []
-    
     @Published var takenQuizList: [TakenQuizResponse] = []
     @Published var bookmarkedQuizList: [BookmarkedQuizListResponse] = []
-
     @Published var latestAcquiredTrophy: [AcquiredTrophy] = []
     
     private let currentPageForPaginationRequest = 0
@@ -77,8 +72,14 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private let dispatchGroup = DispatchGroup()
     
-    private var requestNetworkSubject = PassthroughSubject<ProfileAction, Never>()  //debounce each network call
-    private var requestWholeDataSubject = PassthroughSubject<Void, Never>()      //debounce whole network call
+    private let requestWithdrawTextfieldErrorAlertSubject = PassthroughSubject<Bool, Never>()
+    private let requestWithdrawTextfieldAlertSubject = PassthroughSubject<Bool, Never>()
+    private let requestWithdrawAlertSubject = PassthroughSubject<Bool, Never>()
+    private let requestLogoutAlertSubject = PassthroughSubject<Bool, Never>()
+    private let requestShowNicknameEditErrorAlertSubject = PassthroughSubject<Bool, Never>()
+    private let requestShowNicknameEditAlertSubject = PassthroughSubject<Bool, Never>()
+    private let requestNetworkSubject = PassthroughSubject<ProfileAction, Never>()  //debounce each network call
+    private let requestWholeDataSubject = PassthroughSubject<Void, Never>()      //debounce whole network call
 
     var cancellables = Set<AnyCancellable>()
     
@@ -86,11 +87,11 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     init(updateProfileClosure: @escaping (ProfileResponse) -> Void) {
         self.updateProfileClosure = updateProfileClosure
-        setupDebounce()
+        bind()
         requestUserData()
     }
     
-    private func setupDebounce() {
+    private func bind() {
         $nicknameInputFromUser
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] debouncedValue in
@@ -127,10 +128,79 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                 self?.requestData()
             }
             .store(in: &cancellables)
+        
+        requestShowNicknameEditAlertSubject
+            .sink { [weak self] value in
+                self?.showEditNicknameAlert = value
+            }
+            .store(in: &cancellables)
+        
+        requestShowNicknameEditErrorAlertSubject
+            .sink { [weak self] value in
+                self?.showNicknameErrorAlert = value
+            }
+            .store(in: &cancellables)
+        
+        requestLogoutAlertSubject
+            .sink { [weak self] value in
+                self?.showLogoutAlert = value
+            }
+            .store(in: &cancellables)
+        
+        requestWithdrawAlertSubject
+            .sink { [weak self] value in
+                self?.showWithdrawAlert = value
+            }
+            .store(in: &cancellables)
+        
+        requestWithdrawTextfieldAlertSubject
+            .sink { [weak self] value in
+                self?.showWithdrawWithEmailTextfieldAlert = value
+            }
+            .store(in: &cancellables)
+    
+        requestWithdrawTextfieldErrorAlertSubject
+            .sink { [weak self] value in
+                self?.showEmailWithdrawalErrorAlert = value
+            }
+            .store(in: &cancellables)
+    }
+    
+    func showEditNicknameAlertInView() {
+        requestShowNicknameEditAlertSubject.send(true)
+    }
+    
+    func resetNicknameInput() {
+        nicknameInputFromUser.removeAll()
+    }
+    
+    func checkNicknameToUpdate() {
+        if nicknameInputFromUser.isEmpty {
+            requestShowNicknameEditErrorAlertSubject.send(true)
+        } else {
+            debouncedRequestProfileEdit()
+        }
+    }
+    
+    func showAlertInView(_ type: AlertType) {
+        switch type {
+        case .logout:
+            requestLogoutAlertSubject.send(true)
+        case .checkToWithdraw:
+            requestWithdrawAlertSubject.send(true)
+        case .withdrawTextfield:
+            requestWithdrawTextfieldAlertSubject.send(true)
+        case .withdrawEmailError:
+            requestWithdrawTextfieldErrorAlertSubject.send(true)
+        }
     }
     
     func requestUserData() {
         requestWholeDataSubject.send(())
+    }
+    
+    private func debouncedRequestProfileEdit() {
+        requestNetworkSubject.send(.profileEdit)
     }
     
     //동시다발적 네트워크 콜 방지 목적
@@ -161,10 +231,6 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
         queue.async(execute: completedLectureListWorkItem)
     }
     
-    func debouncedRequestProfileEdit() {
-        requestNetworkSubject.send(.profileEdit)
-    }
-    
     private func updateNickname() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("No token data in ProfileView!!! Should Move to Log-In!!!")
@@ -176,28 +242,28 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestProfileEdit(_ current: UserTokenValue, nickname: String, userId: String) {
         NetworkManager.shared.request(type: ProfileResponse.self, api: .profileEdit(request: ProfileEditRequest(access: current.access, nickname: nickname)), errorCase: .profileEdit)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let profileEditError = error as? NetworkError {
                         switch profileEditError {
                         case .invalidRequestBody(_):
                             print("Cannot Update Profile Nickname in ProfileViewModel: \(profileEditError.description)")
-                            self.showNicknameErrorAlert = true
+                            self?.showNicknameErrorAlert = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(current, userId: userId, action: .profileEdit)
+                            self?.requestRefreshToken(current, userId: userId, action: .profileEdit)
                         default:
                             print("Profile Update Error in ProfileViewModel: \(profileEditError.description)")
-                            self.showNicknameErrorAlert = true
+                            self?.showNicknameErrorAlert = true
                         }
                     } else {
                         print("Profile Edit Request Error for other reason in ProfileViewModel: \(error.localizedDescription)")
-                        self.showNicknameErrorAlert = true
+                        self?.showNicknameErrorAlert = true
                     }
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 print("Getting Updated Profile Data from Server! Available Saved Token!")
-                self.updateProfileClosure?(response)
-                self.nicknameInputFromUser.removeAll()
+                self?.updateProfileClosure?(response)
+                self?.nicknameInputFromUser.removeAll()
             }
             .store(in: &self.cancellables)
     }
@@ -214,28 +280,27 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
         }
         dispatchGroup.enter()
         NetworkManager.shared.request(type: [CompletedOrBookmarkedLecture].self, api: .completedLectureListCheck(request: CompletedLectureListCheckRequest(access: tokenData.0.access, next: currentPageForPaginationRequest, limit: dataPerRequest, byLevel: true)), errorCase: .completedLectureListCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let completeLectureListError = error as? NetworkError {
                         switch completeLectureListError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completedLectureList)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completedLectureList)
                         default:
                             print("Completed Lecture List Error by network: \(completeLectureListError.description)")
-                            self.showCompletedLectureListError = true
-                            self.dispatchGroup.leave()
+                            self?.showCompletedLectureListError = true
+                            self?.dispatchGroup.leave()
                         }
                     } else {
                         print("Completed Lecture List Error by other reason: \(error.localizedDescription)")
-                        self.showCompletedLectureListError = true
-                        self.dispatchGroup.leave()
+                        self?.showCompletedLectureListError = true
+                        self?.dispatchGroup.leave()
                     }
                 }
-            } receiveValue: { response in
-                self.completedLectureList.append(contentsOf: response)
-                self.showCompletedLectureListError = false
-                self.isCompleteLectureListIsEmpty = self.completedLectureList.isEmpty ? true : false
-                self.dispatchGroup.leave()
+            } receiveValue: { [weak self] response in
+                self?.completedLectureList.append(contentsOf: response)
+                self?.showCompletedLectureListError = false
+                self?.dispatchGroup.leave()
             }
             .store(in: &self.cancellables)
     }
@@ -252,28 +317,27 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
         }
         dispatchGroup.enter()
         NetworkManager.shared.request(type: [CompletedOrBookmarkedLecture].self, api: .bookmarkedLectureCheck(request: BookmarkedLectureCheckRequest(access: tokenData.0.access, next: currentPageForPaginationRequest, limit: dataPerRequest)), errorCase: .bookmarkedLectureCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let bookmarkedLectureListError = error as? NetworkError {
                         switch bookmarkedLectureListError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
                         default:
                             print("Bookmarked Lecture List Error by network: \(bookmarkedLectureListError.description)")
-                            self.showBookmarkedLectureListError = true
-                            self.dispatchGroup.leave()
+                            self?.showBookmarkedLectureListError = true
+                            self?.dispatchGroup.leave()
                         }
                     } else {
                         print("Bookmarked Lecture List Error by other reason: \(error.localizedDescription)")
-                        self.showBookmarkedLectureListError = true
-                        self.dispatchGroup.leave()
+                        self?.showBookmarkedLectureListError = true
+                        self?.dispatchGroup.leave()
                     }
                 }
-            } receiveValue: { response in
-                self.bookmarkedLectureList.append(contentsOf: response)
-                self.showBookmarkedLectureListError = false
-                self.isBookmarkedLectureListIsEmtpy = self.bookmarkedLectureList.isEmpty ? true : false
-                self.dispatchGroup.leave()
+            } receiveValue: { [weak self] response in
+                self?.bookmarkedLectureList.append(contentsOf: response)
+                self?.showBookmarkedLectureListError = false
+                self?.dispatchGroup.leave()
             }
             .store(in: &self.cancellables)
     }
@@ -290,28 +354,27 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
         }
         dispatchGroup.enter()
         NetworkManager.shared.request(type: [TakenQuizResponse].self, api: .takenQuizListCheck(request: CheckCompletedOrBookmarkedQuizRequest(access: tokenData.0.access, next: currentPageForPaginationRequest, limit: dataPerRequest)), errorCase: .takenQuizListCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let takenQuizListError = error as? NetworkError {
                         switch takenQuizListError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
                         default:
                             print("Taken Quiz List Error by network: \(takenQuizListError.description)")
-                            self.showTakenQuizListError = true
-                            self.dispatchGroup.leave()
+                            self?.showTakenQuizListError = true
+                            self?.dispatchGroup.leave()
                         }
                     } else {
                         print("Taken Quiz  List Error by other reason: \(error.localizedDescription)")
-                        self.showTakenQuizListError = true
-                        self.dispatchGroup.leave()
+                        self?.showTakenQuizListError = true
+                        self?.dispatchGroup.leave()
                     }
                 }
-            } receiveValue: { response in
-                self.takenQuizList.append(contentsOf: response)
-                self.showTakenQuizListError = false
-                self.isTakenQuizListIsEmpty = self.takenQuizList.isEmpty ? true : false
-                self.dispatchGroup.leave()
+            } receiveValue: { [weak self] response in
+                self?.takenQuizList.append(contentsOf: response)
+                self?.showTakenQuizListError = false
+                self?.dispatchGroup.leave()
             }
             .store(in: &self.cancellables)
     }
@@ -328,28 +391,27 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
         }
         dispatchGroup.enter()
         NetworkManager.shared.request(type: [BookmarkedQuizListResponse].self, api: .bookmarkedQuizCheck(request: CheckCompletedOrBookmarkedQuizRequest(access: tokenData.0.access, next: currentPageForPaginationRequest, limit: dataPerRequest)), errorCase: .bookmarkedQuizCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let bookmarkedQuizListError = error as? NetworkError {
                         switch bookmarkedQuizListError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
                         default:
                             print("Bookmarked Quiz List Error by network: \(bookmarkedQuizListError.description)")
-                            self.showBookmarkedQuizListError = true
-                            self.dispatchGroup.leave()
+                            self?.showBookmarkedQuizListError = true
+                            self?.dispatchGroup.leave()
                         }
                     } else {
                         print("Bookmarked Quiz List Error by other reason: \(error.localizedDescription)")
-                        self.showBookmarkedQuizListError = true
-                        self.dispatchGroup.leave()
+                        self?.showBookmarkedQuizListError = true
+                        self?.dispatchGroup.leave()
                     }
                 }
-            } receiveValue: { response in
-                self.bookmarkedQuizList.append(contentsOf: response)
-                self.showBookmarkedQuizListError = false
-                self.isBookmarkedQuizListIsEmtpy = self.bookmarkedQuizList.isEmpty ? true : false
-                self.dispatchGroup.leave()
+            } receiveValue: { [weak self] response in
+                self?.bookmarkedQuizList.append(contentsOf: response)
+                self?.showBookmarkedQuizListError = false
+                self?.dispatchGroup.leave()
             }
             .store(in: &self.cancellables)
     }
@@ -366,36 +428,35 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
         }
         dispatchGroup.enter()
         NetworkManager.shared.request(type: AcquiredTrophy.self, api: .latestAcquiredTrophy(request: AuthorizationRequest(access: tokenData.0.access)), errorCase: .latestAcquiredTrophy)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let latestAcquiredTrophyError = error as? NetworkError {
                         switch latestAcquiredTrophyError {
                         case .emptyBody(_):
                             print("Empty Body for Latest Acquired Trophy")
-                            self.showLatestAcquiredTrophyError = false
-                            self.isLatestAcquiredTrophyEmpty = true
-                            self.dispatchGroup.leave()
+                            self?.showLatestAcquiredTrophyError = false
+                            self?.dispatchGroup.leave()
                         case .invalidRequestBody(_):
                             print("Wrong Request for Latest Acquired Trophy: \(latestAcquiredTrophyError.description)")
-                            self.showLatestAcquiredTrophyError = true
-                            self.dispatchGroup.leave()
+                            self?.showLatestAcquiredTrophyError = true
+                            self?.dispatchGroup.leave()
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .latestAcquiredTrophy)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .latestAcquiredTrophy)
                         default:
                             print("Latest Acquired Trophy Error for network reason: \(latestAcquiredTrophyError.description)")
-                            self.showLatestAcquiredTrophyError = true
-                            self.dispatchGroup.leave()
+                            self?.showLatestAcquiredTrophyError = true
+                            self?.dispatchGroup.leave()
                         }
                     } else {
                         print("Latest Acquired Trophy Error by other reason: \(error.localizedDescription)")
-                        self.showLatestAcquiredTrophyError = true
-                        self.dispatchGroup.leave()
+                        self?.showLatestAcquiredTrophyError = true
+                        self?.dispatchGroup.leave()
                     }
                 }
-            } receiveValue: { response in
-                self.showLatestAcquiredTrophyError = false
-                self.latestAcquiredTrophy.append(response)
-                self.dispatchGroup.leave()
+            } receiveValue: { [weak self] response in
+                self?.showLatestAcquiredTrophyError = false
+                self?.latestAcquiredTrophy.append(response)
+                self?.dispatchGroup.leave()
             }
             .store(in: &self.cancellables)
     }
@@ -411,26 +472,26 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
             return
         }
         NetworkManager.shared.request(type: Empty.self, api: .signOut(request: AuthorizationRequest(access: tokenData.0.access)), errorCase: .signOut)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let signOutError = error as? NetworkError {
                         switch signOutError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .signOut)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .signOut)
                         default:
                             print("SignOut Error by network reason: \(signOutError.description)")
-                            self.showLogoutErrorAlert = true
+                            self?.showLogoutErrorAlert = true
                         }
                     } else {
                         print("SignOut Error in ProfileViewModel for other reason: \(error.localizedDescription)")
-                        self.showLogoutErrorAlert = true
+                        self?.showLogoutErrorAlert = true
                     }
                 }
-            } receiveValue: { _ in
+            } receiveValue: { [weak self] _ in
                 print("Response for Sign Out Success!")
                 //재로그인 및 다른 계정 로그인: 네트워크 콜 횟수 줄이기 목적
                 AuthManager.shared.handleRefreshTokenExpired(userId: tokenData.1)
-                self.showLogoutSucceedAlert = true
+                self?.showLogoutSucceedAlert = true
             }
             .store(in: &self.cancellables)
     }
@@ -453,42 +514,37 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
         }
         
         NetworkManager.shared.request(type: Empty.self, api: .withdraw(request: AuthorizationRequest(access: tokenData.0.access)), errorCase: .withdraw)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let withdrawError = error as? NetworkError {
                         switch withdrawError {
                         case .invalidRequestBody(_):
                             print("Cannot withdraw user from db: \(withdrawError.description)")
-                            self.showWithdrawAlert = true
+                            self?.showWithdrawAlert = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .withdraw)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .withdraw)
                         default:
                             print("Withdraw Error by network: \(withdrawError.description)")
-                            self.showWithdrawAlert = true
+                            self?.showWithdrawAlert = true
                         }
                     } else {
                         print("Withdraw Error by other reason: \(error.localizedDescription)")
-                        self.showWithdrawAlert = true
+                        self?.showWithdrawAlert = true
                     }
                 }
-            } receiveValue: { _ in
-                self.emailToBeWithdrawn.removeAll()
+            } receiveValue: { [weak self] _ in
+                self?.emailToBeWithdrawn.removeAll()
                 AuthManager.shared.handleRefreshTokenExpired(userId: tokenData.1)
-                self.showWithdrawSucceedAlert = true
+                self?.showWithdrawSucceedAlert = true
             }
             .store(in: &self.cancellables)
     }
     
     func pullToRefresh() {
-        isCompleteLectureListIsEmpty = true
         completedLectureList.removeAll()
-        isBookmarkedLectureListIsEmtpy = true
         bookmarkedLectureList.removeAll()
-        isTakenQuizListIsEmpty = true
         takenQuizList.removeAll()
-        isBookmarkedQuizListIsEmtpy = true
         bookmarkedQuizList.removeAll()
-        isLatestAcquiredTrophyEmpty = true
         latestAcquiredTrophy.removeAll()
         requestUserData()
     }
@@ -527,14 +583,12 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     func removeThisBookmarkedLecture(_ id: Int) {
         if bookmarkedLectureList.map({ $0.id }).contains(id) {
             bookmarkedLectureList.removeAll()
-            isBookmarkedLectureListIsEmtpy = true
         }
     }
     
     func removeThisBookmarkedQuiz(_ id: Int) {
         if bookmarkedQuizList.map({ $0.id }).contains(id) {
             bookmarkedQuizList.removeAll()
-            isBookmarkedQuizListIsEmtpy = true
         }
     }
     

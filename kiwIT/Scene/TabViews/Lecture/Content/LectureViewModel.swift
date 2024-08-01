@@ -48,10 +48,10 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     
     private let dispatchGroup = DispatchGroup()
     
-    private var requestSubject = PassthroughSubject<Void, Never>()
-    private var requestBookmarkSubject = PassthroughSubject<Void, Never>()
-    private var statusForStudyAllDoneSubject = PassthroughSubject<Bool, Never>()
-    private var requestSubmitExerciseSubject = PassthroughSubject<Void, Never>()
+    private let requestSubject = PassthroughSubject<Void, Never>()
+    private let requestBookmarkSubject = PassthroughSubject<Void, Never>()
+    private let statusForStudyAllDoneSubject = PassthroughSubject<Bool, Never>()
+    private let requestSubmitExerciseSubject = PassthroughSubject<Void, Never>()
     
     private var userExampleAnswer = false
 

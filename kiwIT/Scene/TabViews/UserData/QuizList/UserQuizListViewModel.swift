@@ -40,21 +40,21 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
     private var canLoadMoreBookmarkedQuiz = true
     private var canLoadMoreTakenQuiz = true
     
-    private var requestReloadTakenQuiz = PassthroughSubject<Void, Never>()
-    private var requestReloadBookmarkedQuiz = PassthroughSubject<Void, Never>()
-    private var requestBookmarkButtonTapped = PassthroughSubject<Void, Never>()
+    private let requestReloadTakenQuiz = PassthroughSubject<Void, Never>()
+    private let requestReloadBookmarkedQuiz = PassthroughSubject<Void, Never>()
+    private let requestBookmarkButtonTapped = PassthroughSubject<Void, Never>()
     
     var cancellables = Set<AnyCancellable>()
     
     var idForToBeRemovedQuiz = -1
     
     init() {
-        setupDebounce()
+        bind()
         requestTakenQuiz()
         requestBookmarkedQuiz()
     }
     
-    private func setupDebounce() {
+    private func bind() {
         requestReloadTakenQuiz
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
@@ -92,6 +92,20 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
     func checkToRemoveBookmarkedQuiz(_ id: Int) {
         idForToBeRemovedQuiz = id
         showRemoveBookmarkedQuizAlert = true
+    }
+    
+    func checkToLoadMoreCompletedQuizGroup(_ quizGroup: TakenQuizResponse) {
+        if takenQuizList.last == quizGroup {
+            print("Last data for list: should call more!!!")
+            loadMoreTakenQuiz()
+        }
+    }
+    
+    func checkToLoadMoreBookmarkedQuiz(_ quiz: BookmarkedQuizListResponse) {
+        if bookmarkedQuizList.last == quiz {
+            print("Last data for list: should call more!!!")
+            loadMoreBookmarkedQuiz()
+        }
     }
                                          
     private func resetTakenQuiz() {
@@ -136,7 +150,7 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
             .store(in: &self.cancellables)
     }
     
-    func loadMoreTakenQuiz() {
+    private func loadMoreTakenQuiz() {
         guard canLoadMoreTakenQuiz else { return }
         currentPageForTakenQuiz += 1
         requestTakenQuiz()
@@ -172,7 +186,7 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
             .store(in: &self.cancellables)
     }
     
-    func loadMoreBookmarkedQuiz() {
+    private func loadMoreBookmarkedQuiz() {
         guard canLoadMoreBookmarkedQuiz else { return }
         currentPageForBookmarkedQuiz += 1
         requestBookmarkedQuiz()

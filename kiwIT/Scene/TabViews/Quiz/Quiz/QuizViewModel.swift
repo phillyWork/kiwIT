@@ -44,9 +44,10 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
     var quizTypeArray: [QuizType] = []
     var userAnswerListForRequest: [QuizAnswer] = []
     
+    private let requestBookmarkSubject = PassthroughSubject<Void, Never>()
+    
     private var userRecentAnswer: QuizAnswer = QuizAnswer(quizId: -1, answer: "")
     private var quizIdToBookmark = -1
-    private var requestBookmarkSubject = PassthroughSubject<Void, Never>()
     
     var cancellables = Set<AnyCancellable>()
     

@@ -92,9 +92,7 @@ struct CompletedLectureSection: View {
                             }
                             .padding(.horizontal, 8)
                             .onAppear {
-                                if lectureListVM.completedLectureList.last == eachLecture {
-                                    lectureListVM.loadMoreCompletedLecture()
-                                }
+                                lectureListVM.checkToLoadMoreCompletedLecturePagination(eachLecture)
                             }
                         }
                     }
@@ -146,9 +144,7 @@ struct BookmarkedLectureSection: View {
                             }
                             .padding(.horizontal, 8)
                             .onAppear {
-                                if lectureListVM.bookmarkedLectureList.last == lecture {
-                                    lectureListVM.loadMoreBookmarkedLecture()
-                                }
+                                lectureListVM.checkToLoadMoreBookmarkedLecturePagination(lecture)
                             }
                         }
                     }

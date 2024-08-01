@@ -41,8 +41,8 @@ final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
     
     private var selectedQuizId = -1
     
-    private var requestSubject = PassthroughSubject<Void, Never>()
-    private var requestUserSelectionSubject = PassthroughSubject<Bool, Never>()
+    private let requestSubject = PassthroughSubject<Void, Never>()
+    private let requestUserSelectionSubject = PassthroughSubject<Bool, Never>()
     
     var cancellables = Set<AnyCancellable>()
     

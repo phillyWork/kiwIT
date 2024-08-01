@@ -86,10 +86,7 @@ struct TakenQuizSection: View {
                             TakenQuizContent(quizGroup)
                                 .padding(.horizontal, 8)
                                 .onAppear {
-                                    if quizListVM.takenQuizList.last == quizGroup {
-                                        print("Last data for list: should call more!!!")
-                                        quizListVM.loadMoreTakenQuiz()
-                                    }
+                                    quizListVM.checkToLoadMoreCompletedQuizGroup(quizGroup)
                                 }
                         }
                     }
@@ -139,10 +136,7 @@ struct BookmarkedQuizSection: View {
                             }
                             .padding(.horizontal, 8)
                             .onAppear {
-                                if quizListVM.bookmarkedQuizList.last == quiz {
-                                    print("Last data for list: should call more!!!")
-                                    quizListVM.loadMoreBookmarkedQuiz()
-                                }
+                                quizListVM.checkToLoadMoreBookmarkedQuiz(quiz)
                             }
                         }
                     }

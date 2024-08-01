@@ -27,7 +27,7 @@ final class LectureListViewModel: ObservableObject, RefreshTokenHandler {
     @Published var lectureLevelListData: [LectureLevelListPayload] = []
     @Published var lectureCategoryListData: [LectureCategoryListPayload] = []
     
-    private var requestSubject = PassthroughSubject<Void, Never>()      //debounce network call
+    private let requestSubject = PassthroughSubject<Void, Never>()      //debounce network call
     
     var cancellables = Set<AnyCancellable>()
     
