@@ -46,8 +46,12 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     
     @Published var acquiredTrophyList: [TrophyEntity] = []
     
+    private let dispatchGroup = DispatchGroup()
+    
     private var requestSubject = PassthroughSubject<Void, Never>()
     private var requestBookmarkSubject = PassthroughSubject<Void, Never>()
+    private var statusForStudyAllDoneSubject = PassthroughSubject<Bool, Never>()
+    private var requestSubmitExerciseSubject = PassthroughSubject<Void, Never>()
     
     private var userExampleAnswer = false
 
@@ -57,11 +61,11 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     
     init(contentId: Int) {
         self.contentId = contentId
-        setupDebounce()
+        bind()
         startLecture()
     }
     
-    private func setupDebounce() {
+    private func bind() {
         requestSubject
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
             .sink { [weak self] in
@@ -73,6 +77,19 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
                 self?.requestBookmarkThisLecture()
+            }
+            .store(in: &cancellables)
+        
+        statusForStudyAllDoneSubject
+            .sink { [weak self] status in
+                self?.lectureStudyAllDone = status
+            }
+            .store(in: &cancellables)
+        
+        requestSubmitExerciseSubject
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.requestSubmitExerciseAnswer()
             }
             .store(in: &cancellables)
     }
@@ -87,6 +104,24 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
         requestBookmarkSubject.send(())
     }
     
+    func bookmarkThisLectureAndStudyAllDone() {
+        debounceToRequestBookmarkLecture()
+        dispatchGroup.notify(queue: .main) {
+            print("Bookmark All Done. Update to True for StudyAllDone!!")
+            self.sendToUpdateStudyAllDoneStatus(true)
+        }
+    }
+    
+    func sendToUpdateStudyAllDoneStatus(_ value: Bool) {
+        print("Update to set study all done?")
+        statusForStudyAllDoneSubject.send(value)
+    }
+    
+    func debounceToRequestSubmitExerciseAnswer() {
+        print("debounceToRequestSubmitExerciseAnswer called")
+        requestSubmitExerciseSubject.send(())
+    }
+    
     private func startLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
             print("Should Login Again!!!")
@@ -98,27 +133,27 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestLectureContent(_ token: UserTokenValue, userId: String) {
         NetworkManager.shared.request(type: StartLectureResponse.self, api: .startOfLecture(request: HandleLectureRequest(contentId: contentId, access: token.access)), errorCase: .startOfLecture)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let startLectureError = error as? NetworkError {
                         switch startLectureError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(token, userId: userId, action: .startLecture)
+                            self?.requestRefreshToken(token, userId: userId, action: .startLecture)
                         default:
                             print("Start Lecture Error for network reason: \(startLectureError.description)")
-                            self.showStartLectureErrorAlertToDismiss = true
+                            self?.showStartLectureErrorAlertToDismiss = true
                         }
                     } else {
                         print("start lecture error for other reason: \(error.localizedDescription)")
-                        self.showStartLectureErrorAlertToDismiss = true
+                        self?.showStartLectureErrorAlertToDismiss = true
                     }
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 print("Start Lecture Right Away!!!")
-                self.lectureContent = response
+                self?.lectureContent = response
                 if let alreadyTaken = response.contentStudied {
-                    self.isThisLectureStudiedBefore = true
-                    self.isThisLectureBookmarked = alreadyTaken.kept
+                    self?.isThisLectureStudiedBefore = true
+                    self?.isThisLectureBookmarked = alreadyTaken.kept
                 }
             }
             .store(in: &self.cancellables)
@@ -142,27 +177,27 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
             return
         }
         NetworkManager.shared.request(type: CompleteLectureResponse.self, api: .completionOfLecture(request: HandleLectureRequest(contentId: contentId, access: tokenData.0.access)), errorCase: .completionOfLecture)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let completeLectureError = error as? NetworkError {
                         switch completeLectureError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completeLecture)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completeLecture)
                         default:
                             print("Complete Lecture Error for network reason: \(completeLectureError.description)")
-                            self.showCompleteLectureErrorAlertToRetry = true
+                            self?.showCompleteLectureErrorAlertToRetry = true
                         }
                     } else {
                         print("Complete Lecture Error for other reason: \(error.localizedDescription)")
-                        self.showCompleteLectureErrorAlertToRetry = true
+                        self?.showCompleteLectureErrorAlertToRetry = true
                     }
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 print("completed this lecture: \(response)")
                 if !response.trophyAwardedList.isEmpty {
-                    self.acquiredTrophyList = response.trophyAwardedList
+                    self?.acquiredTrophyList = response.trophyAwardedList
                 } else {
-                    self.showLectureExampleAlert = true
+                    self?.showLectureExampleAlert = true
                 }
             }
             .store(in: &self.cancellables)
@@ -195,22 +230,22 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
             return
         }
         NetworkManager.shared.request(type: BasicCompleteLectureContentPayload.self, api: .exerciseForLecture(request: ExerciseForLectureRequest(contentId: contentId, access: tokenData.0.access, answer: userExampleAnswer)), errorCase: .exerciseForLecture)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let submitExerciseError = error as? NetworkError {
                         switch submitExerciseError {
                         case .invalidRequestBody(_):
                             print("Need User Answer for submit exercise: \(submitExerciseError.description)")
-                            self.showSubmitExerciseErrorAlertToRetry = true
+                            self?.showSubmitExerciseErrorAlertToRetry = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .exerciseQuestion)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .exerciseQuestion)
                         default:
                             print("Submit Exercise Error for network reason: \(submitExerciseError.description)")
-                            self.showSubmitExerciseErrorAlertToRetry = true
+                            self?.showSubmitExerciseErrorAlertToRetry = true
                         }
                     } else {
                         print("Complete Lecture Error for other reason: \(error.localizedDescription)")
-                        self.showSubmitExerciseErrorAlertToRetry = true
+                        self?.showSubmitExerciseErrorAlertToRetry = true
                     }
                 }
             } receiveValue: { response in
@@ -222,7 +257,6 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
                 }
             }
             .store(in: &self.cancellables)
-
     }
     
     private func requestBookmarkThisLecture() {
@@ -231,31 +265,36 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
             shouldLoginAgain = true
             return
         }
+        dispatchGroup.enter()
         NetworkManager.shared.request(type: CompleteLectureResponse.self, api: .bookmarkLecture(request: HandleLectureRequest(contentId: contentId, access: tokenData.0.access)), errorCase: .bookmarkLecture)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let bookmarkLectureError = error as? NetworkError {
                         switch bookmarkLectureError {
                         case .invalidRequestBody(_):
                             print("Bookmark Lecture Error for Failure: \(bookmarkLectureError.description)")
-                            self.showBookmarkErrorAlert = true
-                            self.isThisLectureBookmarked = false
+                            self?.showBookmarkErrorAlert = true
+                            self?.isThisLectureBookmarked = false
+                            self?.dispatchGroup.leave()
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkLecture)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkLecture)
                         default:
                             print("Bookmark Lecture Error for Network Reason: \(bookmarkLectureError.description)")
-                            self.showBookmarkErrorAlert = true
-                            self.isThisLectureBookmarked = false
+                            self?.showBookmarkErrorAlert = true
+                            self?.isThisLectureBookmarked = false
+                            self?.dispatchGroup.leave()
                         }
                     } else {
                         print("Bookmark Lecture Error for other reason: \(error.localizedDescription)")
-                        self.showBookmarkErrorAlert = true
-                        self.isThisLectureBookmarked = false
+                        self?.showBookmarkErrorAlert = true
+                        self?.isThisLectureBookmarked = false
+                        self?.dispatchGroup.leave()
                     }
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 print("Received Response for Bookmark result: \(response)")
-                self.isThisLectureBookmarked = response.kept
+                self?.isThisLectureBookmarked = response.kept
+                self?.dispatchGroup.leave()
             }
             .store(in: &self.cancellables)
     }

@@ -32,8 +32,17 @@ final class LectureListViewModel: ObservableObject, RefreshTokenHandler {
     var cancellables = Set<AnyCancellable>()
     
     init() {
-        setupDebounce()
+        bind()
         updateViewByPickerSelection()
+    }
+    
+    private func bind() {
+        requestSubject
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
+            .sink { [weak self] in
+                self?.performRequestLectureList()
+            }
+            .store(in: &cancellables)
     }
     
     func updateViewByPickerSelection() {
@@ -47,15 +56,6 @@ final class LectureListViewModel: ObservableObject, RefreshTokenHandler {
                 requestLectureList()
             }
         }
-    }
-    
-    private func setupDebounce() {
-        requestSubject
-            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: DispatchQueue.main)
-            .sink { [weak self] in
-                self?.performRequestLectureList()
-            }
-            .store(in: &cancellables)
     }
     
     func requestLectureList() {

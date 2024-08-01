@@ -22,7 +22,7 @@ struct LectureListView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 8)
-                .onChange(of: lectureListVM.lectureType) { _ in
+                .onChange(of: lectureListVM.lectureType) {
                     lectureListVM.updateViewByPickerSelection()
                 }
                 

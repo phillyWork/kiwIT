@@ -76,7 +76,7 @@ struct LectureView: View {
                 }
                 .alert(lectureVM.checkExampleAnswer() ? "정답입니다!" : "오답입니다!", isPresented: $lectureVM.showExampleAnswerAlert) {
                     Button(role: .cancel) {
-                        lectureVM.requestSubmitExerciseAnswer()
+                        lectureVM.debounceToRequestSubmitExerciseAnswer()
                     } label: {
                         Text(Setup.ContentStrings.confirm)
                     }
@@ -85,13 +85,12 @@ struct LectureView: View {
                 }
                 .alert(Setup.ContentStrings.bookmarkThisLectureAlertTitle, isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
                     Button(role: .cancel) {
-                        lectureVM.debounceToRequestBookmarkLecture()
-                        lectureVM.lectureStudyAllDone = true
+                        lectureVM.bookmarkThisLectureAndStudyAllDone()
                     } label: {
                         Text("네")
                     }
                     Button {
-                        lectureVM.lectureStudyAllDone = true
+                        lectureVM.sendToUpdateStudyAllDoneStatus(true)
                     } label: {
                         Text("아니요")
                     }
@@ -127,7 +126,7 @@ struct LectureView: View {
         })
         .alert(Setup.ContentStrings.submitLectureExampleErrorAlertTitle, isPresented: $lectureVM.showSubmitExerciseErrorAlertToRetry, actions: {
             ErrorAlertConfirmButton {
-                lectureVM.showExampleAnswerAlert = true
+                lectureVM.debounceToRequestSubmitExerciseAnswer()
             }
         }, message: {
             Text("예제 풀이 등록에 실패했습니다. 다시 시도해주세요.")

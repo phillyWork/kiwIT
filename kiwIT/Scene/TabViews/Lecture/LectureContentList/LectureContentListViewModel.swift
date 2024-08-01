@@ -39,7 +39,6 @@ final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
         self.typeId = typeId
         self.navTitle = navTitle
         self.lectureListType = lectureType
-        print("About to call request content data!!!")
         requestContentData(lectureType, typeId: typeId)
     }
     
@@ -64,25 +63,25 @@ final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestCategoryTypeContent(_ token: UserTokenValue, userId: String, categoryId: Int) {
         NetworkManager.shared.request(type: [LectureCategoryContentResponse].self, api: .lectureCategoryListContentCheck(request: LectureCategoryContentRequest(categoryId: categoryId, access: token.access)), errorCase: .lectureCategoryListContentCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let categoryContentError = error as? NetworkError {
                         switch categoryContentError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(token, userId: userId, action: .contentList)
+                            self?.requestRefreshToken(token, userId: userId, action: .contentList)
                         default:
                             print("Category Content Error: \(categoryContentError.description)")
-                            self.showEmptyView = true
+                            self?.showEmptyView = true
                         }
                     } else {
                         print("Category Content Error for other reason: \(error.localizedDescription)")
-                        self.showEmptyView = true
+                        self?.showEmptyView = true
                     }
                 }
-            } receiveValue: { response in
+            } receiveValue: { [weak self] response in
                 print("Response for Getting this category content data list: \(response)")
-                self.lectureContentListCategoryType.append(contentsOf: response)
-                self.showEmptyView = false
+                self?.lectureContentListCategoryType.append(contentsOf: response)
+                self?.showEmptyView = false
             }
             .store(in: &self.cancellables)
     }
@@ -118,7 +117,15 @@ final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
             .store(in: &self.cancellables)
     }
     
-    func loadMoreContentListLevelType() {
+    func checkMorePaginationNeeded(_ item: LectureContentListPayload) {
+        print("Check data for pagination!!!")
+        if lectureContentListLevelType.last == item {
+            print("Last data for list: should call more!!!")
+            loadMoreContentListLevelType()
+        }
+    }
+    
+    private func loadMoreContentListLevelType() {
         guard canLoadMoreData else { return }
         print("About to Load More Level Content!!!")
         currentDataForLevelContentRequest += 1
