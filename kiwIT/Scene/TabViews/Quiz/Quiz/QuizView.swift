@@ -91,7 +91,7 @@ struct QuizView: View {
             }
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    quizListVM.isQuizGroupSelected = false
+                    quizListVM.dismissFromQuiz()
                     dismiss()
                 } label: {
                     Image(systemName: Setup.ImageStrings.defaultXMark2)

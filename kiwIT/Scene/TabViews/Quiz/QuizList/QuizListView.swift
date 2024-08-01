@@ -33,8 +33,7 @@ struct QuizListView: View {
                         ForEach(quizListVM.quizListData, id: \.self) { eachQuizGroup in
                             Button {
                                 path.append("Quiz-\(eachQuizGroup.id)")
-                                quizListVM.isQuizGroupSelected = true
-                                quizListVM.updateSelectedQuizGroupId(eachQuizGroup.id)
+                                quizListVM.updateSelectedQuiz(eachQuizGroup.id)
                             } label: {
                                 if quizListVM.isCompletedQuizListLoading {
                                     QuizListItem(title: eachQuizGroup.title, ratio: 0.85)
@@ -45,10 +44,7 @@ struct QuizListView: View {
                                 }
                             }
                             .onAppear {
-                                if quizListVM.quizListData.last == eachQuizGroup {
-                                    print("Last data for list: should call more!!!")
-                                    quizListVM.loadMoreQuizList()
-                                }
+                                quizListVM.checkMorePaginationNeeded(eachQuizGroup)
                             }
                         }
                         .frame(maxHeight: .infinity)
@@ -82,10 +78,7 @@ struct QuizListView: View {
                 }
             }
             .onAppear {
-                if quizListVM.isQuizGroupSelected {
-                    print("Getting back from QuizResultView!!!")
-                    quizListVM.resetPaginationToRefreshQuizList()
-                }
+                quizListVM.checkRetakeQuiz()
             }
         }
         .refreshable {

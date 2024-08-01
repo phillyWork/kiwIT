@@ -54,11 +54,11 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
         print("QuizViewModel INIT")
         self.quizGroupId = quizGroupId
         self.pathString = pathString
-        setupDebounce()
+        bind()
         requestStartQuiz()
     }
     
-    private func setupDebounce() {
+    private func bind() {
         requestBookmarkSubject
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] in
@@ -83,24 +83,24 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
             return
         }
         NetworkManager.shared.request(type: StartQuizResponse.self, api: .startTakingQuiz(request: StartQuizRequest(quizGroupId: quizGroupId, access: tokenData.0.access)), errorCase: .startTakingQuiz)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let startQuizError = error as? NetworkError {
                         switch startQuizError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .startQuiz)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .startQuiz)
                         default:
                             print("Start Taking Quiz Error for network reason: \(startQuizError.description)")
-                            self.showStartQuizErrorAlert = true
+                            self?.showStartQuizErrorAlert = true
                         }
                     } else {
                         print("Start Taking Quiz Error for other reason: \(error.localizedDescription)")
-                        self.showStartQuizErrorAlert = true
+                        self?.showStartQuizErrorAlert = true
                     }
                 }
-            } receiveValue: { response in
-                self.quizData = response
-                self.quizCount = response.quizList.count
+            } receiveValue: { [weak self] response in
+                self?.quizData = response
+                self?.quizCount = response.quizList.count
             }
             .store(in: &self.cancellables)
     }
@@ -112,22 +112,22 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
             return
         }
         NetworkManager.shared.request(type: BookmarkQuizResponse.self, api: .bookmarkQuiz(request: BookmarkQuizRequest(quizId: quizIdToBookmark, access: tokenData.0.access)), errorCase: .bookmarkQuiz)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let bookmarkQuizError = error as? NetworkError {
                         switch bookmarkQuizError {
                         case .invalidRequestBody(_):
                             print("Wrong Quiz Id error: \(bookmarkQuizError.description)")
-                            self.showBookmarkQuizErrorAlert = true
+                            self?.showBookmarkQuizErrorAlert = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmark)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmark)
                         default:
                             print("Bookmark Quiz Error by network reason: \(bookmarkQuizError.description)")
-                            self.showBookmarkQuizErrorAlert = true
+                            self?.showBookmarkQuizErrorAlert = true
                         }
                     } else {
                         print("BookmarkQuiz Error by other reason: \(error.localizedDescription)")
-                        self.showBookmarkQuizErrorAlert = true
+                        self?.showBookmarkQuizErrorAlert = true
                     }
                 }
             } receiveValue: { response in

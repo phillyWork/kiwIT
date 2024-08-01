@@ -32,7 +32,7 @@ struct QuizResultView: View {
                             if (path.count > 0) {
                                 path.removeLast()
                             } else {
-                                quizResultVM.showRetakeQuizErrorAlert = true
+                                quizResultVM.updateToShowRetakeErrorAlert()
                             }
                         }
                     }
@@ -46,7 +46,6 @@ struct QuizResultView: View {
                     quizResultVM.handleAfterCloseTrophyCardView()
                 })
                 .opacity(quizResultVM.acquiredTrophyList.isEmpty ? 0 : 1)
-                
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

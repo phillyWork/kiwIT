@@ -27,6 +27,8 @@ final class QuizResultViewModel: ObservableObject, RefreshTokenHandler {
     
     @Published var acquiredTrophyList: [TrophyEntity] = []
     
+    private let showRetakeQuizSubject = PassthroughSubject<Bool, Never>()
+    
     var cancellables = Set<AnyCancellable>()
     
     var userResult: SubmitQuizResponse?
@@ -47,9 +49,21 @@ final class QuizResultViewModel: ObservableObject, RefreshTokenHandler {
         requestSubmitAnswer()
     }
     
+    private func bind() {
+        showRetakeQuizSubject
+            .sink { [weak self] value in
+                self?.showRetakeQuizErrorAlert = value
+            }
+            .store(in: &cancellables)
+    }
+    
     func retrySubmitAnswer() {
         cancellables.removeAll()
         requestSubmitAnswer()
+    }
+    
+    func updateToShowRetakeErrorAlert() {
+        showRetakeQuizSubject.send(true)
     }
     
     private func requestSubmitAnswer() {
@@ -59,35 +73,31 @@ final class QuizResultViewModel: ObservableObject, RefreshTokenHandler {
             return
         }
         NetworkManager.shared.request(type: SubmitQuizResponse.self, api: .submitQuizAnswers(request: SubmitQuizRequest(quizGroupId: quizGroupId, access: tokenData.0.access, answerList: userAnswerListForRequest)), errorCase: .submitQuizAnswers)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let submitAnswerError = error as? NetworkError {
                         switch submitAnswerError {
                         case .invalidRequestBody(_):
                             print("Invalid Answer Body: \(submitAnswerError.description)")
-                            self.showSubmitAnswerErrorAlert = true
+                            self?.showSubmitAnswerErrorAlert = true
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .submit)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .submit)
                         default:
                             print("Submit Answer Error for network reason: \(submitAnswerError.description)")
-                            self.showSubmitAnswerErrorAlert = true
+                            self?.showSubmitAnswerErrorAlert = true
                         }
                     } else {
                         print("Submit Answer Error for other reason: \(error.localizedDescription)")
-                        self.showSubmitAnswerErrorAlert = true
+                        self?.showSubmitAnswerErrorAlert = true
                     }
                 }
-            } receiveValue: { response in
-                self.userResult = response
-                
-                //MARK: - Quiz should be tested after finishing in lecture test
-                
+            } receiveValue: { [weak self] response in
+                self?.userResult = response
                 if !response.trophyAwardedList.isEmpty {
-                    self.acquiredTrophyList = response.trophyAwardedList
+                    self?.acquiredTrophyList = response.trophyAwardedList
                 } else {
-                    self.didFinishSubmittingAnswer = true
+                    self?.didFinishSubmittingAnswer = true
                 }
-                
             }
             .store(in: &self.cancellables)
     }
