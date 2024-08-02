@@ -9,36 +9,51 @@ import SwiftUI
 
 struct TrophyListView: View {
     
-    //MARK: - 더보기: 화면 이동, 전체 트로피 리스트 및 획득한 영역 구분해서 나타내기
-    
     @StateObject var trophyListVM = TrophyListViewModel()
-    @ObservedObject var profileVM: ProfileViewModel
-        
+    @Binding var isLoginAvailable: Bool
+    
     var body: some View {
         ScrollView {
+            VStack {
+                Image(systemName: Setup.ImageStrings.downDirection)
+                    .scaledToFit()
+                Text("당겨서 새로고침")
+                    .font(.custom(Setup.FontName.lineThin, size: 12))
+                    .foregroundStyle(Color.textColor)
+            }
             LazyVStack {
-//                ForEach(tempTrophyData) { trophy in
-                    
-//                    for acquired in tempUserAcquiredTrophyData {
-//                        if acquired.trophy.id == trophy.id {
-//                            TrophyContent(tempTrophyTitle: trophy.title, tempTrophyExplanation: "누적 학습시간 ", tempImageUrlString: trophy.imageUrl, achievedDate: acquired.updatedAt)
-//                        } else {
-//                            TrophyContent(tempTrophyTitle: trophy.title, tempTrophyExplanation: "누적 학습시간 100시간 돌파", tempImageUrlString: trophy.imageUrl)
-//                        }
-//                    }
-                    
-//                    TrophyContent(tempTrophyTitle: trophy.title, tempTrophyExplanation: "누적 학습시간 100시간 돌파", tempImageUrlString: trophy.imageUrl)
-                    
-//                }
+                ForEach(trophyListVM.wholeTrophyList, id: \.self) { trophy in
+                    TrophyContent(trophy: trophy, achievedDate: trophyListVM.retrieveAcquiredDate(trophy))
+                        .onAppear {
+                            trophyListVM.checkToLoadMoreTrophyies(trophy)
+                        }
+                }
             }
         }
         .background(Color.backgroundColor)
         .frame(maxWidth: .infinity)
+        .alert("트로피 에러", isPresented: $trophyListVM.showWholeTrophyRequestErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("트로피 목록을 불러오는데 실패했습니다. 다시 시도해주세요")
+        })
+        .alert("획득한 트로피 에러", isPresented: $trophyListVM.showAcquiredTrophyRequestErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text("획득한 트로피 목록을 불러오는데 실패했습니다. 다시 시도해주세요")
+        })
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $trophyListVM.shouldLoginAgain, actions: {
+            ErrorAlertConfirmButton {
+                isLoginAvailable = false
+            }
+        }, message: {
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
+        })
+        .refreshable {
+            trophyListVM.debouncedRefreshRequest()
+        }
+        .onDisappear {
+            trophyListVM.cleanUpCancellables()
+        }
     }
-}
-
-#Preview {
-    TrophyListView(profileVM: ProfileViewModel(updateProfileClosure: { response in
-        print("Response: \(response)")
-    }))
 }

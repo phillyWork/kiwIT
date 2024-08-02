@@ -40,7 +40,7 @@ struct ShrinkAnimationButtonView: View {
                 }
             } label: {
                 Text(buttonTitle)
-                    .foregroundStyle(Color.textColor)
+                    .foregroundStyle(Color.black)
                     .font(.custom(buttonTitleFont, size: 13))
                     .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
             }

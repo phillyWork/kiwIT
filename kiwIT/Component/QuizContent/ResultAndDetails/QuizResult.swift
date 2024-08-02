@@ -36,12 +36,6 @@ struct QuizResult: View {
                         .multilineTextAlignment(.center)
                         .font(.custom(Setup.FontName.notoSansBold, size: 25))
                         .frame(height: Setup.Frame.quizContentAnswerHeight * 0.3)
-                    
-//                    AsyncImage(url: URL(string: showAchievementImageUrl())) { image in
-//                        image.resizable()
-//                    } placeholder: {
-//                        ProgressView()
-//                    }
                     Image(showAchievementImage())
                         .resizable()
                         .aspectRatio(contentMode: .fill)

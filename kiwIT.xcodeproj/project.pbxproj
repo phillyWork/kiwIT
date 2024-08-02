@@ -43,7 +43,6 @@
 		2173F9352C0A13DB00CDF116 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 2173F9332C0A13DB00CDF116 /* Config.xcconfig */; };
 		2173F9372C0F4B4600CDF116 /* TrophyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9362C0F4B4600CDF116 /* TrophyListView.swift */; };
 		2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9382C10896300CDF116 /* TrophyContent.swift */; };
-		2173F93F2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */; };
 		2173F9452C15EC0F00CDF116 /* SignUpInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2173F9442C15EC0F00CDF116 /* SignUpInfoViewModel.swift */; };
 		2173F9462C15EF9900CDF116 /* SignUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513E2BAECD350052A07E /* SignUp.swift */; };
 		2173F9472C15EF9B00CDF116 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217E55A52BB1BA2D0014B46E /* Authorization.swift */; };
@@ -117,7 +116,6 @@
 		2177B3622C3974BC00BEB3BE /* EmptyViewWithNoError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3612C3974BC00BEB3BE /* EmptyViewWithNoError.swift */; };
 		2177B3642C3988AF00BEB3BE /* SimpleWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3632C3988AF00BEB3BE /* SimpleWebView.swift */; };
 		2177B3672C3AB84100BEB3BE /* TrophyDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3662C3AB84100BEB3BE /* TrophyDetail.swift */; };
-		2177B36B2C3AB94100BEB3BE /* AcquireTrophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B36A2C3AB94100BEB3BE /* AcquireTrophy.swift */; };
 		2177B36C2C3AEF6C00BEB3BE /* TrophyDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3662C3AB84100BEB3BE /* TrophyDetail.swift */; };
 		2177B36E2C3C22FC00BEB3BE /* BookmarkedLectureContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B36D2C3C22FC00BEB3BE /* BookmarkedLectureContent.swift */; };
 		2177B3702C3C23E500BEB3BE /* TakenQuizContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B36F2C3C23E500BEB3BE /* TakenQuizContent.swift */; };
@@ -145,6 +143,12 @@
 		2177B3AA2C52ACD600BEB3BE /* InterviewStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */; };
 		2177B3AC2C53EB9900BEB3BE /* SignInMainImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */; };
 		2177B3B02C57B3A100BEB3BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3AF2C57B3A100BEB3BE /* AppDelegate.swift */; };
+		2177B3B22C5BC97B00BEB3BE /* InterviewHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3B12C5BC97B00BEB3BE /* InterviewHistoryView.swift */; };
+		2177B3B52C5BC9A600BEB3BE /* InterviewPollingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3B42C5BC9A600BEB3BE /* InterviewPollingView.swift */; };
+		2177B3B82C5BC9C300BEB3BE /* InterviewPastAnswersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3B72C5BC9C300BEB3BE /* InterviewPastAnswersView.swift */; };
+		2177B3BB2C5BC9EC00BEB3BE /* InterviewResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3BA2C5BC9EC00BEB3BE /* InterviewResultView.swift */; };
+		2177B3BE2C5D0C0B00BEB3BE /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3BD2C5D0C0B00BEB3BE /* Extension+Date.swift */; };
+		2177B3BF2C5D0C1000BEB3BE /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3BD2C5D0C0B00BEB3BE /* Extension+Date.swift */; };
 		217801F82BB060CE004A7226 /* Setup+NetworkStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */; };
 		217A51382BAECB3F0052A07E /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 217A51372BAECB3F0052A07E /* Alamofire */; };
 		217A513B2BAECB800052A07E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217A513A2BAECB800052A07E /* Router.swift */; };
@@ -264,7 +268,6 @@
 		2173F9332C0A13DB00CDF116 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		2173F9362C0F4B4600CDF116 /* TrophyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyListView.swift; sourceTree = "<group>"; };
 		2173F9382C10896300CDF116 /* TrophyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyContent.swift; sourceTree = "<group>"; };
-		2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentlyAcquiredTrophy.swift; sourceTree = "<group>"; };
 		2173F9442C15EC0F00CDF116 /* SignUpInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInfoViewModel.swift; sourceTree = "<group>"; };
 		2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkErrorMessageStrings.swift"; sourceTree = "<group>"; };
 		2177B2BC2C1B1D0E00BEB3BE /* KeyChainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyChainManager.swift; sourceTree = "<group>"; };
@@ -303,7 +306,6 @@
 		2177B3612C3974BC00BEB3BE /* EmptyViewWithNoError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewWithNoError.swift; sourceTree = "<group>"; };
 		2177B3632C3988AF00BEB3BE /* SimpleWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleWebView.swift; sourceTree = "<group>"; };
 		2177B3662C3AB84100BEB3BE /* TrophyDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyDetail.swift; sourceTree = "<group>"; };
-		2177B36A2C3AB94100BEB3BE /* AcquireTrophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcquireTrophy.swift; sourceTree = "<group>"; };
 		2177B36D2C3C22FC00BEB3BE /* BookmarkedLectureContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkedLectureContent.swift; sourceTree = "<group>"; };
 		2177B36F2C3C23E500BEB3BE /* TakenQuizContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TakenQuizContent.swift; sourceTree = "<group>"; };
 		2177B3722C3C23F900BEB3BE /* BookmarkedQuizContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkedQuizContent.swift; sourceTree = "<group>"; };
@@ -327,6 +329,11 @@
 		2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewStatusManager.swift; sourceTree = "<group>"; };
 		2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInMainImageView.swift; sourceTree = "<group>"; };
 		2177B3AF2C57B3A100BEB3BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		2177B3B12C5BC97B00BEB3BE /* InterviewHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewHistoryView.swift; sourceTree = "<group>"; };
+		2177B3B42C5BC9A600BEB3BE /* InterviewPollingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewPollingView.swift; sourceTree = "<group>"; };
+		2177B3B72C5BC9C300BEB3BE /* InterviewPastAnswersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewPastAnswersView.swift; sourceTree = "<group>"; };
+		2177B3BA2C5BC9EC00BEB3BE /* InterviewResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewResultView.swift; sourceTree = "<group>"; };
+		2177B3BD2C5D0C0B00BEB3BE /* Extension+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
 		217801F72BB060CE004A7226 /* Setup+NetworkStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NetworkStrings.swift"; sourceTree = "<group>"; };
 		217A513A2BAECB800052A07E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		217A513C2BAECBB70052A07E /* Error+Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Network.swift"; sourceTree = "<group>"; };
@@ -578,7 +585,6 @@
 		2173F93A2C108A1C00CDF116 /* TrophyContent */ = {
 			isa = PBXGroup;
 			children = (
-				2173F93E2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift */,
 				2173F9382C10896300CDF116 /* TrophyContent.swift */,
 			);
 			path = TrophyContent;
@@ -691,7 +697,6 @@
 			children = (
 				217E559F2BB162000014B46E /* TrophyList.swift */,
 				2177B3662C3AB84100BEB3BE /* TrophyDetail.swift */,
-				2177B36A2C3AB94100BEB3BE /* AcquireTrophy.swift */,
 			);
 			path = Trophy;
 			sourceTree = "<group>";
@@ -775,6 +780,39 @@
 				2177B3A02C501CDD00BEB3BE /* TrophyPageTabView.swift */,
 			);
 			path = NewlyAcquiredTrophyCardView;
+			sourceTree = "<group>";
+		};
+		2177B3B32C5BC98000BEB3BE /* InterviewHistory */ = {
+			isa = PBXGroup;
+			children = (
+				2177B3B12C5BC97B00BEB3BE /* InterviewHistoryView.swift */,
+				2177B3B92C5BC9CA00BEB3BE /* PastAnswers */,
+			);
+			path = InterviewHistory;
+			sourceTree = "<group>";
+		};
+		2177B3B62C5BC9A900BEB3BE /* InterviewPolling */ = {
+			isa = PBXGroup;
+			children = (
+				2177B3B42C5BC9A600BEB3BE /* InterviewPollingView.swift */,
+			);
+			path = InterviewPolling;
+			sourceTree = "<group>";
+		};
+		2177B3B92C5BC9CA00BEB3BE /* PastAnswers */ = {
+			isa = PBXGroup;
+			children = (
+				2177B3B72C5BC9C300BEB3BE /* InterviewPastAnswersView.swift */,
+			);
+			path = PastAnswers;
+			sourceTree = "<group>";
+		};
+		2177B3BC2C5BC9F000BEB3BE /* InterviewResult */ = {
+			isa = PBXGroup;
+			children = (
+				2177B3BA2C5BC9EC00BEB3BE /* InterviewResultView.swift */,
+			);
+			path = InterviewResult;
 			sourceTree = "<group>";
 		};
 		217A51402BAECD380052A07E /* Model */ = {
@@ -1054,6 +1092,7 @@
 		219EFBC62B9F0A5200FBEBE0 /* Setup */ = {
 			isa = PBXGroup;
 			children = (
+				2177B3BD2C5D0C0B00BEB3BE /* Extension+Date.swift */,
 				217A51452BAECDE50052A07E /* Type.swift */,
 				219EFBD12B9F146B00FBEBE0 /* Utility */,
 				219EFBC72B9F0AA300FBEBE0 /* Strings */,
@@ -1110,7 +1149,10 @@
 			isa = PBXGroup;
 			children = (
 				2177B3902C4C2C0300BEB3BE /* InterviewList */,
+				2177B3B32C5BC98000BEB3BE /* InterviewHistory */,
+				2177B3B62C5BC9A900BEB3BE /* InterviewPolling */,
 				2177B3932C4C2C1600BEB3BE /* Interview */,
+				2177B3BC2C5BC9F000BEB3BE /* InterviewResult */,
 				2177B3992C4C4A3300BEB3BE /* Subscription */,
 			);
 			path = Interview;
@@ -1310,6 +1352,7 @@
 				2177B3622C3974BC00BEB3BE /* EmptyViewWithNoError.swift in Sources */,
 				2177B3892C4C103F00BEB3BE /* CreateInterview.swift in Sources */,
 				2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */,
+				2177B3B52C5BC9A600BEB3BE /* InterviewPollingView.swift in Sources */,
 				2177B3502C358B1200BEB3BE /* Setup+ContentStrings+Profile.swift in Sources */,
 				2177B3172C25932900BEB3BE /* LectureCategoryList.swift in Sources */,
 				2177B34B2C357A2D00BEB3BE /* ErrorAlertConfirmButton.swift in Sources */,
@@ -1319,6 +1362,7 @@
 				217BCCB62B9DE5C300B5461B /* MainTabBarView.swift in Sources */,
 				2177B3812C483BD300BEB3BE /* RefreshTokenHandler.swift in Sources */,
 				2177B3642C3988AF00BEB3BE /* SimpleWebView.swift in Sources */,
+				2177B3BE2C5D0C0B00BEB3BE /* Extension+Date.swift in Sources */,
 				21816ADC2BC83BBE007E6FD6 /* ContentExpandableChapterItemView.swift in Sources */,
 				2177B3312C29B02B00BEB3BE /* CustomWebView.swift in Sources */,
 				2177B3572C38399C00BEB3BE /* UserQuizListViewModel.swift in Sources */,
@@ -1352,6 +1396,7 @@
 				218267672BE6809300D8C17C /* QuizView.swift in Sources */,
 				217B53132BA2EBA90081D418 /* Setup+ContentStrings.swift in Sources */,
 				2173C04C2BA0902000FDD3D9 /* SignUpInfoView.swift in Sources */,
+				2177B3BB2C5BC9EC00BEB3BE /* InterviewResultView.swift in Sources */,
 				2177B3532C38392E00BEB3BE /* UserLectureListView.swift in Sources */,
 				2163D08A2BCFCA1800A42EBB /* ContentSectionItemView.swift in Sources */,
 				2177B37F2C46EFF600BEB3BE /* LatestTakenQuizView.swift in Sources */,
@@ -1361,7 +1406,6 @@
 				2177B3952C4C2C4E00BEB3BE /* InterviewViewModel.swift in Sources */,
 				2189BC402BF256FB007CC766 /* QuizMultipleChoiceButtonLabel.swift in Sources */,
 				2177B3232C2598C400BEB3BE /* CheckCompletedOrBookmarkedQuizList.swift in Sources */,
-				2173F93F2C11AF6000CDF116 /* RecentlyAcquiredTrophy.swift in Sources */,
 				219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */,
 				2177B37D2C46EFED00BEB3BE /* NextLectureView.swift in Sources */,
 				218267762BE68A8500D8C17C /* QuizResultDetailView.swift in Sources */,
@@ -1390,7 +1434,6 @@
 				217BAADF2BFB892200ADAC6B /* QuizResultDetailEachQuestion.swift in Sources */,
 				2173C04A2BA0901600FDD3D9 /* SocialLoginView.swift in Sources */,
 				2177B3272C259E0B00BEB3BE /* SubmitQuiz.swift in Sources */,
-				2177B36B2C3AB94100BEB3BE /* AcquireTrophy.swift in Sources */,
 				2177B3752C3ED02500BEB3BE /* ProfileContent.swift in Sources */,
 				2170E7552BBC6873002A1DA6 /* Setup+Color.swift in Sources */,
 				2177B3192C25959D00BEB3BE /* CheckCompletedLecture.swift in Sources */,
@@ -1399,6 +1442,7 @@
 				2177B3462C2DA4BA00BEB3BE /* AuthManager.swift in Sources */,
 				2177B31F2C25989B00BEB3BE /* QuizGroupList.swift in Sources */,
 				217D59432BA9C22C005AE418 /* LectureView.swift in Sources */,
+				2177B3B22C5BC97B00BEB3BE /* InterviewHistoryView.swift in Sources */,
 				212339A22C19F66E00B397F8 /* TabViewsViewModel.swift in Sources */,
 				217B53152BA2EDE70081D418 /* SocialLoginButtonView.swift in Sources */,
 				217A513B2BAECB800052A07E /* Router.swift in Sources */,
@@ -1415,6 +1459,7 @@
 				214282D02BD0FDE000EA3CC1 /* EquilateralTrapezoid.swift in Sources */,
 				2177B39D2C5012A500BEB3BE /* NewlyAcquiredTrophyCardView.swift in Sources */,
 				2177B31B2C25972C00BEB3BE /* BookmarkLecture.swift in Sources */,
+				2177B3B82C5BC9C300BEB3BE /* InterviewPastAnswersView.swift in Sources */,
 				2123399C2C19F31600B397F8 /* MainTabBarViewModel.swift in Sources */,
 				219EFBBF2B9F069600FBEBE0 /* QuizListView.swift in Sources */,
 				2177B3672C3AB84100BEB3BE /* TrophyDetail.swift in Sources */,
@@ -1480,6 +1525,7 @@
 				2173F9492C15EF9F00CDF116 /* RefreshAccessToken.swift in Sources */,
 				2177B33E2C29BA9700BEB3BE /* LatestTakenQuiz.swift in Sources */,
 				2177B3382C29BA5100BEB3BE /* QuizGroupList.swift in Sources */,
+				2177B3BF2C5D0C1000BEB3BE /* Extension+Date.swift in Sources */,
 				2173C0562BA090F700FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				2177B3332C29BA3600BEB3BE /* StartLecture.swift in Sources */,
 				217BCCC52B9DE5C400B5461B /* LectureViewModelUnitTest.swift in Sources */,

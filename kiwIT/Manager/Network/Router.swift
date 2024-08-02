@@ -48,12 +48,7 @@ enum Router: URLRequestConvertible {
     case acquiredTrophyList(request: TrophyListRequest)
     case latestAcquiredTrophy(request: AuthorizationRequest)
     
-    //개발 중...
-    case confirmTrophyAcquisition(request: TrophyRequest)
-    case cancelTrophyAcquisition(request: TrophyRequest)
-    
     //MARK: - RequestSetup
-    
     private var baseURL: URL {
         return URL(string: APIKey.baseURL)!
     }
@@ -115,10 +110,6 @@ enum Router: URLRequestConvertible {
             return Setup.NetworkEndpointStrings.trophy + Setup.NetworkEndpointStrings.acquiredTrophyList
         case .latestAcquiredTrophy:
             return Setup.NetworkEndpointStrings.trophy + Setup.NetworkEndpointStrings.acquiredTrophyList + Setup.NetworkEndpointStrings.latestAcquiredTrophy
-        
-        //개발 중...
-        case .confirmTrophyAcquisition(let request), .cancelTrophyAcquisition(let request):
-            return Setup.NetworkEndpointStrings.trophy + Setup.NetworkEndpointStrings.acquiredTrophyList + "/\(request.trophyId)"
         }
     }
         
@@ -152,13 +143,10 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .bookmarkQuiz(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
-            
         case .wholeTrophyList(let request), .acquiredTrophyList(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
-            //개발 중...
-        case .trophyDetail(let request), .confirmTrophyAcquisition(let request), .cancelTrophyAcquisition(let request):
+        case .trophyDetail(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
-            
         default:
             return []
         }
@@ -166,11 +154,11 @@ enum Router: URLRequestConvertible {
     
     private var method: HTTPMethod {
         switch self {
-        case .signUp, .signIn, .completionOfLecture, .submitQuizAnswers, .bookmarkQuiz, .confirmTrophyAcquisition:
+        case .signUp, .signIn, .completionOfLecture, .submitQuizAnswers, .bookmarkQuiz:
             return .post
         case .signOut, .refreshToken, .profileEdit, .exerciseForLecture, .bookmarkLecture:
             return .patch
-        case .withdraw, .cancelTrophyAcquisition:
+        case .withdraw:
             return .delete
         case .profileCheck, .lectureLevelListCheck, .lectureLevelListContentCheck, .startOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .nextLectureToStudyCheck, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .startTakingQuiz, .latestTakenQuiz, .takenQuizListCheck, .bookmarkedQuizCheck, .wholeTrophyList, .trophyDetail, .acquiredTrophyList, .latestAcquiredTrophy:
             return .get
@@ -199,7 +187,7 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.nicknameTitle: request.nickname]
         case .exerciseForLecture(let request):
             return [Setup.NetworkStrings.lectureExerciseAnswerTitle: "\(request.answer)"]
-        case .signOut, .withdraw, .profileCheck, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .nextLectureToStudyCheck, .bookmarkLecture, .startTakingQuiz, .submitQuizAnswers, .latestTakenQuiz, .bookmarkQuiz, .trophyDetail, .latestAcquiredTrophy, .confirmTrophyAcquisition, .cancelTrophyAcquisition:
+        case .signOut, .withdraw, .profileCheck, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .nextLectureToStudyCheck, .bookmarkLecture, .startTakingQuiz, .submitQuizAnswers, .latestTakenQuiz, .bookmarkQuiz, .trophyDetail, .latestAcquiredTrophy:
             return nil
         case .lectureLevelListContentCheck(let request):
             guard let next = request.next, let limit = request.limit else { return nil }
@@ -258,7 +246,7 @@ enum Router: URLRequestConvertible {
                 
         switch self {
         //header에 json 없거나 multipart/data-form과 같은 경우
-        case .acquiredTrophyList, .lectureLevelListContentCheck, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .takenQuizListCheck, .bookmarkedQuizCheck:
+        case .wholeTrophyList, .acquiredTrophyList, .lectureLevelListContentCheck, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .takenQuizListCheck, .bookmarkedQuizCheck:
             request = try URLEncodedFormParameterEncoder(destination: .methodDependent).encode(query, into: request)
         case .submitQuizAnswers(let submitRequest):
             //request body: answerList Object 자체로 필요

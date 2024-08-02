@@ -55,11 +55,3 @@ struct BookmarkedLectureContent: View {
         }
     }
 }
-
-//#Preview {
-//    BookmarkedLectureContent(CompletedOrBookmarkedLecture(id: 1, title: "Lecture Title", point: 100, exercise: "Exercise Quiz", answer: true, levelNum: 1, categoryChapterId: 2, payloadUrl: "https://", contentStudied: CompleteLectureResponse(userId: 22, contentId: 1, kept: true, createdAt: "2222", updatedAt: "2222"))) {
-//        print("Delete Bookmark")
-//    } bookmarkAction: {
-//        print("Bookmark Button Tapped")
-//    }
-//}

@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-//MARK: - 탭할 경우, 내부 퀴즈 목록 보여주는 것 시도?
-
 struct TakenQuizContent: View {
     
     var quiz: TakenQuizResponse

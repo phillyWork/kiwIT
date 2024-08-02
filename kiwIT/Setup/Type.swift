@@ -49,8 +49,7 @@ enum QuizType: String, Codable, Hashable {
     case shortAnswer = "SHORT"
 }
 
-//MARK: - 퀴즈 사용처 구분 필요시? (HomeView, QuizListView 구분용?)
-
+//퀴즈 사용처 구분 필요시? (HomeView, QuizListView 구분용?)
 enum QuizTag: String, Codable {
     case homeTab
     case quizTab

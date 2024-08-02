@@ -7,8 +7,6 @@
 
 import SwiftUI
 
-//MARK: - HomeView 구성
-
 struct HomeView: View {
     
     @StateObject var homeVM = HomeViewModel()

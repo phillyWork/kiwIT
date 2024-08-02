@@ -173,7 +173,7 @@ struct ProfileView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 5)
                     NavigationLink {
-                        TrophyListView(profileVM: profileVM)
+                        TrophyListView(isLoginAvailable: $tabViewsVM.isLoginAvailable)
                     } label: {
                         Text("더 보기")
                             .font(.custom(Setup.FontName.notoSansRegular, size: 15))
@@ -188,8 +188,8 @@ struct ProfileView: View {
                         } else if profileVM.latestAcquiredTrophy.isEmpty {
                             EmptyViewWithNoError(title: "아직 획득한 트로피가 없어요")
                         } else {
-                            //MARK: - 트로피 영역 가장 최근 획득한 트로피 보여주기
-                            Text("test")
+                            TrophyContent(trophy: profileVM.latestAcquiredTrophy[0].trophy, achievedDate: profileVM.latestAcquiredTrophy[0].creationCompactDate)
+                                .padding(.horizontal, 5)
                         }
                     }
                 })
@@ -198,7 +198,7 @@ struct ProfileView: View {
                 Spacer()
                 
                 VStack(alignment: .center, spacing: 15) {
-                    ShrinkAnimationButtonView(title: Setup.ContentStrings.Profile.signOutTitle, font: Setup.FontName.galMuri11Bold, color: Color.brandBlandColor) {
+                    ShrinkAnimationButtonView(title: Setup.ContentStrings.Profile.signOutTitle, font: Setup.FontName.galMuri11Bold, color: Color.brandTintColor2) {
                         profileVM.showAlertInView(.logout)
                     }
                     .alert(Setup.ContentStrings.Profile.signOutTitle, isPresented: $profileVM.showLogoutAlert, actions: {

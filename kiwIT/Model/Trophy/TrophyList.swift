@@ -25,6 +25,22 @@ struct AcquiredTrophy: Decodable, Identifiable {
     var id: Int {
         trophy.id
     }
+    
+    var creationFullDate: String {
+        if let date = createdAt.toDate() {
+            return date.toFullString()
+        } else {
+            return createdAt
+        }
+    }
+    
+    var creationCompactDate: String {
+        if let date = createdAt.toDate() {
+            return date.toCompactString()
+        } else {
+            return createdAt
+        }
+    }
 }
 
 enum TrophyType: String, Decodable {
