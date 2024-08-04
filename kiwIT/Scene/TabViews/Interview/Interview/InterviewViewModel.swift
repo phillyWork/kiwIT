@@ -30,8 +30,14 @@ final class InterviewViewModel: ObservableObject, RefreshTokenHandler {
    
     typealias ActionType = InterviewActionType
     
+    
+    @Published var interviewTimer: Timer?
+    
     @Published var shouldLoginAgain = false
     
+    @Published var showUnknownNetworkErrorAlert = false
+    
+    @Published var isInterviewDone = false
     
     var cancellables: Set<AnyCancellable> = []
     
@@ -43,9 +49,8 @@ final class InterviewViewModel: ObservableObject, RefreshTokenHandler {
     
     
     
-    private func startPolling() {
-        
-    }
+   
+    
     
     
     
@@ -62,7 +67,10 @@ final class InterviewViewModel: ObservableObject, RefreshTokenHandler {
         if isRefreshInvalid {
             AuthManager.shared.handleRefreshTokenExpired(userId: userId)
             shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
         }
     }
+    
     
 }

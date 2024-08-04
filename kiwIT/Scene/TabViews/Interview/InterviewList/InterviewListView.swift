@@ -26,7 +26,7 @@ struct InterviewListView: View {
             List {
                 ForEach(names, id: \.self) { name in
                     Button {
-                        path.append(name)
+                        path.append("History - \(name)")
                     } label: {
                         InterviewListContent()
                     }
@@ -65,7 +65,12 @@ struct InterviewListView: View {
                 Text(Setup.ContentStrings.loginErrorAlertMessage)
             })
             .navigationDestination(for: String.self) { name in
-                InterviewView(interviewListVM: interviewListVM)
+                InterviewHistoryView(interviewListVM: interviewListVM, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+            }
+            .background {
+                NavigationLink("", isActive: $interviewListVM.showNewlyCreatedInterview) {
+                    InterviewHistoryView(interviewListVM: interviewListVM, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+                }
             }
             .refreshable {
                 interviewListVM.debouncedRefreshInterview()

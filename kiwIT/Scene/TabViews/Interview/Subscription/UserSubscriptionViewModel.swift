@@ -20,6 +20,8 @@ final class UserSubscriptionViewModel: ObservableObject, RefreshTokenHandler {
     
     @Published var shouldLoginAgain = false
     
+    @Published var showUnknownNetworkErrorAlert = false
+    
     @Published var productIdentifiers: Set<String> = [
         Bundle.main.infoDictionary?["SUBSCRIBE_PRODUCT_IDENTIFIER"] as! String
     ]
@@ -71,6 +73,8 @@ final class UserSubscriptionViewModel: ObservableObject, RefreshTokenHandler {
         if isRefreshInvalid {
             AuthManager.shared.handleRefreshTokenExpired(userId: userId)
             shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
         }
     }
 

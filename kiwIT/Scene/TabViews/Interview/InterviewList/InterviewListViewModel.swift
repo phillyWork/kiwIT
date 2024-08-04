@@ -10,13 +10,10 @@ import Foundation
 import Combine
 
 enum InterviewListActionType {
-//    case checkUserSubscriptionStatus
     case loadCreatedInterviews
     case createNewInterview
     case deleteInterview
 }
-
-//MARK: - 구독 여부 판단 필요
 
 final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
     
@@ -29,14 +26,13 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
     @Published var showDeleteInterviewErrorAlert = false
     @Published var showUnknownNetworkErrorAlert = false
     
-//    @Published var showUserSubscriptionViewSheet = false
-    
     @Published var showCreateNewInterviewSheet = false
+    @Published var showNewlyCreatedInterview = false
     
-//    private var checkUserStatusSubject = PassthroughSubject<Void, Never>()
-
-    private var loadInterviewSubject = PassthroughSubject<Void, Never>()
-    private var createInterviewSubject = PassthroughSubject<CreateInterviewContent, Never>()
+    //data to show interviewlist --> pass interviewId for selected interview
+    
+    private let loadInterviewSubject = PassthroughSubject<Void, Never>()
+    private let createInterviewSubject = PassthroughSubject<CreateInterviewContent, Never>()
     
     private var debouncedCreateInterviewContent = CreateInterviewContent(topic: "", numOfQuestions: 0, expectedTotalAnswerTime: 0, shouldBeIncludedString: "")
 
@@ -47,18 +43,11 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
     
     init(_ profile: ProfileResponse?) {
         self.userProfile = profile
-        setupDebounce()
+        bind()
         requestInterviewList()
     }
     
-    private func setupDebounce() {
-//        checkUserStatusSubject
-//            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
-//            .sink { [weak self] _ in
-//                self?.checkUserStatusToCreateInterview()
-//            }
-//            .store(in: &self.cancellables)
-        
+    private func bind() {
         loadInterviewSubject
             .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
             .sink { [weak self] _ in
@@ -73,10 +62,6 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
             }
             .store(in: &self.cancellables)
     }
-    
-//    func debouncedCheckStatus() {
-//        checkUserStatusSubject.send(())
-//    }
     
     func debouncedRefreshInterview() {
         loadInterviewSubject.send(())
@@ -93,18 +78,15 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
         
     }
     
-//    private func checkUserStatusToCreateInterview() {
-//        if true {
-//            showCreateNewInterviewSheet = true
-//        } else {
-//            showUserSubscriptionViewSheet = true
-//        }
-//    }
-    
     private func requestCreateInterview(_ content: CreateInterviewContent) {
+        
         //MARK: - 인터뷰 생성 요청
         
         //MARK: - 고려할 점: 실제로 데이터 만들어질 시, 0번 Index에 넣을 것: 유저가 처음 알아보도록
+        
+        //MARK: - 성공 시, InterviewHistoryView로 이동할 것 by update showNewlyCreatedInterview
+
+        
         
     }
     
@@ -135,8 +117,6 @@ final class InterviewListViewModel: ObservableObject, RefreshTokenHandler {
     
     func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: InterviewListActionType) {
         switch action {
-//        case .checkUserSubscriptionStatus:
-//            checkUserStatusToCreateInterview()
         case .loadCreatedInterviews:
             requestInterviewList()
         case .createNewInterview:

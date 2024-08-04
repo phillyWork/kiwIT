@@ -9,7 +9,22 @@ import SwiftUI
 
 struct InterviewPollingView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        
+        VStack {
+         
+            //MARK: - Polling 확인용 시간 체크 및 시작하기 버튼 설치하기
+            
+            Text("")
+            
+            Button {
+                
+            } label: {
+               Text("시작하기?")
+            }
+            
+            
+        }
+        
     }
 }
 
