@@ -22,5 +22,12 @@ extension Setup {
         static let queryStringLimitPageTitle = "limit"
         static let queryStringByLevelTitle = "byLevel"
         static let queryStringTagTitle = "tag"
+        static let interviewTitle = "title"
+        
+        //MARK: - 추가적으로 API 업데이트 시 수정 필요
+        static let createInterviewLevelOption = "level"
+        static let createInterviewCategoryTitle = "category"
+        
+        static let submitInterviewAnswerListTitle = "answerList"
     }
 }

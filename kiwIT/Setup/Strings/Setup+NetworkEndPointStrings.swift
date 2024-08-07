@@ -47,6 +47,14 @@ extension Setup {
         
         static let acquiredTrophyList = "/my"
         static let latestAcquiredTrophy = "/latest"
+        
+        //MARK: - Interview
+        
+        static let interview = "/interview"
+        
+        static let interviewQuestion = "/question"
+        static let interviewRoom = "/room"
+        
     }
     
 }
