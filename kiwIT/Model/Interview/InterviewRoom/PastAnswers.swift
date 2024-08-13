@@ -18,6 +18,22 @@ struct PastAnswersResponse: Decodable {
     var createdAt: String
     var updatedAt: String
     var answerList: [PastAnswerPaylaod]
+    
+    var creationFullDate: String {
+        if let date = createdAt.toDate() {
+            return date.toFullString()
+        } else {
+            return createdAt
+        }
+    }
+    
+    var creationCompactDate: String {
+        if let date = createdAt.toDate() {
+            return date.toCompactString()
+        } else {
+            return createdAt
+        }
+    }
 }
 
 struct PastAnswerPaylaod: Decodable {

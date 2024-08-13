@@ -17,9 +17,12 @@ struct InterviewListResponse: Decodable {
     var interviewList: [InterviewPayload]
 }
 
-struct InterviewPayload: Decodable {
+//생성 후 Polling 여부 판단할 수도 있음
+struct InterviewPayload: Decodable, Hashable {
     var id: Int
     var title: String
+    var timeLimit: Int  //초 단위, 전체 인터뷰 시간
+    var questionsCnt: Int
     var createdAt: String
     var updatedAt: String
     

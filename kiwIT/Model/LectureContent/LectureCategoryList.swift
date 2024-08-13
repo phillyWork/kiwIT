@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LectureCategoryListPayload: Decodable, Hashable {
+struct LectureCategoryListPayload: Codable, Hashable {
     var id: Int
     var title: String
     var thumbnailUrl: String

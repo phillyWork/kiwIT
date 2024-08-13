@@ -17,8 +17,6 @@ enum NetworkErrorCase {
     case profileCheck
     case profileEdit
     
-    //case summaryStat
-        
     case lectureLevelListCheck
     case lectureLevelListContentCheck
     case startOfLecture
@@ -44,9 +42,21 @@ enum NetworkErrorCase {
     case acquiredTrophyList
     case latestAcquiredTrophy
     
-    //개발 중...
-    case confirmTrophyAcquisition
-    case cancelTrophyAcquisition
+    
+    //MARK: - 에러 케이스 분류: API 업데이트 따른 수정 필요
+    case interviewList
+    case interviewOptionList
+    case createInterview
+    case deleteInterview
+    case editInterview
+    case interviewRoomList
+    case startInterviewRoom
+    case interviewQuestionsList
+    case checkInterviewRoomQueue
+    case interviewPastAnswers
+    case submitInterviewRoom
+    case deleteInterviewRoom
+    
 }
 
 struct NetworkErrorMessage {
@@ -98,10 +108,30 @@ struct NetworkErrorMessage {
                 return Setup.NetworkErrorMessage.acquiredTrophyListError400
             case .latestAcquiredTrophy:
                 return Setup.NetworkErrorMessage.latestAcquiredTrophyError400
-            case .confirmTrophyAcquisition:
-                return Setup.NetworkErrorMessage.confirmTrophyAcquisitionError
-            case .cancelTrophyAcquisition:
-                return Setup.NetworkErrorMessage.cancelTrophyAcquisitionError
+            case .interviewList:
+                return Setup.NetworkErrorMessage.interviewListError
+            case .interviewOptionList:
+                return Setup.NetworkErrorMessage.interviewOptionListError
+            case .createInterview:
+                return Setup.NetworkErrorMessage.createInterviewError
+            case .deleteInterview:
+                return Setup.NetworkErrorMessage.deleteInterviewError
+            case .editInterview:
+                return Setup.NetworkErrorMessage.editInterviewError
+            case .interviewRoomList:
+                return Setup.NetworkErrorMessage.interviewRoomListError
+            case .startInterviewRoom:
+                return Setup.NetworkErrorMessage.startInterviewRoomError
+            case .interviewQuestionsList:
+                return Setup.NetworkErrorMessage.interviewQuestionsListError
+            case .checkInterviewRoomQueue:
+                return Setup.NetworkErrorMessage.checkInterviewRoomQueueError
+            case .interviewPastAnswers:
+                return Setup.NetworkErrorMessage.interviewPastAnswersError
+            case .submitInterviewRoom:
+                return Setup.NetworkErrorMessage.submitInterviewRoomError
+            case .deleteInterviewRoom:
+                return Setup.NetworkErrorMessage.deleteInterviewRoomError
             default:
                 return "Error Code 400"
             }

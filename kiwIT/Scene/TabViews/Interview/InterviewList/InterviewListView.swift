@@ -9,24 +9,18 @@ import SwiftUI
 
 struct InterviewListView: View {
     
-    @StateObject var interviewListVM: InterviewListViewModel
+    @StateObject var interviewListVM = InterviewListViewModel()
     @ObservedObject var tabViewsVM: TabViewsViewModel
     
     @State private var path = NavigationPath()
-    
-    init(tabViewsVM: TabViewsViewModel) {
-        self.tabViewsVM = tabViewsVM
-        self._interviewListVM = StateObject(wrappedValue: InterviewListViewModel(tabViewsVM.profileData))
-    }
-    
-    @State var names = ["Jack", "Simon", "Sam", "Trinity", "Hello"]
-    
+        
     var body: some View {
         NavigationStack(path: $path) {
             List {
-                ForEach(names, id: \.self) { name in
+                ForEach(interviewListVM.interviewList, id: \.self) { interview in
                     Button {
-                        path.append("History - \(name)")
+                        path.append("History - \(interview.id)")
+                        interviewListVM.debouncedSelectedInterviewId(interview.id)
                     } label: {
                         InterviewListContent()
                     }
@@ -45,17 +39,25 @@ struct InterviewListView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
-                        interviewListVM.showCreateNewInterviewSheet = true
+                        interviewListVM.debouncedSetupCreateInterviewSheet()
                     } label: {
                         Image(systemName: Setup.ImageStrings.plusSquare)
                     }
                 }
             }
             .sheet(isPresented: $interviewListVM.showCreateNewInterviewSheet) {
-                CreateInterviewSheet { content in
+                CreateInterviewSheet(category: $interviewListVM.optionCategory, 
+                                     level: $interviewListVM.optionLevel) { content in
                     interviewListVM.debouncedCreateInterview(content)
                 }
                 .presentationDragIndicator(.visible)
+                .alert("옵션 불러오기 실패!", isPresented: $interviewListVM.showRetrieveInterviewOptionErrorAlert) {
+                    ErrorAlertConfirmButton {
+                        interviewListVM.debouncedCloseSheet()
+                    }
+                } message: {
+                    Text("생성에 필요한 옵션을 불러오는데 실패했습니다. 다시 시도해주세요.")
+                }
             }
             .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $interviewListVM.shouldLoginAgain, actions: {
                 ErrorAlertConfirmButton {
@@ -65,11 +67,11 @@ struct InterviewListView: View {
                 Text(Setup.ContentStrings.loginErrorAlertMessage)
             })
             .navigationDestination(for: String.self) { name in
-                InterviewHistoryView(interviewListVM: interviewListVM, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+                InterviewHistoryView(interviewListVM: interviewListVM, parentType: .previouslyCreatedInterview, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
             }
             .background {
                 NavigationLink("", isActive: $interviewListVM.showNewlyCreatedInterview) {
-                    InterviewHistoryView(interviewListVM: interviewListVM, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+                    InterviewHistoryView(interviewListVM: interviewListVM, parentType: .createNewInterview, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
                 }
             }
             .refreshable {

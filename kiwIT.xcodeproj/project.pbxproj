@@ -144,7 +144,6 @@
 		2177B3AC2C53EB9900BEB3BE /* SignInMainImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */; };
 		2177B3B02C57B3A100BEB3BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3AF2C57B3A100BEB3BE /* AppDelegate.swift */; };
 		2177B3B22C5BC97B00BEB3BE /* InterviewHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3B12C5BC97B00BEB3BE /* InterviewHistoryView.swift */; };
-		2177B3B52C5BC9A600BEB3BE /* InterviewPollingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3B42C5BC9A600BEB3BE /* InterviewPollingView.swift */; };
 		2177B3B82C5BC9C300BEB3BE /* InterviewPastAnswersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3B72C5BC9C300BEB3BE /* InterviewPastAnswersView.swift */; };
 		2177B3BB2C5BC9EC00BEB3BE /* InterviewResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3BA2C5BC9EC00BEB3BE /* InterviewResultView.swift */; };
 		2177B3BE2C5D0C0B00BEB3BE /* Extension+Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3BD2C5D0C0B00BEB3BE /* Extension+Date.swift */; };
@@ -212,7 +211,6 @@
 		218323862BEA6E1600FB79B5 /* QuizContentOX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218323852BEA6E1600FB79B5 /* QuizContentOX.swift */; };
 		2184881E2C5E71F800977B79 /* InterviewHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2184881D2C5E71F800977B79 /* InterviewHistoryViewModel.swift */; };
 		218488202C5E826400977B79 /* InterviewPastAnswersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2184881F2C5E826400977B79 /* InterviewPastAnswersViewModel.swift */; };
-		218488222C5E827000977B79 /* InterviewPollingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218488212C5E827000977B79 /* InterviewPollingViewModel.swift */; };
 		218488242C5E827D00977B79 /* InterviewResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218488232C5E827D00977B79 /* InterviewResultViewModel.swift */; };
 		218488262C5FAD2F00977B79 /* InterviewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218488252C5FAD2F00977B79 /* InterviewContent.swift */; };
 		218488282C63A17C00977B79 /* InterviewList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218488272C63A17C00977B79 /* InterviewList.swift */; };
@@ -222,6 +220,7 @@
 		218488322C63A56900977B79 /* InterviewQuestionsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218488312C63A56900977B79 /* InterviewQuestionsList.swift */; };
 		218488342C63B9A900977B79 /* PastAnswers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218488332C63B9A800977B79 /* PastAnswers.swift */; };
 		218488362C63BA2400977B79 /* SubmitInterviewRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218488352C63BA2400977B79 /* SubmitInterviewRoom.swift */; };
+		2184883C2C668AC100977B79 /* InterviewPolling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2184883B2C668AC100977B79 /* InterviewPolling.swift */; };
 		2189BC382BF24D05007CC766 /* QuizContentShortAnswer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC372BF24D05007CC766 /* QuizContentShortAnswer.swift */; };
 		2189BC3A2BF24D30007CC766 /* QuizMultipleChoice.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC392BF24D30007CC766 /* QuizMultipleChoice.swift */; };
 		2189BC3D2BF250AD007CC766 /* QuizOXButtonLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2189BC3C2BF250AD007CC766 /* QuizOXButtonLabel.swift */; };
@@ -342,7 +341,6 @@
 		2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInMainImageView.swift; sourceTree = "<group>"; };
 		2177B3AF2C57B3A100BEB3BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2177B3B12C5BC97B00BEB3BE /* InterviewHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewHistoryView.swift; sourceTree = "<group>"; };
-		2177B3B42C5BC9A600BEB3BE /* InterviewPollingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewPollingView.swift; sourceTree = "<group>"; };
 		2177B3B72C5BC9C300BEB3BE /* InterviewPastAnswersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewPastAnswersView.swift; sourceTree = "<group>"; };
 		2177B3BA2C5BC9EC00BEB3BE /* InterviewResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewResultView.swift; sourceTree = "<group>"; };
 		2177B3BD2C5D0C0B00BEB3BE /* Extension+Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Date.swift"; sourceTree = "<group>"; };
@@ -411,7 +409,6 @@
 		218323852BEA6E1600FB79B5 /* QuizContentOX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizContentOX.swift; sourceTree = "<group>"; };
 		2184881D2C5E71F800977B79 /* InterviewHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewHistoryViewModel.swift; sourceTree = "<group>"; };
 		2184881F2C5E826400977B79 /* InterviewPastAnswersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewPastAnswersViewModel.swift; sourceTree = "<group>"; };
-		218488212C5E827000977B79 /* InterviewPollingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewPollingViewModel.swift; sourceTree = "<group>"; };
 		218488232C5E827D00977B79 /* InterviewResultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewResultViewModel.swift; sourceTree = "<group>"; };
 		218488252C5FAD2F00977B79 /* InterviewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewContent.swift; sourceTree = "<group>"; };
 		218488272C63A17C00977B79 /* InterviewList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewList.swift; sourceTree = "<group>"; };
@@ -421,6 +418,7 @@
 		218488312C63A56900977B79 /* InterviewQuestionsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewQuestionsList.swift; sourceTree = "<group>"; };
 		218488332C63B9A800977B79 /* PastAnswers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastAnswers.swift; sourceTree = "<group>"; };
 		218488352C63BA2400977B79 /* SubmitInterviewRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitInterviewRoom.swift; sourceTree = "<group>"; };
+		2184883B2C668AC100977B79 /* InterviewPolling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewPolling.swift; sourceTree = "<group>"; };
 		2189BC372BF24D05007CC766 /* QuizContentShortAnswer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizContentShortAnswer.swift; sourceTree = "<group>"; };
 		2189BC392BF24D30007CC766 /* QuizMultipleChoice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizMultipleChoice.swift; sourceTree = "<group>"; };
 		2189BC3C2BF250AD007CC766 /* QuizOXButtonLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuizOXButtonLabel.swift; sourceTree = "<group>"; };
@@ -818,15 +816,6 @@
 			path = InterviewHistory;
 			sourceTree = "<group>";
 		};
-		2177B3B62C5BC9A900BEB3BE /* InterviewPolling */ = {
-			isa = PBXGroup;
-			children = (
-				218488212C5E827000977B79 /* InterviewPollingViewModel.swift */,
-				2177B3B42C5BC9A600BEB3BE /* InterviewPollingView.swift */,
-			);
-			path = InterviewPolling;
-			sourceTree = "<group>";
-		};
 		2177B3B92C5BC9CA00BEB3BE /* PastAnswers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1098,6 +1087,7 @@
 			isa = PBXGroup;
 			children = (
 				2184882E2C63A4A900977B79 /* InterviewRoomList.swift */,
+				2184883B2C668AC100977B79 /* InterviewPolling.swift */,
 				218488312C63A56900977B79 /* InterviewQuestionsList.swift */,
 				218488352C63BA2400977B79 /* SubmitInterviewRoom.swift */,
 				218488332C63B9A800977B79 /* PastAnswers.swift */,
@@ -1202,7 +1192,6 @@
 			children = (
 				2177B3902C4C2C0300BEB3BE /* InterviewList */,
 				2177B3B32C5BC98000BEB3BE /* InterviewHistory */,
-				2177B3B62C5BC9A900BEB3BE /* InterviewPolling */,
 				2177B3932C4C2C1600BEB3BE /* Interview */,
 				2177B3BC2C5BC9F000BEB3BE /* InterviewResult */,
 				2177B3992C4C4A3300BEB3BE /* Subscription */,
@@ -1404,7 +1393,6 @@
 				2177B3622C3974BC00BEB3BE /* EmptyViewWithNoError.swift in Sources */,
 				2177B3892C4C103F00BEB3BE /* CreateInterview.swift in Sources */,
 				2173C0692BA0A18000FDD3D9 /* HomeViewModel.swift in Sources */,
-				2177B3B52C5BC9A600BEB3BE /* InterviewPollingView.swift in Sources */,
 				2177B3502C358B1200BEB3BE /* Setup+ContentStrings+Profile.swift in Sources */,
 				2177B3172C25932900BEB3BE /* LectureCategoryList.swift in Sources */,
 				218488362C63BA2400977B79 /* SubmitInterviewRoom.swift in Sources */,
@@ -1466,6 +1454,7 @@
 				219EFBD02B9F145900FBEBE0 /* Setup+Frame.swift in Sources */,
 				2177B37D2C46EFED00BEB3BE /* NextLectureView.swift in Sources */,
 				218267762BE68A8500D8C17C /* QuizResultDetailView.swift in Sources */,
+				2184883C2C668AC100977B79 /* InterviewPolling.swift in Sources */,
 				2184882A2C63A40E00977B79 /* DeleteInterview.swift in Sources */,
 				2189BC3D2BF250AD007CC766 /* QuizOXButtonLabel.swift in Sources */,
 				2177B38D2C4C1F6400BEB3BE /* CreateInterviewSheet.swift in Sources */,
@@ -1497,7 +1486,6 @@
 				2184882F2C63A4A900977B79 /* InterviewRoomList.swift in Sources */,
 				2177B3752C3ED02500BEB3BE /* ProfileContent.swift in Sources */,
 				2170E7552BBC6873002A1DA6 /* Setup+Color.swift in Sources */,
-				218488222C5E827000977B79 /* InterviewPollingViewModel.swift in Sources */,
 				2177B3192C25959D00BEB3BE /* CheckCompletedLecture.swift in Sources */,
 				2177B3252C2598CB00BEB3BE /* BookmarkQuiz.swift in Sources */,
 				2177B39B2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift in Sources */,

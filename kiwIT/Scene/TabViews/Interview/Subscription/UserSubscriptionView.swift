@@ -67,5 +67,5 @@ struct UserSubscriptionView: View {
 }
 
 #Preview {
-    UserSubscriptionView(InterviewListViewModel(ProfileResponse(id: 1, email: "email", nickname: "hhh", point: 1, plan: .normal, status: .activated)))
+    UserSubscriptionView(InterviewListViewModel())
 }

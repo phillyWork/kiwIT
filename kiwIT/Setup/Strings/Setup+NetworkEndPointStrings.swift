@@ -52,8 +52,10 @@ extension Setup {
         
         static let interview = "/interview"
         
+        static let interviewOption = "/option"
         static let interviewQuestion = "/question"
         static let interviewRoom = "/room"
+        static let interviewRoomQueue = "/queue"
         
     }
     

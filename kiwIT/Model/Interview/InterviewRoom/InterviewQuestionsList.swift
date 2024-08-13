@@ -10,6 +10,8 @@ import Foundation
 struct InterviewQuestionsListResponse: Decodable {
     var id: Int
     var title: String
+    var timeLimit: Int
+    var questionsCnt: Int
     var createdAt: String
     var updatedAt: String
     var questionList: [InterviewQuestionPayload]

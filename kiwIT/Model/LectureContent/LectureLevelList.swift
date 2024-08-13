@@ -7,7 +7,11 @@
 
 import Foundation
 
-struct LectureLevelListPayload: Decodable, Hashable {
+struct LectureLevelListPayload: Codable, Hashable {
     var num: Int
     var title: String
+    
+    var id: Int {
+        return num
+    }
 }

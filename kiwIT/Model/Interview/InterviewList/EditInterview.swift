@@ -12,4 +12,5 @@ struct EditInterviewRequest {
     var access: String
     var interviewId: Int
     var title: String       //수정할 제목
+    var timeLimit: Int      //전체 시간 수정
 }

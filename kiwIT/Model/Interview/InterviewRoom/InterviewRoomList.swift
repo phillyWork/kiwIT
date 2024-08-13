@@ -19,6 +19,8 @@ struct InterviewRoomListRequest {
 struct InterviewRoomListResponse: Decodable {
     var id: Int
     var title: String
+    var timeLimit: Int
+    var questionsCnt: Int
     var createdAt: String
     var updatedAt: String
     var interviewRoomList: [InterviewRoomPayload]
@@ -40,7 +42,7 @@ struct InterviewRoomListResponse: Decodable {
     }
 }
 
-struct InterviewRoomPayload: Decodable {
+struct InterviewRoomPayload: Decodable, Hashable {
     var id: Int
     var score: Int
     var createdAt: String

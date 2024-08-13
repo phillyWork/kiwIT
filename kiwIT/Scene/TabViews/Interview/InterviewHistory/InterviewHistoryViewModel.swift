@@ -9,9 +9,14 @@ import Foundation
 
 import Combine
 
+enum InterviewParentType {
+    case createNewInterview
+    case previouslyCreatedInterview
+}
+
 enum InterviewHistoryActionType {
-    case getPastInterviews
-    case checkStatus
+    case getPastInterviewAnswers
+    case startNewInterviewRoom
 }
 
 final class InterviewHistoryViewModel: ObservableObject, RefreshTokenHandler {
@@ -20,15 +25,22 @@ final class InterviewHistoryViewModel: ObservableObject, RefreshTokenHandler {
     
     @Published var shouldLoginAgain = false
     
+    @Published var pastHistoryList: [InterviewRoomPayload] = []
+    
+    @Published var showPastHistoryListError = false
+    
     @Published var showUnknownNetworkErrorAlert = false
     
+    var parentViewType: InterviewParentType
     var interviewId: Int
     
     var cancellables = Set<AnyCancellable>()
     
-    init(interviewId: Int) {
+    init(_ interviewId: Int, parent: InterviewParentType) {
         self.interviewId = interviewId
+        self.parentViewType = parent
         bind()
+        requestPastInterviewHistoryList()
     }
     
     private func bind() {
@@ -36,18 +48,20 @@ final class InterviewHistoryViewModel: ObservableObject, RefreshTokenHandler {
     }
     
     private func requestPastInterviewHistoryList() {
+        guard let tokenData = AuthManager.shared.checkTokenData() else {
+            shouldLoginAgain = true
+            return
+        }
+        
+        
         
     }
-    
-    private func checkStatusForPolling() {
         
-    }
-    
     func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: InterviewHistoryActionType) {
         switch action {
-        case .getPastInterviews:
+        case .getPastInterviewAnswers:
             print("")
-        case .checkStatus:
+        case .startNewInterviewRoom:
             print("")
         }
     }

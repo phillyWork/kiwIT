@@ -50,15 +50,15 @@ enum Router: URLRequestConvertible {
     
     //MARK: - Interview
     case interviewList(request: InterviewListRequest)
+    case interviewOptionList(request: AuthorizationRequest)
     case createInterview(request: CreateInterviewRequest)
     case deleteInterview(request: BasicInterviewRequest)
     case editInterview(request: EditInterviewRequest)
     case interviewRoomList(request: InterviewRoomListRequest)
     
-    //MARK: - 차후 Polling 설정: response로 Polling 여부 알림, 이에 따른 view 이동 필요
     case startInterviewRoom(request: BasicInterviewRequest)
-    
     case interviewQuestionsList(request: BasicInterviewRequest)
+    case checkInterviewRoomQueue(request: BasicInterviewRoomRequest)    //MARK: - 인터뷰 생성 당시 대기열 목적 활용: API 수정 따른 업데이트 필요
     case interviewPastAnswers(request: BasicInterviewRoomRequest)
     case submitInterviewRoom(request: SubmitInterviewRoomRequest)
     case deleteInterviewRoom(request: BasicInterviewRoomRequest)
@@ -126,6 +126,8 @@ enum Router: URLRequestConvertible {
             return Setup.NetworkEndpointStrings.trophy + Setup.NetworkEndpointStrings.acquiredTrophyList + Setup.NetworkEndpointStrings.latestAcquiredTrophy
         case .interviewList, .createInterview:
             return Setup.NetworkEndpointStrings.interview
+        case .interviewOptionList:
+            return Setup.NetworkEndpointStrings.interview + Setup.NetworkEndpointStrings.interviewOption
         case .deleteInterview(let request):
             return Setup.NetworkEndpointStrings.interview + "/\(request.interviewId)"
         case .editInterview(let request):
@@ -136,6 +138,8 @@ enum Router: URLRequestConvertible {
             return Setup.NetworkEndpointStrings.interview + "/\(request.interviewId)"
         case .interviewQuestionsList(let request):
             return Setup.NetworkEndpointStrings.interview + "/\(request.interviewId)" + Setup.NetworkEndpointStrings.interviewQuestion
+        case .checkInterviewRoomQueue(let request):
+            return Setup.NetworkEndpointStrings.interview + Setup.NetworkEndpointStrings.interviewRoom + "/\(request.interviewRoomId)" + Setup.NetworkEndpointStrings.interviewRoomQueue
         case .interviewPastAnswers(let request), .deleteInterviewRoom(let request):
             return Setup.NetworkEndpointStrings.interview + Setup.NetworkEndpointStrings.interviewRoom + "/\(request.interviewRoomId)"
         case .submitInterviewRoom(let request):
@@ -147,7 +151,7 @@ enum Router: URLRequestConvertible {
         switch self {
         case .signUp, .signIn, .refreshToken:
             return []
-        case .signOut(let request), .withdraw(let request), .profileCheck(let request), .lectureLevelListCheck(let request), .lectureCategoryListCheck(let request), .nextLectureToStudyCheck(let request), .latestTakenQuiz(let request), .latestAcquiredTrophy(let request):
+        case .signOut(let request), .withdraw(let request), .profileCheck(let request), .lectureLevelListCheck(let request), .lectureCategoryListCheck(let request), .nextLectureToStudyCheck(let request), .latestTakenQuiz(let request), .latestAcquiredTrophy(let request), .interviewOptionList(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .profileEdit(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
@@ -187,6 +191,8 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .interviewRoomList(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
+        case .checkInterviewRoomQueue(let request):
+            return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .interviewPastAnswers(let request), .deleteInterviewRoom(let request):
             return [Setup.NetworkStrings.accessTokenToCheckTitle: Setup.NetworkStrings.authorizationPrefixHeaderTitle + request.access]
         case .submitInterviewRoom(let request):
@@ -204,7 +210,7 @@ enum Router: URLRequestConvertible {
             return .patch
         case .withdraw, .deleteInterview, .deleteInterviewRoom:
             return .delete
-        case .profileCheck, .lectureLevelListCheck, .lectureLevelListContentCheck, .startOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .nextLectureToStudyCheck, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .startTakingQuiz, .latestTakenQuiz, .takenQuizListCheck, .bookmarkedQuizCheck, .wholeTrophyList, .trophyDetail, .acquiredTrophyList, .latestAcquiredTrophy, .interviewList, .interviewRoomList, .interviewQuestionsList, .interviewPastAnswers:
+        case .profileCheck, .lectureLevelListCheck, .lectureLevelListContentCheck, .startOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .nextLectureToStudyCheck, .completedLectureListCheck, .bookmarkedLectureCheck, .quizListCheck, .startTakingQuiz, .latestTakenQuiz, .takenQuizListCheck, .bookmarkedQuizCheck, .wholeTrophyList, .trophyDetail, .acquiredTrophyList, .latestAcquiredTrophy, .interviewList, .interviewRoomList, .interviewOptionList, .interviewQuestionsList, .checkInterviewRoomQueue, .interviewPastAnswers:
             return .get
         case .editInterview:
             return .put     //멱등한 요청임을 표현하고자 PATCH가 아닌, PUT 메서드 사용
@@ -233,7 +239,7 @@ enum Router: URLRequestConvertible {
             return [Setup.NetworkStrings.nicknameTitle: request.nickname]
         case .exerciseForLecture(let request):
             return [Setup.NetworkStrings.lectureExerciseAnswerTitle: "\(request.answer)"]
-        case .signOut, .withdraw, .profileCheck, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .nextLectureToStudyCheck, .bookmarkLecture, .startTakingQuiz, .submitQuizAnswers, .latestTakenQuiz, .bookmarkQuiz, .trophyDetail, .latestAcquiredTrophy, .createInterview, .deleteInterview, .startInterviewRoom, .interviewQuestionsList, .interviewPastAnswers, .submitInterviewRoom, .deleteInterviewRoom:
+        case .signOut, .withdraw, .profileCheck, .lectureLevelListCheck, .startOfLecture, .completionOfLecture, .lectureCategoryListCheck, .lectureCategoryListContentCheck, .nextLectureToStudyCheck, .bookmarkLecture, .startTakingQuiz, .submitQuizAnswers, .latestTakenQuiz, .bookmarkQuiz, .trophyDetail, .latestAcquiredTrophy, .deleteInterview, .startInterviewRoom, .interviewQuestionsList, .interviewOptionList, .checkInterviewRoomQueue, .interviewPastAnswers, .submitInterviewRoom, .deleteInterviewRoom:
             return nil
         case .lectureLevelListContentCheck(let request):
             guard let next = request.next, let limit = request.limit else { return nil }
@@ -286,14 +292,25 @@ enum Router: URLRequestConvertible {
                 Setup.NetworkStrings.queryStringLimitPageTitle: "\(limit)"
             ]
         case .createInterview(let request):
+            
             //MARK: - 추가 API update 시 수정 필요
+            
             if let title = request.content.title {
                 return [
                     Setup.NetworkStrings.interviewTitle: title,
-                    Setup.NetworkStrings.createInterviewCategoryTitle: request.content.topic
+                    Setup.NetworkStrings.createInterviewCategoryId: "\(request.content.categoryId)",
+                    Setup.NetworkStrings.createInterviewLevelNum: "\(request.content.levelNum)",
+                    Setup.NetworkStrings.createInterviewTimeLimit: "\(request.content.timeLimit)",
+                    Setup.NetworkStrings.createInterviewEtcRequest: "\(request.content.etcRequest)",
+                    Setup.NetworkStrings.createInterviewQuestionsCnt: "\(request.content.questionsCnt)"
                 ]
             } else {
-                return [Setup.NetworkStrings.createInterviewCategoryTitle: request.content.topic]
+                return [ Setup.NetworkStrings.createInterviewCategoryId: "\(request.content.categoryId)",
+                         Setup.NetworkStrings.createInterviewLevelNum: "\(request.content.levelNum)",
+                         Setup.NetworkStrings.createInterviewTimeLimit: "\(request.content.timeLimit)",
+                         Setup.NetworkStrings.createInterviewEtcRequest: "\(request.content.etcRequest)",
+                         Setup.NetworkStrings.createInterviewQuestionsCnt: "\(request.content.questionsCnt)"
+                ]
             }
         case .editInterview(let request):
             return [Setup.NetworkStrings.interviewTitle: request.title]

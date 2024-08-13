@@ -7,35 +7,23 @@
 
 import SwiftUI
 
-enum InterViewTopic: String, CaseIterable {
-    case dataStructure = "자료구조"
-    case operatinSystem = "운영체제"
-    case iOSSwift = "Swift & iOS"
-    case javaSpring = "Java & Spring"
-    case javaScriptNode = "Javascript & Node"
-    case basicWebDev = "웹 개발"
-}
-
-enum UserLevel: String, CaseIterable {
-    case newbie = "첫 시작"
-    case freshmen = "해당 분야 학습 시작"
-    case sophomore = "학습 과정 완료"
-    case junior = "포폴 준비 중"
-    case senior = "신입"
-    case experienced = "경력직"
-}
-
 struct CreateInterviewSheet: View {
         
-    @State private var selectedTopic: InterViewTopic = .dataStructure
-    @State private var userLevel: UserLevel = .sophomore
+    @Binding var passedCategory: [LectureCategoryListPayload]
+    @Binding var passedLevel: [LectureLevelListPayload]
+    
+    @State private var chosenCategory: LectureCategoryListPayload?
+    @State private var chosenLevel: LectureLevelListPayload?
+    
     @State private var numOfQuestions = 5
     @State private var expectedTotalTime = 5
     @State private var shouldBeIncludedString = ""
     
     var confirmAction: (CreateInterviewContent) -> Void
 
-    init(_ confirmAction: @escaping (CreateInterviewContent) -> Void) {
+    init(category: Binding<[LectureCategoryListPayload]>, level: Binding<[LectureLevelListPayload]>, confirmAction: @escaping (CreateInterviewContent) -> Void) {
+        self._passedCategory = category
+        self._passedLevel = level
         self.confirmAction = confirmAction
     }
     
@@ -44,17 +32,23 @@ struct CreateInterviewSheet: View {
             GroupBox(label: Text("인터뷰 분야")
                 .foregroundStyle(Color.textColor)
                 .font(.custom(Setup.FontName.notoSansBold, size: 20)), content: {
-                VStack(alignment: .leading, spacing: 10) {
-                    ForEach(InterViewTopic.allCases, id: \.self) { topic in
-                        HStack {
-                            Button(action: {
-                                selectedTopic = topic
-                            }, label: {
-                                Image(systemName: selectedTopic == topic ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked)
-                            })
-                            Text(topic.rawValue)
-                                .font(.custom(Setup.FontName.notoSansRegular, size: 15))
-                                .foregroundStyle(Color.textColor)
+                LazyVStack(alignment: .leading, spacing: 10) {
+                    if passedCategory.isEmpty {
+                        ProgressView {
+                            Text("불러오는 중...")
+                        }
+                    } else {
+                        ForEach(passedCategory, id: \.self) { category in
+                            HStack {
+                                Button(action: {
+                                    chosenCategory = category
+                                }, label: {
+                                    Image(systemName: chosenCategory == category ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked)
+                                })
+                                Text(category.title)
+                                    .font(.custom(Setup.FontName.notoSansRegular, size: 15))
+                                    .foregroundStyle(Color.textColor)
+                            }
                         }
                     }
                 }
@@ -63,17 +57,23 @@ struct CreateInterviewSheet: View {
             GroupBox(label: Text("본인의 위치")
                 .foregroundStyle(Color.textColor)
                 .font(.custom(Setup.FontName.notoSansBold, size: 20)), content: {
-                VStack(alignment: .leading, spacing: 10) {
-                    ForEach(UserLevel.allCases, id: \.self) { level in
-                        HStack {
-                            Button(action: {
-                                userLevel = level
-                            }, label: {
-                                Image(systemName: userLevel == level ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked)
-                            })
-                            Text(level.rawValue)
-                                .font(.custom(Setup.FontName.notoSansRegular, size: 15))
-                                .foregroundStyle(Color.textColor)
+                LazyVStack(alignment: .leading, spacing: 10) {
+                    if passedLevel.isEmpty {
+                        ProgressView {
+                            Text("불러오는 중...")
+                        }
+                    } else {
+                        ForEach(passedLevel, id: \.self) { level in
+                            HStack {
+                                Button(action: {
+                                    chosenLevel = level
+                                }, label: {
+                                    Image(systemName: chosenLevel == level ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked)
+                                })
+                                Text(level.title)
+                                    .font(.custom(Setup.FontName.notoSansRegular, size: 15))
+                                    .foregroundStyle(Color.textColor)
+                            }
                         }
                     }
                 }
@@ -121,17 +121,14 @@ struct CreateInterviewSheet: View {
             })
             .backgroundStyle(Color.backgroundColor)
             ShrinkAnimationButtonView(title: "생성하기", font: Setup.FontName.galMuri11Bold, color: Color.brandBlandColor) {
-                confirmAction(CreateInterviewContent(topic: selectedTopic.rawValue, numOfQuestions: numOfQuestions, expectedTotalAnswerTime: expectedTotalTime, shouldBeIncludedString: shouldBeIncludedString))
+                if let chosenCategory = chosenCategory, let chosenLevel = chosenLevel {
+                    print("option chosen done!!!")
+                    confirmAction(CreateInterviewContent(categoryId: chosenCategory.id, levelNum: chosenLevel.num, timeLimit: expectedTotalTime, etcRequest: shouldBeIncludedString, questionsCnt: numOfQuestions))
+                }
             }
             .padding(.vertical, 10)
         }
         .background(Color.backgroundColor)
         .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)
-    }
-}
-
-#Preview {
-    CreateInterviewSheet { content in
-        print("content: \(content)")
     }
 }
