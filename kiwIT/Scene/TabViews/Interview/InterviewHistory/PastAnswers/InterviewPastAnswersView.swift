@@ -8,19 +8,39 @@
 import SwiftUI
 
 struct InterviewPastAnswersView: View {
+    
+    @StateObject private var interviewPastAnswersVM: InterviewPastAnswersViewModel
+    
+    init(_ roomId: Int) {
+        _interviewPastAnswersVM = StateObject(wrappedValue: InterviewPastAnswersViewModel(roomId))
+    }
+    
     var body: some View {
-        
         ScrollView {
-            
-            //MARK: - expandable 내부에 답변 표시하기
-            
-            
-//            ForEach(<#T##data: RandomAccessCollection##RandomAccessCollection#>, id: \.self) { eachInterview in
-//            ContentExpandableChapterItemView(itemTitle: <#T##String#>) {
-//                <#code#>
-//            }
-//            }
-            
+            if interviewPastAnswersVM.showPastAnswersError {
+                EmptyViewWithRetryButton {
+                    interviewPastAnswersVM.debouncedPastAnswers()
+                }
+            } else if interviewPastAnswersVM.pastAnswerList.isEmpty {
+                ProgressView {
+                    Text("로딩 중...")
+                }
+            } else {
+                LazyVStack {
+                    ForEach(interviewPastAnswersVM.pastAnswerList, id: \.self) { content in
+                        ContentExpandableChapterItemView(itemTitle: content.question.question) {
+                            ScrollView {
+                                LazyVStack(spacing: 10) {
+                                    //MARK: - 유저 답안
+                                    Text(content.myAnswer)
+                                    //MARK: - 모범 답안
+                                    Text(content.question.modelAnswer)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         .frame(maxWidth: .infinity)
         .background(Color.backgroundColor)
@@ -30,5 +50,5 @@ struct InterviewPastAnswersView: View {
 }
 
 #Preview {
-    InterviewPastAnswersView()
+    InterviewPastAnswersView(3)
 }

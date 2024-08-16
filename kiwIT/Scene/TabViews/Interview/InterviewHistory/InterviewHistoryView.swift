@@ -49,13 +49,11 @@ struct InterviewHistoryView: View {
                     
                     LazyVStack(spacing: 10) {
                         ForEach(interviewHistoryVM.pastHistoryList, id: \.self) { history in
-                            
                             NavigationLink {
-                                InterviewPastAnswersView()
+                                InterviewPastAnswersView(history.id)
                             } label: {
-                                Text("Placeholder \(history.id)")
+                                PastInterviewListContent(pastInterview: history)
                             }
-
                         }
                     }
                 }

@@ -9,24 +9,27 @@ import SwiftUI
 
 enum InterviewContentActionType {
     case nextInterview(String)
-    case previousInterview
+    case previousInterview(String)
 }
 
 struct InterviewContentModel {
     var index: Int
     var count: Int
     var question: String
+    var previousAnswer: String?
 }
 
 struct InterviewContent: View {
     
-    @State private var userAnswer = "당신의 답변은?"
+    @State private var userAnswer = Setup.ContentStrings.Interview.defaultAnswerPlaceholder
     
     var interview: InterviewContentModel
     var interviewAction: (InterviewContentActionType) -> Void
     
-    init(_ userAnswer: String = "당신의 답변은?", interview: InterviewContentModel, action: @escaping (InterviewContentActionType) -> Void) {
-        self.userAnswer = userAnswer
+    init(interview: InterviewContentModel, action: @escaping (InterviewContentActionType) -> Void) {
+        if let previousAnswer = interview.previousAnswer {
+            self.userAnswer = previousAnswer
+        }
         self.interview = interview
         self.interviewAction = action
     }
@@ -53,7 +56,7 @@ struct InterviewContent: View {
                         Spacer()
                         Button {
                             print("Tap this button to go back to previous interview")
-                            self.interviewAction(.previousInterview)
+                            self.interviewAction(.previousInterview(userAnswer))
                         } label: {
                             Text("이전으로")
                         }
@@ -76,7 +79,7 @@ struct InterviewContent: View {
 }
 
 #Preview {
-    InterviewContent("과거 대답", interview: InterviewContentModel(index: 2, count: 3, question: "인터뷰 질문1")) { action in
+    InterviewContent(interview: InterviewContentModel(index: 2, count: 3, question: "인터뷰 질문1")) { action in
         switch action {
         case .nextInterview(let answer):
             print("next question!!!")

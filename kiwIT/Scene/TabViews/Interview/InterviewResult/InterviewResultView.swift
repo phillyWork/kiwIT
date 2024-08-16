@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct InterviewResultView: View {
+    
+    @StateObject var interviewResultVM = InterviewResultViewModel()
+    
+    @Binding var path: NavigationPath
+    @Binding var isLoginAvaialble: Bool
+    
     var body: some View {
         
         Text("")
@@ -79,8 +85,4 @@ struct InterviewResultView: View {
 //        }
         
     }
-}
-
-#Preview {
-    InterviewResultView()
 }

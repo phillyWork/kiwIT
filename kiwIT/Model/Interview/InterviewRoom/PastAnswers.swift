@@ -36,7 +36,7 @@ struct PastAnswersResponse: Decodable {
     }
 }
 
-struct PastAnswerPaylaod: Decodable {
+struct PastAnswerPaylaod: Decodable, Hashable {
     var id: Int
     var myAnswer: String
     var question: InterviewQuestionPayload

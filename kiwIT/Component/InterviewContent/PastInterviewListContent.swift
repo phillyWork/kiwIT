@@ -9,7 +9,7 @@ import SwiftUI
 
 struct PastInterviewListContent: View {
     
-    //var pastInterviewHistory: PastInterviewHistory
+    var pastInterview: InterviewRoomPayload
     
     var body: some View {
         ZStack {
@@ -21,7 +21,13 @@ struct PastInterviewListContent: View {
                 .fill(Color.surfaceColor)
                 .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListCategoryItemHeight)
                 .overlay {
-                    Text("Hi")
+                    Text(pastInterview.creationCompactDate)
+                        .font(.custom(Setup.FontName.galMuri11Bold, size: 15))
+                }
+                .overlay {
+                    Text("채점: \(pastInterview.score)")
+                        .font(.custom(Setup.FontName.notoSansRegular, size: 12))
+                        .offset(CGSize(width: Setup.Frame.pastInterviewAnswerListScoreWidthOffset, height: Setup.Frame.pastInterviewAnswerListScoreHeightOffset))
                 }
                 .offset(CGSize(width: -4, height: -4))
         }
@@ -29,5 +35,5 @@ struct PastInterviewListContent: View {
 }
 
 #Preview {
-    PastInterviewListContent()
+    PastInterviewListContent(pastInterview: InterviewRoomPayload(id: 2, score: 20, createdAt: "2022-03-21", updatedAt: "2023-03-02"))
 }

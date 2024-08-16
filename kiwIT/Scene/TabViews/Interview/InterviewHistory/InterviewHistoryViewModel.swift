@@ -27,6 +27,8 @@ final class InterviewHistoryViewModel: ObservableObject, RefreshTokenHandler {
     
     @Published var pastHistoryList: [InterviewRoomPayload] = []
     
+    @Published var selectedInterviewRoomId: Int = -1
+    
     @Published var showPastHistoryListError = false
     
     @Published var showUnknownNetworkErrorAlert = false
@@ -54,6 +56,10 @@ final class InterviewHistoryViewModel: ObservableObject, RefreshTokenHandler {
         }
         
         
+        
+    }
+    
+    private func requestStartNewInterview() {
         
     }
         

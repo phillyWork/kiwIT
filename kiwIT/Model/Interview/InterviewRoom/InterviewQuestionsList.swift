@@ -34,7 +34,7 @@ struct InterviewQuestionsListResponse: Decodable {
     
 }
 
-struct InterviewQuestionPayload: Decodable {
+struct InterviewQuestionPayload: Decodable, Hashable {
     var id: Int
     var question: String
     var modelAnswer: String

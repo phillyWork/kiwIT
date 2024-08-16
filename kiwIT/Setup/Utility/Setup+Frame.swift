@@ -135,6 +135,10 @@ extension Setup {
         static let recentlyAcquiredTrophyImageWidth = contentImageWidth * 0.7
         static let recentlyAcquiredTrophyImageHeight = recentlyAcquiredTrophyCardViewHeight * 0.5
         
+        
+        static let pastInterviewAnswerListScoreWidthOffset = Setup.Frame.contentListItemWidth/6
+        static let pastInterviewAnswerListScoreHeightOffset = Setup.Frame.contentListCategoryItemHeight/2.5
+        
     }
     
 }
