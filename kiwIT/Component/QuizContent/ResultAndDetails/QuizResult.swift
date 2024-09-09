@@ -44,10 +44,10 @@ struct QuizResult: View {
                         .padding(8)
                     
                     VStack {
-                        Text("성취도: \(result.latestScore)")
+                        Text(Setup.ContentStrings.Quiz.quizResultScoreTitle +  "\(result.latestScore)")
                             .multilineTextAlignment(.center)
                             .font(.custom(Setup.FontName.notoSansBold, size: 20))
-                        Text("최고 점수: \(result.highestScore)")
+                        Text(Setup.ContentStrings.Quiz.highestScoreTitle +  "\(result.highestScore)")
                             .multilineTextAlignment(.center)
                             .font(.custom(Setup.FontName.notoSansBold, size: 20))
                     }
@@ -66,14 +66,14 @@ struct QuizResult: View {
                 Button {
                     completion(.takeQuizAgain)
                 } label: {
-                    Text("다시 풀기")
+                    Text(Setup.ContentStrings.Quiz.takeQuizAgainButtonTitle)
                 }
                 Spacer()
                 
                 Button {
                     isDetailButtonTapped = true
                 } label: {
-                    Text("상세 보기")
+                    Text(Setup.ContentStrings.Quiz.showQuizResultDetails)
                 }
                 
                 Spacer()
@@ -81,7 +81,7 @@ struct QuizResult: View {
                 Button {
                     completion(.confirmToMoveToQuizList)
                 } label: {
-                    Text("확인 완료")
+                    Text(Setup.ContentStrings.Quiz.confirmToMoveBackToQuizListTitle)
                 }
                 
                 Spacer()
@@ -106,7 +106,3 @@ struct QuizResult: View {
     }
     
 }
-
-//#Preview {
-//   QuizResult(questions: <#T##[String]#>, submittedAnswers: <#T##[Bool]#>, answers: <#T##[Bool]#>)
-//}

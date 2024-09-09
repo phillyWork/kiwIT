@@ -20,8 +20,8 @@ struct HomeView: View {
                     .multilineTextAlignment(.leading)
                     .padding(.vertical, 8), content: {
                     HStack {
-                        Text("오늘도 화이팅이에요!")
-                        Text(tabViewsVM.profileData?.nickname ?? "닉네임")
+                        Text(Setup.ContentStrings.Home.cheerUpText)
+                        Text(tabViewsVM.profileData?.nickname ?? Setup.ContentStrings.Profile.defaultNicknameTitle)
                             .lineLimit(1)
                     }
                     .font(.custom(Setup.FontName.notoSansMedium, size: 12))
@@ -30,7 +30,7 @@ struct HomeView: View {
                 .backgroundStyle(Color.backgroundColor)
                 
                 GroupBox(label: HStack {
-                    Text("다음 학습 진도")
+                    Text(Setup.ContentStrings.Home.nextLectureTitle)
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 5)
@@ -43,19 +43,19 @@ struct HomeView: View {
                     .padding(.trailing, 5)
                 }, content: {
                     if homeVM.showNextLectureError {
-                        EmptyViewWithNoError(title: "오른쪽 상단 버튼을 눌러 다시 시도해주세요")
+                        EmptyViewWithNoError(title: Setup.ContentStrings.Home.tryAgainButtonTitle)
                     } else if let nextLectureToStudy = homeVM.nextLectureToStudy {
                         NextLectureView(nextLecture: nextLectureToStudy) {
                             tabViewsVM.selectedTabUpdate.send(.lecture)
                         }
                     } else {
-                        EmptyViewWithNoError(title: "학습을 시작해주세요")
+                        EmptyViewWithNoError(title: Setup.ContentStrings.Home.noneOfCompletedLectureTitle)
                     }
                 })
                 .backgroundStyle(Color.backgroundColor)
                 
                 GroupBox(label: HStack {
-                    Text("최근 퀴즈 결과")
+                    Text(Setup.ContentStrings.Home.latestQuizResultTitle)
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 5)
@@ -68,13 +68,13 @@ struct HomeView: View {
                     .padding(.trailing, 5)
                 }, content: {
                     if homeVM.showLatestTakenQuizError {
-                        EmptyViewWithNoError(title: "오른쪽 상단 버튼을 눌러 다시 시도해주세요")
+                        EmptyViewWithNoError(title: Setup.ContentStrings.Home.tryAgainButtonTitle)
                     } else if let latestTakenQuiz = homeVM.latestTakenQuiz {
                         LatestTakenQuizView(latestTakenQuiz: latestTakenQuiz) {
                             tabViewsVM.selectedTabUpdate.send(.quiz)
                         }
                     } else {
-                        EmptyViewWithNoError(title: "가장 최근에 푼 퀴즈가 없어요")
+                        EmptyViewWithNoError(title: Setup.ContentStrings.Home.noneOfTakenQuizTitle)
                     }
                 })
                 .backgroundStyle(Color.backgroundColor)

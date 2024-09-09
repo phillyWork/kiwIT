@@ -28,7 +28,7 @@ struct QuizResultDetailView: View {
     
     var body: some View {
         ScrollView {
-            Text("상제 답안")
+            Text(Setup.ContentStrings.Quiz.detailedQuizResultTitle)
                 .font(.custom(Setup.FontName.phuduBold, size: 20))
                 .padding()
             

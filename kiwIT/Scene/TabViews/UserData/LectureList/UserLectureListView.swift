@@ -39,7 +39,7 @@ struct UserLectureListView: View {
         .alert(Setup.ContentStrings.removeBookmarkedContentErrorAlertTitle, isPresented: $lectureListVM.showRemoveBookmarkedLectureError) {
             ErrorAlertConfirmButton { }
         } message: {
-            Text("보관함 제거에 실패했습니다. 다시 시도해주세요.")
+            Text(Setup.ContentStrings.Lecture.unbookmarkLectureErrorAlertMessage)
         }
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureListVM.shouldLoginAgain) {
             ErrorAlertConfirmButton {
@@ -66,7 +66,7 @@ struct CompletedLectureSection: View {
     var body: some View {
         VStack {
             HStack {
-                Text("학습 완료 콘텐츠")
+                Text(Setup.ContentStrings.Lecture.completedLectureTitle)
                     .font(.custom(Setup.FontName.notoSansBold, size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 10)
@@ -82,7 +82,7 @@ struct CompletedLectureSection: View {
                     lectureListVM.debouncedResetCompletedLecture()
                 }
             } else if lectureListVM.completedLectureList.isEmpty {
-                EmptyViewWithNoError(title: "학습 완료한 컨텐츠가 없어요")
+                EmptyViewWithNoError(title: Setup.ContentStrings.Lecture.noneOfCompletedLectureTitle)
             } else {
                 ScrollView(.horizontal) {
                     LazyHGrid(rows: gridItemLayout, spacing: 10) {
@@ -116,7 +116,7 @@ struct BookmarkedLectureSection: View {
     var body: some View {
         VStack {
             HStack {
-                Text("보관한 콘텐츠")
+                Text(Setup.ContentStrings.Lecture.bookmarkedLectureTitle)
                     .font(.custom(Setup.FontName.notoSansBold, size: 20))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 10)
@@ -132,7 +132,7 @@ struct BookmarkedLectureSection: View {
                     lectureListVM.debouncedResetBookmarkedLecture()
                 }
             } else if lectureListVM.bookmarkedLectureList.isEmpty {
-                EmptyViewWithNoError(title: "보관한 학습 컨텐츠가 없어요")
+                EmptyViewWithNoError(title: Setup.ContentStrings.Lecture.noneOfBookmarkedLectureTitle)
             } else {
                 ScrollView(.horizontal) {
                     LazyHGrid(rows: gridItemLayout) {
@@ -163,7 +163,7 @@ struct BookmarkedLectureSection: View {
             }
             Button(Setup.ContentStrings.cancel, role: .destructive) { }
         } message: {
-            Text("정말로 보관함에서 제거하실 건가요?")
+            Text(Setup.ContentStrings.Lecture.unbookmarkThisLectureAlertMessage)
         }
     }
 }

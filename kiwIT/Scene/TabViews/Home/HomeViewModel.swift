@@ -60,7 +60,6 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
     private func basicRequest() {
         requestNextLecture()
         dispatchGroup.notify(queue: .main) {
-            print("Request Next Lecture Done!!! Requet Latest Quiz Result!!!")
             self.requestLatestQuizResult()
         }
     }
@@ -85,17 +84,14 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
                     if let nextLectureToStudyError = error as? NetworkError {
                         switch nextLectureToStudyError {
                         case .invalidRequestBody(_):
-                            print("No content to study: \(nextLectureToStudyError.description)")
                             self?.dispatchGroup.leave()
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .nextLecture)
                         default:
-                            print("Getting next lecture error by network reason: \(nextLectureToStudyError.description)")
                             self?.showNextLectureError = true
                             self?.dispatchGroup.leave()
                         }
                     } else {
-                        print("Getting next lecture error by other reason: \(error.localizedDescription)")
                         self?.showNextLectureError = true
                         self?.dispatchGroup.leave()
                     }
@@ -120,16 +116,13 @@ final class HomeViewModel: ObservableObject, RefreshTokenHandler {
                     if let latestTakenQuizError = error as? NetworkError {
                         switch latestTakenQuizError {
                         case .emptyBody(_):
-                            print("No Quiz Taken")
                             self?.showLatestTakenQuizError = false
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .latestQuiz)
                         default:
-                            print("Getting latest taken quiz error by network reason: \(latestTakenQuizError.description)")
                             self?.showNextLectureError = true
                         }
                     } else {
-                        print("Getting latest taken quiz error by other reason: \(error.localizedDescription)")
                         self?.showLatestTakenQuizError = true
                     }
                     self?.dispatchGroup.leave()

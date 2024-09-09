@@ -20,7 +20,7 @@ struct TrophyPageTabView: View {
                     .fill(Color.brandTintColor2)
                     .frame(width: Setup.Frame.contentImageWidth, height: Setup.Frame.recentlyAcquiredTrophyNotifyViewHeight)
                     .offset(CGSize(width: 4, height: 4))
-                Text("새로운 트로피를 획득했어요")
+                Text(Setup.ContentStrings.Trophy.newlyAcquiredTrophyTitle)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 15))
                     .foregroundStyle(Color.textColor)
                     .frame(width: Setup.Frame.contentImageWidth, height: Setup.Frame.recentlyAcquiredTrophyNotifyViewHeight)
@@ -34,7 +34,7 @@ struct TrophyPageTabView: View {
             }
             .tabViewStyle(PageTabViewStyle())
             .frame(height: Setup.Frame.devicePortraitHeight * 0.6)
-            ShrinkAnimationButtonView(title: "닫기", font: Setup.FontName.galMuri11Bold, color: Color.brandTintColor2) {
+            ShrinkAnimationButtonView(title: Setup.ContentStrings.close, font: Setup.FontName.galMuri11Bold, color: Color.brandTintColor2) {
                 buttonAction()
             }
             Spacer()

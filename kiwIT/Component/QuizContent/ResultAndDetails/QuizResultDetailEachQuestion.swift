@@ -31,7 +31,7 @@ struct QuizResultDetailEachQuestion: View {
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .minimumScaleFactor(0.8)
                     HStack {
-                        Text("제출: \(eachQuestionWithAnswer.userSubmit)")
+                        Text(Setup.ContentStrings.Quiz.detailedQuizResultUserAnswerTitle + "\(eachQuestionWithAnswer.userSubmit)")
                             .font(.custom(Setup.FontName.lineRegular, size: 15))
                             .foregroundStyle(Color.textColor)
                             .multilineTextAlignment(.leading)
@@ -39,7 +39,7 @@ struct QuizResultDetailEachQuestion: View {
                         Divider()
                             .frame(maxHeight: 10)
                             .background(Color.textColor)
-                        Text("정답: \(eachQuestionWithAnswer.answer)")
+                        Text(Setup.ContentStrings.Quiz.detailedQuizResultRightAnswerTitle + "\(eachQuestionWithAnswer.answer)")
                             .font(.custom(Setup.FontName.lineRegular, size: 15))
                             .foregroundStyle(Color.textColor)
                             .multilineTextAlignment(.leading)

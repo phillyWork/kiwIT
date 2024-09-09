@@ -45,7 +45,6 @@ struct QuizMultipleChoice: View {
                             ForEach(choiceList, id: \.self) { eachChoice in
                                 Button {
                                     internalUserChoiceNumber = internalUserChoiceNumber == eachChoice.number ? 0 : eachChoice.number
-                                    print("button tapped, internalUserChoiceNumber: \(internalUserChoiceNumber)")
                                 } label: {
                                     QuizMultipleChoiceButtonLabel(choiceLabel: eachChoice.payload)
                                 }
@@ -72,18 +71,16 @@ struct QuizMultipleChoice: View {
                 if (quizIndex != 0) {
                     Spacer()
                     Button {
-                        print("Tap this button to go back to previous question")
                         self.completion(.failure(.backToPreviousQuestion))
                     } label: {
-                        Text("이전으로")
+                        Text(Setup.ContentStrings.Quiz.backButtonTitle)
                     }
                 }
                 Spacer()
                 Button {
-                    print("Tap this button to move to next question")
                     self.completion(.success(internalUserChoiceNumber))
                 } label: {
-                    Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
+                    Text(quizIndex == quizCount - 1 ? Setup.ContentStrings.Quiz.submitButtonTitle : Setup.ContentStrings.Quiz.nextButtonTitle)
                 }
                 Spacer()
             }

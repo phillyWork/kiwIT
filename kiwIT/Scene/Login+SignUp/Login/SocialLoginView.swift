@@ -50,7 +50,6 @@ struct SocialLoginView: View {
             .background(Color.backgroundColor)
             .onChange(of: socialLoginVM.didLoginSucceed) { newValue in
                 if newValue {
-                    print("Login Succeed. Move to HomeView")
                     if let profile = socialLoginVM.profileData {
                         mainTabBarVM.userProfileInput.send(profile)
                     }
@@ -60,7 +59,7 @@ struct SocialLoginView: View {
             .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $socialLoginVM.showLoginErrorAlert, actions: {
                 ErrorAlertConfirmButton { }
             }, message: {
-                Text("로그인 시도에 오류가 발생했습니다. 다시 시도해주세요.")
+                Text(Setup.ContentStrings.loginTryErrorAlertMessage)
             })
             .navigationDestination(isPresented: $socialLoginVM.shouldMoveToSignUp) {
                 if let userDataForSignUp = socialLoginVM.userDataForSignUp {

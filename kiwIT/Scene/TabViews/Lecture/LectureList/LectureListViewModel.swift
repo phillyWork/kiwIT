@@ -64,7 +64,6 @@ final class LectureListViewModel: ObservableObject, RefreshTokenHandler {
     
     func performRequestLectureList() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -85,16 +84,13 @@ final class LectureListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self.requestRefreshToken(token, userId: userId, action: .lectureList)
                         default:
-                            print("Getting Lecture Category List Error in Lecture Category ViewModel: \(lectureCategoryListError.description)")
                             self.showLectureList = false
                         }
                     } else {
-                        print("Getting Lecture Level List Error in Lecture Category ViewModel for other reason: \(error.localizedDescription)")
                         self.showLectureList = false
                     }
                 }
             } receiveValue: { response in
-                print("Getting Category List!!!")
                 self.lectureCategoryListData = response
                 self.showLectureList = true
             }
@@ -110,16 +106,13 @@ final class LectureListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self.requestRefreshToken(token, userId: userId, action: .lectureList)
                         default:
-                            print("Getting Lecture List Error in Lecture Category ViewModel: \(lectureLevelListError.description)")
                             self.showLectureList = false
                         }
                     } else {
-                        print("Getting Lecture List Error in Lecture Category ViewModel for other reason: \(error.localizedDescription)")
                         self.showLectureList = false
                     }
                 }
             } receiveValue: { response in
-                print("Get Lecture List Data from Server")
                 self.lectureLevelListData = response
                 self.showLectureList = true
             }

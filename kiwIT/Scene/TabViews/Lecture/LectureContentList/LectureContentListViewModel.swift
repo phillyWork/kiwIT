@@ -43,9 +43,7 @@ final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
     }
     
     func requestContentData(_ type: LectureListType, typeId: Int) {
-        print("Check Token Data in LectureContentListViewModel")
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -70,16 +68,13 @@ final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(token, userId: userId, action: .contentList)
                         default:
-                            print("Category Content Error: \(categoryContentError.description)")
                             self?.showEmptyView = true
                         }
                     } else {
-                        print("Category Content Error for other reason: \(error.localizedDescription)")
                         self?.showEmptyView = true
                     }
                 }
             } receiveValue: { [weak self] response in
-                print("Response for Getting this category content data list: \(response)")
                 self?.lectureContentListCategoryType.append(contentsOf: response)
                 self?.showEmptyView = false
             }
@@ -95,21 +90,18 @@ final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self.requestRefreshToken(token, userId: userId, action: .contentList)
                         default:
-                            print("Category Content Error: \(levelContentError.description)")
                             if self.lectureContentListLevelType.isEmpty {
                                 //pagination 실패 경우 처리
                                 self.showEmptyView = true
                             }
                         }
                     } else {
-                        print("Category Content Error for other reason: \(error.localizedDescription)")
                         if self.lectureContentListLevelType.isEmpty {
                             self.showEmptyView = true
                         }
                     }
                 }
             } receiveValue: { response in
-                print("Response for Getting this Level Data content list: \(response)")
                 self.lectureContentListLevelType.append(contentsOf: response)
                 self.canLoadMoreData = response.count >= self.dataCountPerRequestForLevelContentRequest
                 self.showEmptyView = false
@@ -118,16 +110,13 @@ final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
     }
     
     func checkMorePaginationNeeded(_ item: LectureContentListPayload) {
-        print("Check data for pagination!!!")
         if lectureContentListLevelType.last == item {
-            print("Last data for list: should call more!!!")
             loadMoreContentListLevelType()
         }
     }
     
     private func loadMoreContentListLevelType() {
         guard canLoadMoreData else { return }
-        print("About to Load More Level Content!!!")
         currentDataForLevelContentRequest += 1
         requestContentData(.level, typeId: typeId)
     }
@@ -148,7 +137,6 @@ final class LectureContentListViewModel: ObservableObject, RefreshTokenHandler {
     func cleanUpCancellables() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()
-        print("Cancellables count: \(cancellables.count)")
     }
     
     deinit {

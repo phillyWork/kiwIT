@@ -17,7 +17,7 @@ struct TrophyListView: View {
             VStack {
                 Image(systemName: Setup.ImageStrings.downDirection)
                     .scaledToFit()
-                Text("당겨서 새로고침")
+                Text(Setup.ContentStrings.pullToRefreshTitle)
                     .font(.custom(Setup.FontName.lineThin, size: 12))
                     .foregroundStyle(Color.textColor)
             }
@@ -32,15 +32,15 @@ struct TrophyListView: View {
         }
         .background(Color.backgroundColor)
         .frame(maxWidth: .infinity)
-        .alert("트로피 에러", isPresented: $trophyListVM.showWholeTrophyRequestErrorAlert, actions: {
+        .alert(Setup.ContentStrings.Trophy.wholeTrophyListErrorAlertTitle, isPresented: $trophyListVM.showWholeTrophyRequestErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("트로피 목록을 불러오는데 실패했습니다. 다시 시도해주세요")
+            Text(Setup.ContentStrings.Trophy.wholeTrophyListErrorAlertMessage)
         })
-        .alert("획득한 트로피 에러", isPresented: $trophyListVM.showAcquiredTrophyRequestErrorAlert, actions: {
+        .alert(Setup.ContentStrings.Trophy.acquiredTrophyListErrorAlertTitle, isPresented: $trophyListVM.showAcquiredTrophyRequestErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("획득한 트로피 목록을 불러오는데 실패했습니다. 다시 시도해주세요")
+            Text(Setup.ContentStrings.Trophy.acquiredTrophyListErrorAlertMessage)
         })
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $trophyListVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {

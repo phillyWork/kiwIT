@@ -79,7 +79,6 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestStartQuiz() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -91,11 +90,9 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .startQuiz)
                         default:
-                            print("Start Taking Quiz Error for network reason: \(startQuizError.description)")
                             self?.showStartQuizErrorAlert = true
                         }
                     } else {
-                        print("Start Taking Quiz Error for other reason: \(error.localizedDescription)")
                         self?.showStartQuizErrorAlert = true
                     }
                 }
@@ -108,7 +105,6 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestBookmarkQuiz() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -118,16 +114,13 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
                     if let bookmarkQuizError = error as? NetworkError {
                         switch bookmarkQuizError {
                         case .invalidRequestBody(_):
-                            print("Wrong Quiz Id error: \(bookmarkQuizError.description)")
                             self?.showBookmarkQuizErrorAlert = true
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmark)
                         default:
-                            print("Bookmark Quiz Error by network reason: \(bookmarkQuizError.description)")
                             self?.showBookmarkQuizErrorAlert = true
                         }
                     } else {
-                        print("BookmarkQuiz Error by other reason: \(error.localizedDescription)")
                         self?.showBookmarkQuizErrorAlert = true
                     }
                 }
@@ -135,7 +128,6 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
                 if let quizData = self.quizData {
                     self.quizData?.quizList[self.quizIndex].kept = !(quizData.quizList[self.quizIndex].kept)
                 } else {
-                    print("No Quiz Data to update bookmark data!!!")
                     self.showBookmarkQuizErrorAlert = true
                 }
             }
@@ -148,30 +140,20 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
             let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: "\(userAnswer)")
         
             if userAnswerListForRequest.count > quizIndex {
-                print("Update to new answer!!")
                 userAnswerListForRequest[quizIndex].answer = String(userAnswer)
             } else {
-                print("New answer!!")
                 userAnswerListForRequest.append(answer)
             }
             
             isThisPreviousQuestion = false
             if userAnswerListForRequest.count == quizCount {
-                print("Quiz is all done!!!")
                 isQuizCompleted = true
             } else {
                 isQuizCompleted = false
                 quizIndex += 1
                 if userAnswerListForRequest.count >= quizIndex+1 {
-                    print("There's already answered answer!")
-                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
-                    print("quizIndex: \(quizIndex)")
                     userRecentAnswer = userAnswerListForRequest[quizIndex]
                     getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
-                } else {
-                    print("There's no answer. Should Get New Answer from user!")
-                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
-                    print("quizIndex: \(quizIndex)")
                 }
             }
         }
@@ -182,30 +164,20 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
             let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: userAnswer)
             
             if userAnswerListForRequest.count > quizIndex {
-                print("Update to new answer!!")
                 userAnswerListForRequest[quizIndex].answer = userAnswer
             } else {
-                print("New answer!!")
                 userAnswerListForRequest.append(answer)
             }
             
             isThisPreviousQuestion = false
             if userAnswerListForRequest.count == quizCount {
-                print("Quiz is all done!!!")
                 isQuizCompleted = true
             } else {
                 isQuizCompleted = false
                 quizIndex += 1
                 if userAnswerListForRequest.count >= quizIndex+1 {
-                    print("There's already answered answer!")
-                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
-                    print("quizIndex: \(quizIndex)")
                     userRecentAnswer = userAnswerListForRequest[quizIndex]
                     getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
-                } else {
-                    print("There's no answer. Should Get New Answer from user!")
-                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
-                    print("quizIndex: \(quizIndex)")
                 }
             }
         }
@@ -216,30 +188,20 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
             let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: "\(userAnswer)")
             
             if userAnswerListForRequest.count > quizIndex {
-                print("Update to new answer!!")
                 userAnswerListForRequest[quizIndex].answer = "\(userAnswer)"
             } else {
-                print("New answer!!")
                 userAnswerListForRequest.append(answer)
             }
             
             isThisPreviousQuestion = false
             if userAnswerListForRequest.count == quizCount {
-                print("Quiz is all done!!!")
                 isQuizCompleted = true
             } else {
                 isQuizCompleted = false
                 quizIndex += 1
                 if userAnswerListForRequest.count >= quizIndex+1 {
-                    print("There's already answered answer!")
-                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
-                    print("quizIndex: \(quizIndex)")
                     userRecentAnswer = userAnswerListForRequest[quizIndex]
                     getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
-                } else {
-                    print("There's no answer. Should Get New Answer from user!")
-                    print("userAnswerListForRequest count: \(userAnswerListForRequest.count)")
-                    print("quizIndex: \(quizIndex)")
                 }
             }
         }
@@ -256,7 +218,6 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
             quizIndex -= 1
             
             userRecentAnswer = userAnswerListForRequest[quizIndex]
-            print("Previous Answer: \(userRecentAnswer)")
             
             getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
         }
@@ -266,23 +227,17 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
         switch quizType {
         case .multipleChoice:
             recentSelectedMultipleChoice = Int(userAnswer.answer)!
-            print("Previous Answer in Multiple: \(recentSelectedMultipleChoice)")
         case .trueOrFalse:
             recentSelectedBoolAnswer = userAnswer.answer == "true" ? .chosenTrue : .chosenFalse
-            print("Previous Answer in OX: \(recentSelectedBoolAnswer)")
         case .shortAnswer:
             recentSelectedShortAnswer = userAnswer.answer
-            print("Previous Answer in Short Answer: \(recentSelectedShortAnswer)")
         }
         isThisPreviousQuestion = true
     }
     
     func checkRetakeQuiz() {
         if quizIndex != 0 {
-            print("It's about to take Quiz Again!!!")
             resetQuiz()
-        } else {
-            print("First Time For Quiz!!!")
         }
     }
     
@@ -293,7 +248,6 @@ final class QuizViewModel: ObservableObject, RefreshTokenHandler {
         recentSelectedMultipleChoice = 0
         recentSelectedShortAnswer = ""
         userAnswerListForRequest.removeAll()
-        print("Quiz Reset done!!")
         isQuizCompleted = false
     }
     

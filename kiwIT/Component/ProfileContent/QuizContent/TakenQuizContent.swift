@@ -33,7 +33,7 @@ struct TakenQuizContent: View {
             .background(Color.surfaceColor)
             .overlay {
                 HStack {
-                    Text("LV. \(quiz.levelNum)")
+                    Text(Setup.ContentStrings.level + "\(quiz.levelNum)")
                         .font(.custom(Setup.FontName.lineBold, size: 12))
                         .foregroundStyle(Color.textColor)
                     Spacer()
@@ -43,11 +43,11 @@ struct TakenQuizContent: View {
             }
             .overlay {
                 HStack {
-                    Text("최고 기록: \(quiz.result.highestScore)")
+                    Text(Setup.ContentStrings.Quiz.highestScoreTitle + "\(quiz.result.highestScore)")
                         .font(.custom(Setup.FontName.notoSansMedium, size: 12))
                     Text("/")
                         .font(.custom(Setup.FontName.notoSansMedium, size: 12))
-                    Text("최근 기록: \(quiz.result.latestScore)")
+                    Text(Setup.ContentStrings.Quiz.latestScoreTitle + "\(quiz.result.latestScore)")
                         .font(.custom(Setup.FontName.notoSansMedium, size: 12))
                 }
                 .foregroundStyle(Color.textColor)
@@ -58,7 +58,3 @@ struct TakenQuizContent: View {
         }
     }
 }
-
-//#Preview {
-//    TakenQuizContent(TakenQuizResponse(id: 1, title: "Test Quiz Group 1", subtitle: "부제입니다", levelNum: 2, totalScore: 30, result: SubmitQuizResponse(userId: 1, quizGroupId: 1, latestScore: 10, highestScore: 20)))
-//}

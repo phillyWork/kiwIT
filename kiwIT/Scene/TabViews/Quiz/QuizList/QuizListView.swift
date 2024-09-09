@@ -21,7 +21,7 @@ struct QuizListView: View {
                 VStack {
                     Image(systemName: Setup.ImageStrings.downDirection)
                         .scaledToFit()
-                    Text("당겨서 새로고침")
+                    Text(Setup.ContentStrings.pullToRefreshTitle)
                         .font(.custom(Setup.FontName.lineThin, size: 12))
                         .foregroundStyle(Color.textColor)
                 }
@@ -82,8 +82,7 @@ struct QuizListView: View {
             }
         }
         .refreshable {
-            print("Refresh to update Quiz List with Result!!!")
-            quizListVM.resetPaginationToRefreshQuizList()
+           quizListVM.resetPaginationToRefreshQuizList()
         }
     }
 }

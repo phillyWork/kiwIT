@@ -17,10 +17,18 @@ extension Setup {
         static let profileTitle = "유저 정보"
         static let interviewTitle = "인터뷰"
         
+        static let level = "LV. "
+        
         static let confirm = "확인"
         static let cancel = "취소"
+        static let close = "닫기"
+        
+        static let emptyResultTitle = "결과가 없습니다! 다시 시도해주세요."
+        static let emptyResultRetryButtonTitle = "다시 시도하기"
+        static let emptyResultExclamationTitle = "!"
         
         static let loginErrorAlertTitle = "로그인 오류!"
+        static let loginTryErrorAlertMessage = "로그인 시도에 실패했어요. 다시 시도해주세요."
         static let loginErrorAlertMessage = "세션이 만료되었어요. 다시 로그인해주세요."
         
         static let unknownNetworkErrorAlertTitle = "네트워크 오류!"
@@ -53,6 +61,9 @@ extension Setup {
         static let removeBookmarkedContentErrorAlertTitle = "보관함 제거 오류!"
         static let removeBookmarkedContentAlertTitle = "보관함 제거?"
         
+        static let pullToRefreshTitle = "당겨서 새로고침"
+        static let errorToTryAgainAlertMessage = "오류 발생! 다시 시도해주세요."
+        static let moveToDetailButtonTitle = "더 보기"
         
         static let homeViewNavTitle = ["자, 이제 시작이야!",
                                        "CS, 갑니다!",

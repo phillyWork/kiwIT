@@ -96,14 +96,12 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
     
     func checkToLoadMoreCompletedQuizGroup(_ quizGroup: TakenQuizResponse) {
         if takenQuizList.last == quizGroup {
-            print("Last data for list: should call more!!!")
             loadMoreTakenQuiz()
         }
     }
     
     func checkToLoadMoreBookmarkedQuiz(_ quiz: BookmarkedQuizListResponse) {
         if bookmarkedQuizList.last == quiz {
-            print("Last data for list: should call more!!!")
             loadMoreBookmarkedQuiz()
         }
     }
@@ -122,7 +120,6 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestTakenQuiz() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -134,11 +131,9 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .takenQuiz)
                         default:
-                            print("Taken Quiz Group Error for Network Reason: \(takenQuizError.description)")
                             self.showTakenQuizError = true
                         }
                     } else {
-                        print("Taken Quiz Group Error for other reason: \(error.localizedDescription)")
                         self.showTakenQuizError = true
                     }
                 }
@@ -158,7 +153,6 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
 
     private func requestBookmarkedQuiz() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -170,11 +164,9 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedQuiz)
                         default:
-                            print("Bookmarked Quiz List Error for network reason: \(bookmarkedQuizError.description)")
                             self.showBookmarkedQuizError = true
                         }
                     } else {
-                        print("Bookmarked Quiz List Error for other reason: \(error.localizedDescription)")
                         self.showBookmarkedQuizError = true
                     }
                 }
@@ -194,7 +186,6 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestUnbookmarkQuiz() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -204,16 +195,13 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
                     if let bookmarkQuizError = error as? NetworkError {
                         switch bookmarkQuizError {
                         case .invalidRequestBody(_):
-                            print("Can't find quiz content: \(bookmarkQuizError.description)")
                             self.showRemoveBookmarkedQuizError = true
                         case .invalidToken(_):
                             self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .unbookmark)
                         default:
-                            print("Un-Bookmark Quiz Error for network reason: \(bookmarkQuizError.description)")
                             self.showRemoveBookmarkedQuizError = true
                         }
                     } else {
-                        print("Un-Bookmark Quiz Error for other reason: \(error.localizedDescription)")
                         self.showRemoveBookmarkedQuizError = true
                     }
                 }
@@ -248,7 +236,6 @@ final class UserQuizListViewModel: ObservableObject, RefreshTokenHandler {
     func cleanUpCancellables() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()
-        print("Cancellables count: \(cancellables.count)")
     }
     
     deinit {

@@ -233,7 +233,6 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func updateNickname() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("No token data in ProfileView!!! Should Move to Log-In!!!")
             self.showSessionExpiredAlert = true
             return
         }
@@ -247,21 +246,17 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                     if let profileEditError = error as? NetworkError {
                         switch profileEditError {
                         case .invalidRequestBody(_):
-                            print("Cannot Update Profile Nickname in ProfileViewModel: \(profileEditError.description)")
                             self?.showNicknameErrorAlert = true
                         case .invalidToken(_):
                             self?.requestRefreshToken(current, userId: userId, action: .profileEdit)
                         default:
-                            print("Profile Update Error in ProfileViewModel: \(profileEditError.description)")
                             self?.showNicknameErrorAlert = true
                         }
                     } else {
-                        print("Profile Edit Request Error for other reason in ProfileViewModel: \(error.localizedDescription)")
                         self?.showNicknameErrorAlert = true
                     }
                 }
             } receiveValue: { [weak self] response in
-                print("Getting Updated Profile Data from Server! Available Saved Token!")
                 self?.updateProfileClosure?(response)
                 self?.nicknameInputFromUser.removeAll()
             }
@@ -274,7 +269,6 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestCompletedLectureList() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("No token data in ProfileView!!! Should Move to Log-In!!!")
             self.showSessionExpiredAlert = true
             return
         }
@@ -287,12 +281,10 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completedLectureList)
                         default:
-                            print("Completed Lecture List Error by network: \(completeLectureListError.description)")
                             self?.showCompletedLectureListError = true
                             self?.dispatchGroup.leave()
                         }
                     } else {
-                        print("Completed Lecture List Error by other reason: \(error.localizedDescription)")
                         self?.showCompletedLectureListError = true
                         self?.dispatchGroup.leave()
                     }
@@ -311,7 +303,6 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestBookmarkedLectureList() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("No token data in ProfileView!!! Should Move to Log-In!!!")
             self.showSessionExpiredAlert = true
             return
         }
@@ -324,12 +315,10 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
                         default:
-                            print("Bookmarked Lecture List Error by network: \(bookmarkedLectureListError.description)")
                             self?.showBookmarkedLectureListError = true
                             self?.dispatchGroup.leave()
                         }
                     } else {
-                        print("Bookmarked Lecture List Error by other reason: \(error.localizedDescription)")
                         self?.showBookmarkedLectureListError = true
                         self?.dispatchGroup.leave()
                     }
@@ -348,7 +337,6 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestTakenQuizList() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("No token data in ProfileView!!! Should Move to Log-In!!!")
             self.showSessionExpiredAlert = true
             return
         }
@@ -361,12 +349,10 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
                         default:
-                            print("Taken Quiz List Error by network: \(takenQuizListError.description)")
                             self?.showTakenQuizListError = true
                             self?.dispatchGroup.leave()
                         }
                     } else {
-                        print("Taken Quiz  List Error by other reason: \(error.localizedDescription)")
                         self?.showTakenQuizListError = true
                         self?.dispatchGroup.leave()
                     }
@@ -385,7 +371,6 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestBookmarkedQuizList() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("No token data in ProfileView!!! Should Move to Log-In!!!")
             self.showSessionExpiredAlert = true
             return
         }
@@ -398,12 +383,10 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedLectureList)
                         default:
-                            print("Bookmarked Quiz List Error by network: \(bookmarkedQuizListError.description)")
                             self?.showBookmarkedQuizListError = true
                             self?.dispatchGroup.leave()
                         }
                     } else {
-                        print("Bookmarked Quiz List Error by other reason: \(error.localizedDescription)")
                         self?.showBookmarkedQuizListError = true
                         self?.dispatchGroup.leave()
                     }
@@ -422,7 +405,6 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestLatestAcquiredTrophy() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("No token data in ProfileView!!! Should Move to Log-In!!!")
             self.showSessionExpiredAlert = true
             return
         }
@@ -433,22 +415,18 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                     if let latestAcquiredTrophyError = error as? NetworkError {
                         switch latestAcquiredTrophyError {
                         case .emptyBody(_):
-                            print("Empty Body for Latest Acquired Trophy")
                             self?.showLatestAcquiredTrophyError = false
                             self?.dispatchGroup.leave()
                         case .invalidRequestBody(_):
-                            print("Wrong Request for Latest Acquired Trophy: \(latestAcquiredTrophyError.description)")
                             self?.showLatestAcquiredTrophyError = true
                             self?.dispatchGroup.leave()
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .latestAcquiredTrophy)
                         default:
-                            print("Latest Acquired Trophy Error for network reason: \(latestAcquiredTrophyError.description)")
                             self?.showLatestAcquiredTrophyError = true
                             self?.dispatchGroup.leave()
                         }
                     } else {
-                        print("Latest Acquired Trophy Error by other reason: \(error.localizedDescription)")
                         self?.showLatestAcquiredTrophyError = true
                         self?.dispatchGroup.leave()
                     }
@@ -467,7 +445,6 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func signOut() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             showSessionExpiredAlert = true
             return
         }
@@ -479,16 +456,13 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .signOut)
                         default:
-                            print("SignOut Error by network reason: \(signOutError.description)")
                             self?.showLogoutErrorAlert = true
                         }
                     } else {
-                        print("SignOut Error in ProfileViewModel for other reason: \(error.localizedDescription)")
                         self?.showLogoutErrorAlert = true
                     }
                 }
             } receiveValue: { [weak self] _ in
-                print("Response for Sign Out Success!")
                 //재로그인 및 다른 계정 로그인: 네트워크 콜 횟수 줄이기 목적
                 AuthManager.shared.handleRefreshTokenExpired(userId: tokenData.1)
                 self?.showLogoutSucceedAlert = true
@@ -502,13 +476,11 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
     
     private func withdraw() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             showSessionExpiredAlert = true
             return
         }
         
         guard tokenData.1 == debouncedEmail else {
-            print("Email is Not Same To Withdraw")
             showWithdrawAlert = true
             return
         }
@@ -519,16 +491,13 @@ final class ProfileViewModel: ObservableObject, RefreshTokenHandler {
                     if let withdrawError = error as? NetworkError {
                         switch withdrawError {
                         case .invalidRequestBody(_):
-                            print("Cannot withdraw user from db: \(withdrawError.description)")
                             self?.showWithdrawAlert = true
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .withdraw)
                         default:
-                            print("Withdraw Error by network: \(withdrawError.description)")
                             self?.showWithdrawAlert = true
                         }
                     } else {
-                        print("Withdraw Error by other reason: \(error.localizedDescription)")
                         self?.showWithdrawAlert = true
                     }
                 }

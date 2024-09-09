@@ -18,13 +18,13 @@ struct EmptyViewWithNoError: View {
                 .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListNotExpandableHeight)
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
             HStack {
-                Text("!")
+                Text(Setup.ContentStrings.emptyResultExclamationTitle)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                     .foregroundStyle(Color.red)
                 Text(title)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                     .foregroundStyle(Color.textColor)
-                Text("!")
+                Text(Setup.ContentStrings.emptyResultExclamationTitle)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                     .foregroundStyle(Color.red)
             }

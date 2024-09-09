@@ -28,14 +28,14 @@ struct BookmarkedQuizContent: View {
                     .multilineTextAlignment(.leading)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                     .foregroundStyle(Color.brandColor)
-                Text("정답: \(quiz.answer)")
+                Text(Setup.ContentStrings.Quiz.detailedQuizResultRightAnswerTitle + "\(quiz.answer)")
                     .font(.custom(Setup.FontName.notoSansBold, size: 15))
                     .foregroundStyle(Color.textColor)
             }
             .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizBookmarkedContentHeight)
             .background(Color.surfaceColor)
             .overlay {
-                Text("해설: \(quiz.answer)")
+                Text(Setup.ContentStrings.Quiz.quizAnswerExplanationTitle + "\(quiz.explanation)")
                     .multilineTextAlignment(.leading)
                     .font(.custom(Setup.FontName.notoSansBold, size: 13))
                     .foregroundStyle(Color.textColor)
@@ -43,7 +43,7 @@ struct BookmarkedQuizContent: View {
             }
             .overlay {
                 HStack {
-                    Text("점수: \(quiz.score)")
+                    Text(Setup.ContentStrings.Quiz.quizAnswerScoreTitle + "\(quiz.score)")
                         .font(.custom(Setup.FontName.lineBold, size: 12))
                         .foregroundStyle(Color.textColor)
                     Spacer()

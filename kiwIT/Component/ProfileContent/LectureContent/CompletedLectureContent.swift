@@ -32,7 +32,7 @@ struct CompletedLectureContent: View {
                     .frame(width: Setup.Frame.profileLectureContentWidth, height: Setup.Frame.profileLectureContentHeight)
                     .overlay {
                         HStack {
-                            Text("LV. \(lecture.levelNum)")
+                            Text(Setup.ContentStrings.level + "\(lecture.levelNum)")
                                 .font(.custom(Setup.FontName.lineBold, size: 12))
                                 .foregroundStyle(Color.textColor)
                             Spacer()
@@ -48,9 +48,3 @@ struct CompletedLectureContent: View {
         }
     }
 }
-
-//#Preview {
-//    CompletedLectureContent(CompletedOrBookmarkedLecture(id: 1, title: "Lecture Title", point: 100, exercise: "Exercise Quiz", answer: true, levelNum: 1, categoryChapterId: 2, payloadUrl: "https://", contentStudied: CompleteLectureResponse(userId: 22, contentId: 1, kept: false, createdAt: "2222", updatedAt: "2222"))) {
-//        print("TEst")
-//    }
-//}

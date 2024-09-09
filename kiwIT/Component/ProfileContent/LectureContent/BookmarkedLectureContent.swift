@@ -34,7 +34,7 @@ struct BookmarkedLectureContent: View {
                     .frame(width: Setup.Frame.profileLectureContentWidth, height: Setup.Frame.profileLectureContentHeight)
                     .overlay {
                         HStack {
-                            Text("LV. \(lecture.levelNum)")
+                            Text(Setup.ContentStrings.level + "\(lecture.levelNum)")
                                 .font(.custom(Setup.FontName.lineBold, size: 12))
                                 .foregroundStyle(Color.textColor)
                             Spacer()

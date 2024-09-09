@@ -16,18 +16,15 @@ final class AuthManager {
         do {
             let userId = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.userIdString) as String
             guard let tokenData = KeyChainManager.shared.read(userId) else {
-                print("No Saved Token")
                 return nil
             }
             return (tokenData, userId)
         } catch {
-            print("No Id to check token!!!")
             return nil
         }
     }
     
     func handleRefreshTokenExpired(userId: String) {
-        print("To Remove User Data and Move to SignIn")
         //저장된 token 삭제,
         KeyChainManager.shared.delete(userId)
         //저장된 userdefaults id 삭제

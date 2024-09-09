@@ -68,7 +68,6 @@ final class QuizResultViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestSubmitAnswer() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -78,16 +77,13 @@ final class QuizResultViewModel: ObservableObject, RefreshTokenHandler {
                     if let submitAnswerError = error as? NetworkError {
                         switch submitAnswerError {
                         case .invalidRequestBody(_):
-                            print("Invalid Answer Body: \(submitAnswerError.description)")
                             self?.showSubmitAnswerErrorAlert = true
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .submit)
                         default:
-                            print("Submit Answer Error for network reason: \(submitAnswerError.description)")
                             self?.showSubmitAnswerErrorAlert = true
                         }
                     } else {
-                        print("Submit Answer Error for other reason: \(error.localizedDescription)")
                         self?.showSubmitAnswerErrorAlert = true
                     }
                 }

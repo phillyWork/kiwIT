@@ -95,36 +95,30 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     }
     
     func debounceToRequestCompleteLecture() {
-        print("debounceToRequestCompleteLecture called")
         requestSubject.send(())
     }
     
     func debounceToRequestBookmarkLecture() {
-        print("debounceToRequestBookmarkLecture called")
         requestBookmarkSubject.send(())
     }
     
     func bookmarkThisLectureAndStudyAllDone() {
         debounceToRequestBookmarkLecture()
         dispatchGroup.notify(queue: .main) {
-            print("Bookmark All Done. Update to True for StudyAllDone!!")
             self.sendToUpdateStudyAllDoneStatus(true)
         }
     }
     
     func sendToUpdateStudyAllDoneStatus(_ value: Bool) {
-        print("Update to set study all done?")
         statusForStudyAllDoneSubject.send(value)
     }
     
     func debounceToRequestSubmitExerciseAnswer() {
-        print("debounceToRequestSubmitExerciseAnswer called")
         requestSubmitExerciseSubject.send(())
     }
     
     private func startLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -140,16 +134,13 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(token, userId: userId, action: .startLecture)
                         default:
-                            print("Start Lecture Error for network reason: \(startLectureError.description)")
                             self?.showStartLectureErrorAlertToDismiss = true
                         }
                     } else {
-                        print("start lecture error for other reason: \(error.localizedDescription)")
                         self?.showStartLectureErrorAlertToDismiss = true
                     }
                 }
             } receiveValue: { [weak self] response in
-                print("Start Lecture Right Away!!!")
                 self?.lectureContent = response
                 if let alreadyTaken = response.contentStudied {
                     self?.isThisLectureStudiedBefore = true
@@ -161,10 +152,8 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     
     private func checkToRequestCompleteLecture() {
         if isThisLectureStudiedBefore {
-            print("lecture studied before, showing example alert")
             self.showLectureExampleAlert = true
         } else {
-            print("Requesting complete lecture content")
             isCompleteStudyButtonDisabled = true
             requestCompleteLectureContent()
         }
@@ -172,7 +161,6 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestCompleteLectureContent() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -184,16 +172,13 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completeLecture)
                         default:
-                            print("Complete Lecture Error for network reason: \(completeLectureError.description)")
                             self?.showCompleteLectureErrorAlertToRetry = true
                         }
                     } else {
-                        print("Complete Lecture Error for other reason: \(error.localizedDescription)")
                         self?.showCompleteLectureErrorAlertToRetry = true
                     }
                 }
             } receiveValue: { [weak self] response in
-                print("completed this lecture: \(response)")
                 if !response.trophyAwardedList.isEmpty {
                     self?.acquiredTrophyList = response.trophyAwardedList
                 } else {
@@ -225,7 +210,6 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     
     func requestSubmitExerciseAnswer() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -235,21 +219,17 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
                     if let submitExerciseError = error as? NetworkError {
                         switch submitExerciseError {
                         case .invalidRequestBody(_):
-                            print("Need User Answer for submit exercise: \(submitExerciseError.description)")
                             self?.showSubmitExerciseErrorAlertToRetry = true
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .exerciseQuestion)
                         default:
-                            print("Submit Exercise Error for network reason: \(submitExerciseError.description)")
                             self?.showSubmitExerciseErrorAlertToRetry = true
                         }
                     } else {
-                        print("Complete Lecture Error for other reason: \(error.localizedDescription)")
                         self?.showSubmitExerciseErrorAlertToRetry = true
                     }
                 }
             } receiveValue: { response in
-                print("Submit Exercise Complete! - \(response)")
                 if self.isThisLectureStudiedBefore {
                     self.lectureStudyAllDone = true
                 } else {
@@ -261,7 +241,6 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestBookmarkThisLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -272,27 +251,23 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
                     if let bookmarkLectureError = error as? NetworkError {
                         switch bookmarkLectureError {
                         case .invalidRequestBody(_):
-                            print("Bookmark Lecture Error for Failure: \(bookmarkLectureError.description)")
                             self?.showBookmarkErrorAlert = true
                             self?.isThisLectureBookmarked = false
                             self?.dispatchGroup.leave()
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkLecture)
                         default:
-                            print("Bookmark Lecture Error for Network Reason: \(bookmarkLectureError.description)")
                             self?.showBookmarkErrorAlert = true
                             self?.isThisLectureBookmarked = false
                             self?.dispatchGroup.leave()
                         }
                     } else {
-                        print("Bookmark Lecture Error for other reason: \(error.localizedDescription)")
                         self?.showBookmarkErrorAlert = true
                         self?.isThisLectureBookmarked = false
                         self?.dispatchGroup.leave()
                     }
                 }
             } receiveValue: { [weak self] response in
-                print("Received Response for Bookmark result: \(response)")
                 self?.isThisLectureBookmarked = response.kept
                 self?.dispatchGroup.leave()
             }
@@ -324,7 +299,6 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
     func cleanUpCancellables() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()
-        print("Cancellables count: \(cancellables.count)")
     }
     
     deinit {

@@ -52,10 +52,8 @@ final class SocialLoginButtonViewModel: ObservableObject {
     private func handleAppleSignIn(_ result: Result<ASAuthorization, Error>) {
         switch result {
         case .success(let success):
-            print("Succeed in Sign in Apple")
             requestAppleUserLogin(success)
         case .failure(let error):
-            print("Failed in Sign in Apple: \(error.localizedDescription)")
             handleAppleSignInFailure()
         }
     }
@@ -65,21 +63,15 @@ final class SocialLoginButtonViewModel: ObservableObject {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             
             guard let identityToken = appleIDCredential.identityToken, let identityTokenInString = String(data: identityToken, encoding: .utf8) else {
-                print("No Token in apple credential")
                 return
             }
-            
-            print("identity token in string: \(String(data: identityToken, encoding: .utf8))")
             
             guard let authorizationCode = appleIDCredential.authorizationCode else {
-                print("No authorization code in apple credential")
                 return
             }
-            print("authorization code in string: \(String(data: authorizationCode, encoding: .utf8))")
             
             handleToken(identityTokenInString, service: .apple)
         default:
-            print("other than appleIDCredential case: false case!!!")
             handleAppleSignInFailure()
             break
         }
@@ -127,10 +119,8 @@ final class SocialLoginButtonViewModel: ObservableObject {
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let signInError = error as? NetworkError {
-                        print("SignInError as Network: \(signInError.description)")
                         self?.loginResult = (false, signInError.description, nil, nil)
                     } else {
-                        print("SignInError as other reason")
                         self?.loginResult = (false, error.localizedDescription, nil, nil)
                     }
                 }
@@ -139,10 +129,8 @@ final class SocialLoginButtonViewModel: ObservableObject {
                 case .signInSuccess(let tokenResponse):
                     //로그인 성공: Token 활용해서 profile 요청, 이메일 받아오기
                     self?.requestProfile(tokenResponse) { profile in
-                        print("Profile Passed From RequestProfile!!!")
                         guard let profile = profile else {
                             //프로필 얻어오기 에러: 현재 로그인한 계정 정보 모름
-                            print("Error for Profile Request!!!")
                             self?.loginResult = (true, nil, nil, nil)
                             return
                         }
@@ -156,20 +144,16 @@ final class SocialLoginButtonViewModel: ObservableObject {
     }
     
     private func requestProfile(_ token: SignInResponseSuccess, returnCompletion: @escaping (ProfileResponse?) -> Void) {
-        print("Request for Profile Id to update Token Data")
         NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: token.accessToken)), errorCase: .profileCheck)
             .sink { completion in
                 if case .failure(let error) = completion {
                     if let profileError = error as? NetworkError {
-                        print("Error for Profile Id in SignIn: \(profileError.description)")
                         returnCompletion(nil)
                     } else {
-                        print("Error for Profile Id in SignIn: \(error.localizedDescription)")
                         returnCompletion(nil)
                     }
                 }
             } receiveValue: { response in
-                print("Profile Response in requestProfile: \(response)")
                 returnCompletion(response)
             }
             .store(in: &self.cancellables)

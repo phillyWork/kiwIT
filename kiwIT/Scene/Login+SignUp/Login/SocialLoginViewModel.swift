@@ -24,9 +24,7 @@ final class SocialLoginViewModel: ObservableObject {
     
     func handleSocialLoginResult(success: Bool, errorMessage: String? = nil, profileData: ProfileResponse? = nil, userDataToSignUp: SignUpRequest? = nil) {
         if success {
-            print("Login Succeed!!!")
             if let profile = profileData {
-                print("Profile Data from SignIn and ProfileRequest!!!")
                 self.profileData = profile
             } else {
                 print("Can't send user profile data!!!")
@@ -34,11 +32,9 @@ final class SocialLoginViewModel: ObservableObject {
             self.didLoginSucceed = true
         } else {
             if let userData = userDataToSignUp {
-                print("userData for signup: \(userData)")
                 self.userDataForSignUp = userData
                 self.shouldMoveToSignUp = true
             } else {
-                print("Sign In failed with error message: \(errorMessage)")
                 self.showLoginErrorAlert = true
             }
         }

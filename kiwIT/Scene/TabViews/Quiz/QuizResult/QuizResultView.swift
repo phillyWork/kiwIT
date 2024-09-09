@@ -38,7 +38,7 @@ struct QuizResultView: View {
                     }
                 } else {
                     ProgressView {
-                        Text("답안 제출 중...")
+                        Text(Setup.ContentStrings.Quiz.submitQuizProgressTitle)
                     }
                 }
             
@@ -61,7 +61,7 @@ struct QuizResultView: View {
                 Text(Setup.ContentStrings.cancel)
             }
         }, message: {
-            Text("제출에 오류가 발생했습니다. 다시 시도하려면 확인 버튼을, 나가려면 취소 버튼을 눌러주세요.")
+            Text(Setup.ContentStrings.Quiz.submitQuizAnswerErrorAlertMessage)
         })
         .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $quizResultVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
@@ -80,11 +80,7 @@ struct QuizResultView: View {
                 path = NavigationPath()
             }
         } message: {
-            Text("오류로 인해 해당 퀴즈의 다시 풀기가 불가합니다. 퀴즈 목록으로 돌아갑니다.")
+            Text(Setup.ContentStrings.Quiz.retryQuizErrorAlertMessage)
         }
     }
 }
-
-//#Preview {
-//    QuizResultView(path: <#T##Binding<[String]>#>, testDataForQuestion: ["첫번째 문제입니다", "두번째 문제입니다", "세번째 문제입니다", "네번째 문제입니다", "다섯번째 문제입니다"], userOXAnswer: [true, false, false, false, true], answers: [false, true, true, true, true])
-//}

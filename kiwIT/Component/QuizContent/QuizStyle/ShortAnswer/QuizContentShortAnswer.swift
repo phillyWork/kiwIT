@@ -50,7 +50,7 @@ struct QuizContentShortAnswer: View {
                             .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
                         TextField("",
                                   text: $textFieldInput,
-                                  prompt: Text("정답을 입력해주세요")
+                                  prompt: Text(Setup.ContentStrings.Quiz.shortAnswerTextFieldPrompt)
                             .foregroundColor(Color.textPlaceholderColor)
                         )
                         .frame(width: Setup.Frame.quizContentShortAnswerTextFieldWidth, height: Setup.Frame.quizContentShortAnswerTextFieldHeight)
@@ -79,18 +79,16 @@ struct QuizContentShortAnswer: View {
                 if (quizIndex != 0) {
                     Spacer()
                     Button {
-                        print("Tap this button to go back to previous question")
                         self.completion(.failure(.backToPreviousQuestion))
                     } label: {
-                        Text("이전으로")
+                        Text(Setup.ContentStrings.Quiz.backButtonTitle)
                     }
                 }
                 Spacer()
                 Button {
-                    print("Tap this button to move to next question")
                     self.completion(.success(textFieldInput))
                 } label: {
-                    Text(quizIndex == quizCount - 1 ? "제출하기" : "다음으로")
+                    Text(quizIndex == quizCount - 1 ? Setup.ContentStrings.Quiz.submitButtonTitle : Setup.ContentStrings.Quiz.nextButtonTitle)
                 }
                 Spacer()
             }

@@ -117,7 +117,6 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestCompletedLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -129,11 +128,9 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .completedList)
                         default:
-                            print("Completed Lecture List Error for Network Reason: \(completedLectureError.description)")
                             self.showCompletedLectureError = true
                         }
                     } else {
-                        print("Completed Lecture List Error for other reason: \(error.localizedDescription)")
                         self.showCompletedLectureError = true
                     }
                 }
@@ -153,7 +150,6 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
 
     private func requestBookmarkedLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -165,11 +161,9 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmarkedList)
                         default:
-                            print("Bookmarked Lecture List Error for network reason: \(bookmarkedLectureError.description)")
                             self.showBookmarkedLectureError = true
                         }
                     } else {
-                        print("Bookmarked Lecture List Error for other reason: \(error.localizedDescription)")
                         self.showBookmarkedLectureError = true
                     }
                 }
@@ -201,7 +195,6 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
     
     private func requestUnbookmarkLecture() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -211,16 +204,13 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
                     if let bookmarkLectureError = error as? NetworkError {
                         switch bookmarkLectureError {
                         case .invalidRequestBody(_):
-                            print("Can't find lecture content: \(bookmarkLectureError.description)")
                             self.showRemoveBookmarkedLectureError = true
                         case .invalidToken(_):
                             self.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .unbookmark)
                         default:
-                            print("Un-Bookmark Lecture Error for network reason: \(bookmarkLectureError.description)")
                             self.showRemoveBookmarkedLectureError = true
                         }
                     } else {
-                        print("Un-Bookmark Lecture Error for other reason: \(error.localizedDescription)")
                         self.showRemoveBookmarkedLectureError = true
                     }
                 }
@@ -255,7 +245,6 @@ final class UserLectureListViewModel: ObservableObject, RefreshTokenHandler {
     func cleanUpCancellables() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()
-        print("Cancellables count: \(cancellables.count)")
     }
     
     deinit {

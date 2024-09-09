@@ -13,7 +13,7 @@ enum TabType: Int, CaseIterable, Hashable, Identifiable {
     case home
     case lecture
     case quiz
-    case interview
+//    case interview
     case profile
     
     var id: Int {
@@ -87,17 +87,13 @@ final class TabViewsViewModel: ObservableObject, RefreshTokenHandler {
                     if let profileError = error as? NetworkError {
                         switch profileError {
                         case .invalidRequestBody(_):
-                            print("Profile Check Error in TabViewsViewModel: \(profileError.description)")
                             self?.isLoginAvailable = false
                         case .invalidToken(_):
-                            print("Invalid Access token in TabViewsViewModel: \(profileError.description)")
                             self?.requestRefreshToken(token, userId: userId, action: .profile)
                         default:
-                            print("Profile Check Error in TabViewsViewModel: \(profileError.description)")
                             self?.isLoginAvailable = false
                         }
                     } else {
-                        print("Profile Check Error in TabViewsViewModel for other reason: \(error.localizedDescription)")
                         self?.isLoginAvailable = false
                     }
                 }
@@ -117,7 +113,6 @@ final class TabViewsViewModel: ObservableObject, RefreshTokenHandler {
     }
         
     func updateProfileFromProfileView(_ newProfile: ProfileResponse) {
-        print("Updated Profile: \(newProfile)")
         self.profileData = newProfile
         self.didUpdateProfileFromOtherView = true
     }

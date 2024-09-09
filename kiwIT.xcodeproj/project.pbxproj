@@ -15,6 +15,10 @@
 		2163D08A2BCFCA1800A42EBB /* ContentSectionItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2163D0892BCFCA1800A42EBB /* ContentSectionItemView.swift */; };
 		2167FD4C2BC058E600A45F2B /* Setup+FontStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */; };
 		2167FD4E2BC0594C00A45F2B /* Galmuri11-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2167FD4D2BC0594C00A45F2B /* Galmuri11-Bold.ttf */; };
+		216E00FB2C8EF58300A3D3FA /* Setup+ContentStrings+Lecture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216E00FA2C8EF58300A3D3FA /* Setup+ContentStrings+Lecture.swift */; };
+		216E00FD2C8F239100A3D3FA /* Setup+ContentStrings+Quiz.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216E00FC2C8F239100A3D3FA /* Setup+ContentStrings+Quiz.swift */; };
+		216E00FF2C8F2D7900A3D3FA /* Setup+ContentStrings+Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216E00FE2C8F2D7900A3D3FA /* Setup+ContentStrings+Home.swift */; };
+		216E01012C8F2EAE00A3D3FA /* Setup+ContentStrings+Trophy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216E01002C8F2EAE00A3D3FA /* Setup+ContentStrings+Trophy.swift */; };
 		216F5F8F2BAB302C008817B0 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 216F5F8E2BAB302C008817B0 /* NetworkManager.swift */; };
 		2170E7462BBAF00A002A1DA6 /* KakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 2170E7452BBAF00A002A1DA6 /* KakaoSDK */; };
 		2170E7482BBAF00A002A1DA6 /* KakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 2170E7472BBAF00A002A1DA6 /* KakaoSDKAuth */; };
@@ -138,11 +142,7 @@
 		2177B39B2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B39A2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift */; };
 		2177B39D2C5012A500BEB3BE /* NewlyAcquiredTrophyCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B39C2C5012A500BEB3BE /* NewlyAcquiredTrophyCardView.swift */; };
 		2177B3A12C501CDD00BEB3BE /* TrophyPageTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A02C501CDD00BEB3BE /* TrophyPageTabView.swift */; };
-		2177B3A42C52995900BEB3BE /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A32C52995900BEB3BE /* NotificationManager.swift */; };
-		2177B3A62C529D9900BEB3BE /* Setup+NotificationStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A52C529D9900BEB3BE /* Setup+NotificationStrings.swift */; };
-		2177B3AA2C52ACD600BEB3BE /* InterviewStatusManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */; };
 		2177B3AC2C53EB9900BEB3BE /* SignInMainImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */; };
-		2177B3B02C57B3A100BEB3BE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3AF2C57B3A100BEB3BE /* AppDelegate.swift */; };
 		2177B3B22C5BC97B00BEB3BE /* InterviewHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3B12C5BC97B00BEB3BE /* InterviewHistoryView.swift */; };
 		2177B3B82C5BC9C300BEB3BE /* InterviewPastAnswersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3B72C5BC9C300BEB3BE /* InterviewPastAnswersView.swift */; };
 		2177B3BB2C5BC9EC00BEB3BE /* InterviewResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2177B3BA2C5BC9EC00BEB3BE /* InterviewResultView.swift */; };
@@ -274,6 +274,10 @@
 		2167FD4A2BC04FDF00A45F2B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2167FD4B2BC058E600A45F2B /* Setup+FontStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+FontStrings.swift"; sourceTree = "<group>"; };
 		2167FD4D2BC0594C00A45F2B /* Galmuri11-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Galmuri11-Bold.ttf"; sourceTree = "<group>"; };
+		216E00FA2C8EF58300A3D3FA /* Setup+ContentStrings+Lecture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ContentStrings+Lecture.swift"; sourceTree = "<group>"; };
+		216E00FC2C8F239100A3D3FA /* Setup+ContentStrings+Quiz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ContentStrings+Quiz.swift"; sourceTree = "<group>"; };
+		216E00FE2C8F2D7900A3D3FA /* Setup+ContentStrings+Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ContentStrings+Home.swift"; sourceTree = "<group>"; };
+		216E01002C8F2EAE00A3D3FA /* Setup+ContentStrings+Trophy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+ContentStrings+Trophy.swift"; sourceTree = "<group>"; };
 		216F5F8E2BAB302C008817B0 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		2170E7542BBC6873002A1DA6 /* Setup+Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+Color.swift"; sourceTree = "<group>"; };
 		2170E7562BBC6DD7002A1DA6 /* ShrinkAnimationButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShrinkAnimationButtonView.swift; sourceTree = "<group>"; };
@@ -345,11 +349,7 @@
 		2177B39A2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSubscriptionViewModel.swift; sourceTree = "<group>"; };
 		2177B39C2C5012A500BEB3BE /* NewlyAcquiredTrophyCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewlyAcquiredTrophyCardView.swift; sourceTree = "<group>"; };
 		2177B3A02C501CDD00BEB3BE /* TrophyPageTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrophyPageTabView.swift; sourceTree = "<group>"; };
-		2177B3A32C52995900BEB3BE /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
-		2177B3A52C529D9900BEB3BE /* Setup+NotificationStrings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Setup+NotificationStrings.swift"; sourceTree = "<group>"; };
-		2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewStatusManager.swift; sourceTree = "<group>"; };
 		2177B3AB2C53EB9900BEB3BE /* SignInMainImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInMainImageView.swift; sourceTree = "<group>"; };
-		2177B3AF2C57B3A100BEB3BE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2177B3B12C5BC97B00BEB3BE /* InterviewHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewHistoryView.swift; sourceTree = "<group>"; };
 		2177B3B72C5BC9C300BEB3BE /* InterviewPastAnswersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewPastAnswersView.swift; sourceTree = "<group>"; };
 		2177B3BA2C5BC9EC00BEB3BE /* InterviewResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterviewResultView.swift; sourceTree = "<group>"; };
@@ -595,8 +595,6 @@
 			isa = PBXGroup;
 			children = (
 				2177B3452C2DA4BA00BEB3BE /* AuthManager.swift */,
-				2177B3A32C52995900BEB3BE /* NotificationManager.swift */,
-				2177B3A92C52ACD500BEB3BE /* InterviewStatusManager.swift */,
 				2177B2BE2C1B1D1400BEB3BE /* KeyChain */,
 				2177B2BB2C1B1D0000BEB3BE /* UserDefaults */,
 				216F5F8D2BAB3018008817B0 /* Network */,
@@ -681,7 +679,11 @@
 			children = (
 				217B53122BA2EBA90081D418 /* Setup+ContentStrings.swift */,
 				2177B34C2C357F9100BEB3BE /* Setup+ContentStrings+SignUp.swift */,
+				216E00FE2C8F2D7900A3D3FA /* Setup+ContentStrings+Home.swift */,
+				216E00FA2C8EF58300A3D3FA /* Setup+ContentStrings+Lecture.swift */,
+				216E00FC2C8F239100A3D3FA /* Setup+ContentStrings+Quiz.swift */,
 				2177B34F2C358B1200BEB3BE /* Setup+ContentStrings+Profile.swift */,
+				216E01002C8F2EAE00A3D3FA /* Setup+ContentStrings+Trophy.swift */,
 				218488492C6F971600977B79 /* Setup+ContentStrings+Interview.swift */,
 			);
 			path = ContentStrings;
@@ -928,7 +930,6 @@
 				217BCCDF2B9DE84100B5461B /* APIKey.swift */,
 				217BCCDD2B9DE6CD00B5461B /* .gitignore */,
 				2167FD492BC04E2F00A45F2B /* Font */,
-				2177B3AF2C57B3A100BEB3BE /* AppDelegate.swift */,
 				217BCCB32B9DE5C300B5461B /* kiwITApp.swift */,
 				219EFBC62B9F0A5200FBEBE0 /* Setup */,
 				217A51402BAECD380052A07E /* Model */,
@@ -1165,7 +1166,6 @@
 				2175BE852BDFDA700048FBEB /* Setup+NetworkErrorMessageStrings.swift */,
 				2177B2BF2C1B1E2700BEB3BE /* Setup+UserDefaultsKeyStrings.swift */,
 				2177B2C12C1B1E3600BEB3BE /* Setup+KeyChainKeyStrings.swift */,
-				2177B3A52C529D9900BEB3BE /* Setup+NotificationStrings.swift */,
 			);
 			path = Strings;
 			sourceTree = "<group>";
@@ -1427,7 +1427,6 @@
 				2177B3732C3C23FA00BEB3BE /* BookmarkedQuizContent.swift in Sources */,
 				2177B3982C4C4A2C00BEB3BE /* UserSubscriptionView.swift in Sources */,
 				217D59472BA9C713005AE418 /* LectureListViewModel.swift in Sources */,
-				2177B3A42C52995900BEB3BE /* NotificationManager.swift in Sources */,
 				217BAADC2BFB826C00ADAC6B /* QuizResult.swift in Sources */,
 				218267742BE68A6F00D8C17C /* QuizResultViewModel.swift in Sources */,
 				212339A02C19F40700B397F8 /* TabViews.swift in Sources */,
@@ -1439,14 +1438,12 @@
 				2173C0622BA093A100FDD3D9 /* Error+UserDefaultsManager.swift in Sources */,
 				217A513D2BAECBB70052A07E /* Error+Network.swift in Sources */,
 				219EFBBB2B9F068200FBEBE0 /* HomeView.swift in Sources */,
-				2177B3AA2C52ACD600BEB3BE /* InterviewStatusManager.swift in Sources */,
 				2177B32F2C25A67D00BEB3BE /* LatestTakenQuiz.swift in Sources */,
 				217D59452BA9C700005AE418 /* LectureListView.swift in Sources */,
 				2177B2D02C20A84100BEB3BE /* TrophyListViewModel.swift in Sources */,
 				2177B3112C258C6D00BEB3BE /* CompleteLecture.swift in Sources */,
 				2189BC382BF24D05007CC766 /* QuizContentShortAnswer.swift in Sources */,
 				217BCCE02B9DE84100B5461B /* APIKey.swift in Sources */,
-				2177B3B02C57B3A100BEB3BE /* AppDelegate.swift in Sources */,
 				2170E7572BBC6DD7002A1DA6 /* ShrinkAnimationButtonView.swift in Sources */,
 				2177B34D2C357F9100BEB3BE /* Setup+ContentStrings+SignUp.swift in Sources */,
 				218267672BE6809300D8C17C /* QuizView.swift in Sources */,
@@ -1478,8 +1475,8 @@
 				2173F9392C10896300CDF116 /* TrophyContent.swift in Sources */,
 				2173C0552BA090F200FDD3D9 /* SocialLoginViewModel.swift in Sources */,
 				2177B3212C2598AE00BEB3BE /* StartQuiz.swift in Sources */,
-				2177B3A62C529D9900BEB3BE /* Setup+NotificationStrings.swift in Sources */,
 				2177B2CB2C20750700BEB3BE /* InterviewListViewModel.swift in Sources */,
+				216E00FD2C8F239100A3D3FA /* Setup+ContentStrings+Quiz.swift in Sources */,
 				217A513F2BAECD350052A07E /* SignUp.swift in Sources */,
 				2177B3602C383BF900BEB3BE /* CompletedLectureContent.swift in Sources */,
 				2184882C2C63A44B00977B79 /* EditInterview.swift in Sources */,
@@ -1490,6 +1487,7 @@
 				2173C0582BA0917100FDD3D9 /* UserDefaultsManager.swift in Sources */,
 				217DFD322BEB7A5400C4ADC9 /* LectureLevelList.swift in Sources */,
 				2184881E2C5E71F800977B79 /* InterviewHistoryViewModel.swift in Sources */,
+				216E01012C8F2EAE00A3D3FA /* Setup+ContentStrings+Trophy.swift in Sources */,
 				2177B32D2C25A32D00BEB3BE /* ExerciseForLecture.swift in Sources */,
 				217A51432BAECD5D0052A07E /* SignIn.swift in Sources */,
 				217BAADF2BFB892200ADAC6B /* QuizResultDetailEachQuestion.swift in Sources */,
@@ -1498,6 +1496,7 @@
 				2184882F2C63A4A900977B79 /* InterviewRoomList.swift in Sources */,
 				2177B3752C3ED02500BEB3BE /* ProfileContent.swift in Sources */,
 				2170E7552BBC6873002A1DA6 /* Setup+Color.swift in Sources */,
+				216E00FB2C8EF58300A3D3FA /* Setup+ContentStrings+Lecture.swift in Sources */,
 				2177B3192C25959D00BEB3BE /* CheckCompletedLecture.swift in Sources */,
 				2177B3252C2598CB00BEB3BE /* BookmarkQuiz.swift in Sources */,
 				2177B39B2C4C4A7F00BEB3BE /* UserSubscriptionViewModel.swift in Sources */,
@@ -1532,6 +1531,7 @@
 				219489572C18796F00E684AC /* Error+ServiceProvider.swift in Sources */,
 				218267652BE6808200D8C17C /* QuizListViewModel.swift in Sources */,
 				219489552C18517600E684AC /* SocialLoginButtonViewModel.swift in Sources */,
+				216E00FF2C8F2D7900A3D3FA /* Setup+ContentStrings+Home.swift in Sources */,
 				218488322C63A56900977B79 /* InterviewQuestionsList.swift in Sources */,
 				2177B32B2C25A1F700BEB3BE /* LectureCategoryContent.swift in Sources */,
 				217E55A62BB1BA2D0014B46E /* Authorization.swift in Sources */,

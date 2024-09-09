@@ -30,7 +30,7 @@ struct LectureListView: View {
                     VStack {
                         Image(systemName: Setup.ImageStrings.downDirection)
                             .scaledToFit()
-                        Text("당겨서 새로고침")
+                        Text(Setup.ContentStrings.pullToRefreshTitle)
                             .font(.custom(Setup.FontName.lineThin, size: 12))
                             .foregroundStyle(Color.textColor)
                     }
@@ -85,7 +85,6 @@ struct LectureListView: View {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
         .refreshable {
-            print("Pull to Refresh Lecture List in \(lectureListVM.lectureType)!!!")
             lectureListVM.requestLectureList()
         }
     }

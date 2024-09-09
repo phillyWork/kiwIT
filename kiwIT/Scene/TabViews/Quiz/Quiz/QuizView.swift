@@ -34,7 +34,6 @@ struct QuizView: View {
                         case .success(let selectedChoice):
                             quizVM.updateMultipleChoice(selectedChoice)
                             if quizVM.isQuizCompleted {
-                                print("Quiz done by MultipleChoice")
                                 path.append("Result-\(quizVM.quizGroupId)")
                             }
                         case .failure(.backToPreviousQuestion):
@@ -49,7 +48,6 @@ struct QuizView: View {
                         case .success(let userAnswer):
                             quizVM.updateShortAnswer(userAnswer)
                             if quizVM.isQuizCompleted {
-                                print("Quiz done by Short Answer")
                                 path.append("Result-\(quizVM.quizGroupId)")
                             }
                         case .failure(.backToPreviousQuestion):
@@ -64,7 +62,6 @@ struct QuizView: View {
                         case .success(let userAnswer):
                             quizVM.updateOXAnswer(userAnswer)
                             if quizVM.isQuizCompleted {
-                                print("Quiz done by OX")
                                 path.append("Result-\(quizVM.quizGroupId)")
                             }
                         case .failure(.backToPreviousQuestion):
@@ -85,10 +82,6 @@ struct QuizView: View {
         }
         .navigationBarBackButtonHidden()
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Quiz Title")
-                    .font(.custom(Setup.FontName.phuduBold, size: 20))
-            }
             ToolbarItem(placement: .topBarLeading) {
                 Button {
                     quizListVM.dismissFromQuiz()

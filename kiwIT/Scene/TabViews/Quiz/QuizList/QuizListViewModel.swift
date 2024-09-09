@@ -78,14 +78,12 @@ final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
     
     func checkMorePaginationNeeded(_ eachQuizGroup: QuizGroupPayload) {
         if quizListData.last == eachQuizGroup {
-            print("Last data for list: should call more!!!")
             loadMoreQuizList()
         }
     }
     
     private func requestQuizList() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -95,16 +93,13 @@ final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
                     if let quizListError = error as? NetworkError {
                         switch quizListError {
                         case .invalidRequestBody(_):
-                            print("quiz list error by Query String Error: \(quizListError.description)")
                             self?.showEmptyView = true
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .requestQuizList)
                         default:
-                            print("quiz list error by Network Error: \(quizListError.description)")
                             self?.showEmptyView = true
                         }
                     } else {
-                        print("quiz list error by other reason: \(error.localizedDescription)")
                         self?.showEmptyView = true
                     }
                 }
@@ -115,7 +110,6 @@ final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
                 if self.canRequestMoreCompletedQuizList {
                     self.requestCompletedQuizList()
                 } else {
-                    print("About to show completed quiz list in requestQuizList")
                     self.isCompletedQuizListLoading = false
                 }
             }
@@ -124,14 +118,12 @@ final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
     
     private func loadMoreQuizList() {
         guard canRequestMoreQuizList else { return }
-        print("About to load more quiz list!!!")
         currentPageQuizListRequest += 1
         requestQuizList()
     }
     
     func requestCompletedQuizList() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
@@ -143,11 +135,9 @@ final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .requestCompletedQuizList)
                         default:
-                            print("Completed Quiz List Error by Network: \(completedQuizListError.description)")
                             self?.canRequestMoreCompletedQuizList = false
                         }
                     } else {
-                        print("Completed Quiz List Error for other reason: \(error.localizedDescription)")
                         self?.canRequestMoreCompletedQuizList = false
                     }
                 }
@@ -164,7 +154,6 @@ final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
             self.isCompletedQuizListLoading = false
             return
         }
-        print("About to Load More Completed Quiz Content!!!")
         currentPageCompletedQuizListRequest += 1
         requestCompletedQuizList()
     }
@@ -197,7 +186,6 @@ final class QuizListViewModel: ObservableObject, RefreshTokenHandler {
     
     func checkRetakeQuiz() {
         if isQuizGroupSelected {
-            print("Getting back from QuizResultView!!!")
             resetPaginationToRefreshQuizList()
         }
     }

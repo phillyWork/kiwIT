@@ -95,18 +95,15 @@ final class TrophyListViewModel: ObservableObject, RefreshTokenHandler {
                     if let wholeTrophyError = error as? NetworkError {
                         switch wholeTrophyError {
                         case .invalidRequestBody(_):
-                            print("Pagination Error with other reason: \(wholeTrophyError.description)")
                             self?.showWholeTrophyRequestErrorAlert = true
                             self?.dispatchGroup.leave()
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .wholeTrophyList)
                         default:
-                            print("whole list trophy error due to network: \(wholeTrophyError.description)")
                             self?.showWholeTrophyRequestErrorAlert = true
                             self?.dispatchGroup.leave()
                         }
                     } else {
-                        print("Whole List Trophy Error by other reason: \(error.localizedDescription)")
                         self?.showWholeTrophyRequestErrorAlert = true
                         self?.dispatchGroup.leave()
                     }
@@ -136,16 +133,13 @@ final class TrophyListViewModel: ObservableObject, RefreshTokenHandler {
                     if let acquiredTrophyError = error as? NetworkError {
                         switch acquiredTrophyError {
                         case .invalidRequestBody(_):
-                            print("acquired trophy error by wrong request: \(acquiredTrophyError.description)")
                             self?.showAcquiredTrophyRequestErrorAlert = true
                         case .invalidToken(_):
                             self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .acquiredTrophyList)
                         default:
-                            print("acquired trophy error due to network: \(acquiredTrophyError.description)")
                             self?.showAcquiredTrophyRequestErrorAlert = true
                         }
                     } else {
-                        print("acquired trophy error by other reason: \(error.localizedDescription)")
                         self?.showAcquiredTrophyRequestErrorAlert = true
                     }
                 }
@@ -193,7 +187,6 @@ final class TrophyListViewModel: ObservableObject, RefreshTokenHandler {
     func cleanUpCancellables() {
         cancellables.forEach { $0.cancel() }
         cancellables.removeAll()
-        print("Cancellables count: \(cancellables.count)")
     }
     
     deinit {

@@ -25,7 +25,7 @@ struct NextLectureView: View {
                 .background(Color.surfaceColor)
                 .overlay {
                     HStack {
-                        Text("LV. \(nextLecture.levelNum)")
+                        Text(Setup.ContentStrings.level + "\(nextLecture.levelNum)")
                             .font(.custom(Setup.FontName.lineBold, size: 12))
                             .foregroundStyle(Color.textColor)
                         Spacer()
@@ -39,7 +39,7 @@ struct NextLectureView: View {
                         Button {
                             studyAction()
                         } label: {
-                            Text("학습하기")
+                            Text(Setup.ContentStrings.Lecture.moveToLectureButtonTitle)
                                 .font(.custom(Setup.FontName.lineBold, size: 12))
                                 .foregroundStyle(Color.textColor)
                         }

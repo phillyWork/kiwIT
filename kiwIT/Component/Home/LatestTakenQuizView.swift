@@ -30,7 +30,7 @@ struct LatestTakenQuizView: View {
             .background(Color.surfaceColor)
             .overlay {
                 HStack {
-                    Text("LV. \(latestTakenQuiz.levelNum)")
+                    Text(Setup.ContentStrings.level + "\(latestTakenQuiz.levelNum)")
                         .font(.custom(Setup.FontName.lineBold, size: 12))
                         .foregroundStyle(Color.textColor)
                     Spacer()
@@ -40,11 +40,11 @@ struct LatestTakenQuizView: View {
             }
             .overlay {
                 HStack {
-                    Text("최고 기록: \(latestTakenQuiz.result.highestScore)")
+                    Text(Setup.ContentStrings.Quiz.highestScoreTitle + "\(latestTakenQuiz.result.highestScore)")
                         .font(.custom(Setup.FontName.notoSansMedium, size: 12))
                     Text("/")
                         .font(.custom(Setup.FontName.notoSansMedium, size: 12))
-                    Text("최근 기록: \(latestTakenQuiz.result.latestScore)")
+                    Text(Setup.ContentStrings.Quiz.latestScoreTitle +  "\(latestTakenQuiz.result.latestScore)")
                         .font(.custom(Setup.FontName.notoSansMedium, size: 12))
                 }
                 .foregroundStyle(Color.textColor)
@@ -57,7 +57,7 @@ struct LatestTakenQuizView: View {
                     Button {
                         quizAction()
                     } label: {
-                        Text("다시풀기")
+                        Text(Setup.ContentStrings.Quiz.takeQuizAgainButtonTitle)
                             .font(.custom(Setup.FontName.lineBold, size: 12))
                             .foregroundStyle(Color.textColor)
                     }
@@ -71,9 +71,3 @@ struct LatestTakenQuizView: View {
         .padding(.horizontal, 10)
     }
 }
-
-//#Preview {
-//    LatestTakenQuizView(latestTakenQuiz: TakenQuizResponse(id: 2, title: "quiz title 1", subtitle: "sub title 2", levelNum: 3, totalScore: 30, result: SubmitQuizResponse(userId: 33, quizGroupId: 2, latestScore: 30, highestScore: 30))) {
-//        print("HIHI")
-//    }
-//}

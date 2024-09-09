@@ -47,11 +47,11 @@ struct TabViews: View {
                     Label("퀴즈", systemImage: Setup.ImageStrings.defaultQuiz)
                 }
                 .tag(TabType.quiz)
-            LazyView(InterviewListView(tabViewsVM: tabViewsVM))
-                .tabItem {
-                    Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
-                }
-                .tag(TabType.interview)
+//            LazyView(InterviewListView(tabViewsVM: tabViewsVM))
+//                .tabItem {
+//                    Label("AI면접", systemImage: Setup.ImageStrings.defaultAiInterview)
+//                }
+//                .tag(TabType.interview)
             LazyView(ProfileView(tabViewsVM: tabViewsVM))
                 .tabItem {
                     Label("나", systemImage: Setup.ImageStrings.defaultProfile)

@@ -59,7 +59,6 @@ final class MainTabBarViewModel: ObservableObject, RefreshTokenHandler {
     
     private func checkSignInStatus() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("No Saved Id or Token. Should Sign In!!!")
             self.isUserLoggedIn = false
             return
         }
@@ -73,22 +72,17 @@ final class MainTabBarViewModel: ObservableObject, RefreshTokenHandler {
                     if let profileError = error as? NetworkError {
                         switch profileError {
                         case .invalidRequestBody(_):
-                            print("This user doesn't exist in MainTabsViewModel Initiailzation: \(profileError.description)")
                             self?.isUserLoggedIn = false
                         case .invalidToken(_):
-                            print("Access Token is not available in MainTabsViewModel Initiailzation: \(profileError.description)")
                             self?.requestRefreshToken(current, userId: userId, action: .profile)
                         default:
-                            print("Profile Check Error in MainTabsViewModel Initiailzation: \(profileError.description)")
                             self?.isUserLoggedIn = false
                         }
                     } else {
-                        print("Profile Request Error for other reason in MainTabsViewModel Initiailzation: \(error.localizedDescription)")
                         self?.isUserLoggedIn = false
                     }
                 }
             } receiveValue: { [weak self] response in
-                print("Getting Profile Data from Server! Available Saved Token!")
                 self?.userProfileData = response
                 self?.isUserLoggedIn = true
             }
@@ -96,7 +90,6 @@ final class MainTabBarViewModel: ObservableObject, RefreshTokenHandler {
     }
     
     func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: ActionType) {
-        print("Call ProfileRequest Again!!!")
         requestProfile(response, userId: userId)
     }
     

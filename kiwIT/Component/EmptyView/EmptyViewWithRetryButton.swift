@@ -24,7 +24,7 @@ struct EmptyViewWithRetryButton: View {
                     Image(systemName: Setup.ImageStrings.retryAction)
                         .foregroundStyle(Color.errorHighlightColor)
                         .padding()
-                    Text("다시 시도하기")
+                    Text(Setup.ContentStrings.emptyResultRetryButtonTitle)
                         .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                         .foregroundStyle(Color.textColor)
                 }

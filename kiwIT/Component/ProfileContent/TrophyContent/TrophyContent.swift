@@ -37,7 +37,7 @@ struct TrophyContent: View {
                 .frame(maxWidth: .infinity)
                 .overlay {
                     if !achievedDate.isEmpty {
-                        Text("획득 날짜: \(achievedDate)")
+                        Text(Setup.ContentStrings.Trophy.acquiredDateTitle + "\(achievedDate)")
                             .foregroundStyle(Color.black)
                             .multilineTextAlignment(.leading)
                             .lineLimit(2)

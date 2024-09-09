@@ -18,10 +18,6 @@ struct InterviewResultView: View {
         
         Text("")
         
-        //MARK: - 결과 확인 및 다시하기, 확인 완료
-        //MARK: - 다시하기: polling 처리 필요 확인해야 함 (API 문서 확인 필요)
-        
-        
 //        VStack {
 //            ZStack {
 //                if quizResultVM.didFinishSubmittingAnswer {

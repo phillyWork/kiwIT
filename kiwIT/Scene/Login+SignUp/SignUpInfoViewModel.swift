@@ -75,20 +75,9 @@ final class SignUpInfoViewModel: ObservableObject {
         NetworkManager.shared.request(type: SignUpResponse.self, api: .signUp(request: userDataForSignUp), errorCase: .signUp)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    if let signUpError = error as? NetworkError {
-                        switch signUpError {
-                        case .invalidRequestBody(_):
-                            print("Nickname Duplicated or Cannot SignUp!! -- \(signUpError.description)")
-                        default:
-                            print("other reason for signup network error: \(signUpError.description)")
-                        }
-                    } else {
-                        print("Error For Sign Up Request for other reason: \(error.localizedDescription)")
-                    }
                     self?.showSignUpErrorAlert = true
                 }
             } receiveValue: { [weak self] response in
-                print("SignUpRequest Response: \(response)")
                 self?.requestProfile(response)
             }
             .store(in: &self.cancellables)
@@ -98,11 +87,6 @@ final class SignUpInfoViewModel: ObservableObject {
         NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: userToken.accessToken)), errorCase: .profileCheck)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    if let profileError = error as? NetworkError {
-                        print("Profile Check Error in SignUp!! -- \(profileError.description)")
-                    } else {
-                        print("Error For Sign Up Request for other reason: \(error.localizedDescription)")
-                    }
                     self?.didSignUpSucceed = true
                 }
             } receiveValue: { [weak self] response in

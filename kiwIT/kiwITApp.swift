@@ -12,7 +12,6 @@ import KakaoSDKAuth
 
 @main
 struct kiwITApp: App {
-    
     init() {
         //Config 활용 Main Bundle 내부 등록된 키를 활용
         //  let kakaoAppKey = Bundle.main.infoDictionary?["KAKAO_NATIVE_APP_KEY"] ?? ""
@@ -36,8 +35,6 @@ struct kiwITApp: App {
             let hasLaunchedBefore = try UserDefaultsManager.shared.retrieveFromUserDefaults(forKey: Setup.UserDefaultsKeyStrings.checkLaunchingFirstTime) as Bool
 
             if !hasLaunchedBefore {
-                print("Has Not Launched Before!!!")
-                
                 //First Launch
                 KeyChainManager.shared.deleteAll()
                 
@@ -45,7 +42,6 @@ struct kiwITApp: App {
                 UserDefaultsManager.shared.saveToUserDefaults(newValue: true, forKey: Setup.UserDefaultsKeyStrings.checkLaunchingFirstTime)
             }
         } catch {
-            print("Error For Checking First Time Data: No Data")
             KeyChainManager.shared.deleteAll()
             
             //create value
