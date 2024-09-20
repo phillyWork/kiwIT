@@ -10,9 +10,7 @@ import SwiftUI
 struct LectureView: View {
     
     @StateObject var lectureVM: LectureViewModel
-    
     @Binding var isLoginAvailable: Bool
-    
     @Environment(\.dismiss) private var dismiss
         
     init(contentId: Int, isLoginAvailable: Binding<Bool>) {
@@ -23,17 +21,25 @@ struct LectureView: View {
     var body: some View {
         VStack {
             ZStack {
-                if let lectureContent = lectureVM.lectureContent {
-                    CustomWebView(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: lectureContent.payloadUrl)
-                    if lectureVM.showProgressViewForLoadingWeb {
-                        ProgressView {
-                            Text("컨텐츠 불러오는 중...")
+                ZStack {
+                    if let lectureContent = lectureVM.lectureContent {
+                        CustomWebView(isLoading: $lectureVM.showProgressViewForLoadingWeb, urlString: lectureContent.payloadUrl)
+                        if lectureVM.showProgressViewForLoadingWeb {
+                            ProgressView {
+                                Text(Setup.ContentStrings.Lecture.loadingProgressTitle)
+                            }
+                            .scaleEffect(1.5, anchor: .center)
                         }
-                        .scaleEffect(1.5, anchor: .center)
                     }
                 }
+                .animation(.easeInOut, value: lectureVM.showProgressViewForLoadingWeb)
+                
+                TrophyPageTabView(trophyList: lectureVM.acquiredTrophyList, buttonAction: {
+                    lectureVM.handleAfterCloseNewAcquiredTrophyCard()
+                })
+                .opacity(lectureVM.acquiredTrophyList.isEmpty ? 0 : 1)
+                
             }
-            .animation(.easeInOut, value: lectureVM.showProgressViewForLoadingWeb)
         }
         .background(Color.backgroundColor)
         .navigationBarBackButtonHidden()
@@ -45,50 +51,51 @@ struct LectureView: View {
                     Image(systemName: Setup.ImageStrings.defaultXMark2)
                 }
                 .tint(Color.textColor)
+                .disabled(lectureVM.isCompleteStudyButtonDisabled)
             }
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
                     lectureVM.debounceToRequestCompleteLecture()
                 } label: {
-                    Text(lectureVM.isThisLectureStudiedBefore ? "예제 보기" : "학습 완료")
+                    Text(lectureVM.isThisLectureStudiedBefore ? Setup.ContentStrings.Lecture.showExampleTitle : Setup.ContentStrings.Lecture.confirmStudyCompleteTitle)
                 }
-                .alert("예제 문제", isPresented: $lectureVM.showLectureExampleAlert) {
+                .disabled(lectureVM.isCompleteStudyButtonDisabled)
+                .alert(Setup.ContentStrings.exampleQuestionsAlertTitle, isPresented: $lectureVM.showLectureExampleAlert) {
                     Button(role: .cancel) {
                         lectureVM.updateAnswerAsTrue()
                     } label: {
-                        Text("O")
+                        Text(Setup.ContentStrings.Quiz.oxTrue)
                     }
                     Button(role: .destructive) {
                         lectureVM.updateAnswerAsFalse()
                     } label: {
-                        Text("X")
+                        Text(Setup.ContentStrings.Quiz.oxFalse)
                     }
                 } message: {
-                    Text(lectureVM.lectureContent?.exercise ?? "본문 예제 문제입니다")
+                    Text(lectureVM.lectureContent?.exercise ?? Setup.ContentStrings.Lecture.defaultExampleQuizMessage)
                 }
-                .alert(lectureVM.checkExampleAnswer() ? "정답입니다!" : "오답입니다!", isPresented: $lectureVM.showExampleAnswerAlert) {
+                .alert(lectureVM.checkExampleAnswer() ? Setup.ContentStrings.Lecture.exampleCorrectAnswerAlertTitle : Setup.ContentStrings.Lecture.exampleWrongAnswerAlertTitle, isPresented: $lectureVM.showExampleAnswerAlert) {
                     Button(role: .cancel) {
-                        lectureVM.requestSubmitExerciseAnswer()
+                        lectureVM.debounceToRequestSubmitExerciseAnswer()
                     } label: {
                         Text(Setup.ContentStrings.confirm)
                     }
                 } message: {
-                    Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent!.answer)입니다.")
+                    Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent?.answer)입니다.")
                 }
-                .alert("북마크", isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
+                .alert(Setup.ContentStrings.bookmarkThisLectureAlertTitle, isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
                     Button(role: .cancel) {
-                        lectureVM.debounceToRequestBookmarkLecture()
-                        lectureVM.lectureStudyAllDone = true
+                        lectureVM.bookmarkThisLectureAndStudyAllDone()
                     } label: {
-                        Text("네")
+                        Text(Setup.ContentStrings.Lecture.confirmBookmarkThisLectureButtonTitle)
                     }
                     Button {
-                        lectureVM.lectureStudyAllDone = true
+                        lectureVM.sendToUpdateStudyAllDoneStatus(true)
                     } label: {
-                        Text("아니요")
+                        Text(Setup.ContentStrings.Lecture.cancelBookmarkThisLectureButtonTitle)
                     }
                 } message: {
-                    Text("학습 자료를 보관함에 넣을까요?")
+                    Text(Setup.ContentStrings.Lecture.bookmarkThisLectureAlertMessage)
                 }
                 
                 if lectureVM.isThisLectureStudiedBefore {
@@ -100,29 +107,29 @@ struct LectureView: View {
                 }
             }
         }
-        .alert("네트워크 오류!", isPresented: $lectureVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $lectureVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .alert("학습 시작 오류!!!", isPresented: $lectureVM.showStartLectureErrorAlertToDismiss, actions: {
+        .alert(Setup.ContentStrings.startLectureErrorAlertTitle, isPresented: $lectureVM.showStartLectureErrorAlertToDismiss, actions: {
             ErrorAlertConfirmButton {
                 dismiss()
             }
         }, message: {
-            Text("컨텐츠를 불러오는 데 오류가 발생했습니다. 다시 시도해주세요.")
+            Text(Setup.ContentStrings.Lecture.loadingLectureErrorAlertMessage)
         })
-        .alert("학습 완료 오류!!!", isPresented: $lectureVM.showCompleteLectureErrorAlertToRetry, actions: {
+        .alert(Setup.ContentStrings.completeLectureErrorAlertTitle, isPresented: $lectureVM.showCompleteLectureErrorAlertToRetry, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("학습 완료 처리에 실패했습니다. 다시 시도해주세요.")
+            Text(Setup.ContentStrings.Lecture.completeLectureErrorAlertMessage)
         })
-        .alert("예제 제출 오류!!!", isPresented: $lectureVM.showSubmitExerciseErrorAlertToRetry, actions: {
+        .alert(Setup.ContentStrings.submitLectureExampleErrorAlertTitle, isPresented: $lectureVM.showSubmitExerciseErrorAlertToRetry, actions: {
             ErrorAlertConfirmButton {
-                lectureVM.showExampleAnswerAlert = true
+                lectureVM.debounceToRequestSubmitExerciseAnswer()
             }
         }, message: {
-            Text("예제 풀이 등록에 실패했습니다. 다시 시도해주세요.")
+            Text(Setup.ContentStrings.Lecture.submitExampleAnswerErrorAlertMessage)
         })
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
@@ -131,16 +138,18 @@ struct LectureView: View {
         }, message: {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
-        .alert("북마크 오류!", isPresented: $lectureVM.showBookmarkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.bookmarkErrorAlertTitle, isPresented: $lectureVM.showBookmarkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("보관함 처리에 실패했습니다. 다시 시도해주세요.")
+            Text(Setup.ContentStrings.Lecture.bookmarkLectureErrorAlertMessage)
         })
         .onChange(of: lectureVM.lectureStudyAllDone) { newValue in
-            print("lectureStudyAllDone is set to \(newValue)")
             if newValue {
                 dismiss()
             }
+        }
+        .onDisappear {
+            lectureVM.cleanUpCancellables()
         }
     }
 }

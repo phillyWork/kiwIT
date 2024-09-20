@@ -12,7 +12,6 @@ import Combine
 //버튼 누른 뒤, 이미 가입되어 있다면 로그인 화면 제거, HomeView로 이동
 //가입되어 있지 않다면 회원가입 view로
 
-
 //구조
 //1. SocialLoginView ~ SocialLoginVM
 //2. SocialLoginButton ~ SocialLoginButtonVM
@@ -21,9 +20,6 @@ import Combine
 //5-1. 로그인 성공 --> SocialLoginVM의 didSucceedLogin 변경
 //5-2. 회원가입 필요 --> SocialLoginVM의 shouldMoveToSignUp 변경
 //5-3. 실패 --> 에러 케이스 처리 필요
-
-
-
 
 //해당 view로 오는 경우
 //1. 처음 앱을 설치한 경우 (keychain에 저장된 token 없음)
@@ -40,30 +36,31 @@ struct SocialLoginView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text(Setup.ContentStrings.appTitle)
-                    .font(.title)
-                Spacer(minLength: 50)
+                Spacer()
+                SignInMainImageView()
+                Spacer()
                 VStack(alignment: .center, spacing: 10) {
-                    SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .apple)
-                    SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .kakao)
+                    LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .apple))
+                        .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonHeight)
+                    LazyView(SocialLoginButtonView(socialLoginVM: socialLoginVM, service: .kakao)).frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonHeight)
                 }
-                .frame(width: Setup.Frame.socialLoginButtonWidth, height: Setup.Frame.socialLoginButtonStackHeight)
+                .padding(.vertical, 8)
             }
             .frame(maxWidth: .infinity)
             .background(Color.backgroundColor)
             .onChange(of: socialLoginVM.didLoginSucceed) { newValue in
                 if newValue {
-                    print("Login Succeed. Move to HomeView")
                     if let profile = socialLoginVM.profileData {
-                        mainTabBarVM.userProfileData = profile
-                    } else {
-                        print("Can't get profile data from SignIn!!!")
+                        mainTabBarVM.userProfileInput.send(profile)
                     }
-                    mainTabBarVM.isUserLoggedIn = true
-                } else {
-                    print("Not Succeeding in Login. Should show error message: \(socialLoginVM.errorMessage)")
+                    mainTabBarVM.checkLoginStatus.send(true)
                 }
             }
+            .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $socialLoginVM.showLoginErrorAlert, actions: {
+                ErrorAlertConfirmButton { }
+            }, message: {
+                Text(Setup.ContentStrings.loginTryErrorAlertMessage)
+            })
             .navigationDestination(isPresented: $socialLoginVM.shouldMoveToSignUp) {
                 if let userDataForSignUp = socialLoginVM.userDataForSignUp {
                     SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: userDataForSignUp), mainTabBarVM: mainTabBarVM)

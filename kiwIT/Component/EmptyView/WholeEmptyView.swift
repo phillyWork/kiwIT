@@ -9,7 +9,7 @@ import SwiftUI
 
 struct WholeEmptyView: View {
     var body: some View {
-        Text("Empty Result!!!")
+        Text(Setup.ContentStrings.emptyResultTitle)
             .foregroundStyle(Color.textColor)
             .background(Color.backgroundColor)
     }

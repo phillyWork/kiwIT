@@ -7,15 +7,11 @@
 
 import Foundation
 
-import Alamofire
-
-//MARK: - Response
-
-struct TakenQuizResponse: Decodable {
+struct TakenQuizResponse: Decodable, Hashable {
     var id: Int             //quiz group id
     var title: String
     var subtitle: String
     var levelNum: Int
     var totalScore: Int
-    var result: SubmitQuizResponse
+    var result: BasicSubmittedQuizResponse
 }

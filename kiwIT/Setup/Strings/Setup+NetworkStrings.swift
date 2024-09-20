@@ -22,5 +22,12 @@ extension Setup {
         static let queryStringLimitPageTitle = "limit"
         static let queryStringByLevelTitle = "byLevel"
         static let queryStringTagTitle = "tag"
+        static let interviewTitle = "title"
+        static let createInterviewCategoryId = "categoryId"
+        static let createInterviewLevelNum = "levelNum"
+        static let createInterviewTimeLimit = "timeLimit"
+        static let createInterviewEtcRequest = "etcRequest"
+        static let createInterviewQuestionsCnt = "questionsCnt"        
+        static let submitInterviewAnswerListTitle = "answerList"
     }
 }

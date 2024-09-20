@@ -15,9 +15,9 @@ struct MainTabBarView: View {
     var body: some View {
         //로그인 여부 체크
         if (mainTabBarVM.isUserLoggedIn) {
-            TabViews(mainTabBarVM: mainTabBarVM)
+            LazyView(TabViews(mainTabBarVM: mainTabBarVM))
         } else {
-            SocialLoginView(mainTabBarVM: mainTabBarVM)
+            LazyView(SocialLoginView(mainTabBarVM: mainTabBarVM))
         }
     }
 }

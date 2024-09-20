@@ -15,7 +15,7 @@ struct QuizView: View {
     @Binding var path: NavigationPath
     @Binding var isLoginAvailable: Bool
     
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     
     init(quizListVM: QuizListViewModel, quizGroupId: Int, pathString: String, path: Binding<NavigationPath>, isLoginAvailable: Binding<Bool>) {
         self.quizListVM = quizListVM
@@ -23,17 +23,13 @@ struct QuizView: View {
         self._path = path
         self._isLoginAvailable = isLoginAvailable
     }
-
+    
     var body: some View {
-        
         ScrollView {
-            
             if let quizData = quizVM.quizData {
-                
-                switch quizVM.quizType {
+                switch quizData.quizList[quizVM.quizIndex].type {
                 case .multipleChoice:
-                    
-                    QuizMultipleChoice(quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
+                    QuizMultipleChoice(userChoiceNumber: quizVM.isThisPreviousQuestion ?  quizVM.recentSelectedMultipleChoice : 0, quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
                         switch result {
                         case .success(let selectedChoice):
                             quizVM.updateMultipleChoice(selectedChoice)
@@ -43,10 +39,11 @@ struct QuizView: View {
                         case .failure(.backToPreviousQuestion):
                             quizVM.checkToRemoveSelected()
                         }
+                    } bookmarkAction: { id in
+                        quizVM.updateBookmarkedStatus(id)
                     }
                 case .shortAnswer:
-                    
-                    QuizContentShortAnswer(quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
+                    QuizContentShortAnswer(textFieldInput: quizVM.isThisPreviousQuestion ? quizVM.recentSelectedShortAnswer : "", quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
                         switch result {
                         case .success(let userAnswer):
                             quizVM.updateShortAnswer(userAnswer)
@@ -56,10 +53,11 @@ struct QuizView: View {
                         case .failure(.backToPreviousQuestion):
                             quizVM.checkToRemoveSelected()
                         }
+                    } bookmarkAction: { id in
+                        quizVM.updateBookmarkedStatus(id)
                     }
                 case .trueOrFalse:
-                    
-                    QuizContentOX(quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
+                    QuizContentOX(chosenState: quizVM.isThisPreviousQuestion ? quizVM.recentSelectedBoolAnswer : .unchosen, quizPayload: quizData.quizList[quizVM.quizIndex], quizIndex: quizVM.quizIndex, quizCount: quizVM.quizCount) { result in
                         switch result {
                         case .success(let userAnswer):
                             quizVM.updateOXAnswer(userAnswer)
@@ -69,22 +67,24 @@ struct QuizView: View {
                         case .failure(.backToPreviousQuestion):
                             quizVM.checkToRemoveSelected()
                         }
+                    } bookmarkAction: { id in
+                        quizVM.updateBookmarkedStatus(id)
                     }
-                    
                 }
+            } else {
+                WholeEmptyView()
             }
-            
         }
         .frame(maxWidth: .infinity)
         .background(Color.backgroundColor)
+        .onAppear {
+            quizVM.checkRetakeQuiz()
+        }
         .navigationBarBackButtonHidden()
         .toolbar {
-            ToolbarItem(placement: .principal) {
-                Text("Quiz Title")
-                    .font(.custom(Setup.FontName.phuduBold, size: 20))
-            }
             ToolbarItem(placement: .topBarLeading) {
                 Button {
+                    quizListVM.dismissFromQuiz()
                     dismiss()
                 } label: {
                     Image(systemName: Setup.ImageStrings.defaultXMark2)
@@ -92,35 +92,23 @@ struct QuizView: View {
                 .tint(Color.textColor)
             }
         }
-        .onAppear {
-            print("user takes quiz again??")
-            if quizVM.checkRetakeQuiz() {
-                print("user takes quiz again")
-                quizVM.resetQuiz()
-            }
-        }
-        .alert("네트워크 오류!", isPresented: $quizVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $quizVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .alert("로그인 오류!", isPresented: $quizVM.shouldLoginAgain, actions: {
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $quizVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
                 isLoginAvailable = false
             }
         }, message: {
-            Text("세션 만료입니다. 다시 로그인해주세요!")
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
-//        .onChange(of: quizVM.shouldLoginAgain) { newValue in
-//            if newValue {
-//                isLoginAvailable = false
-//            }
-//        }
-        .navigationDestination(isPresented: $quizVM.isQuizCompleted) {
-            let _ = print("Moving to Quiz Result View with path: \(path)")
-//            QuizResultView(path: $path, testDataForQuestion: testDataForQuestion, userOXAnswer: userOXAnswer, answers: answerForOXExample)
+        .background {
+            NavigationLink("", isActive: $quizVM.isQuizCompleted) {
+                QuizResultView(quizVM, path: $path, isLoginAvailable: $isLoginAvailable)
+            }
         }
         .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)        //to disable pull to refresh
     }
-    
 }

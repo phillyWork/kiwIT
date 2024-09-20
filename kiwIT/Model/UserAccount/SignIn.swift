@@ -40,11 +40,9 @@ enum SignInResponse: Decodable {
         
         if let accessToken = try? container.decode(String.self, forKey: .accessToken), let refreshToken = try? container.decode(String.self, forKey: .refreshToken) {
             let signInSuccess = SignInResponseSuccess(accessToken: accessToken, refreshToken: refreshToken)
-            print("SignInSuccess data: \(signInSuccess)")
             self = .signInSuccess(signInSuccess)
         } else if let email = try? container.decode(String.self, forKey: .email), let nickname = try? container.decode(String.self, forKey: .nickname), let provider = try? container.decode(String.self, forKey: .provider) {
             let signUpRequired = SignInResponseSignUpRequired(email: email, nickname: nickname, provider: provider)
-            print("SignUpRequired data: \(signUpRequired)")
             self = .signUpRequired(signUpRequired)
         } else {
             throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Data does not match any SignInResponse type"))

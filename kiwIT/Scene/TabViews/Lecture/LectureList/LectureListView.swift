@@ -22,7 +22,7 @@ struct LectureListView: View {
                 }
                 .pickerStyle(.segmented)
                 .padding(.horizontal, 8)
-                .onChange(of: lectureListVM.lectureType) { _ in
+                .onChange(of: lectureListVM.lectureType) {
                     lectureListVM.updateViewByPickerSelection()
                 }
                 
@@ -30,7 +30,7 @@ struct LectureListView: View {
                     VStack {
                         Image(systemName: Setup.ImageStrings.downDirection)
                             .scaledToFit()
-                        Text("당겨서 새로고침")
+                        Text(Setup.ContentStrings.pullToRefreshTitle)
                             .font(.custom(Setup.FontName.lineThin, size: 12))
                             .foregroundStyle(Color.textColor)
                     }
@@ -72,20 +72,19 @@ struct LectureListView: View {
             }
             .background(Color.backgroundColor)
         }
-        .alert("네트워크 오류!", isPresented: $lectureListVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $lectureListVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureListVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
-                tabViewsVM.isLoginAvailable = false
+                tabViewsVM.userLoginStatusUpdate.send(false)
             }
         }, message: {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
         .refreshable {
-            print("Pull to Refresh Lecture List in \(lectureListVM.lectureType)!!!")
             lectureListVM.requestLectureList()
         }
     }

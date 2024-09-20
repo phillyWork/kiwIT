@@ -21,7 +21,7 @@ struct QuizListView: View {
                 VStack {
                     Image(systemName: Setup.ImageStrings.downDirection)
                         .scaledToFit()
-                    Text("당겨서 새로고침")
+                    Text(Setup.ContentStrings.pullToRefreshTitle)
                         .font(.custom(Setup.FontName.lineThin, size: 12))
                         .foregroundStyle(Color.textColor)
                 }
@@ -33,7 +33,7 @@ struct QuizListView: View {
                         ForEach(quizListVM.quizListData, id: \.self) { eachQuizGroup in
                             Button {
                                 path.append("Quiz-\(eachQuizGroup.id)")
-                                quizListVM.updateSelectedQuizGroupId(eachQuizGroup.id)
+                                quizListVM.updateSelectedQuiz(eachQuizGroup.id)
                             } label: {
                                 if quizListVM.isCompletedQuizListLoading {
                                     QuizListItem(title: eachQuizGroup.title, ratio: 0.85)
@@ -44,15 +44,10 @@ struct QuizListView: View {
                                 }
                             }
                             .onAppear {
-                                print("Check data for pagination!!!")
-                                if quizListVM.quizListData.last == eachQuizGroup {
-                                    print("Last data for list: should call more!!!")
-                                    quizListVM.loadMoreQuizList()
-                                }
+                                quizListVM.checkMorePaginationNeeded(eachQuizGroup)
                             }
                         }
                         .frame(maxHeight: .infinity)
-                        
                     }
                     .frame(maxWidth: .infinity)
                     .frame(width: Setup.Frame.devicePortraitWidth, alignment: .center)
@@ -63,33 +58,31 @@ struct QuizListView: View {
             .navigationTitle(Setup.ContentStrings.quizContentTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-            .alert("네트워크 오류!", isPresented: $quizListVM.showUnknownNetworkErrorAlert, actions: {
+            .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $quizListVM.showUnknownNetworkErrorAlert, actions: {
                 ErrorAlertConfirmButton { }
             }, message: {
-                Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+                Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
             })
-            .alert("로그인 오류!", isPresented: $quizListVM.shouldLoginAgain, actions: {
+            .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $quizListVM.shouldLoginAgain, actions: {
                 ErrorAlertConfirmButton {
-                    tabViewsVM.isLoginAvailable = false
+                    tabViewsVM.userLoginStatusUpdate.send(false)
                 }
             }, message: {
-                Text("세션 만료입니다. 다시 로그인해주세요!")
+                Text(Setup.ContentStrings.loginErrorAlertMessage)
             })
-            .navigationDestination(for: String.self) { id in
-                if id.hasPrefix("Quiz-") {
+            .navigationDestination(for: String.self) { pathString in
+                if pathString.hasPrefix("Quiz-") {
                     if let quizGroupId = quizListVM.getSelectedQuizGroupId() {
-                        QuizView(quizListVM: quizListVM, quizGroupId: quizGroupId, pathString: id, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
+                        QuizView(quizListVM: quizListVM, quizGroupId: quizGroupId, pathString: pathString, path: $path, isLoginAvailable: $tabViewsVM.isLoginAvailable)
                     }
                 }
             }
             .onAppear {
-                //MARK: - 퀴즈 완료 후 되돌아 올 경우, 어떻게 처리?
-                
+                quizListVM.checkRetakeQuiz()
             }
         }
         .refreshable {
-            print("Refresh to update Quiz List with Result!!!")
-            quizListVM.resetPaginationToRefreshQuizList()
+           quizListVM.resetPaginationToRefreshQuizList()
         }
     }
 }

@@ -13,7 +13,7 @@ final class SocialLoginViewModel: ObservableObject {
     
     @Published var didLoginSucceed = false
     @Published var shouldMoveToSignUp = false
-    @Published var errorMessage: String?
+    @Published var showLoginErrorAlert = false
    
     var profileData: ProfileResponse?
     var userDataForSignUp: SignUpRequest?
@@ -22,13 +22,9 @@ final class SocialLoginViewModel: ObservableObject {
         print("DEBUG: SocialLoginViewModel initialized")
     }
     
-    //Social Login Button ViewModel에서 서버 로그인 성공 시,
-    //Token 일반화 가능하면 함수 하나로 처리, 아니라면 각자 생성
     func handleSocialLoginResult(success: Bool, errorMessage: String? = nil, profileData: ProfileResponse? = nil, userDataToSignUp: SignUpRequest? = nil) {
         if success {
-            print("Login Succeed!!!")
             if let profile = profileData {
-                print("Profile Data from SignIn and ProfileRequest!!!")
                 self.profileData = profile
             } else {
                 print("Can't send user profile data!!!")
@@ -36,14 +32,16 @@ final class SocialLoginViewModel: ObservableObject {
             self.didLoginSucceed = true
         } else {
             if let userData = userDataToSignUp {
-                print("userData for signup: \(userData)")
                 self.userDataForSignUp = userData
                 self.shouldMoveToSignUp = true
             } else {
-                print("Sign In failed with error message: \(errorMessage)")
-                self.errorMessage = errorMessage
+                self.showLoginErrorAlert = true
             }
         }
+    }
+    
+    deinit {
+        print("SocialLoginViewModel DEINIT")
     }
     
 }

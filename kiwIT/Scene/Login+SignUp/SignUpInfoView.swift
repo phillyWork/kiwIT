@@ -35,7 +35,7 @@ struct SignUpInfoView: View {
                         .foregroundColor(Color.textPlaceholderColor)
                     )
                     .onSubmit {
-                        signUpInfoVM.updateNicknameEmptiness()
+                        signUpInfoVM.nicknameSubmitTab.send(())
                     }
                     .background(Color.brandBlandColor)
                     .foregroundStyle(Color.black)
@@ -68,7 +68,7 @@ struct SignUpInfoView: View {
             
                 HStack {
                     Button {
-                        signUpInfoVM.isToggleSwitchOn.toggle()
+                        signUpInfoVM.toggleSwitchTab.send(())
                     } label: {
                         Image(systemName: signUpInfoVM.isToggleSwitchOn ? Setup.ImageStrings.toggleButtonChecked : Setup.ImageStrings.toggleButtonUnchecked)
                             .imageScale(.large)
@@ -83,16 +83,13 @@ struct SignUpInfoView: View {
             
             Spacer()
             
-            ShrinkAnimationButtonView(title: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Setup.ContentStrings.SignUp.signUpText : Setup.ContentStrings.SignUp.cannotSignUpText, color: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Color.brandColor : Color.errorHighlightColor) {
-                
-                if signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty {
-                    signUpInfoVM.requestSignUp()
-                } else {
-                    signUpInfoVM.showSignUpRequestIsNotSetAlert.toggle()
-                }
+            ShrinkAnimationButtonView(title: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Setup.ContentStrings.SignUp.signUpText : Setup.ContentStrings.SignUp.cannotSignUpText, font: Setup.FontName.galMuri11Bold, color: signUpInfoVM.isToggleSwitchOn && !signUpInfoVM.isNicknameEmpty ? Color.brandColor : Color.errorHighlightColor) {
+                signUpInfoVM.signUpRequestButtonTab.send(())
             }
             .padding(.vertical, 12)
-            .alert(Setup.ContentStrings.SignUp.notReadyToSignUpErrorAlertTitle, isPresented: $signUpInfoVM.showSignUpRequestIsNotSetAlert, actions: { }, message: {
+            .alert(Setup.ContentStrings.SignUp.notReadyToSignUpErrorAlertTitle, isPresented: $signUpInfoVM.showSignUpRequestIsNotSetAlert, actions: {
+                Button(Setup.ContentStrings.confirm, role: .cancel) { }
+            }, message: {
                 Text(Setup.ContentStrings.SignUp.notReadyToSignUpErrorAlertMessage)
             })
         }
@@ -107,14 +104,14 @@ struct SignUpInfoView: View {
         .onChange(of: signUpInfoVM.didSignUpSucceed) { newValue in
             if newValue {
                 if let profile = signUpInfoVM.signedUpProfile {
-                    mainTabBarVM.userProfileData = profile
+                    mainTabBarVM.userProfileInput.send(profile)
                 }
-                mainTabBarVM.isUserLoggedIn = true
+                mainTabBarVM.checkLoginStatus.send(true)
             }
         }
     }
 }
 
 #Preview {
-    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: SignUpRequest(email: "aaa@bbb.com", nickname: "abcabc123123", provider: SocialLoginProvider.apple)), mainTabBarVM: MainTabBarViewModel())
+    SignUpInfoView(signUpInfoVM: SignUpInfoViewModel(userDataForSignUp: SignUpRequest(email: "aaa@bbb.com", nickname: "", provider: SocialLoginProvider.apple)), mainTabBarVM: MainTabBarViewModel())
 }

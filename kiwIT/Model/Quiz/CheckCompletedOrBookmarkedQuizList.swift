@@ -13,7 +13,7 @@ struct CheckCompletedOrBookmarkedQuizRequest {
     var limit: Int?
 }
 
-struct BookmarkedQuizListResponse: Decodable {
+struct BookmarkedQuizListResponse: Decodable, Hashable {
     var id: Int
     var type: QuizType
     var title: String
@@ -24,7 +24,7 @@ struct BookmarkedQuizListResponse: Decodable {
     var result: BookmarkQuiz?   //안 풀었을 경우, null
 }
 
-struct BookmarkQuiz: Decodable {
+struct BookmarkQuiz: Decodable, Hashable {
     var userId: Int
     var quizId: Int
     var correct: String     //multiple choice: Int, trueOrFalse: Bool || 문제 푼 결과?

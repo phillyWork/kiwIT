@@ -20,4 +20,20 @@ struct BookmarkLectureResponse: Decodable {
     var kept: Bool
     var createdAt: String   //Date type
     var updatedAt: String   //Date type
+
+    var creationDate: String {
+        if let date = createdAt.toDate() {
+            return date.toFullString()
+        } else {
+            return createdAt
+        }
+    }
+    
+    var creationCompactDate: String {
+        if let date = createdAt.toDate() {
+            return date.toCompactString()
+        } else {
+            return createdAt
+        }
+    }
 }

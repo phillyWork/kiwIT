@@ -32,16 +32,30 @@ extension Setup {
         
         static let textSize = "textformat.size"
         
+        static let plusSquare = "plus.app"
+        
         static let toggleButtonUnchecked = "square"
         static let toggleButtonChecked = "checkmark.square.fill"
         
         static let downDirection = "arrow.down"
+        static let rightDirection = "arrow.right"
         
         static let bookmarkNotYet = "bookmark"
         static let bookmarked = "bookmark.fill"
         
         static let retryAction = "arrow.clockwise"
         static let exclamation = "exclamationmark"
+        
+        static let signInImage = "kiwITSignInImage"
+        static let kakaoButtonImage = "kakao_login_large_wide"
+        
+        static let sRankImage = "sRank"
+        static let aRankImage = "aRank"
+        static let bRankImage = "bRank"
+        static let cRankImage = "cRank"
+        static let dRankImage = "dRank"
+        static let fRankImage = "fRank"
+        
     }
     
 }

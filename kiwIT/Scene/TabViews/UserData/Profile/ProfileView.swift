@@ -23,271 +23,269 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                HStack {
-                    Text(tabViewsVM.profileData?.nickname ?? "Anonymous User")
-                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 10)
-                    Button {
-                        profileVM.showEditNicknameAlert.toggle()
-                    } label: {
-                        Text("변경하기")
-                    }
-                    .padding(.trailing, 10)
-                    .alert("닉네임 수정", isPresented: $profileVM.showEditNicknameAlert) {
-                        TextField("타이틀",
-                                  text: $profileVM.nicknameInputFromUser,
-                                  prompt: Text("새로운 닉네임을 입력해주세요.")
-                        )
-                        .textInputAutocapitalization(.never)
-                        .autocorrectionDisabled()
-                        .foregroundStyle(Color.black)
-                        Button(Setup.ContentStrings.cancel, role: .destructive) {
-                            profileVM.nicknameInputFromUser.removeAll()
-                        }
-                        Button(Setup.ContentStrings.confirm, role: .cancel) {
-                            if profileVM.nicknameInputFromUser.isEmpty {
-                                profileVM.showNicknameErrorAlert = true
-                            } else {
-                                profileVM.updateNickname()
-                            }
-                        }
-                    }
-                    .alert("오류", isPresented: $profileVM.showNicknameErrorAlert, actions: {
-                        Button(Setup.ContentStrings.confirm, role: .cancel) {
-                            profileVM.showEditNicknameAlert = true
-                        }
-                    }, message: {
-                        Text("오류 발생! 다시 시도해주세요.")
-                    })
+                VStack {
+                    Image(systemName: Setup.ImageStrings.downDirection)
+                        .scaledToFit()
+                    Text(Setup.ContentStrings.pullToRefreshTitle)
+                        .font(.custom(Setup.FontName.lineThin, size: 12))
+                        .foregroundStyle(Color.textColor)
                 }
-                .padding(.bottom, 5)
+                GroupBox(label: Text(Setup.ContentStrings.Profile.userInfoTitle)
+                    .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 5), content: {
+                        VStack {
+                            HStack {
+                                Text(tabViewsVM.profileData?.nickname ?? Setup.ContentStrings.Profile.defaultNicknameTitle)
+                                    .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.leading, 10)
+                                Button {
+                                    profileVM.showEditNicknameAlertInView()
+                                } label: {
+                                    Text(Setup.ContentStrings.Profile.changeButtonTitle)
+                                        .font(.custom(Setup.FontName.notoSansRegular, size: 15))
+                                }
+                                .padding(.trailing, 10)
+                                .alert(Setup.ContentStrings.editNicknameAlertTitle, isPresented: $profileVM.showEditNicknameAlert) {
+                                    TextField("타이틀",
+                                              text: $profileVM.nicknameInputFromUser,
+                                              prompt: Text(Setup.ContentStrings.Profile.newNicknameTextfieldPrompt)
+                                    )
+                                    .textInputAutocapitalization(.never)
+                                    .autocorrectionDisabled()
+                                    .foregroundStyle(Color.black)
+                                    Button(Setup.ContentStrings.cancel, role: .destructive) {
+                                        profileVM.resetNicknameInput()
+                                    }
+                                    Button(Setup.ContentStrings.confirm, role: .cancel) {
+                                        profileVM.checkNicknameToUpdate()
+                                    }
+                                }
+                                .alert(Setup.ContentStrings.editNicknameErrorAlertTitle, isPresented: $profileVM.showNicknameErrorAlert, actions: {
+                                    Button(Setup.ContentStrings.confirm, role: .cancel) {
+                                        profileVM.showEditNicknameAlertInView()
+                                    }
+                                }, message: {
+                                    Text(Setup.ContentStrings.errorToTryAgainAlertMessage)
+                                })
+                            }
+                            .padding(.vertical, 5)
+                            HStack {
+                                Text(Setup.ContentStrings.Profile.emailTitle)
+                                Text(tabViewsVM.profileData?.email ?? Setup.ContentStrings.Profile.defaultEmailTitle)
+                            }
+                            .font(.custom(Setup.FontName.notoSansBold, size: 12))
+                            .foregroundStyle(Color.textColor)
+                            .padding(.leading, 10)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                })
+                .backgroundStyle(Color.backgroundColor)
                 
-                Spacer()
-            
-                //MARK: - 학습 컨텐츠용
                 GroupBox(label:
                             HStack {
-                    Text("학습 컨텐츠")
-                        .font(.custom(Setup.FontName.phuduRegular, size: 20))
-                    
+                    Text(Setup.ContentStrings.Profile.lectureInfoTitle)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 5)
                     NavigationLink {
-                        UserLectureListView(profileVM: profileVM)
+                        UserLectureListView(profileVM: profileVM, isLoginAvailable: $tabViewsVM.isLoginAvailable)
                     } label: {
-                        Text("더 보기")
+                        Text(Setup.ContentStrings.moveToDetailButtonTitle)
+                            .font(.custom(Setup.FontName.notoSansRegular, size: 15))
                     }
+                    .padding(.trailing, 5)
                 }, content: {
                     VStack {
                         if profileVM.showCompletedLectureListError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestCompletedLectureList()
+                                profileVM.debouncedRequestCompletedLectureList()
                             }
+                        } else if profileVM.completedLectureList.isEmpty {
+                            EmptyViewWithNoError(title: Setup.ContentStrings.Profile.noneOfCompletedLectureTitle)
                         } else {
-                            if profileVM.isCompleteLectureListIsEmpty {
-                                EmptyViewWithNoError(title: "아직 완료한 학습 컨텐츠가 없어요")
-                            } else {
-                                //MARK: - 가장 최근 학습완료한 컨텐츠 1개 보여주기 With 더보기 버튼
-                                Text("학습 완료한 컨텐츠 존재!!!")
-                            }
+                            ProfileContent(profileVM.completedLectureList[0].title, overlayTitle: Setup.ContentStrings.Profile.recentlyCompletedLectureTitle)
                         }
-                        
                         if profileVM.showBookmarkedLectureListError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestBookmarkedLectureList()
+                                profileVM.debouncedRequestBookmarkedLectureList()
                             }
+                        } else if profileVM.bookmarkedLectureList.isEmpty {
+                            EmptyViewWithNoError(title: Setup.ContentStrings.Profile.noneOfBookmarkedLectureTitle)
                         } else {
-                            if profileVM.isBookmarkedLectureListIsEmtpy {
-                                EmptyViewWithNoError(title: "보관한 학습 컨텐츠가 없어요")
-                            } else {
-                                //MARK: - 가장 보관함한 컨텐츠 1개 보여주기 with 더보기 버튼
-                                Text("보관한 학습 컨텐츠 존재!!!")
-                            }
+                            ProfileContent(profileVM.bookmarkedLectureList[0].title, overlayTitle: Setup.ContentStrings.Profile.recentlyBookmarkedTitle)
                         }
                     }
                     .padding(.vertical, 8)
                 })
                 .backgroundStyle(Color.backgroundColor)
                 
-                Spacer()
-                
-                //MARK: - 퀴즈 용
                 GroupBox(label: HStack {
-                    Text("퀴즈")
-                        .font(.custom(Setup.FontName.phuduRegular, size: 20))
+                    Text(Setup.ContentStrings.Profile.quizInfoTitle)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 5)
                     NavigationLink {
-                        UserQuizListView(profileVM: profileVM)
+                        UserQuizListView(profileVM: profileVM, isLoginAvailable: $tabViewsVM.isLoginAvailable)
                     } label: {
-                        //MARK: - 더보기: 화면 이동, 전체 문제 풀이 완료한 퀴즈 목록 보여주기 with 점수 (Scroll)
-                        
-                        //MARK: - 더보기: 화면 이동, 전체 추가한 퀴즈 문항들 목록 보여주기 with 답안
-                        //MARK: - 보관함 버튼 추가: 보관 Request, 성공 시, 앱단 목록에서 삭제하기
-                        Text("더 보기")
+                        Text(Setup.ContentStrings.moveToDetailButtonTitle)
+                            .font(.custom(Setup.FontName.notoSansRegular, size: 15))
                     }
+                    .padding(.trailing, 5)
                 }, content: {
                     VStack {
                         if profileVM.showTakenQuizListError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestTakenQuizList()
+                                profileVM.debouncedRequestTakenQuizList()
                             }
+                        } else if profileVM.takenQuizList.isEmpty {
+                            EmptyViewWithNoError(title: Setup.ContentStrings.Profile.noneOfCompletedQuizTitle)
                         } else {
-                            if profileVM.isTakenQuizListIsEmpty {
-                                EmptyViewWithNoError(title: "아직 푼 퀴즈가 있지 않아요")
-                            } else {
-                                //MARK: - 가장 완료한 퀴즈 목록 1개 보여주기 With 더보기 버튼
-                               
-                                Text("기본 퀴즈 진행 상황 나타내기 (Header 역할)")
-                            }
+                            ProfileContent(profileVM.takenQuizList[0].title, overlayTitle: Setup.ContentStrings.Profile.recentlyCompletedQuizTitle)
                         }
-                        
                         if profileVM.showBookmarkedQuizListError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestBookmarkedQuizList()
+                                profileVM.debouncedRequestBookmarkedQuizList()
                             }
+                        } else if profileVM.bookmarkedQuizList.isEmpty {
+                            EmptyViewWithNoError(title: Setup.ContentStrings.Profile.noneOfBookmarkedQuizTitle)
                         } else {
-                            if profileVM.isBookmarkedQuizListIsEmtpy {
-                                EmptyViewWithNoError(title: "보관한 퀴즈가 없어요")
-                            } else {
-                                //MARK: - 가장 최근에 추가한 퀴즈 문항 1개 보여주기 with 더보기 버튼
-                                
-                                Text("기본 퀴즈 진행 상황 나타내기 (Header 역할)")
-                            }
+                            ProfileContent(profileVM.bookmarkedQuizList[0].question, overlayTitle: Setup.ContentStrings.Profile.recentlyBookmarkedTitle)
                         }
                     }
                 })
-                .backgroundStyle(Color.surfaceColor)
+                .backgroundStyle(Color.backgroundColor)
                 
-                Spacer()
+//                GroupBox(label: Text("인터뷰 현황"), content: {
+//                    VStack {
+//                        Text("구독 AI 인터뷰 진행 상황 나타내기")
+//                            .font(.custom(Setup.FontName.notoSansBold, size: 20))
+//                            .frame(maxWidth: .infinity, alignment: .leading)
+//                            .padding(.leading, 5)
+//                    }
+//                })
+//                .backgroundStyle(Color.backgroundColor)
                 
-                //MARK: - 인터뷰용
-                GroupBox(label: Text("인터뷰 현황"), content: {
-                    VStack {
-                        Text("구독 AI 인터뷰 진행 상황 나타내기")
-                    
-                    }
-                })
-                .backgroundStyle(Color.surfaceColor)
-                
-                Spacer()
-                
-                //MARK: - 트로피용
                 GroupBox(label:
                             HStack {
-                    Text("획득한 도전 과제")
+                    Text(Setup.ContentStrings.Profile.acquiredTrophyInfoTitle)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 5)
                     NavigationLink {
-                        TrophyListView(profileVM: profileVM)
+                        TrophyListView(isLoginAvailable: $tabViewsVM.isLoginAvailable)
                     } label: {
-                        
-                        //MARK: - 더보기: 화면 이동, 전체 트로피 리스트 및 획득한 영역 구분해서 나타내기
-                        Text("더 보기")
+                        Text(Setup.ContentStrings.moveToDetailButtonTitle)
+                            .font(.custom(Setup.FontName.notoSansRegular, size: 15))
                     }
+                    .padding(.trailing, 5)
                 }, content: {
                     VStack {
                         if profileVM.showLatestAcquiredTrophyError {
                             EmptyViewWithRetryButton {
-                                profileVM.requestLatestAcquiredTrophy()
+                                profileVM.debouncedRequestLatestAcquiredTrophy()
                             }
+                        } else if profileVM.latestAcquiredTrophy.isEmpty {
+                            EmptyViewWithNoError(title: Setup.ContentStrings.Profile.noneOfAcquiredTrophyTitle)
                         } else {
-                            if profileVM.isLatestAcquiredTrophyEmpty {
-                                EmptyViewWithNoError(title: "아직 획득한 트로피가 없어요")
-                            } else {
-                                //MARK: - 트로피 영역 가장 최근 획득한 트로피 보여주기
-                                Text("test")
-                            }
+                            TrophyContent(trophy: profileVM.latestAcquiredTrophy[0].trophy, achievedDate: profileVM.latestAcquiredTrophy[0].creationCompactDate)
+                                .padding(.horizontal, 5)
                         }
                     }
                 })
-                .backgroundStyle(Color.surfaceColor)
+                .backgroundStyle(Color.backgroundColor)
                 
-                VStack {
-                    ShrinkAnimationButtonView(title: Setup.ContentStrings.Profile.signOutTitle, color: Color.brandBlandColor) {
-                        profileVM.showLogoutAlert.toggle()
+                Spacer()
+                
+                VStack(alignment: .center, spacing: 15) {
+                    ShrinkAnimationButtonView(title: Setup.ContentStrings.Profile.signOutTitle, font: Setup.FontName.galMuri11Bold, color: Color.brandTintColor2) {
+                        profileVM.showAlertInView(.logout)
                     }
                     .alert(Setup.ContentStrings.Profile.signOutTitle, isPresented: $profileVM.showLogoutAlert, actions: {
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
-                            profileVM.signOut()
+                            profileVM.debouncedSignOut()
                         }
                         Button(Setup.ContentStrings.cancel, role: .destructive) { }
                     }, message: {
-                        Text("정말로 로그아웃 하실 건가요?")
+                        Text(Setup.ContentStrings.Profile.signOutCheckAlertMessage)
                     })
-                    .alert("로그아웃 성공!", isPresented: $profileVM.showLogoutSucceedAlert, actions: {
+                    .alert(Setup.ContentStrings.logoutSuccessAlertTitle, isPresented: $profileVM.showLogoutSucceedAlert, actions: {
                         Button {
-                            tabViewsVM.isLoginAvailable = false
+                            tabViewsVM.userLoginStatusUpdate.send(false)
                         } label: {
                             Text(Setup.ContentStrings.confirm)
                         }
                     }, message: {
-                        Text("로그인 화면으로 이동합니다.")
+                        Text(Setup.ContentStrings.Profile.moveToLoginViewAlertMessage)
                     })
-                    .alert("로그아웃 에러!", isPresented: $profileVM.showLogoutErrorAlert) {
+                    .alert(Setup.ContentStrings.logoutErrorAlertTitle, isPresented: $profileVM.showLogoutErrorAlert) {
                         ErrorAlertConfirmButton { }
                     } message: {
-                        Text("로그아웃에 실패했습니다. 다시 시도해주세요.")
+                        Text(Setup.ContentStrings.Profile.signOutErrorAlertMessage)
                     }
 
-                    Spacer()
-                    
-                    ShrinkAnimationButtonView(title: Setup.ContentStrings.Profile.withdrawTitle, color: Color.errorHighlightColor) {
-                        profileVM.showWithdrawAlert.toggle()
+                    ShrinkAnimationButtonView(title: Setup.ContentStrings.Profile.withdrawTitle, font: Setup.FontName.galMuri11Bold, color: Color.errorHighlightColor) {
+                        profileVM.showAlertInView(.checkToWithdraw)
                     }
                     .alert(Setup.ContentStrings.Profile.withdrawTitle, isPresented: $profileVM.showWithdrawAlert, actions: {
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
-                            profileVM.showWithdrawWithEmailTextfieldAlert.toggle()
+                            profileVM.showAlertInView(.withdrawTextfield)
                         }
                         Button(Setup.ContentStrings.cancel, role: .destructive) { }
                     }, message: {
-                        Text("정말로 탈퇴하실 건가요?")
+                        Text(Setup.ContentStrings.Profile.withdrawCheckAlertMessage)
                     })
-                    .alert("회원 탈퇴 확인", isPresented: $profileVM.showWithdrawWithEmailTextfieldAlert, actions: {
-                        TextField("가입한 이메일", text: $profileVM.emailToBeWithdrawn)
+                    .alert(Setup.ContentStrings.withdrawEmailTextfieldAlertTitle, isPresented: $profileVM.showWithdrawWithEmailTextfieldAlert, actions: {
+                        TextField(Setup.ContentStrings.Profile.withdrawEmailTextFieldTitle, text: $profileVM.emailToBeWithdrawn, prompt: Text(tabViewsVM.profileData?.email ?? Setup.ContentStrings.Profile.withdrawEmailTextFieldPrompt))
                             .foregroundStyle(Color.black)
                         Button(Setup.ContentStrings.confirm, role: .cancel) {
                             if profileVM.emailToBeWithdrawn.isEmpty {
-                                profileVM.showEmailWithdrawalErrorAlert = true
+                                profileVM.showAlertInView(.withdrawEmailError)
                             } else {
-                                profileVM.withdraw()
+                                profileVM.debouncedWithdraw()
                             }
                         }
                         Button(Setup.ContentStrings.cancel, role: .destructive) {
                             profileVM.emailToBeWithdrawn.removeAll()
                         }
                     }, message: {
-                        Text("정말 탈퇴하실 의향이시라면 가입한 이메일을 입력해주세요.")
+                        Text(Setup.ContentStrings.Profile.withdrawEmailTextFieldAlertMessage)
                     })
-                    .alert("잘못된 입력입니다!", isPresented: $profileVM.showEmailWithdrawalErrorAlert) {
+                    .alert(Setup.ContentStrings.withdrawEmailInputErrorAlertTitle, isPresented: $profileVM.showEmailWithdrawalErrorAlert) {
                         //탈퇴의 불편함 일부러 제공 (탈퇴 유도 막기...)
                         Button(Setup.ContentStrings.confirm, role: .cancel) { }
                     }
-                    .alert("탈퇴 실패", isPresented: $profileVM.showWithdrawErrorAlert, actions: {
+                    .alert(Setup.ContentStrings.withdrawErrorAlertTitle, isPresented: $profileVM.showWithdrawErrorAlert, actions: {
                         ErrorAlertConfirmButton { }
                     }, message: {
-                        Text("회원 탈퇴에 실패했습니다. 다시 시도해주세요.")
+                        Text(Setup.ContentStrings.Profile.withdrawErrorAlertMessage)
                     })
-                    .alert("탈퇴 완료", isPresented: $profileVM.showWithdrawSucceedAlert, actions: {
+                    .alert(Setup.ContentStrings.withdrawSuccessAlertTitle, isPresented: $profileVM.showWithdrawSucceedAlert, actions: {
                         Button {
-                            tabViewsVM.isLoginAvailable = false
+                            tabViewsVM.userLoginStatusUpdate.send(false)
                         } label: {
                             Text(Setup.ContentStrings.confirm)
                         }
                     }, message: {
-                        Text("회원 탈퇴 절차에 완료했습니다. 30일 이후 완전히 탈퇴처리되며, 그 이전에는 비활성화 유저로 관리됩니다. 감사합니다.")
+                        Text(Setup.ContentStrings.Profile.withdrawSuccessAlertMessage)
                     })
                 }
-                .padding(.top, 8)
+                .padding(.vertical, 4)
             }
             .frame(maxWidth: .infinity)
             .background(Color.backgroundColor)
             .navigationTitle(Setup.ContentStrings.profileTitle)
             .navigationBarTitleDisplayMode(.inline)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-            .alert("네트워크 오류!", isPresented: $profileVM.showUnknownNetworkErrorAlert, actions: {
+            .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $profileVM.showUnknownNetworkErrorAlert, actions: {
                 ErrorAlertConfirmButton { }
             }, message: {
-                Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+                Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
             })
             .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $profileVM.showSessionExpiredAlert, actions: {
                 ErrorAlertConfirmButton {
-                    tabViewsVM.isLoginAvailable = false
+                    tabViewsVM.userLoginStatusUpdate.send(false)
                 }
             }, message: {
                 Text(Setup.ContentStrings.loginErrorAlertMessage)

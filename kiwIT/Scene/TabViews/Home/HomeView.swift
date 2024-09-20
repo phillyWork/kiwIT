@@ -7,65 +7,94 @@
 
 import SwiftUI
 
-//MARK: - Home: 유저 닉네임, 최근 진도 및 퀴즈 결과, 다음 진도...
 struct HomeView: View {
     
     @StateObject var homeVM = HomeViewModel()
     @ObservedObject var tabViewsVM: TabViewsViewModel
-        
+    
     var body: some View {
         NavigationStack {
             ScrollView {
-                
-                //MARK: - 유저 닉네임 및 환영 문구 작성...
-                
-                //MARK: - 다음 학습할 진도 내용만 보여주기 --> 학습하기 버튼 탭: 학습 탭으로 이동하기
-               
-                //MARK: - 카테고리 내 자동 선택 및 해당 학습 컨텐츠 보여주기 가능?
-                
-                //MARK: - 가장 최근 퀴즈 결과 --> 퀴즈 풀기 버튼 탭: 퀴즈 탭으로 이동하기
-                
-                VStack {
-                    VStack {
-                        Text("Profile Data id: \(tabViewsVM.profileData?.id)")
-                        Text("Profile Data nickname: \(tabViewsVM.profileData?.nickname)")
-                        Text("Profile Data email: \(tabViewsVM.profileData?.email)")
+                GroupBox(label: Text("\(Setup.ContentStrings.homeViewNavTitle.randomElement()!)")
+                    .font(.custom(Setup.FontName.galMuri11Bold, size: 35))
+                    .multilineTextAlignment(.leading)
+                    .padding(.vertical, 8), content: {
+                    HStack {
+                        Text(Setup.ContentStrings.Home.cheerUpText)
+                        Text(tabViewsVM.profileData?.nickname ?? Setup.ContentStrings.Profile.defaultNicknameTitle)
+                            .lineLimit(1)
                     }
-                    .frame(width: Setup.Frame.shrinkAnimationButtonWidth, height: Setup.Frame.shrinkAnimationButtonHeight)
-                    .background(Color.green)
-                    .onTapGesture {
-                        print("Move to Lecture Content")
+                    .font(.custom(Setup.FontName.notoSansMedium, size: 12))
+                    .frame(maxWidth: .infinity, alignment: Alignment.leading)
+                })
+                .backgroundStyle(Color.backgroundColor)
+                
+                GroupBox(label: HStack {
+                    Text(Setup.ContentStrings.Home.nextLectureTitle)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 5)
+                    Spacer()
+                    Button {
+                        homeVM.debouncedRequestNextLecture()
+                    } label: {
+                        Image(systemName: Setup.ImageStrings.retryAction)
                     }
-                                        
-                    Spacer(minLength: 50)
-                    
-                    VStack {
-                        Text("Quiz")
-                        Text("최근 Quiz 점수 내역")
+                    .padding(.trailing, 5)
+                }, content: {
+                    if homeVM.showNextLectureError {
+                        EmptyViewWithNoError(title: Setup.ContentStrings.Home.tryAgainButtonTitle)
+                    } else if let nextLectureToStudy = homeVM.nextLectureToStudy {
+                        NextLectureView(nextLecture: nextLectureToStudy) {
+                            tabViewsVM.selectedTabUpdate.send(.lecture)
+                        }
+                    } else {
+                        EmptyViewWithNoError(title: Setup.ContentStrings.Home.noneOfCompletedLectureTitle)
                     }
-                    .background(Color.pink)
-                    
-                    Spacer(minLength: 50)
-                    
-                    
-                }
-                //Navigation title 외에 다른 표시 방법 찾기 필요
-                .frame(maxHeight: .infinity)
-                .frame(width: Setup.Frame.devicePortraitWidth)
-                .navigationTitle(Setup.ContentStrings.appTitle)
-                .navigationBarTitleDisplayMode(.large)
+                })
+                .backgroundStyle(Color.backgroundColor)
+                
+                GroupBox(label: HStack {
+                    Text(Setup.ContentStrings.Home.latestQuizResultTitle)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 5)
+                    Spacer()
+                    Button {
+                        homeVM.debouncedRequestLatestTakenQuiz()
+                    } label: {
+                        Image(systemName: Setup.ImageStrings.retryAction)
+                    }
+                    .padding(.trailing, 5)
+                }, content: {
+                    if homeVM.showLatestTakenQuizError {
+                        EmptyViewWithNoError(title: Setup.ContentStrings.Home.tryAgainButtonTitle)
+                    } else if let latestTakenQuiz = homeVM.latestTakenQuiz {
+                        LatestTakenQuizView(latestTakenQuiz: latestTakenQuiz) {
+                            tabViewsVM.selectedTabUpdate.send(.quiz)
+                        }
+                    } else {
+                        EmptyViewWithNoError(title: Setup.ContentStrings.Home.noneOfTakenQuizTitle)
+                    }
+                })
+                .backgroundStyle(Color.backgroundColor)
             }
+            .frame(maxWidth: .infinity)
             .scrollIndicators(.hidden)
             .background(Color.backgroundColor)
             .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
         }
-        .alert("네트워크 오류!", isPresented: $homeVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $homeVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
-        .onAppear {
-            homeVM.checkProfile(with: tabViewsVM.profileData)
+        .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $homeVM.shouldLoginAgain) {
+            ErrorAlertConfirmButton {
+                tabViewsVM.userLoginStatusUpdate.send(false)
+            }
+        } message: {
+            Text(Setup.ContentStrings.loginErrorAlertMessage)
         }
     }
 }

@@ -18,13 +18,19 @@ extension Setup {
         static let shrinkAnimationButtonHeight = shrinkAnimationButtonWidth * 0.2
         
         static let socialLoginButtonWidth = devicePortraitWidth * 0.8
-        static let socialLoginButtonStackHeight = socialLoginButtonWidth * 0.3
+        static let socialLoginButtonHeight = socialLoginButtonWidth * 0.15
         
         static let signUpContentWidth = devicePortraitWidth * 0.9
         static let signUpConfirmScrollViewHeight = devicePortraitHeight * 0.45
         
+        static let homeViewContentWidth = devicePortraitWidth * 0.88
+        static let homeViewNextLectureHeight = homeViewContentWidth * 0.35
+        static let homeViewNextLectureLevelOffsetHeight = -(homeViewNextLectureHeight/3)
+        static let homeViewNextLectureButtonOffsetHeight = (homeViewNextLectureHeight/3)
+        
         //컨텐츠 리스트 개별 Item 크기
         static let contentListItemWidth = devicePortraitWidth * 0.9
+        
         static let contentListCategoryItemHeight = contentListItemWidth * 0.4
         static let contentListChapterItemHeight = contentListItemWidth * 0.3
         static let contentListNotExpandableHeight = contentListItemWidth * 0.35
@@ -57,17 +63,10 @@ extension Setup {
         
         static let contentListSectionCompleteImageWidth = contentListItemWidth * 0.05
         static let contentListSectionCompleteImageHeight = contentListItemWidth * 0.05
-        
-
-        //컨텐츠 Image 비율 4:3 고정
+    
         static let contentImageWidth = devicePortraitWidth * 0.9
         static let contentImageHeight = contentImageWidth * 0.75
-        
-        //확대 시의 Image 크기
-        static let expandedContentImageWidth = devicePortraitHeight * 0.85
-        static let expandedContentImageHeight = devicePortraitWidth * 0.9
-        
-        
+    
         //퀴즈용 크기 개별 Item 크기
         static let quizContentListItemWidth = devicePortraitWidth * 0.85
         static let quizContentListItemHeight = quizContentListItemWidth * 0.35
@@ -94,6 +93,33 @@ extension Setup {
         static let quizContentAnswerDetailHeight = quizContentItemWidth * 0.35
         static let quizContentAnswerResultImageWidth = quizContentItemWidth * 0.15
         
+        static let profileContentHeight = contentListItemWidth * 0.3
+        
+        static let profileContentEquallyDivide = devicePortraitHeight/2
+        
+        static let profileLectureContentWidth = devicePortraitWidth * 0.95
+        static let profileLectureContentHeight = profileLectureContentWidth * 0.28
+        
+        static let profileLectureContentOverlayTextWidthOffset = -(profileLectureContentWidth/2.5)
+        static let profileLectureContentOverlayTextHeightOffset = -(profileLectureContentHeight/3)
+        
+        static let profileLectureContentHGridHeight = profileLectureContentHeight * 2.3
+        static let profileLectureContentHScrollHeight = profileLectureContentHeight * 2.45
+        
+        static let profileQuizContentWidth = devicePortraitWidth * 0.95
+        static let profileQuizContentHeight = profileQuizContentWidth * 0.33
+        
+        static let profileQuizBookmarkedContentHeight = profileQuizContentWidth * 0.7
+        
+        static let profileQuizContentOverlayTextWidthOffset = -(profileQuizContentWidth/2.5)
+        static let profileQuizContentOverlayTakenQuizTextHeightOffset = -(profileQuizContentHeight/2.5)
+        static let profileQuizContentOverlayTakenQuizScoreOffset = profileQuizContentHeight/2.5
+        
+        static let profileQuizContentOverlayTextHeightOffset = -(profileQuizBookmarkedContentHeight/2.5)
+        static let profileQuizContentAnswerExplanationOverlayHeightOffset = profileQuizBookmarkedContentHeight/3.0
+        
+        static let profileQuizContentHGridHeight = profileQuizContentHeight * 2.3
+        static let profileQuizContentHScrollHeight = profileQuizContentHeight * 2.45
         
         //트로피 이미지 크기
         static let trophyContentWidth = devicePortraitWidth * 0.93
@@ -101,6 +127,17 @@ extension Setup {
         
         static let recentlyAcquiredTrophyContentWidth = devicePortraitWidth * 0.17
         static let recentlyAcquiredTrophyContentHeight = recentlyAcquiredTrophyContentWidth * 1.33
+        
+        static let recentlyAcquiredTrophyCardViewHeight = devicePortraitHeight * 0.45
+        
+        static let recentlyAcquiredTrophyNotifyViewHeight = devicePortraitHeight * 0.05
+        
+        static let recentlyAcquiredTrophyImageWidth = contentImageWidth * 0.7
+        static let recentlyAcquiredTrophyImageHeight = recentlyAcquiredTrophyCardViewHeight * 0.5
+        
+        
+        static let pastInterviewAnswerListScoreWidthOffset = Setup.Frame.contentListItemWidth/6
+        static let pastInterviewAnswerListScoreHeightOffset = Setup.Frame.contentListCategoryItemHeight/2.5
         
     }
     

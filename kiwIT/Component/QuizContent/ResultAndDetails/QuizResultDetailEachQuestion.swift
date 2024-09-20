@@ -9,17 +9,7 @@ import SwiftUI
 
 struct QuizResultDetailEachQuestion: View {
     
-    //번호, 문제, 제출 답안, 실제 답안, 오답 여부 (원래라면 모델로 한번에 전달)
-  
-    //해설까지 같이 전달받을 수도 있음
-    
-    //문제 형식 따른 답변 형식도 설정 필요...
-    
-    //OX 가정
-//    var quizIndex: Int
-    var question: String
-    var submittedAnswer: Bool
-    var answer: Bool
+    var eachQuestionWithAnswer: DetailedEachQuestionResult
     
     var body: some View {
         ZStack(alignment: .center) {
@@ -28,32 +18,36 @@ struct QuizResultDetailEachQuestion: View {
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
             HStack {
-                Image(systemName: answer == submittedAnswer ? Setup.ImageStrings.defaultCircle : Setup.ImageStrings.defaultXMark)
+                Image(systemName: eachQuestionWithAnswer.answer == eachQuestionWithAnswer.userSubmit ? Setup.ImageStrings.defaultCircle : Setup.ImageStrings.defaultXMark)
                     .resizable()
                     .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
                     .scaledToFit()
                     .padding()
-                    .foregroundStyle(answer == submittedAnswer ? Color.brandBlandColor : Color.errorHighlightColor)
-                
+                    .foregroundStyle(eachQuestionWithAnswer.answer == eachQuestionWithAnswer.userSubmit ? Color.brandBlandColor : Color.errorHighlightColor)
                 VStack {
-    //                Text("\(quizIndex + 1). \(question)")
-                    Text(question)
+                    Text(eachQuestionWithAnswer.question)
                         .multilineTextAlignment(.leading)
+                        .lineLimit(3)
                         .font(.custom(Setup.FontName.notoSansBold, size: 20))
                         .minimumScaleFactor(0.8)
                     HStack {
-                        Text("제출 답안: \(submittedAnswer ? "O" : "X")")
+                        Text(Setup.ContentStrings.Quiz.detailedQuizResultUserAnswerTitle + "\(eachQuestionWithAnswer.userSubmit)")
                             .font(.custom(Setup.FontName.lineRegular, size: 15))
                             .foregroundStyle(Color.textColor)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(2)
                         Divider()
                             .frame(maxHeight: 10)
                             .background(Color.textColor)
-                        Text("실제 답안: \(answer ? "O" : "X")")
+                        Text(Setup.ContentStrings.Quiz.detailedQuizResultRightAnswerTitle + "\(eachQuestionWithAnswer.answer)")
                             .font(.custom(Setup.FontName.lineRegular, size: 15))
                             .foregroundStyle(Color.textColor)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(2)
                     }
                 }
-                .padding()
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 4)
             }
             .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerDetailHeight)
             .background(Color.surfaceColor)
@@ -67,7 +61,9 @@ struct QuizResultDetailEachQuestion: View {
 
 #Preview {
     VStack {
-        QuizResultDetailEachQuestion(question: "OS는 운영체제이다", submittedAnswer: false, answer: true)
-        QuizResultDetailEachQuestion(question: "다섯번째 문제입니다", submittedAnswer: true, answer: true)
+        QuizResultDetailEachQuestion(eachQuestionWithAnswer: DetailedEachQuestionResult(question: "질문 1 예제 문제입니다 화이팅스 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ ㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹㄴㅇㄹ", userSubmit: "1", answer: "예시 답변입니다 테스트 테스트 test est test test test tes test tests "))
+        QuizResultDetailEachQuestion(eachQuestionWithAnswer: DetailedEachQuestionResult(question: "질문 2", userSubmit: "DFS", answer: "Depth First Search sdfsdfsdfsdfsdfsdfsdfasdfasdfasdf"))
+        QuizResultDetailEachQuestion(eachQuestionWithAnswer: DetailedEachQuestionResult(question: "질문 3", userSubmit: "DFS", answer: "DFS"))
+        QuizResultDetailEachQuestion(eachQuestionWithAnswer: DetailedEachQuestionResult(question: "질문 4", userSubmit: "1", answer: "3"))
     }
 }

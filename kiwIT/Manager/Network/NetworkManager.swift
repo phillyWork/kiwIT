@@ -21,26 +21,17 @@ final class NetworkManager {
             AF.request(api)
                 .validate()
                 .responseDecodable(of: T.self, emptyResponseCodes: [200, 204, 205]) { response in
-                    
-                    print("response: \(response.debugDescription)")
-                    
                     switch response.result {
                     case .success(let payload):
-                        print("payload: \(payload)")
                         promise(.success(payload))
                     case .failure(let error):
-                        print("error description: \(error.localizedDescription)")
-                        
                         guard let statusCode = response.response?.statusCode else {
-                            print("No Status Code!!!")
                             return
                         }
                         
                         if let networkError = NetworkError.init(statusCode: statusCode, message: NetworkErrorMessage(status: statusCode, errorCase: errorCase).message) {
-                            print("networkError: case - \(errorCase), message - \(networkError.description), statusCode - \(statusCode)")
                             promise(.failure(networkError))
                         } else {
-                            print("other error: \(error)")
                             promise(.failure(error))
                         }
                     }

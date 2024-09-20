@@ -13,48 +13,13 @@ enum CompleteQuizButtonType {
     case confirmToMoveToQuizList
 }
 
-// OX 퀴즈만 전제
-struct QuizOXResultModel: Identifiable {
-    
-    //identifiable 목적
-    var id = UUID()
-    
-    var question: String
-    var submittedAnswer: Bool
-    var answer: Bool
-}
-
-func gradeScore(submitted: [Bool], answers: [Bool]) -> Double {
-    var correctCount = 0
-    for i in 0..<submitted.count {
-        if submitted[i] == answers[i] {
-            correctCount += 1
-        }
-    }
-    return Double(correctCount) / Double(submitted.count) * 100
-}
-
-func createDetailQuizResultModel(questions: [String], submitted: [Bool], answers: [Bool]) -> [QuizOXResultModel] {
-    var model = [QuizOXResultModel]()
-    print("questions count: \(questions.count)")
-    print("submitted count: \(submitted.count)")
-    print("answers count: \(answers.count)")
-
-    for i in 0..<questions.count {
-        model.append(QuizOXResultModel(question: questions[i], submittedAnswer: submitted[i], answer: answers[i]))
-    }
-    print("created model for each question result: \(model)")
-    return model
-}
-
 struct QuizResult: View {
     
-//    var quizResult: QuizResultModel
-    
-    var questions: [String]
-    var submittedAnswers: [Bool]
-    var answers: [Bool]
- 
+    var quizTitle: String
+    var quizList: [QuizPayload]
+    var userAnswerList: [QuizAnswer]
+    var totalScore: Int
+    var result: SubmitQuizResponse
     var completion: (CompleteQuizButtonType) -> Void
     
     @State private var isDetailButtonTapped = false
@@ -62,35 +27,31 @@ struct QuizResult: View {
     var body: some View {
         VStack {
             ZStack(alignment: .center) {
-                
                 Rectangle()
                     .fill(Color.shadowColor)
                     .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerHeight)
                     .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
-                
                 VStack {
-                    Spacer()
+                    Text("\(quizTitle) 결과")
+                        .multilineTextAlignment(.center)
+                        .font(.custom(Setup.FontName.notoSansBold, size: 25))
+                        .frame(height: Setup.Frame.quizContentAnswerHeight * 0.3)
+                    Image(showAchievementImage())
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
+                        .clipped()
+                        .padding(8)
                     
-                    Text("Test 결과입니다")
-                        .multilineTextAlignment(.leading)
-                        .font(.custom(Setup.FontName.notoSansBold, size: 12))
-                    
-                    Spacer()
-                    
-                    Text("성취도: \(String(format: "%.2f", gradeScore(submitted: submittedAnswers, answers: answers)))%")
-                    
-                    Spacer()
-                    
-                    //MARK: - 성취도 따른 이미지 추가?
-                    
-                    AsyncImage(url: URL(string: "https://t3.ftcdn.net/jpg/01/75/28/30/360_F_175283093_kkRke2YnpL6HhNRUNPmRm4pFTV2OyLzY.jpg")) { image in
-                        image.resizable()
-                    } placeholder: {
-                        ProgressView()
+                    VStack {
+                        Text(Setup.ContentStrings.Quiz.quizResultScoreTitle +  "\(result.latestScore)")
+                            .multilineTextAlignment(.center)
+                            .font(.custom(Setup.FontName.notoSansBold, size: 20))
+                        Text(Setup.ContentStrings.Quiz.highestScoreTitle +  "\(result.highestScore)")
+                            .multilineTextAlignment(.center)
+                            .font(.custom(Setup.FontName.notoSansBold, size: 20))
                     }
-                    .frame(width: Setup.Frame.quizContentAnswerResultImageWidth, height: Setup.Frame.quizContentAnswerResultImageWidth)
-                    
-                    Spacer()
+                    .frame(maxHeight: .infinity)
                 }
                 .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentAnswerHeight)
                 .background(Color.surfaceColor)
@@ -105,14 +66,14 @@ struct QuizResult: View {
                 Button {
                     completion(.takeQuizAgain)
                 } label: {
-                    Text("다시 풀기")
+                    Text(Setup.ContentStrings.Quiz.takeQuizAgainButtonTitle)
                 }
                 Spacer()
                 
                 Button {
                     isDetailButtonTapped = true
                 } label: {
-                    Text("상세 보기")
+                    Text(Setup.ContentStrings.Quiz.showQuizResultDetails)
                 }
                 
                 Spacer()
@@ -120,20 +81,28 @@ struct QuizResult: View {
                 Button {
                     completion(.confirmToMoveToQuizList)
                 } label: {
-                    Text("확인 완료")
+                    Text(Setup.ContentStrings.Quiz.confirmToMoveBackToQuizListTitle)
                 }
                 
                 Spacer()
             }
             .fullScreenCover(isPresented: $isDetailButtonTapped, content: {
                 //상세 결과 보여주기 위한 View 및 데이터 전달하기
-                QuizResultDetailView(quizOXResultExample: createDetailQuizResultModel(questions: questions, submitted: submittedAnswers, answers: answers))
+                QuizResultDetailView(quizList, userAnswer: userAnswerList)
                     .presentationBackground(.thickMaterial)
             })
         }
     }
+    
+    func showAchievementImage() -> String {
+        switch 100 * Double(result.latestScore)/Double(totalScore) {
+        case 0..<20: return Setup.ImageStrings.fRankImage
+        case 20..<50: return Setup.ImageStrings.dRankImage
+        case 50..<60: return Setup.ImageStrings.cRankImage
+        case 60..<80: return Setup.ImageStrings.bRankImage
+        case 80..<90: return Setup.ImageStrings.aRankImage
+        default: return Setup.ImageStrings.sRankImage
+        }
+    }
+    
 }
-
-//#Preview {
-//   QuizResult(questions: <#T##[String]#>, submittedAnswers: <#T##[Bool]#>, answers: <#T##[Bool]#>)
-//}

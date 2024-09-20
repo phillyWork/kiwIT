@@ -37,32 +37,19 @@ struct QuizListItem: View {
                             .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
                             .foregroundStyle(Color.textColor)
                         HStack {
-                            Text("최고점: \(highestScore)점")
-                                .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
+                            Text(Setup.ContentStrings.Quiz.highestScoreTitle +  "\(highestScore)점")
+                                .font(.custom(Setup.FontName.galMuri11Bold, size: 15))
                                 .foregroundStyle(Color.textColor)
                             Divider()
                                 .frame(minWidth: 1.5)
                                 .background(Color.textColor)
-                            Text("최근: \(latestScore)점")
-                                .font(.custom(Setup.FontName.galMuri11Bold, size: 18))
+                            Text(Setup.ContentStrings.Quiz.latestScoreTitle +  "\(latestScore)점")
+                                .font(.custom(Setup.FontName.galMuri11Bold, size: 15))
                                 .foregroundStyle(Color.textColor)
                         }
                         .frame(height: 25)
                     }
-                    //                        .offset(CGSize(width: Setup.Frame.contentCategoryTrapezoidWidthOffset, height: Setup.Frame.contentCategoryTrapezoidHeightOffset))
                 }
-            
-            //학습 완료 보여주기 설정
-            //            EquilateralTrapezoid(ratioForHorizonLength: ratioForTrapezoidWidth)
-            //                .fill(.clear)
-            //                .frame(width: Setup.Frame.contentListCategoryCompleteImageWidth, height: Setup.Frame.contentListCategoryCompleteImageHeight)
-            //                .overlay {
-            //                    Image(systemName: Setup.ImageStrings.defaultHome)
-            //                    //학습 완료 나타날 것 보여줄 지 말지 설정 필요
-            //                        .foregroundStyle(Color.red)
-            //                }
-            //                .offset(CGSize(width: Setup.Frame.contentCategoryTrapezoidCompleteWidthOffset, height: Setup.Frame.contentCategoryTrapezoidCompleteHeightOffset))
-            
         }
         .padding(.vertical, 8)
         .padding(.horizontal, 5)

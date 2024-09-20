@@ -10,14 +10,9 @@ import SwiftUI
 struct LectureContentListView: View {
     
     @StateObject var lectureContentListVM: LectureContentListViewModel
-    @ObservedObject var lectureListVM: LectureListViewModel
-    
     @Binding var isLoginAvailable: Bool
-    
-    //MARK: - LectureListVM 사용 안함: 굳이 전달하지 않아도 됨
-    
+
     init(lectureListVM: LectureListViewModel, typeId: Int, navTitle: String, isLoginAvailable: Binding<Bool>) {
-        self.lectureListVM = lectureListVM
         _lectureContentListVM = StateObject(wrappedValue: LectureContentListViewModel(typeId: typeId, navTitle: navTitle, lectureType: lectureListVM.lectureType))
         self._isLoginAvailable = isLoginAvailable
     }
@@ -29,7 +24,7 @@ struct LectureContentListView: View {
                     .frame(maxWidth: .infinity)
             } else {
                 LazyVStack(spacing: 5) {
-                    switch lectureListVM.lectureType {
+                    switch lectureContentListVM.lectureListType {
                     case .category:
                         ForEach(lectureContentListVM.lectureContentListCategoryType, id: \.self) { item in
                             ContentExpandableChapterItemView(itemTitle: item.title) {
@@ -68,11 +63,7 @@ struct LectureContentListView: View {
                                 ContentNotExpandableChapterItemView(title: item.title)
                             }
                             .onAppear {
-                                print("Check data for pagination!!!")
-                                if lectureContentListVM.lectureContentListLevelType.last == item {
-                                    print("Last data for list: should call more!!!")
-                                    lectureContentListVM.loadMoreContentListLevelType()
-                                }
+                                lectureContentListVM.checkMorePaginationNeeded(item)
                             }
                         }
                     }
@@ -85,10 +76,10 @@ struct LectureContentListView: View {
         .navigationTitle("\(lectureContentListVM.navTitle)")
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(Color.backgroundColor, for: .navigationBar, .tabBar)
-        .alert("네트워크 오류!", isPresented: $lectureContentListVM.showUnknownNetworkErrorAlert, actions: {
+        .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $lectureContentListVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
-            Text("네트워크 요청에 실패했습니다! 다시 시도해주세요!")
+            Text(Setup.ContentStrings.unknownNetworkErrorAlertMessage)
         })
         .alert(Setup.ContentStrings.loginErrorAlertTitle, isPresented: $lectureContentListVM.shouldLoginAgain, actions: {
             ErrorAlertConfirmButton {
@@ -97,6 +88,9 @@ struct LectureContentListView: View {
         }, message: {
             Text(Setup.ContentStrings.loginErrorAlertMessage)
         })
+        .onDisappear {
+            lectureContentListVM.cleanUpCancellables()
+        }
         //to disable pull to refresh
         .environment(\EnvironmentValues.refresh as! WritableKeyPath<EnvironmentValues, RefreshAction?>, nil)
     }

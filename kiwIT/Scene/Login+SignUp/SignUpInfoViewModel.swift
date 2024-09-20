@@ -11,12 +11,19 @@ import Combine
 
 final class SignUpInfoViewModel: ObservableObject {
         
+    //Input
+    let toggleSwitchTab = PassthroughSubject<Void, Never>()
+    let nicknameSubmitTab = PassthroughSubject<Void, Never>()
+    let signUpRequestButtonTab = PassthroughSubject<Void, Never>()
+
+    //Output
     @Published var isToggleSwitchOn = false
-    @Published var isNicknameEmpty = false
     @Published var showSignUpRequestIsNotSetAlert = false
     @Published var didSignUpSucceed = false
     @Published var showSignUpErrorAlert = false
-
+    
+    @Published var isNicknameEmpty: Bool
+    
     private var cancellables = Set<AnyCancellable>()
 
     var userDataForSignUp: SignUpRequest
@@ -25,52 +32,65 @@ final class SignUpInfoViewModel: ObservableObject {
     init(userDataForSignUp: SignUpRequest) {
         print("DEBUG - initialize SignUpInfo ViewModel")
         self.userDataForSignUp = userDataForSignUp
-        print("DEBUG - initialize SignUpInfo ViewModel Done")
+        self.isNicknameEmpty = userDataForSignUp.nickname.isEmpty ? true : false
+        bind()
+    }
+    
+    private func bind() {
+        toggleSwitchTab
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
+            .sink { [weak self] in
+                self?.isToggleSwitchOn.toggle()
+            }
+            .store(in: &self.cancellables)
+            
+        nicknameSubmitTab
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
+            .sink { [weak self] in
+                self?.updateNicknameEmptiness()
+            }
+            .store(in: &self.cancellables)
+        
+        signUpRequestButtonTab
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
+            .sink { [weak self] in
+                self?.handleSignUpRequest()
+            }
+            .store(in: &self.cancellables)
     }
         
-    func updateNicknameEmptiness() {
+    private func updateNicknameEmptiness() {
        isNicknameEmpty = userDataForSignUp.nickname.isEmpty
     }
     
-    //가입 화면에서 작성한 모든 정보 기반으로 요청
-    func requestSignUp() {
-        print("data so far to request signup: \(userDataForSignUp)")
-        
+    private func handleSignUpRequest() {
+        if isToggleSwitchOn && !isNicknameEmpty {
+            requestSignUp()
+        } else {
+            showSignUpRequestIsNotSetAlert = true
+        }
+    }
+    
+    private func requestSignUp() {
         NetworkManager.shared.request(type: SignUpResponse.self, api: .signUp(request: userDataForSignUp), errorCase: .signUp)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    if let signUpError = error as? NetworkError {
-                        switch signUpError {
-                        case .invalidRequestBody(_):
-                            print("Nickname Duplicated or Cannot SignUp!! -- \(signUpError.description)")
-                        default:
-                            print("other reason for signup network error: \(signUpError.description)")
-                        }
-                    } else {
-                        print("Error For Sign Up Request for other reason: \(error.localizedDescription)")
-                    }
-                    self.showSignUpErrorAlert = true
+                    self?.showSignUpErrorAlert = true
                 }
-            } receiveValue: { response in
-                print("SignUpRequest Response: \(response)")
-                self.requestProfile(response)
+            } receiveValue: { [weak self] response in
+                self?.requestProfile(response)
             }
             .store(in: &self.cancellables)
     }
     
     private func requestProfile(_ userToken: SignUpResponse) {
         NetworkManager.shared.request(type: ProfileResponse.self, api: .profileCheck(request: AuthorizationRequest(access: userToken.accessToken)), errorCase: .profileCheck)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    if let profileError = error as? NetworkError {
-                        print("Profile Check Error in SignUp!! -- \(profileError.description)")
-                    } else {
-                        print("Error For Sign Up Request for other reason: \(error.localizedDescription)")
-                    }
-                    self.didSignUpSucceed = true
+                    self?.didSignUpSucceed = true
                 }
-            } receiveValue: { response in
-                self.updateToken(token: userToken, profile: response)
+            } receiveValue: { [weak self] response in
+                self?.updateToken(token: userToken, profile: response)
             }
             .store(in: &self.cancellables)
     }
@@ -85,8 +105,10 @@ final class SignUpInfoViewModel: ObservableObject {
         
         signedUpProfile = profile
         didSignUpSucceed = true
-        
-        print("Success in Sign Up, Update UserDefaults, Create New Token in KeyChain")
+    }
+    
+    deinit {
+        print("SignUpInfoViewModel DEINIT")
     }
     
 }

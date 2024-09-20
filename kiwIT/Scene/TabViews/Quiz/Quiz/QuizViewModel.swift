@@ -9,188 +9,268 @@ import Foundation
 
 import Combine
 
-final class QuizViewModel: ObservableObject {
+enum QuizRequestType {
+    case startQuiz
+    case bookmark
+}
+
+final class QuizViewModel: ObservableObject, RefreshTokenHandler {
     
-    @Published var userOXAnswer = [Bool]()
-    @Published var userMultipleAnswer = [Int]()
-    @Published var userShortAnswer = [String]()
-        
+    typealias ActionType = QuizRequestType
+            
     @Published var isQuizCompleted = false
     
     @Published var quizData: StartQuizResponse?
     
     @Published var showStartQuizErrorAlert = false
     @Published var showBookmarkQuizErrorAlert = false
-    @Published var showThisIsFirstQuestionAlert = false
     
     @Published var showUnknownNetworkErrorAlert = false
     
     @Published var shouldLoginAgain = false
     
+    @Published var quizIndex = 0
+    
+    @Published var isThisPreviousQuestion = false
+      
     var pathString: String
     var quizGroupId: Int
     
-    @Published var quizIndex = 0
-    @Published var quizCount = 0
+    var recentSelectedShortAnswer = ""
+    var recentSelectedMultipleChoice = 0
+    var recentSelectedBoolAnswer: UserOXAnswerState = .unchosen
     
-    var quizType: QuizType = .multipleChoice
+    var quizCount = 0
+    var quizTypeArray: [QuizType] = []
+    var userAnswerListForRequest: [QuizAnswer] = []
     
-    private var recentSelectedShortAnswer = ""
-    private var recentSelectedMultipleChoice = -1
-    private var recentSelectedBoolAnswer = false
+    private let requestBookmarkSubject = PassthroughSubject<Void, Never>()
     
-    private var cancellables = Set<AnyCancellable>()
+    private var userRecentAnswer: QuizAnswer = QuizAnswer(quizId: -1, answer: "")
+    private var quizIdToBookmark = -1
+    
+    var cancellables = Set<AnyCancellable>()
     
     init(quizGroupId: Int, pathString: String) {
+        print("QuizViewModel INIT")
         self.quizGroupId = quizGroupId
         self.pathString = pathString
-        quizSetup()
+        bind()
+        requestStartQuiz()
     }
     
-    func quizSetup() {
-//        requestStartQuiz()
+    private func bind() {
+        requestBookmarkSubject
+            .debounce(for: .seconds(Setup.Time.debounceInterval), scheduler: RunLoop.main)
+            .sink { [weak self] in
+                self?.requestBookmarkQuiz()
+            }
+            .store(in: &cancellables)
+    }
+        
+    func updateBookmarkedStatus(_ id: Int) {
+        quizIdToBookmark = id
+        debouncedBookmarkThisQuiz()
+    }
+    
+    private func debouncedBookmarkThisQuiz() {
+        requestBookmarkSubject.send(())
     }
     
     private func requestStartQuiz() {
         guard let tokenData = AuthManager.shared.checkTokenData() else {
-            print("Should Login Again!!!")
             shouldLoginAgain = true
             return
         }
         NetworkManager.shared.request(type: StartQuizResponse.self, api: .startTakingQuiz(request: StartQuizRequest(quizGroupId: quizGroupId, access: tokenData.0.access)), errorCase: .startTakingQuiz)
-            .sink { completion in
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let startQuizError = error as? NetworkError {
                         switch startQuizError {
                         case .invalidToken(_):
-                            self.requestRefreshToken(tokenData.0, userId: tokenData.1)
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .startQuiz)
                         default:
-                            print("Start Taking Quiz Error for network reason: \(startQuizError.description)")
-                            self.showStartQuizErrorAlert = true
+                            self?.showStartQuizErrorAlert = true
                         }
                     } else {
-                        print("Start Taking Quiz Error for other reason: \(error.localizedDescription)")
-                        self.showStartQuizErrorAlert = true
+                        self?.showStartQuizErrorAlert = true
                     }
                 }
-            } receiveValue: { response in
-                self.quizData = response
-                self.quizCount = response.quizList.count
-                switch response.quizList.first?.type {
-                case .multipleChoice: self.quizType = .multipleChoice
-                case .trueOrFalse: self.quizType = .trueOrFalse
-                case .shortAnswer: self.quizType = .shortAnswer
-                default:
-                    self.quizType = .multipleChoice
-                }
+            } receiveValue: { [weak self] response in
+                self?.quizData = response
+                self?.quizCount = response.quizList.count
             }
             .store(in: &self.cancellables)
     }
     
-    private func requestRefreshToken(_ token: UserTokenValue, userId: String) {
-        NetworkManager.shared.request(type: RefreshAccessTokenResponse.self, api: .refreshToken(request: RefreshAccessTokenRequest(refreshToken: token.refresh)), errorCase: .refreshToken)
-            .sink { completion in
+    private func requestBookmarkQuiz() {
+        guard let tokenData = AuthManager.shared.checkTokenData() else {
+            shouldLoginAgain = true
+            return
+        }
+        NetworkManager.shared.request(type: BookmarkQuizResponse.self, api: .bookmarkQuiz(request: BookmarkQuizRequest(quizId: quizIdToBookmark, access: tokenData.0.access)), errorCase: .bookmarkQuiz)
+            .sink { [weak self] completion in
                 if case .failure(let error) = completion {
-                    if let refreshError = error as? NetworkError {
-                        switch refreshError {
+                    if let bookmarkQuizError = error as? NetworkError {
+                        switch bookmarkQuizError {
+                        case .invalidRequestBody(_):
+                            self?.showBookmarkQuizErrorAlert = true
                         case .invalidToken(_):
-                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-                            self.shouldLoginAgain = true
+                            self?.requestRefreshToken(tokenData.0, userId: tokenData.1, action: .bookmark)
                         default:
-                            print("Refresh Token Error for network reason: \(refreshError.description)")
-//                            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                            self.shouldLoginAgain = true
-                            self.showUnknownNetworkErrorAlert = true
+                            self?.showBookmarkQuizErrorAlert = true
                         }
                     } else {
-                        print("Category Content Error for other reason: \(error.localizedDescription)")
-//                        AuthManager.shared.handleRefreshTokenExpired(userId: userId)
-//                        self.shouldLoginAgain = true
-                        self.showUnknownNetworkErrorAlert = true
+                        self?.showBookmarkQuizErrorAlert = true
                     }
                 }
             } receiveValue: { response in
-                KeyChainManager.shared.update(UserTokenValue(access: response.accessToken, refresh: response.refreshToken), id: userId)
-                self.requestStartQuiz()
+                if let quizData = self.quizData {
+                    self.quizData?.quizList[self.quizIndex].kept = !(quizData.quizList[self.quizIndex].kept)
+                } else {
+                    self.showBookmarkQuizErrorAlert = true
+                }
             }
             .store(in: &self.cancellables)
     }
     
-    func updateMultipleChoice(_ selectedChoice: Int) {
-        //0인 경우, 선택하지 않았음으로 틀린 답 처리
-        userMultipleAnswer.append(selectedChoice)
-        if userMultipleAnswer.count == quizCount {
-            isQuizCompleted = true
-            quizIndex = 0
-            userMultipleAnswer.removeAll()
-        } else {
-            quizIndex += 1
+    func updateMultipleChoice(_ userAnswer: Int) {
+        //0인 경우, 선택하지 않았음으로 서버에서 틀린 답 처리
+        if let quizData = quizData {
+            let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: "\(userAnswer)")
+        
+            if userAnswerListForRequest.count > quizIndex {
+                userAnswerListForRequest[quizIndex].answer = String(userAnswer)
+            } else {
+                userAnswerListForRequest.append(answer)
+            }
+            
+            isThisPreviousQuestion = false
+            if userAnswerListForRequest.count == quizCount {
+                isQuizCompleted = true
+            } else {
+                isQuizCompleted = false
+                quizIndex += 1
+                if userAnswerListForRequest.count >= quizIndex+1 {
+                    userRecentAnswer = userAnswerListForRequest[quizIndex]
+                    getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
+                }
+            }
         }
     }
     
     func updateShortAnswer(_ userAnswer: String) {
-        userShortAnswer.append(userAnswer)
-        if userShortAnswer.count == quizCount {
-            isQuizCompleted = true
-            quizIndex = 0
-            userShortAnswer.removeAll()
-        } else {
-            quizIndex += 1
+        if let quizData = quizData {
+            let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: userAnswer)
+            
+            if userAnswerListForRequest.count > quizIndex {
+                userAnswerListForRequest[quizIndex].answer = userAnswer
+            } else {
+                userAnswerListForRequest.append(answer)
+            }
+            
+            isThisPreviousQuestion = false
+            if userAnswerListForRequest.count == quizCount {
+                isQuizCompleted = true
+            } else {
+                isQuizCompleted = false
+                quizIndex += 1
+                if userAnswerListForRequest.count >= quizIndex+1 {
+                    userRecentAnswer = userAnswerListForRequest[quizIndex]
+                    getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
+                }
+            }
         }
     }
     
     func updateOXAnswer(_ userAnswer: Bool) {
-        userOXAnswer.append(userAnswer)
-        if userOXAnswer.count == quizCount {
-            isQuizCompleted = true
-            quizIndex = 0
-            userOXAnswer.removeAll()
-        } else {
-            quizIndex += 1
+        if let quizData = quizData {
+            let answer = QuizAnswer(quizId: quizData.quizList[quizIndex].id, answer: "\(userAnswer)")
+            
+            if userAnswerListForRequest.count > quizIndex {
+                userAnswerListForRequest[quizIndex].answer = "\(userAnswer)"
+            } else {
+                userAnswerListForRequest.append(answer)
+            }
+            
+            isThisPreviousQuestion = false
+            if userAnswerListForRequest.count == quizCount {
+                isQuizCompleted = true
+            } else {
+                isQuizCompleted = false
+                quizIndex += 1
+                if userAnswerListForRequest.count >= quizIndex+1 {
+                    userRecentAnswer = userAnswerListForRequest[quizIndex]
+                    getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
+                }
+            }
         }
     }
     
     func checkToRemoveSelected() {
-        if quizIndex == 0 {
-            showThisIsFirstQuestionAlert = true
-        } else {
+        if quizIndex != 0 {
             removeLatestUserAnswer()
         }
     }
     
     private func removeLatestUserAnswer() {
-
-        //Index-1 에서의 답변 확보 및 기존 답변을 새로운 답변으로 대체하는 식의 구성
-
-        quizIndex -= 1
+        if let quizData = quizData {
+            quizIndex -= 1
+            
+            userRecentAnswer = userAnswerListForRequest[quizIndex]
+            
+            getPreviousAnswer(userRecentAnswer, quizType: quizData.quizList[quizIndex].type)
+        }
+    }
+    
+    private func getPreviousAnswer(_ userAnswer: QuizAnswer, quizType: QuizType) {
         switch quizType {
         case .multipleChoice:
-            recentSelectedMultipleChoice = userMultipleAnswer.remove(at: userMultipleAnswer.count - 1)
-            print("After Removal in Multiple: \(recentSelectedMultipleChoice)")
+            recentSelectedMultipleChoice = Int(userAnswer.answer)!
         case .trueOrFalse:
-            recentSelectedBoolAnswer = userOXAnswer.remove(at: userOXAnswer.count - 1)
-            print("After Removal in OX: \(recentSelectedMultipleChoice)")
+            recentSelectedBoolAnswer = userAnswer.answer == "true" ? .chosenTrue : .chosenFalse
         case .shortAnswer:
-            recentSelectedShortAnswer = userShortAnswer.remove(at: userShortAnswer.count - 1)
-            print("After Removal in Short Answer: \(recentSelectedMultipleChoice)")
+            recentSelectedShortAnswer = userAnswer.answer
         }
-        
+        isThisPreviousQuestion = true
     }
     
-    func checkRetakeQuiz() -> Bool {
-        return pathString.hasPrefix("RetakeQuiz-")
+    func checkRetakeQuiz() {
+        if quizIndex != 0 {
+            resetQuiz()
+        }
     }
     
-    func resetQuiz() {
+    private func resetQuiz() {
         quizIndex = 0
-        switch quizType {
-        case .multipleChoice:
-            userMultipleAnswer.removeAll()
-        case .trueOrFalse:
-            userOXAnswer.removeAll()
-        case .shortAnswer:
-            userShortAnswer.removeAll()
-        }
+        userRecentAnswer = QuizAnswer(quizId: -1, answer: "")
+        recentSelectedBoolAnswer = .unchosen
+        recentSelectedMultipleChoice = 0
+        recentSelectedShortAnswer = ""
+        userAnswerListForRequest.removeAll()
         isQuizCompleted = false
     }
+    
+    func handleRefreshTokenSuccess(response: UserTokenValue, userId: String, action: QuizRequestType) {
+        switch action {
+        case .startQuiz:
+            requestStartQuiz()
+        case .bookmark:
+            debouncedBookmarkThisQuiz()
+        }
+    }
+    
+    func handleRefreshTokenError(isRefreshInvalid: Bool, userId: String) {
+        if isRefreshInvalid {
+            AuthManager.shared.handleRefreshTokenExpired(userId: userId)
+            shouldLoginAgain = true
+        } else {
+            showUnknownNetworkErrorAlert = true
+        }
+    }
+    
+    deinit {
+        print("QuizViewModel DEINIT")
+    }
+    
 }

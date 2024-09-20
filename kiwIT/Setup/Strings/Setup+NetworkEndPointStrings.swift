@@ -28,7 +28,7 @@ extension Setup {
         static let lectureLevel = "/level"
         static let exerciseForLecture = "/exercise"
         static let lectureCategory = "/category"
-        static let lectureNextStudyProgress = "/progress"
+        static let lectureNextToStudy = "/latest"
         static let completedLecture = "/studied"
         
         //MARK: - Quiz
@@ -47,6 +47,16 @@ extension Setup {
         
         static let acquiredTrophyList = "/my"
         static let latestAcquiredTrophy = "/latest"
+        
+        //MARK: - Interview
+        
+        static let interview = "/interview"
+        
+        static let interviewOption = "/option"
+        static let interviewQuestion = "/question"
+        static let interviewRoom = "/room"
+        static let interviewRoomQueue = "/queue"
+        
     }
     
 }

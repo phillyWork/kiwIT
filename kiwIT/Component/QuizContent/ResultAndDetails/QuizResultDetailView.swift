@@ -7,29 +7,37 @@
 
 import SwiftUI
 
+struct DetailedEachQuestionResult: Hashable {
+    var question: String
+    var userSubmit: String
+    var answer: String
+}
+
 struct QuizResultDetailView: View {
     
-    @Environment(\.dismiss) var dismiss
+    @Environment(\.dismiss) private var dismiss
     
-    //var quizResult: QuizResultModel (viewModel 공유하기)
-    
-    var quizOXResultExample: [QuizOXResultModel]
+    var eachQuestionResult: [DetailedEachQuestionResult] = []
+        
+    init(_ quizList: [QuizPayload], userAnswer: [QuizAnswer]) {
+        for i in 0..<quizList.count {
+            let result = DetailedEachQuestionResult(question: quizList[i].question, userSubmit: userAnswer[i].answer, answer: quizList[i].answer)
+            eachQuestionResult.append(result)
+        }
+    }
     
     var body: some View {
         ScrollView {
-            Text("상제 답안")
+            Text(Setup.ContentStrings.Quiz.detailedQuizResultTitle)
                 .font(.custom(Setup.FontName.phuduBold, size: 20))
                 .padding()
             
-            //문제 With 오답 여부 사각형 색으로 구분, 제출 답안, 실제 정답)
-            //이유도 같이 제공할 수 있다면 같이 제공
-           
-            ForEach(quizOXResultExample) { example in
-                    QuizResultDetailEachQuestion(question: example.question, submittedAnswer: example.submittedAnswer, answer: example.answer)
-                        .padding(.vertical, 3)
-//                        .background(Color.backgroundColor)
+            ForEach(eachQuestionResult, id: \.self) { eachQuestion in
+                QuizResultDetailEachQuestion(eachQuestionWithAnswer: eachQuestion)
+                    .padding(.vertical, 3)
+                    .background(Color.backgroundColor)
             }
-            
+                        
             Button {
                 dismiss()
             } label: {

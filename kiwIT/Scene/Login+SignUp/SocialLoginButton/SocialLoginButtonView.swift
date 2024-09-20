@@ -24,12 +24,13 @@ struct SocialLoginButtonView: View {
     
     var service: SocialLoginProvider
     
-    var body: some View {     
+    var body: some View {
         AnyView(loginButton)
             .onAppear {
-                socialLoginButtonVM.serverLoginResultPublisher
-                    .sink { success, error, profileData, userData in
-                        socialLoginVM.handleSocialLoginResult(success: success, errorMessage: error, profileData: profileData, userDataToSignUp: userData)
+                socialLoginButtonVM.$loginResult
+                    .compactMap { $0 }
+                    .sink { result in
+                        socialLoginVM.handleSocialLoginResult(success: result.success, errorMessage: result.error, profileData: result.profileData, userDataToSignUp: result.userDataToSignUp)
                     }
                     .store(in: &socialLoginButtonVM.cancellables)
             }
@@ -41,23 +42,18 @@ struct SocialLoginButtonView: View {
         case .apple:
             SignInWithAppleButton { request in
                 //Sign in Apple Action with request (요청할 정보)
-                request.requestedScopes = [.email, .fullName]
+                request.requestedScopes = [.email]
             } onCompletion: { result in
-                switch result {
-                case .success(let authResult):
-                    print("Succeed in Sign in Apple")
-                    socialLoginButtonVM.requestAppleUserLogin(authResult.credential)
-                case .failure(let error):
-                    //실패: 유저 허가하지 않음
-                    print("Failed in Sign in Apple: \(error.localizedDescription)")
-                }
+                socialLoginButtonVM.appleLoginRequest.send(result)
             }
         case .kakao:
             Button {
-                socialLoginButtonVM.requestKakaoUserLogin()
+                socialLoginButtonVM.kakaoLoginRequest.send(())
             } label: {
-                //MARK: - 카카오 로그인 버튼 이미지 필요
-                Text("Kakao Login Button")
+                Image(Setup.ImageStrings.kakaoButtonImage)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: Setup.Frame.contentImageWidth)
             }
         }
     }

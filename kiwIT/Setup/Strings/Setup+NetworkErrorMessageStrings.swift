@@ -93,5 +93,32 @@ enum Setup {
         static let confirmTrophyAcquisitionError = "잘못된 요청입니다. 존재하지 않는 트로피입니다."
         
         static let cancelTrophyAcquisitionError = "잘못된 취소 요청입니다. 다시 시도해주세요."
+        
+        
+        //MARK: - API 수정 따라 업데이트 및 case 추가 필요
+        static let interviewListError = "잘못된 요청입니다. 다시 시도해주세요."
+        
+        static let interviewOptionListError = "옵션 항목을 불러올 수 없어요. 다시 시도해주세요."
+        
+        static let createInterviewError = "인터뷰 생성 실패! 다시 시도해주세요."
+        
+        static let deleteInterviewError = "인터뷰 삭제 실패! 다시 시도해주세요."
+
+        static let editInterviewError = "제목 수정 실패! 다시 시도해주세요."
+
+        static let interviewRoomListError = "과거 기록을 불러올 수 없어요. 다시 시도해주세요."
+
+        static let startInterviewRoomError = "인터뷰를 새롭게 시작할 수 없어요. 다시 시도해주세요."
+
+        static let interviewQuestionsListError = "문항을 불러올 수 없어요. 다시 시도해주세요."
+
+        static let checkInterviewRoomQueueError = "대기열 확인 실패! 다시 시도해주세요."
+
+        static let interviewPastAnswersError = "이전 답변을 불러올 수 없어요. 다시 시도해주세요."
+
+        static let submitInterviewRoomError = "제출 실패! 다시 시도해주세요."
+
+        static let deleteInterviewRoomError = "과거 기록 삭제 실패! 다시 시도해주세요."
+        
     }
 }
