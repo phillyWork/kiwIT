@@ -18,6 +18,8 @@ struct QuizContentOX: View {
     @State private var chosenState: UserOXAnswerState
     @State private var showAnswerNotChosenAlert = false
     
+    private var previousAnswer: UserOXAnswerState
+    
     var quizPayload: QuizPayload
     var quizIndex: Int
     var quizCount: Int
@@ -26,6 +28,7 @@ struct QuizContentOX: View {
     var bookmarkAction: (Int) -> Void
     
     init(chosenState: UserOXAnswerState, showAnswerNotChosenAlert: Bool = false, quizPayload: QuizPayload, quizIndex: Int, quizCount: Int, completion: @escaping (Result<Bool, QuizError>) -> Void, bookmarkAction: @escaping (Int) -> Void) {
+        self.previousAnswer = chosenState
         self._chosenState = State(initialValue: chosenState)
         self.showAnswerNotChosenAlert = showAnswerNotChosenAlert
         self.quizPayload = quizPayload
@@ -68,6 +71,9 @@ struct QuizContentOX: View {
                             .background(chosenState == .chosenFalse ? Color.brandColor : Color.surfaceColor)
                         }
                         Spacer()
+                    }
+                    .onChange(of: quizPayload.id) {
+                        chosenState = previousAnswer
                     }
                     .frame(width: Setup.Frame.quizContentItemWidth, height: Setup.Frame.quizContentOXItemHeight)
                     .background(Color.surfaceColor)

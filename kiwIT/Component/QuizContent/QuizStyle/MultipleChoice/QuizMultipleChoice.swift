@@ -12,6 +12,8 @@ struct QuizMultipleChoice: View {
     //0: 선택하지 않음
     @State private var internalUserChoiceNumber: Int
     
+    private var previousUserAnswer: Int
+    
     var quizPayload: QuizPayload
     var quizIndex: Int
     var quizCount: Int
@@ -20,6 +22,7 @@ struct QuizMultipleChoice: View {
     var bookmarkAction: (Int) -> Void
     
     init(userChoiceNumber: Int, quizPayload: QuizPayload, quizIndex: Int, quizCount: Int, completion: @escaping (Result<Int, QuizError>) -> Void, bookmarkAction: @escaping (Int) -> Void) {
+        self.previousUserAnswer = userChoiceNumber
         self._internalUserChoiceNumber = State(initialValue: userChoiceNumber)
         self.quizPayload = quizPayload
         self.quizIndex = quizIndex
@@ -50,6 +53,13 @@ struct QuizMultipleChoice: View {
                                 }
                                 .background(internalUserChoiceNumber == eachChoice.number ? Color.brandColor : Color.surfaceColor)
                             }
+                        }
+                    }
+                    .onChange(of: quizPayload.id) {
+                        if previousUserAnswer == 0 {
+                            internalUserChoiceNumber = 0
+                        } else {
+                            internalUserChoiceNumber = previousUserAnswer
                         }
                     }
                 }

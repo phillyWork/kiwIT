@@ -35,13 +35,6 @@ struct BookmarkedQuizContent: View {
             .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizBookmarkedContentHeight)
             .background(Color.surfaceColor)
             .overlay {
-                Text(Setup.ContentStrings.Quiz.quizAnswerExplanationTitle + "\(quiz.explanation)")
-                    .multilineTextAlignment(.leading)
-                    .font(.custom(Setup.FontName.notoSansBold, size: 13))
-                    .foregroundStyle(Color.textColor)
-                    .offset(CGSize(width: 0, height: Setup.Frame.profileQuizContentAnswerExplanationOverlayHeightOffset))
-            }
-            .overlay {
                 HStack {
                     Text(Setup.ContentStrings.Quiz.quizAnswerScoreTitle + "\(quiz.score)")
                         .font(.custom(Setup.FontName.lineBold, size: 12))

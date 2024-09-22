@@ -19,8 +19,12 @@ struct NextLectureView: View {
                 .frame(width: Setup.Frame.homeViewContentWidth, height: Setup.Frame.homeViewNextLectureHeight)
                 .offset(CGSize(width: Setup.Frame.contentListShadowWidthOffset, height: Setup.Frame.contentListShadowHeightOffset))
             Text(nextLecture.title)
-                .font(.custom(Setup.FontName.galMuri11Bold, size: 25))
+                .font(.custom(Setup.FontName.galMuri11Bold, size: 23))
+                .multilineTextAlignment(.leading)
+                .lineLimit(2)
                 .foregroundStyle(Color.brandColor)
+                .padding(.horizontal, 4)
+                .padding(.top, 6)
                 .frame(width: Setup.Frame.homeViewContentWidth, height: Setup.Frame.homeViewNextLectureHeight)
                 .background(Color.surfaceColor)
                 .overlay {

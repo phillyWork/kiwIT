@@ -245,7 +245,7 @@ final class LectureViewModel: ObservableObject, RefreshTokenHandler {
             return
         }
         dispatchGroup.enter()
-        NetworkManager.shared.request(type: CompleteLectureResponse.self, api: .bookmarkLecture(request: HandleLectureRequest(contentId: contentId, access: tokenData.0.access)), errorCase: .bookmarkLecture)
+        NetworkManager.shared.request(type: BookmarkLectureResponse.self, api: .bookmarkLecture(request: HandleLectureRequest(contentId: contentId, access: tokenData.0.access)), errorCase: .bookmarkLecture)
             .sink { [weak self] completion in
                 if case .failure(let error) = completion {
                     if let bookmarkLectureError = error as? NetworkError {

@@ -32,7 +32,7 @@ struct LectureCategoryItemView: View {
                 .fill(Color.surfaceColor)
                 .frame(width: Setup.Frame.contentListItemWidth, height: Setup.Frame.contentListCategoryItemHeight)
                 .overlay {
-                    HStack(alignment: .center) {
+                    VStack(alignment: .center) {
                         //해당 Category 어울리는 이미지 파일 필요
                         if !imageUrl.isEmpty {
                             AsyncImage(url: URL(string: imageUrl), content: { image in

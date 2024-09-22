@@ -80,8 +80,6 @@ struct LectureView: View {
                     } label: {
                         Text(Setup.ContentStrings.confirm)
                     }
-                } message: {
-                    Text(lectureVM.checkExampleAnswer() ? "참 잘했어요!" : "정답은 \(lectureVM.lectureContent?.answer)입니다.")
                 }
                 .alert(Setup.ContentStrings.bookmarkThisLectureAlertTitle, isPresented: $lectureVM.showBookmarkThisLectureForFirstTimeAlert) {
                     Button(role: .cancel) {

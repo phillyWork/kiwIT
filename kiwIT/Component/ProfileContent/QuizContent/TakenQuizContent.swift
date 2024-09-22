@@ -25,9 +25,9 @@ struct TakenQuizContent: View {
                 Text(quiz.title)
                     .font(.custom(Setup.FontName.galMuri11Bold, size: 20))
                     .foregroundStyle(Color.brandColor)
-                Text(quiz.subtitle)
-                    .font(.custom(Setup.FontName.notoSansBold, size: 14))
-                    .foregroundStyle(Color.brandTintColor2)
+//                Text(quiz.subtitle)
+//                    .font(.custom(Setup.FontName.notoSansBold, size: 14))
+//                    .foregroundStyle(Color.brandTintColor2)
             }
             .frame(width: Setup.Frame.profileQuizContentWidth, height: Setup.Frame.profileQuizContentHeight)
             .background(Color.surfaceColor)

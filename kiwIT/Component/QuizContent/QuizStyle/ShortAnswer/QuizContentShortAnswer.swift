@@ -13,6 +13,8 @@ struct QuizContentShortAnswer: View {
     
     @FocusState private var isTextFieldFocused: Bool
     
+    private var previousUserAnswer: String
+    
     var quizPayload: QuizPayload
     var quizIndex: Int
     var quizCount: Int
@@ -21,6 +23,7 @@ struct QuizContentShortAnswer: View {
     var bookmarkAction: (Int) -> Void
         
     init(textFieldInput: String, quizPayload: QuizPayload, quizIndex: Int, quizCount: Int, completion: @escaping (Result<String, QuizError>) -> Void, bookmarkAction: @escaping (Int) -> Void) {
+        self.previousUserAnswer = textFieldInput
         self._textFieldInput = State(initialValue: textFieldInput)
         self.quizPayload = quizPayload
         self.quizIndex = quizIndex
@@ -58,6 +61,13 @@ struct QuizContentShortAnswer: View {
                         .foregroundStyle(Color.black)
                         .offset(CGSize(width: Setup.Frame.contentListItemWidthOffset, height: Setup.Frame.contentListItemHeightOffset))
                         .focused($isTextFieldFocused)
+                    }
+                    .onChange(of: quizPayload.id) {
+                        if previousUserAnswer == "" {
+                            textFieldInput = ""
+                        } else {
+                            textFieldInput = previousUserAnswer
+                        }
                     }
                     Spacer()
                 }
