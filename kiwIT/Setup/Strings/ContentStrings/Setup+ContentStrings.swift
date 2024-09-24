@@ -39,6 +39,7 @@ extension Setup {
         
         static let startLectureErrorAlertTitle = "학습 시작 오류!"
         static let completeLectureErrorAlertTitle = "학습 완료 오류!"
+        static let bookmarkThisQuizErrorAlertMessage = "북마크 요청이 실패했습니다. 다시 시도해주세요!"
         
         static let submitLectureExampleErrorAlertTitle = "예제 제출 오류!"
         static let bookmarkErrorAlertTitle = "북마크 오류!"

@@ -92,6 +92,11 @@ struct QuizView: View {
                 .tint(Color.textColor)
             }
         }
+        .alert(Setup.ContentStrings.bookmarkErrorAlertTitle, isPresented: $quizVM.showBookmarkQuizErrorAlert, actions: {
+            ErrorAlertConfirmButton { }
+        }, message: {
+            Text(Setup.ContentStrings.bookmarkThisQuizErrorAlertMessage)
+        })
         .alert(Setup.ContentStrings.unknownNetworkErrorAlertTitle, isPresented: $quizVM.showUnknownNetworkErrorAlert, actions: {
             ErrorAlertConfirmButton { }
         }, message: {
