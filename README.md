@@ -4,6 +4,38 @@
 
 #### 모두에게 필요한 기초 IT 지식부터 전공자를 위한 CS까지, IT 학습 서비스 앱입니다.
 
+|Home|학습 카테고리|챕터 목록|학습 컨텐츠|트로피 획득|예제 풀이|
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|![15pro_kiwIT_image1](https://github.com/user-attachments/assets/169a2b8a-a3f8-497c-810c-541b9b33c9bc)|![15pro_kiwIT_image3](https://github.com/user-attachments/assets/69f658dc-287f-4558-8681-2adcd5207e80)|![15pro_kiwIT_image2](https://github.com/user-attachments/assets/d154596e-fcde-4fee-ad33-859cae547781)|![15pro_kiwIT_image4](https://github.com/user-attachments/assets/7633d6b7-6ce4-4e2f-8137-738e81bc2419)|![15pro_kiwIT_image16](https://github.com/user-attachments/assets/20a0ccbd-a237-4e7c-9a75-d49cf13b3aa9)|![15pro_kiwIT_image17](https://github.com/user-attachments/assets/5246648e-d95d-4277-bf57-cfe56c896899)|
+
+|퀴즈 목록|퀴즈 화면|퀴즈 화면|퀴즈 결과|상세 결과|
+|:---:|:---:|:---:|:---:|:---:|
+|![15pro_kiwIT_image5](https://github.com/user-attachments/assets/41e58f75-d8f3-4856-ba6c-a66f614cdeaa)|![15pro_kiwIT_image6](https://github.com/user-attachments/assets/ccf5158e-c563-42b7-a43e-243da234f161)|![15pro_kiwIT_image7](https://github.com/user-attachments/assets/1099d161-c42f-4ba7-ad0c-349ea7d2ad56)|![15pro_kiwIT_image8](https://github.com/user-attachments/assets/c06833e5-a0dc-4a62-a391-1161090be418)|![15pro_kiwIT_image10](https://github.com/user-attachments/assets/edc7692f-765e-4330-803b-2e0e4659315f)|
+
+|프로필|프로필|퀴즈 기록|학습 기록|다시 학습|트로피 목록 & 획득 여부|
+|:---:|:---:|:---:|:---:|:---:|:---:|
+|![15pro_kiwIT_image9](https://github.com/user-attachments/assets/e5022cb2-2c34-4848-8ab1-3f3936dd4380)|![15pro_kiwIT_image18](https://github.com/user-attachments/assets/ac2185e7-dd43-42b5-b5d0-5efe4627f3ef)|![15pro_kiwIT_image12](https://github.com/user-attachments/assets/642037c2-d41f-4653-9cab-e1a8ace00d73)|![15pro_kiwIT_image13](https://github.com/user-attachments/assets/37022f78-e067-4cdf-a492-2276584982a8)|![15pro_kiwIT_image14](https://github.com/user-attachments/assets/f3cd455f-dfbc-4644-a404-ba6f0dee3d10)|![15pro_kiwIT_image19](https://github.com/user-attachments/assets/4e948402-f2d1-4933-bc1c-088254749120)|
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # 개발 기간 및 인원
 - 2024.04. ~ 2024.08.
 - 최소 버전: iOS 17.4
@@ -247,7 +279,7 @@ final class TrophyListViewModel: ObservableObject, RefreshTokenHandler {
 
 ------
 
-### C. Child View에서 Refresh Token 만료 시에 전체 로그아웃 및 SignIn 처리
+### C. Child View에서 Refresh Token 만료 시에 전체 종료 및 SignInView 화면 처리
 
 B에서 언급했지만 로그아웃 요청조차 Access Token을 활용하기에 Refresh Token 만료 시에는 당연히 로그아웃 요청이 실패하게 된다. 
 로그인 세션 만료 Alert를 띄우고, 확인을 누를 시 Keychain에 저장한 토큰 정보를 삭제 후 LoginView가 나타나도록 구조를 구성했다.
